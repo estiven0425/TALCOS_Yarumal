@@ -1,0 +1,11 @@
+:root {
+    background-image: url(../assets/fondo.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-sizing: border-box;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-size: medium;
+    font-weight: 400;
+    margin: 0px;
+}
