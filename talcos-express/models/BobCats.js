@@ -2,7 +2,7 @@ const { sequelize } = require('../config/conectionDataBase');
 const { DataTypes } = require('sequelize');
 
 const BobCats = sequelize.define(
-    'bob-cats',
+    'bob_cats',
     {
         id_bob_cat: {
             type: DataTypes.BIGINT,
@@ -26,7 +26,7 @@ const BobCats = sequelize.define(
         },
     },
     {
-        tableName: 'bob-cats',
+        tableName: 'bob_cats',
         timestamps: false,
     }
 );

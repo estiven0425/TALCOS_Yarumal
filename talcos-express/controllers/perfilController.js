@@ -6,18 +6,17 @@ exports.leerPerfil = async (req, res) => {
 
         res.json(perfiles);
     } catch (error) {
-        res.status(500).send("Error del servidor: ", error);
+        res.status(500).send("Error del servidor: " + error);
     }
 };
 
 exports.crearPerfil = async (req, res) => {
-    const { nombre_perfil, icono_perfil, actividad_perfil } = req.body;
+    const { nombre_perfil, icono_perfil } = req.body;
 
     try {
         const nuevoPerfil = await Perfiles.create({
             nombre_perfil,
-            icono_perfil,
-            actividad_perfil
+            icono_perfil
         });
 
         res.status(201).json(nuevoPerfil);

@@ -2,9 +2,28 @@ doctype html
 html(lang="es-CO")
   head
     meta(charset="UTF-8")
-    meta(author="estiven0425")
-    meta(description="TALCOS Yarumal es un software de gestión de inventario y monitoreo de datos privado realizado para la empresa TALCOS de YARUMAL S.A.S como proyecto de etapa práctica de Estiven Montoya Torres.")
-    meta(viewport="width=device-width, initial-scale=1.0")
+    meta(content="estiven0425" name="author")
+    meta(content="TALCOS Yarumal es un software de gestión de inventario y monitoreo de datos privado realizado para la empresa TALCOS de YARUMAL S.A.S como proyecto de etapa práctica de Estiven Montoya Torres." name="description")
+    meta(content="width=device-width, initial-scale=1.0" name="viewport")
     title TALCOS Yarumal
   body
-    h1= message
+    header
+        h1 Bienvenido al servidor de Express de TALCOS Yarumal
+        p A continuación, veras el estado del servidor
+    main
+        hr
+        strong #{message}
+        ul
+            li Tiempo de actividad: #{uptime} segundos
+            li Uso de memoria (RSS): #{memoryUsage.rss} bytes
+            li Uso de memoria (Heap total): #{memoryUsage.heapTotal} bytes
+            li Uso de memoria (Heap usado): #{memoryUsage.heapUsed} bytes
+            li Uso de memoria (Externos): #{memoryUsage.external} bytes
+            li Promedio de carga: #{loadAverage.join(', ')}
+            li Memoria libre: #{freeMemory} bytes
+            li Memoria total: #{totalMemory} bytes
+            li Número de CPUs: #{cpus}
+        hr
+    footer
+        p Si no puede visualizar el estado, comunicarse con el encargado al correo
+        a(href="mailto:estivenmoto6@gmail.com") estivenmoto6@gmail.com

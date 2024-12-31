@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const os = require('os');
 const app = express();
 
 // Establecer motor de vistas
@@ -16,6 +17,12 @@ const { notFoundHandler, globalErrorHandler } = require('./middlewares/errorHand
 
 // Importar rutas
 const perfilesRoutes = require('./routes/perfilesRoutes');
+const molinosRoutes = require('./routes/molinosRoutes');
+const turnosRoutes = require('./routes/turnosRoutes');
+const referenciasRoutes = require('./routes/referenciasRoutes');
+const productosRechazadosRoutes = require('./routes/productosRechazadosRoutes');
+const materiasPrimasRoutes = require('./routes/materiasPrimasRoutes');
+const bobCatsRoutes = require('./routes/bobCatsRoutes');
 
 // Usar middlewares
 app.use(cors);
@@ -26,10 +33,24 @@ app.use(cookieParser);
 
 // Usar rutas
 app.use('/perfiles', perfilesRoutes);
+app.use('/molinos', molinosRoutes);
+app.use('/turnos', turnosRoutes);
+app.use('/referencias', referenciasRoutes);
+app.use('/productos_rechazados', productosRechazadosRoutes);
+app.use('/materias_primas', materiasPrimasRoutes);
+app.use('/bob_cats', bobCatsRoutes);
 
 // Ruta de verificación
 app.get('/verify', (req, res) => {
-    res.render('verify', { message: 'Servidor funcionando correctamente' });
+    const serverStatus = {
+        message: 'Servidor funcionando correctamente',
+        uptime: process.uptime(),
+        memoryUsage: process.memoryUsage(),
+        loadAverage: os.loadavg(),
+        freeMemory: os.freemem(),
+        totalMemory: os.totalmem(),
+        cpus: os.cpus().length
+    }; res.render('verify', serverStatus);
 });
 
 // Usar middlewares de errores

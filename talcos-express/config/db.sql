@@ -61,12 +61,12 @@ CREATE TABLE `materias_primas` (
 	`actualizacion_materia_prima` TIMESTAMP NOT NULL,
 	CONSTRAINT PRIMARY KEY(`id_materia_prima`)
 );
-CREATE TABLE `bob-cats` (
-	`id_bob-cat` BIGINT(100) NOT NULL AUTO_INCREMENT,
-	`nombre_bob-cat` VARCHAR(250) NOT NULL,
-	`actividad_bob-cat` BIT NOT NULL DEFAULT(1),
-	`actualizacion_bob-cat` TIMESTAMP NOT NULL,
-	CONSTRAINT PRIMARY KEY(`id_bob-cat`)
+CREATE TABLE `bob_cats` (
+	`id_bob_cat` BIGINT(100) NOT NULL AUTO_INCREMENT,
+	`nombre_bob_cat` VARCHAR(250) NOT NULL,
+	`actividad_bob_cat` BIT NOT NULL DEFAULT(1),
+	`actualizacion_bob_cat` TIMESTAMP NOT NULL,
+	CONSTRAINT PRIMARY KEY(`id_bob_cat`)
 );
 CREATE TABLE `usuarios` (
 	`id_usuario` BIGINT(100) NOT NULL AUTO_INCREMENT,
