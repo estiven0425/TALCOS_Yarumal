@@ -1,5 +1,6 @@
 const { sequelize } = require('../config/conectionDataBase');
 const { DataTypes } = require('sequelize');
+const Usuarios = require('./Usuarios');
 
 const Novedad = sequelize.define(
     'novedad',
@@ -43,6 +44,10 @@ const Novedad = sequelize.define(
         operador_novedad: {
             type: DataTypes.BIGINT,
             allowNull: true,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            }
         },
         bob_cat: {
             type: DataTypes.STRING(250),
@@ -52,10 +57,18 @@ const Novedad = sequelize.define(
         carguero_novedad: {
             type: DataTypes.BIGINT,
             allowNull: true,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            }
         },
         mecanico_novedad: {
             type: DataTypes.BIGINT,
             allowNull: true,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            }
         },
         inicio_paro_novedad: {
             type: DataTypes.TIME,
@@ -100,19 +113,17 @@ const Novedad = sequelize.define(
     }
 );
 
-Novedad.associate = (models) => {
-    Novedad.belongsTo(models.Usuarios, {
-        foreignKey: 'operador_novedad',
-        targetKey: 'id_usuario',
-    });
-    Novedad.belongsTo(models.Usuarios, {
-        foreignKey: 'carguero_novedad',
-        targetKey: 'id_usuario',
-    });
-    Novedad.belongsTo(models.Usuarios, {
-        foreignKey: 'mecanico_novedad',
-        targetKey: 'id_usuario',
-    });
-};
+Novedad.belongsTo(Usuarios, {
+    foreignKey: 'operador_novedad',
+    targetKey: 'id_usuario',
+});
+Novedad.belongsTo(Usuarios, {
+    foreignKey: 'carguero_novedad',
+    targetKey: 'id_usuario',
+});
+Novedad.belongsTo(Usuarios, {
+    foreignKey: 'mecanico_novedad',
+    targetKey: 'id_usuario',
+});
 
 module.exports = Novedad;

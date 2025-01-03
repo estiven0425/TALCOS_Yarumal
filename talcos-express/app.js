@@ -23,6 +23,13 @@ const referenciasRoutes = require('./routes/referenciasRoutes');
 const productosRechazadosRoutes = require('./routes/productosRechazadosRoutes');
 const materiasPrimasRoutes = require('./routes/materiasPrimasRoutes');
 const bobCatsRoutes = require('./routes/bobCatsRoutes');
+const usuariosRoutes = require('./routes/usuariosRoutes');
+const informesIniciaeslRoutes = require('./routes/informesInicialesRoutes');
+const novedadesRoutes = require('./routes/novedadesRoutes');
+const controlesCalidadRoutes = require('./routes/controlesCalidadRoutes');
+const informesFinalesRoutes = require('./routes/informesFinalesRoutes');
+const mensajesRoutes = require('./routes/mensajesRoutes');
+const registrosRoutes = require('./routes/registrosRoutes');
 
 // Usar middlewares
 app.use(cors);
@@ -39,6 +46,13 @@ app.use('/referencias', referenciasRoutes);
 app.use('/productos_rechazados', productosRechazadosRoutes);
 app.use('/materias_primas', materiasPrimasRoutes);
 app.use('/bob_cats', bobCatsRoutes);
+app.use('/usuarios', usuariosRoutes);
+app.use('/informes_iniciales', informesIniciaeslRoutes);
+app.use('/novedades', novedadesRoutes);
+app.use('/controles_calidad', controlesCalidadRoutes);
+app.use('/informes_finales', informesFinalesRoutes);
+app.use('/mensajes', mensajesRoutes);
+app.use('/registros', registrosRoutes);
 
 // Ruta de verificación
 app.get('/verify', (req, res) => {

@@ -1,5 +1,6 @@
 const { sequelize } = require('../config/conectionDataBase');
 const { DataTypes } = require('sequelize');
+const Perfiles = require('./Perfiles');
 
 const Usuarios = sequelize.define(
     'usuarios',
@@ -34,6 +35,10 @@ const Usuarios = sequelize.define(
         perfil_usuario: {
             type: DataTypes.BIGINT,
             allowNull: false,
+            references: {
+                model: 'perfiles',
+                key: 'id_perfil',
+            }
         },
         contrasena_usuario: {
             type: DataTypes.STRING(500),
@@ -56,11 +61,9 @@ const Usuarios = sequelize.define(
     }
 );
 
-Usuarios.associate = (models) => {
-    Usuarios.belongsTo(models.Perfiles, {
-        foreignKey: 'perfil_usuario',
-        targetKey: 'id_perfil',
-    });
-};
+Usuarios.belongsTo(Perfiles, {
+    foreignKey: 'perfil_usuario',
+    targetKey: 'id_perfil',
+});
 
 module.exports = Usuarios;

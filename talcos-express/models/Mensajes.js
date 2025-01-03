@@ -1,5 +1,6 @@
 const { sequelize } = require('../config/conectionDataBase');
 const { DataTypes } = require('sequelize');
+const Usuarios = require('./Usuarios');
 
 const Mensajes = sequelize.define(
     'mensajes',
@@ -25,10 +26,18 @@ const Mensajes = sequelize.define(
         emisor_mensaje: {
             type: DataTypes.BIGINT,
             allowNull: false,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            },
         },
         receptor_mensaje: {
             type: DataTypes.BIGINT,
             allowNull: false,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            },
         },
         actualizacion_mensaje: {
             type: DataTypes.DATE,
@@ -42,15 +51,13 @@ const Mensajes = sequelize.define(
     }
 );
 
-Mensajes.associate = (models) => {
-    Mensajes.belongsTo(models.Usuarios, {
-        foreignKey: 'emisor_mensaje',
-        targetKey: 'id_usuario',
-    });
-    Mensajes.belongsTo(models.Usuarios, {
-        foreignKey: 'receptor_mensaje',
-        targetKey: 'id_usuario',
-    });
-};
+Mensajes.belongsTo(Usuarios, {
+    foreignKey: 'emisor_mensaje',
+    targetKey: 'id_usuario',
+});
+Mensajes.belongsTo(Usuarios, {
+    foreignKey: 'receptor_mensaje',
+    targetKey: 'id_usuario',
+});
 
 module.exports = Mensajes;

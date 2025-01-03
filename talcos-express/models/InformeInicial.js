@@ -1,5 +1,6 @@
 const { sequelize } = require('../config/conectionDataBase');
 const { DataTypes } = require('sequelize');
+const Usuarios = require('./Usuarios');
 
 const InformeInicial = sequelize.define(
     'informe_inicial',
@@ -13,6 +14,10 @@ const InformeInicial = sequelize.define(
         titular_informe_inicial: {
             type: DataTypes.BIGINT,
             allowNull: false,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            }
         },
         fecha_informe_inicial: {
             type: DataTypes.DATEONLY,
@@ -53,18 +58,34 @@ const InformeInicial = sequelize.define(
         operador_informe_inicial: {
             type: DataTypes.BIGINT,
             allowNull: true,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            }
         },
         carguero_informe_inicial: {
             type: DataTypes.BIGINT,
             allowNull: true,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            }
         },
         mecanico_informe_inicial: {
             type: DataTypes.BIGINT,
             allowNull: true,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            }
         },
         cdc_informe_inicial: {
             type: DataTypes.BIGINT,
             allowNull: true,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            }
         },
         observacion_informe_inicial: {
             type: DataTypes.STRING(1000),
@@ -88,27 +109,26 @@ const InformeInicial = sequelize.define(
     }
 );
 
-InformeInicial.associate = (models) => {
-    InformeInicial.belongsTo(models.Usuarios, {
-        foreignKey: 'titular_informe_inicial',
-        targetKey: 'id_usuario',
-    });
-    InformeInicial.belongsTo(models.Usuarios, {
-        foreignKey: 'operador_informe_inicial',
-        targetKey: 'id_usuario',
-    });
-    InformeInicial.belongsTo(models.Usuarios, {
-        foreignKey: 'carguero_informe_inicial',
-        targetKey: 'id_usuario',
-    });
-    InformeInicial.belongsTo(models.Usuarios, {
-        foreignKey: 'mecanico_informe_inicial',
-        targetKey: 'id_usuario',
-    });
-    InformeInicial.belongsTo(models.Usuarios, {
-        foreignKey: 'cdc_informe_inicial',
-        targetKey: 'id_usuario',
-    });
-};
+
+InformeInicial.belongsTo(Usuarios, {
+    foreignKey: 'titular_informe_inicial',
+    targetKey: 'id_usuario',
+});
+InformeInicial.belongsTo(Usuarios, {
+    foreignKey: 'operador_informe_inicial',
+    targetKey: 'id_usuario',
+});
+InformeInicial.belongsTo(Usuarios, {
+    foreignKey: 'carguero_informe_inicial',
+    targetKey: 'id_usuario',
+});
+InformeInicial.belongsTo(Usuarios, {
+    foreignKey: 'mecanico_informe_inicial',
+    targetKey: 'id_usuario',
+});
+InformeInicial.belongsTo(Usuarios, {
+    foreignKey: 'cdc_informe_inicial',
+    targetKey: 'id_usuario',
+});
 
 module.exports = InformeInicial;

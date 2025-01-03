@@ -1,5 +1,6 @@
 const { sequelize } = require('../config/conectionDataBase');
 const { DataTypes } = require('sequelize');
+const Usuarios = require('./Usuarios');
 
 const Registros = sequelize.define(
     'registros',
@@ -17,10 +18,18 @@ const Registros = sequelize.define(
         titular_registro: {
             type: DataTypes.BIGINT,
             allowNull: false,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            },
         },
         proveedor_registro: {
             type: DataTypes.BIGINT,
             allowNull: false,
+            references: {
+                model: 'usuarios',
+                key: 'id_usuario',
+            },
         },
         mp_registro: {
             type: DataTypes.STRING(250),
@@ -59,15 +68,13 @@ const Registros = sequelize.define(
     }
 );
 
-Registros.associate = (models) => {
-    Registros.belongsTo(models.Usuarios, {
-        foreignKey: 'titular_registro',
-        targetKey: 'id_usuario',
-    });
-    Registros.belongsTo(models.Usuarios, {
-        foreignKey: 'proveedor_registro',
-        targetKey: 'id_usuario',
-    });
-};
+Registros.belongsTo(Usuarios, {
+    foreignKey: 'titular_registro',
+    targetKey: 'id_usuario',
+});
+Registros.belongsTo(Usuarios, {
+    foreignKey: 'proveedor_registro',
+    targetKey: 'id_usuario',
+});
 
 module.exports = Registros;
