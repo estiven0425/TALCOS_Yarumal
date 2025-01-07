@@ -1,5 +1,5 @@
-const Mensajes = require("../models/Mensajes");
-const Usuarios = require("../models/Usuarios");
+const Mensajes = require('../models/Mensajes');
+const Usuarios = require('../models/Usuarios');
 
 exports.leerMensaje = async (req, res) => {
     try {
@@ -7,20 +7,20 @@ exports.leerMensaje = async (req, res) => {
             include: [
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "emisor_mensaje"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'emisor_mensaje'
                 },
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "receptor_mensaje"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'receptor_mensaje'
                 }
             ],
         });
 
         res.json(mensajes);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -38,7 +38,7 @@ exports.crearMensaje = async (req, res) => {
 
         res.status(201).json(nuevoMensaje);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el mensaje" });
+        res.status(500).json({ error: 'Error al crear el mensaje' });
     }
 };
 
@@ -59,9 +59,9 @@ exports.actualizarMensaje = async (req, res) => {
 
             res.json(mensaje);
         } else {
-            res.status(404).json({ error: "Mensaje no encontrado" });
+            res.status(404).json({ error: 'Mensaje no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el mensaje" });
+        res.status(500).json({ error: 'Error al actualizar el mensaje' });
     }
 };

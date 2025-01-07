@@ -1,5 +1,5 @@
-const InformeInicial = require("../models/InformeInicial");
-const Usuarios = require("../models/Usuarios");
+const InformeInicial = require('../models/InformeInicial');
+const Usuarios = require('../models/Usuarios');
 
 exports.leerInformeInicial = async (req, res) => {
     try {
@@ -7,35 +7,35 @@ exports.leerInformeInicial = async (req, res) => {
             include: [
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "titular_informe_inicial"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'titular_informe_inicial'
                 },
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "operador_informe_inicial"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'operador_informe_inicial'
                 },
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "carguero_informe_inicial"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'carguero_informe_inicial'
                 },
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "mecanico_informe_inicial"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'mecanico_informe_inicial'
                 },
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "cdc_informe_inicial"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'cdc_informe_inicial'
                 }
             ],
         });
 
         res.json(informesIniciales);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -77,7 +77,7 @@ exports.crearInformeInicial = async (req, res) => {
 
         res.status(201).json(nuevoInforme);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el informe inicial" });
+        res.status(500).json({ error: 'Error al crear el informe inicial' });
     }
 };
 
@@ -125,9 +125,9 @@ exports.actualizarInformeInicial = async (req, res) => {
 
             res.json(informe);
         } else {
-            res.status(404).json({ error: "Informe inicial no encontrado" });
+            res.status(404).json({ error: 'Informe inicial no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el informe inicial" });
+        res.status(500).json({ error: 'Error al actualizar el informe inicial' });
     }
 };

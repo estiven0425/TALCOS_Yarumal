@@ -30,6 +30,7 @@ const controlesCalidadRoutes = require('./routes/controlesCalidadRoutes');
 const informesFinalesRoutes = require('./routes/informesFinalesRoutes');
 const mensajesRoutes = require('./routes/mensajesRoutes');
 const registrosRoutes = require('./routes/registrosRoutes');
+const login = require('./utils/login');
 
 // Usar middlewares
 app.use(cors);
@@ -53,6 +54,7 @@ app.use('/controles_calidad', controlesCalidadRoutes);
 app.use('/informes_finales', informesFinalesRoutes);
 app.use('/mensajes', mensajesRoutes);
 app.use('/registros', registrosRoutes);
+app.use('/login', login);
 
 // Ruta de verificación
 app.get('/verify', (req, res) => {

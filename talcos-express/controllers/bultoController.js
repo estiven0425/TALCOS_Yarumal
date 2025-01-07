@@ -1,4 +1,4 @@
-const Bultos = require("../models/Bultos");
+const Bultos = require('../models/Bultos');
 
 exports.leerBulto = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ exports.leerBulto = async (req, res) => {
 
         res.json(bultos);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -21,7 +21,7 @@ exports.crearBulto = async (req, res) => {
 
         res.status(201).json(nuevoBulto);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el bulto" });
+        res.status(500).json({ error: 'Error al crear el bulto' });
     }
 };
 
@@ -40,9 +40,9 @@ exports.actualizarBulto = async (req, res) => {
 
             res.json(bulto);
         } else {
-            res.status(404).json({ error: "Bulto no encontrado" });
+            res.status(404).json({ error: 'Bulto no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el bulto" });
+        res.status(500).json({ error: 'Error al actualizar el bulto' });
     }
 };

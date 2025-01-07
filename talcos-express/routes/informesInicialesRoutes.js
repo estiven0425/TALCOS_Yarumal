@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const informeInicialController = require("../controllers/informeInicialController");
+const informeInicialController = require('../controllers/informeInicialController');
 
-router.get("/", informeInicialController.leerInformeInicial);
-router.post("/", informeInicialController.crearInformeInicial);
-router.put("/", informeInicialController.actualizarInformeInicial);
+router.get('/', informeInicialController.leerInformeInicial);
+router.post('/', informeInicialController.crearInformeInicial);
+router.put('/', informeInicialController.actualizarInformeInicial);
 
 module.exports = router;

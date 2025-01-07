@@ -1,4 +1,4 @@
-const ProductosRechazados = require("../models/productosRechazados");
+const ProductosRechazados = require('../models/productosRechazados');
 
 exports.leerProductoRechazado = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ exports.leerProductoRechazado = async (req, res) => {
 
         res.json(productosRechazados);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -22,7 +22,7 @@ exports.crearProductoRechazado = async (req, res) => {
 
         res.status(201).json(nuevoProductoRechazado);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el producto rechazado" });
+        res.status(500).json({ error: 'Error al crear el producto rechazado' });
     }
 };
 
@@ -42,9 +42,9 @@ exports.actualizarProductoRechazado = async (req, res) => {
 
             res.json(productoRechazado);
         } else {
-            res.status(404).json({ error: "Producto rechazado no encontrado" });
+            res.status(404).json({ error: 'Producto rechazado no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el producto rechazado" });
+        res.status(500).json({ error: 'Error al actualizar el producto rechazado' });
     }
 };

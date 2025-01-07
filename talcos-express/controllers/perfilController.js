@@ -1,4 +1,4 @@
-const Perfiles = require("../models/Perfiles");
+const Perfiles = require('../models/Perfiles');
 
 exports.leerPerfil = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ exports.leerPerfil = async (req, res) => {
 
         res.json(perfiles);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -21,7 +21,7 @@ exports.crearPerfil = async (req, res) => {
 
         res.status(201).json(nuevoPerfil);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el perfil" });
+        res.status(500).json({ error: 'Error al crear el perfil' });
     }
 };
 
@@ -40,9 +40,9 @@ exports.actualizarPerfil = async (req, res) => {
 
             res.json(perfil);
         } else {
-            res.status(404).json({ error: "Perfil no encontrado" });
+            res.status(404).json({ error: 'Perfil no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el perfil" });
+        res.status(500).json({ error: 'Error al actualizar el perfil' });
     }
 };

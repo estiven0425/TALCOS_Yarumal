@@ -1,4 +1,4 @@
-const MateriasPrimas = require("../models/MateriasPrimas");
+const MateriasPrimas = require('../models/MateriasPrimas');
 
 exports.leerMateriaPrima = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ exports.leerMateriaPrima = async (req, res) => {
 
         res.json(materiasPrimas);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -21,7 +21,7 @@ exports.crearMateriaPrima = async (req, res) => {
 
         res.status(201).json(nuevaMateriaPrima);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear la materia prima" });
+        res.status(500).json({ error: 'Error al crear la materia prima' });
     }
 };
 
@@ -40,9 +40,9 @@ exports.actualizarMateriaPrima = async (req, res) => {
 
             res.json(materiaPrima);
         } else {
-            res.status(404).json({ error: "Materia prima no encontrada" });
+            res.status(404).json({ error: 'Materia prima no encontrada' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar la materia prima" });
+        res.status(500).json({ error: 'Error al actualizar la materia prima' });
     }
 };

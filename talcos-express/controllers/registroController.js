@@ -1,5 +1,5 @@
-const Registros = require("../models/Registros");
-const Usuarios = require("../models/Usuarios");
+const Registros = require('../models/Registros');
+const Usuarios = require('../models/Usuarios');
 
 exports.leerRegistro = async (req, res) => {
     try {
@@ -7,20 +7,20 @@ exports.leerRegistro = async (req, res) => {
             include: [
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "titular_registro"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'titular_registro'
                 },
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "proveedor_registro"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'proveedor_registro'
                 }
             ],
         });
 
         res.json(registros);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -51,7 +51,7 @@ exports.crearRegistro = async (req, res) => {
 
         res.status(201).json(nuevoRegistro);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el registro" });
+        res.status(500).json({ error: 'Error al crear el registro' });
     }
 };
 
@@ -89,9 +89,9 @@ exports.actualizarRegistro = async (req, res) => {
 
             res.json(registro);
         } else {
-            res.status(404).json({ error: "Registro no encontrado" });
+            res.status(404).json({ error: 'Registro no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el registro" });
+        res.status(500).json({ error: 'Error al actualizar el registro' });
     }
 };

@@ -1,5 +1,5 @@
-const Novedad = require("../models/Novedad");
-const Usuarios = require("../models/Usuarios");
+const Novedad = require('../models/Novedad');
+const Usuarios = require('../models/Usuarios');
 
 exports.leerNovedad = async (req, res) => {
     try {
@@ -7,25 +7,25 @@ exports.leerNovedad = async (req, res) => {
             include: [
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "operador_novedad"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'operador_novedad'
                 },
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "carguero_novedad"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'carguero_novedad'
                 },
                 {
                     model: Usuarios,
-                    attributes: ["nombre_usuario"],
-                    foreignKey: "mecanico_novedad"
+                    attributes: ['nombre_usuario'],
+                    foreignKey: 'mecanico_novedad'
                 }
             ],
         });
 
         res.json(novedades);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -73,7 +73,7 @@ exports.crearNovedad = async (req, res) => {
 
         res.status(201).json(nuevaNovedad);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear la novedad" });
+        res.status(500).json({ error: 'Error al crear la novedad' });
     }
 };
 
@@ -127,9 +127,9 @@ exports.actualizarNovedad = async (req, res) => {
 
             res.json(novedad);
         } else {
-            res.status(404).json({ error: "Novedad no encontrada" });
+            res.status(404).json({ error: 'Novedad no encontrada' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar la novedad" });
+        res.status(500).json({ error: 'Error al actualizar la novedad' });
     }
 };

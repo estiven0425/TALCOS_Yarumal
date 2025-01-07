@@ -1,4 +1,4 @@
-const Molinos = require("../models/Molinos");
+const Molinos = require('../models/Molinos');
 
 exports.leerMolino = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ exports.leerMolino = async (req, res) => {
 
         res.json(molinos);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -21,7 +21,7 @@ exports.crearMolino = async (req, res) => {
 
         res.status(201).json(nuevoMolino);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el molino" });
+        res.status(500).json({ error: 'Error al crear el molino' });
     }
 };
 
@@ -40,9 +40,9 @@ exports.actualizarMolino = async (req, res) => {
 
             res.json(molino);
         } else {
-            res.status(404).json({ error: "Molino no encontrado" });
+            res.status(404).json({ error: 'Molino no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el Molino" });
+        res.status(500).json({ error: 'Error al actualizar el Molino' });
     }
 };

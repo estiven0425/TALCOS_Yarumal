@@ -1,4 +1,4 @@
-const BobCats = require("../models/BobCats");
+const BobCats = require('../models/BobCats');
 
 exports.leerBobCat = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ exports.leerBobCat = async (req, res) => {
 
         res.json(bobCats);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -20,7 +20,7 @@ exports.crearBobCat = async (req, res) => {
 
         res.status(201).json(nuevoBobCat);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el BobCat" });
+        res.status(500).json({ error: 'Error al crear el BobCat' });
     }
 };
 
@@ -38,9 +38,9 @@ exports.actualizarBobCat = async (req, res) => {
 
             res.json(bobCat);
         } else {
-            res.status(404).json({ error: "BobCat no encontrado" });
+            res.status(404).json({ error: 'BobCat no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el BobCat" });
+        res.status(500).json({ error: 'Error al actualizar el BobCat' });
     }
 };

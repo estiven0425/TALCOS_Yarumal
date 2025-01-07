@@ -1,4 +1,4 @@
-const InformeFinal = require("../models/InformeFinal");
+const InformeFinal = require('../models/InformeFinal');
 
 exports.leerInformeFinal = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ exports.leerInformeFinal = async (req, res) => {
 
         res.json(informesFinales);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -38,7 +38,7 @@ exports.crearInformeFinal = async (req, res) => {
 
         res.status(201).json(nuevoInformeFinal);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el informe final" });
+        res.status(500).json({ error: 'Error al crear el informe final' });
     }
 };
 
@@ -76,9 +76,9 @@ exports.actualizarInformeFinal = async (req, res) => {
 
             res.json(informeFinal);
         } else {
-            res.status(404).json({ error: "Informe final no encontrado" });
+            res.status(404).json({ error: 'Informe final no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el informe final" });
+        res.status(500).json({ error: 'Error al actualizar el informe final' });
     }
 };

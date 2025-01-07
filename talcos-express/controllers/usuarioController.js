@@ -1,6 +1,6 @@
-const bcrypt = require("bcrypt");
-const Usuarios = require("../models/Usuarios");
-const Perfiles = require("../models/Perfiles");
+const bcrypt = require('bcrypt');
+const Usuarios = require('../models/Usuarios');
+const Perfiles = require('../models/Perfiles');
 
 exports.leerUsuario = async (req, res) => {
     try {
@@ -8,15 +8,15 @@ exports.leerUsuario = async (req, res) => {
             include: [
                 {
                     model: Perfiles,
-                    attributes: ["nombre_perfil"],
-                    foreignKey: "perfil_usuario"
+                    attributes: ['nombre_perfil'],
+                    foreignKey: 'perfil_usuario'
                 },
             ],
         });
 
         res.json(usuarios);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -37,7 +37,7 @@ exports.crearUsuario = async (req, res) => {
 
         res.status(201).json(nuevoUsuario);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el usuario" });
+        res.status(500).json({ error: 'Error al crear el usuario' });
     }
 };
 
@@ -78,9 +78,9 @@ exports.actualizarUsuario = async (req, res) => {
 
             res.json(usuario);
         } else {
-            res.status(404).json({ error: "Usuario no encontrado" });
+            res.status(404).json({ error: 'Usuario no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el usuario" });
+        res.status(500).json({ error: 'Error al actualizar el usuario' });
     }
 };

@@ -1,4 +1,4 @@
-const Turnos = require("../models/Turnos");
+const Turnos = require('../models/Turnos');
 
 exports.leerTurno = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ exports.leerTurno = async (req, res) => {
 
         res.json(turnos);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -22,7 +22,7 @@ exports.crearTurno = async (req, res) => {
 
         res.status(201).json(nuevoTurno);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el turno" });
+        res.status(500).json({ error: 'Error al crear el turno' });
     }
 };
 
@@ -42,9 +42,9 @@ exports.actualizarTurno = async (req, res) => {
 
             res.json(turno);
         } else {
-            res.status(404).json({ error: "Turno no encontrado" });
+            res.status(404).json({ error: 'Turno no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el turno" });
+        res.status(500).json({ error: 'Error al actualizar el turno' });
     }
 };

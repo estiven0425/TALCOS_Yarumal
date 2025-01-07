@@ -1,4 +1,4 @@
-const ControlCalidad = require("../models/ControlCalidad");
+const ControlCalidad = require('../models/ControlCalidad');
 
 exports.leerControlCalidad = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ exports.leerControlCalidad = async (req, res) => {
 
         res.json(controlesCalidad);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -38,7 +38,7 @@ exports.crearControlCalidad = async (req, res) => {
 
         res.status(201).json(nuevoControlCalidad);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear el control de calidad" });
+        res.status(500).json({ error: 'Error al crear el control de calidad' });
     }
 };
 
@@ -76,9 +76,9 @@ exports.actualizarControlCalidad = async (req, res) => {
 
             res.json(controlCalidad);
         } else {
-            res.status(404).json({ error: "Control de calidad no encontrado" });
+            res.status(404).json({ error: 'Control de calidad no encontrado' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el control de calidad" });
+        res.status(500).json({ error: 'Error al actualizar el control de calidad' });
     }
 };

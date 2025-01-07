@@ -1,4 +1,4 @@
-const Referencias = require("../models/Referencias");
+const Referencias = require('../models/Referencias');
 
 exports.leerReferencia = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ exports.leerReferencia = async (req, res) => {
 
         res.json(referencias);
     } catch (error) {
-        res.status(500).send("Error del servidor: " + error);
+        res.status(500).send('Error del servidor: ' + error);
     }
 };
 
@@ -22,7 +22,7 @@ exports.crearReferencia = async (req, res) => {
 
         res.status(201).json(nuevaReferencia);
     } catch (error) {
-        res.status(500).json({ error: "Error al crear la referencia" });
+        res.status(500).json({ error: 'Error al crear la referencia' });
     }
 };
 
@@ -42,9 +42,9 @@ exports.actualizarReferencia = async (req, res) => {
 
             res.json(referencia);
         } else {
-            res.status(404).json({ error: "Referencia no encontrada" });
+            res.status(404).json({ error: 'Referencia no encontrada' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Error al actualizar la referencia" });
+        res.status(500).json({ error: 'Error al actualizar la referencia' });
     }
 };
