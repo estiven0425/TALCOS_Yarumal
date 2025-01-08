@@ -15,9 +15,9 @@ let secretKey;
 
 router.post('/', async (req, res) => {
     try {
-        const { nombre_usuario, contrasena_usuario } = req.body;
+        const { documento_usuario, contrasena_usuario } = req.body;
 
-        const usuario = await Usuario.findOne({ where: { nombre_usuario } });
+        const usuario = await Usuario.findOne({ where: { documento_usuario } });
 
         if (usuario && bcrypt.compareSync(contrasena_usuario, usuario.contrasena_usuario)) {
             secretKey = generateSecretKey();

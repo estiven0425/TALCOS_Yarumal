@@ -7,5 +7,14 @@
     font-family: sans-serif;
     font-size: medium;
     font-weight: 400;
+}
+
+body {
+    margin: 0px;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+#root {
     margin: 0px;
 }

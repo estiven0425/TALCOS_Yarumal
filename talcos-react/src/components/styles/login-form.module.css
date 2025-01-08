@@ -1,0 +1,56 @@
+﻿.loginForm {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.loginFormHeader {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0px 0px 10px;
+}
+
+    .loginFormHeader h1 {
+        font-weight: 400;
+        margin: 0px;
+    }
+
+.loginFormMain {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+    .loginFormMain input {
+        border-color: transparent;
+        border-radius: 20px;
+        padding: 10px;
+        width: 92.5%;
+    }
+
+.loginFormFooter {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+    .loginFormFooter button {
+        background-color: #0037AE;
+        border-color: transparent;
+        border-radius: 20px;
+        color: #ffffff;
+        cursor: pointer;
+        padding: 10px;
+        width: 100%;
+    }
