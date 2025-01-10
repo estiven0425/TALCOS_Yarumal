@@ -1,0 +1,20 @@
+﻿.header {
+    align-content: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 25px;
+    padding: 10px 25px 0px 75px;
+}
+
+.header p {
+    font-size: 1rem;
+    margin: 0px;
+    text-align: center;
+}
+
+.headerNombreUsuario {
+    border-left: #ffffff 1px solid;
+    padding-left: 25px
+}

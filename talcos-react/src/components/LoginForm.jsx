@@ -1,7 +1,7 @@
 ﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 import Style from './styles/login-form.module.css';
 
 function LoginForm() {
@@ -9,7 +9,8 @@ function LoginForm() {
     const [contrasenaUsuario, setContrasenaUsuario] = useState('');
     const [validationError, setValidationError] = useState({});
     const [serverError, setServerError] = useState(null);
-    //const redirect = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const redirect = useNavigate();
     const localIP = import.meta.env.VITE_LOCAL_IP;
 
     const validation = () => {
@@ -18,9 +19,9 @@ function LoginForm() {
         if (!documentoUsuario) {
             errors.documentoUsuario = 'El campo de documento es obligatorio.';
         } else if (documentoUsuario.length < 5) {
-            errors.documentoUsuario = 'El documento debe tener al menos 5 caracteres.';
+            errors.documentoUsuario = 'El campo de documento debe superar los 5 caracteres.';
         } else if (!/^[0-9]+$/.test(documentoUsuario)) {
-            errors.documentoUsuario = 'El documento ingresado debe contener solo números.';
+            errors.documentoUsuario = 'El campo de documento no debe incluir letras.';
         }
 
         if (!contrasenaUsuario) {
@@ -30,6 +31,7 @@ function LoginForm() {
         }
 
         setValidationError(errors);
+        setLoading(true);
 
         return Object.keys(errors).length === 0;
     };
@@ -42,6 +44,7 @@ function LoginForm() {
         }
 
         setServerError(null);
+        setLoading(true);
 
         try {
             const response = await axios.post(`http://${localIP}:3000/login`, {
@@ -50,12 +53,14 @@ function LoginForm() {
             });
 
             localStorage.setItem('token', response.data.token);
-            //redirect('/home');
+            redirect('/home');
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
                 setServerError(error.response.data.error);
+                setLoading(false);
             } else {
                 setServerError('Error al iniciar sesión. Por favor, inténtelo de nuevo.');
+                setLoading(false);
             }
         }
 
@@ -72,27 +77,65 @@ function LoginForm() {
                     <input
                         id="documentoLogin"
                         name="documentoLogin"
+                        onChange={(e) => setDocumentoUsuario(e.target.value)}
                         placeholder="Ingresa tu número de cédula"
                         type="text"
                         value={documentoUsuario}
-                        onChange={(e) => setDocumentoUsuario(e.target.value)}
                     />
+                    {!validationError.documentoUsuario ? (
+                        <></>
+                    ) : (
+                        <motion.span
+                            className={Style.loginFormValidation}
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            {validationError.documentoUsuario}
+                        </motion.span>
+                    )}
                     <input
                         id="contrasenaLogin"
                         name="contrasenaLogin"
+                        onChange={(e) => setContrasenaUsuario(e.target.value)}
                         placeholder="Ingresa tu contraseña"
                         type="password"
                         value={contrasenaUsuario}
-                        onChange={(e) => setContrasenaUsuario(e.target.value)}
                     />
+                    {!validationError.contrasenaUsuario ? (
+                        <></>
+                    ) : (
+                        <motion.span
+                            className={Style.loginFormValidation}
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            {validationError.contrasenaUsuario}
+                        </motion.span>
+                    )}
                 </main>
                 <footer className={Style.loginFormFooter}>
-                    <button type="submit">Iniciar sesión</button>
+                    <button type="submit">{loading ? (
+                        <div className={Style.loader}></div>
+                    ) :
+                        'Iniciar sesión'
+                    }
+                    </button>
+                    {!serverError ? (
+                        <></>
+                    ) : (
+                        <motion.span
+                            className={Style.loginFormValidation}
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            {serverError}
+                        </motion.span>
+                    )}
                 </footer>
             </motion.form>
-            {!validationError.documentoUsuario ? (<></>) : (<span>{validationError.documentoUsuario}</span>)}
-            {!validationError.contrasenaUsuario ? (<></>) : (<span>{validationError.contrasenaUsuario}</span>)}
-            {!serverError ? (<></>) : (<span>{serverError}</span>)}
         </>
     );
 }

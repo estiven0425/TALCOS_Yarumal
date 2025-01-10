@@ -49,9 +49,9 @@ router.post('/get', async (req, res) => {
                 },
             ],
         });
-        console.log(usuario);
         if (usuario) {
             res.json({
+                id_usuario: usuario.id_usuario,
                 nombre_usuario: usuario.nombre_usuario,
                 documento_usuario: usuario.documento_usuario,
                 telefono_usuario: usuario.telefono_usuario,

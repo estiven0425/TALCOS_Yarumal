@@ -1,0 +1,52 @@
+﻿.navBar {
+    align-content: center;
+    background-color: #FFFFFF1A;
+    border-radius: 0px 20px 20px 0px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    height: 100vh;
+    justify-content: space-around;
+    position: fixed;
+    top: 0px;
+    width: 75px;
+}
+
+    .navBar section {
+        align-content: center;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .navBar a {
+        align-content: center;
+        background-color: transparent;
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        height: 50px;
+        outline: transparent 1px solid;
+        padding: 2.5px 0px 0px;
+        transition: all 0.5s ease-in-out;
+        width: 50px;
+    }
+
+        .navBar a:hover {
+            background-color: #017FD3;
+        }
+
+        .navBar a:focus {
+            outline: #017FD3 1px solid;
+        }
+
+.navBarIcon {
+    color: #ffffff;
+    font-size: 2rem;
+}

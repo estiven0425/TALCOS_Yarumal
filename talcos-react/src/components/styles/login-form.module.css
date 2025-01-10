@@ -17,6 +17,7 @@
 }
 
     .loginFormHeader h1 {
+        font-size: 1.5rem;
         font-weight: 400;
         margin: 0px;
     }
@@ -33,7 +34,8 @@
     .loginFormMain input {
         border-color: transparent;
         border-radius: 20px;
-        padding: 10px;
+        outline: transparent 1px solid;
+        padding: 15px 10px;
         width: 92.5%;
     }
 
@@ -43,6 +45,7 @@
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 10px;
 }
 
     .loginFormFooter button {
@@ -51,6 +54,43 @@
         border-radius: 20px;
         color: #ffffff;
         cursor: pointer;
-        padding: 10px;
+        max-height: 49px;
+        outline: transparent 1px solid;
+        padding: 15px 10px;
+        transition: all 0.5s ease-in-out;
         width: 100%;
     }
+
+        .loginFormFooter button:hover {
+            background: #0095DC;
+        }
+
+        .loginFormMain input:focus,
+        .loginFormFooter button:focus {
+            outline: #0095DC 1px solid;
+        }
+
+.loginFormValidation {
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+}
+
+.loader {
+    animation: spin 1s linear infinite;
+    border: 5px solid #0048B6;
+    border-radius: 50%;
+    border-top: 5px solid transparent;
+    height: 20px;
+    margin: -7.5px auto 0px;
+    width: 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
