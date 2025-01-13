@@ -1,23 +1,32 @@
-:root {
+html {
     background-image: url(../assets/fondo.jpeg);
     background-repeat: no-repeat;
     background-size: cover;
-    box-sizing: border-box;
     color: #ffffff;
     font-family: sans-serif;
+    font-size: 16px;
     font-weight: 400;
 }
 
-html {
-    font-size: 16px;
-}
+    html::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    html::-webkit-scrollbar-track {
+        background: #0037AE;
+    }
+
+    html::-webkit-scrollbar-thumb {
+        background: #0095DC;
+        border-radius: 10px;
+    }
 
 body {
     margin: 0px;
-    min-height: 100vh;
-    min-width: 100vw;
 }
 
 #root {
-    margin: 0px;
+    align-content: flex-start;
+    box-sizing: border-box;
+    height: 100vh;
 }

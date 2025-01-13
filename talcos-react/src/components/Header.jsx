@@ -2,7 +2,9 @@
 import { es } from 'date-fns/locale';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
+import { Outlet } from "react-router-dom";
 import axios from 'axios';
+import NavBar from './NavBar';
 import Style from './styles/header.module.css';
 
 function Header() {
@@ -42,11 +44,17 @@ function Header() {
     }, [localIP]);
 
     return (
-        <motion.header className={Style.header} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <p>{date}</p>
-            <p>{time}</p>
-            <p className={Style.headerNombreUsuario}>{nombreUsuario}</p>
-        </motion.header>
+        <>
+            <motion.header className={Style.header} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+                <p>{date}</p>
+                <p>{time}</p>
+                <p className={Style.headerUserName}>{nombreUsuario}</p>
+                <NavBar />
+            </motion.header>
+            <motion.main className={Style.main}>
+                <Outlet />
+            </motion.main>
+        </>
     );
 }
 

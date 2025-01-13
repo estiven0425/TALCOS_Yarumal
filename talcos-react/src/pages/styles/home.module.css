@@ -1,9 +1,79 @@
 ﻿.home {
-    align-content: stretch;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: stretch;
-    height: 100vh;
-    width: 100vw;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 20px;
+    height: 100%;
+}
+
+    .home article {
+        align-content: center;
+        border-radius: 10px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 10px;
+        overflow: auto;
+        padding: 10px;
+    }
+
+        .home article::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .home article::-webkit-scrollbar-track {
+            background: #0037AE;
+            border-radius: 0px 10px 10px 0px;
+        }
+
+        .home article::-webkit-scrollbar-thumb {
+            background: #0095DC;
+            border-radius: 0px 10px 10px 0px;
+        }
+
+        .home article h1 {
+            margin: 0px;
+            text-align: center;
+        }
+
+        .home article p {
+            margin: 0px;
+        }
+
+.grid-span-1x3 {
+    background-color: #0037AE;
+    box-sizing: border-box;
+    grid-column: span 1;
+    grid-row: span 3;
+}
+
+.grid-span-2x1 {
+    background-color: #0037AE;
+    box-sizing: border-box;
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.grid-span-2x2 {
+    background-color: #0037AE;
+    box-sizing: border-box;
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.grid-span-2x3 {
+    background-color: #0037AE;
+    box-sizing: border-box;
+    grid-column: span 2;
+    grid-row: span 3;
+}
+
+.grid-span-3x1 {
+    background-color: #0095DC;
+    box-sizing: border-box;
+    grid-column: span 3;
+    grid-row: span 1;
 }

@@ -1,9 +1,9 @@
 ﻿.login {
     align-content: center;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     height: 100vh;
-    width: 100vw;
 }

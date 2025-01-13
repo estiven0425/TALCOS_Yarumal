@@ -31,7 +31,7 @@ function LoginForm() {
         }
 
         setValidationError(errors);
-        setLoading(true);
+        setLoading(false);
 
         return Object.keys(errors).length === 0;
     };

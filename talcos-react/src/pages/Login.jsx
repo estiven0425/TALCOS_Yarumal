@@ -3,9 +3,9 @@ import Style from './styles/login.module.css';
 
 function Login() {
     return (
-        <section className={Style.login}>
+        <main className={Style.login}>
             <LoginForm />
-        </section>
+        </main>
     );
 }
 

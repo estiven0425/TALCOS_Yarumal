@@ -1,5 +1,6 @@
 ﻿.loginForm {
     align-content: center;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -9,6 +10,7 @@
 
 .loginFormHeader {
     align-content: center;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -24,6 +26,7 @@
 
 .loginFormMain {
     align-content: center;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -41,6 +44,7 @@
 
 .loginFormFooter {
     align-content: center;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
