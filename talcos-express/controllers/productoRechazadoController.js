@@ -2,7 +2,9 @@ const ProductosRechazados = require('../models/productosRechazados');
 
 exports.leerProductoRechazado = async (req, res) => {
     try {
-        const productosRechazados = await ProductosRechazados.findAll();
+        const productosRechazados = await ProductosRechazados.findAll({
+            where: { actividad_producto_rechazado: true }
+        });
 
         res.json(productosRechazados);
     } catch (error) {

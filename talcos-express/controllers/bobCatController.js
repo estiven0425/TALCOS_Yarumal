@@ -2,7 +2,9 @@ const BobCats = require('../models/BobCats');
 
 exports.leerBobCat = async (req, res) => {
     try {
-        const bobCats = await BobCats.findAll();
+        const bobCats = await BobCats.findAll({
+            where: { actividad_bob_cat: true }
+        });
 
         res.json(bobCats);
     } catch (error) {

@@ -21,6 +21,7 @@ exports.leerNovedad = async (req, res) => {
                     foreignKey: 'mecanico_novedad'
                 }
             ],
+            where: { actividad_novedad: true }
         });
 
         res.json(novedades);

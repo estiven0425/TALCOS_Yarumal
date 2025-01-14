@@ -5,8 +5,8 @@ import Error from './pages/Error';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Staff from './pages/Staff';
-import './styles/main.css';
 import Header from './components/Header';
+import './styles/main.css';
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>

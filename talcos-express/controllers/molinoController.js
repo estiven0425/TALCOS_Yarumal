@@ -2,7 +2,9 @@ const Molinos = require('../models/Molinos');
 
 exports.leerMolino = async (req, res) => {
     try {
-        const molinos = await Molinos.findAll();
+        const molinos = await Molinos.findAll({
+            where: { actividad_molino: true }
+        });
 
         res.json(molinos);
     } catch (error) {

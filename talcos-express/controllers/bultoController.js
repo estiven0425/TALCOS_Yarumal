@@ -2,7 +2,9 @@ const Bultos = require('../models/Bultos');
 
 exports.leerBulto = async (req, res) => {
     try {
-        const bultos = await Bultos.findAll();
+        const bultos = await Bultos.findAll({
+            where: { actividad_bulto: true }
+        });
 
         res.json(bultos);
     } catch (error) {

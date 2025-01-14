@@ -2,7 +2,9 @@ const ControlCalidad = require('../models/ControlCalidad');
 
 exports.leerControlCalidad = async (req, res) => {
     try {
-        const controlesCalidad = await ControlCalidad.findAll();
+        const controlesCalidad = await ControlCalidad.findAll({
+            where: { actividad_control_calidad: true }
+        });
 
         res.json(controlesCalidad);
     } catch (error) {

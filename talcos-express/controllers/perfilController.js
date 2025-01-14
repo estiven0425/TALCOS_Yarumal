@@ -2,7 +2,9 @@ const Perfiles = require('../models/Perfiles');
 
 exports.leerPerfil = async (req, res) => {
     try {
-        const perfiles = await Perfiles.findAll();
+        const perfiles = await Perfiles.findAll({
+            where: { actividad_perfil: true }
+        });
 
         res.json(perfiles);
     } catch (error) {

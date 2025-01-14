@@ -2,7 +2,9 @@ const InformeFinal = require('../models/InformeFinal');
 
 exports.leerInformeFinal = async (req, res) => {
     try {
-        const informesFinales = await InformeFinal.findAll();
+        const informesFinales = await InformeFinal.findAll({
+            where: { actividad_informe_final: true }
+        });
 
         res.json(informesFinales);
     } catch (error) {

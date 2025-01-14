@@ -31,6 +31,7 @@ exports.leerInformeInicial = async (req, res) => {
                     foreignKey: 'cdc_informe_inicial'
                 }
             ],
+            where: { actividad_informe_inicial: true }
         });
 
         res.json(informesIniciales);

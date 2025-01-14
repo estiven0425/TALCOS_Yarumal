@@ -1,7 +1,7 @@
 ﻿import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import Style from './styles/nav-bar.module.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function NavBar() {
     const location = useLocation();

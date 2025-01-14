@@ -2,7 +2,9 @@ const MateriasPrimas = require('../models/MateriasPrimas');
 
 exports.leerMateriaPrima = async (req, res) => {
     try {
-        const materiasPrimas = await MateriasPrimas.findAll();
+        const materiasPrimas = await MateriasPrimas.findAll({
+            where: { actividad_materia_prima: true }
+        });
 
         res.json(materiasPrimas);
     } catch (error) {

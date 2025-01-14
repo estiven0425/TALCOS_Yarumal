@@ -12,6 +12,7 @@ exports.leerUsuario = async (req, res) => {
                     foreignKey: 'perfil_usuario'
                 },
             ],
+            where: { actividad_usuario: true }
         });
 
         res.json(usuarios);

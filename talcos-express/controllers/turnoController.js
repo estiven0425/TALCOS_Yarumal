@@ -2,7 +2,9 @@ const Turnos = require('../models/Turnos');
 
 exports.leerTurno = async (req, res) => {
     try {
-        const turnos = await Turnos.findAll();
+        const turnos = await Turnos.findAll({
+            where: { actividad_turno: true }
+        });
 
         res.json(turnos);
     } catch (error) {

@@ -2,7 +2,9 @@ const Referencias = require('../models/Referencias');
 
 exports.leerReferencia = async (req, res) => {
     try {
-        const referencias = await Referencias.findAll();
+        const referencias = await Referencias.findAll({
+            where: { actividad_referencia: true }
+        });
 
         res.json(referencias);
     } catch (error) {
