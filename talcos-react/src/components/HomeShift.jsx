@@ -6,10 +6,10 @@ import Style from './styles/home-shift.module.css';
 function HomeShift() {
     const [currentShift, setCurrentShift] = useState(null);
     const [nextTurn, setNextTurn] = useState(null);
-    const [overallEfficiency, setOverallEfficiency] = useState('100');
-    const [totalStrike, settotalStrike] = useState('0');
-    const [supervisor, setSupervisor] = useState('Cristobal Garcia');
-    const [controlCalidad, setControlCalidad] = useState('Arley Gutierrez');
+    const [overallEfficiency, setOverallEfficiency] = useState();
+    const [totalStrike, setTotalStrike] = useState();
+    const [supervisor, setSupervisor] = useState();
+    const [controlCalidad, setControlCalidad] = useState();
     const localIP = import.meta.env.VITE_LOCAL_IP;
 
     useEffect(() => {
@@ -44,33 +44,43 @@ function HomeShift() {
 
                 setCurrentShift(currentShift);
                 setNextTurn(nextTurn);
+
+                const currentDate = currentTime.toISOString().split('T')[0];
+                const reportResponse = await axios.get(`http://${localIP}:3000/informes_iniciales/turnoinformeinicial`, {
+                    params: {
+                        fecha: currentDate,
+                        turno: currentShift.nombre_turno,
+                        inicioTurno: currentShift.inicio_turno,
+                        finTurno: currentShift.fin_turno,
+                    },
+                });
+
+                const lastReport = reportResponse.data[0];
+
+                setSupervisor(lastReport?.titular?.nombre_usuario || 'No disponible');
+                setControlCalidad(lastReport?.cdc?.nombre_usuario || 'No disponible');
+
             } catch (error) {
-                console.error('Error al obtener turnos:', error);
+                console.error('Error al obtener turnos o informe inicial:', error);
             }
         };
 
         getShifts();
     }, [localIP]);
 
-    return (
+    return currentShift !== null ? (
         <motion.div className={Style.homeShift}>
-            <section className={Style.homeShiftPrimary}>
-                {currentShift && nextTurn ? (
-                    <>
-                        <h1>Turno actual: {currentShift.inicio_turno} - {currentShift.fin_turno}</h1>
-                        <p>Próximo turno: {nextTurn.inicio_turno} - {nextTurn.fin_turno}</p>
-                    </>
-                ) : (
-                    <div className={Style.loader}></div>
-                )}
-            </section>
-            <section className={Style.homeShiftSecondary}>
+            <header className={Style.homeShiftHeader}>
+                <h1>Turno actual: {currentShift.inicio_turno} - {currentShift.fin_turno}</h1>
+                <p>Próximo turno: {nextTurn.inicio_turno} - {nextTurn.fin_turno}</p>
+            </header>
+            <main className={Style.homeShiftMain}>
                 <div>
                     <h2>Eficiencia total:</h2>
                     {overallEfficiency ? (
                         <p>{overallEfficiency}%</p>
                     ) : (
-                        <div className={Style.loaderAlternative}></div>
+                        <p>Obteniendo datos...</p>
                     )}
                 </div>
                 <div>
@@ -78,7 +88,7 @@ function HomeShift() {
                     {totalStrike ? (
                         <p>{totalStrike}</p>
                     ) : (
-                        <div className={Style.loaderAlternative}></div>
+                        <p>Obteniendo datos...</p>
                     )}
                 </div>
                 <div>
@@ -86,7 +96,7 @@ function HomeShift() {
                     {supervisor ? (
                         <p>{supervisor}</p>
                     ) : (
-                        <div className={Style.loaderAlternative}></div>
+                        <p>Obteniendo datos...</p>
                     )}
                 </div>
                 <div>
@@ -94,10 +104,14 @@ function HomeShift() {
                     {controlCalidad ? (
                         <p>{controlCalidad}</p>
                     ) : (
-                        <div className={Style.loaderAlternative}></div>
+                        <p>Obteniendo datos...</p>
                     )}
                 </div>
-            </section>
+            </main>
+        </motion.div>
+    ) : (
+        <motion.div className={Style.homeShiftAlternative}>
+            <div className={Style.loader}></div>
         </motion.div>
     );
 }

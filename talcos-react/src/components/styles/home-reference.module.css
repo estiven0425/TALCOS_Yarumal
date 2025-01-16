@@ -1,14 +1,14 @@
-﻿.homeInventary {
+﻿.homeReference {
     align-content: center;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 10px;
     height: 100%;
 }
 
-.homeInventaryHeader {
+.homeReferenceHeader {
     align-content: center;
     display: flex;
     flex-direction: column;
@@ -16,14 +16,14 @@
     justify-content: center;
 }
 
-    .homeInventaryHeader h1 {
+    .homeReferenceHeader h1 {
         font-size: 1.5rem;
         font-weight: 800;
         margin: 0px;
         text-align: center;
     }
 
-.homeInventaryMain {
+.homeReferenceMain {
     align-content: flex-start;
     display: flex;
     flex-direction: column;
@@ -34,7 +34,7 @@
     overflow: auto;
 }
 
-    .homeInventaryMain div {
+    .homeReferenceMain div {
         align-content: center;
         align-items: center;
         display: flex;
@@ -44,58 +44,40 @@
         width: 100%;
     }
 
-    .homeInventaryMain h2 {
+.homeReferenceMainPrimary,
+.homeReferenceMainSecondary {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+    .homeReferenceMainPrimary h2 {
         font-size: 1rem;
         margin: 0px;
     }
 
-    .homeInventaryMain p {
+    .homeReferenceMainPrimary p,
+    .homeReferenceMainSecondary p {
         margin: 0px;
     }
 
-    .homeInventaryMain::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    .homeInventaryMain::-webkit-scrollbar-track {
-        background: #0037AE;
-        border-radius: 10px;
-    }
-
-    .homeInventaryMain::-webkit-scrollbar-thumb {
-        background: #0095DC;
-        border-radius: 10px;
-    }
-
-.homeInventaryFooter {
-    align-content: flex-start;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    width: 100%;
+.homeReferenceMain::-webkit-scrollbar {
+    width: 10px;
 }
 
-    .homeInventaryFooter div {
-        align-content: center;
-        align-items: center;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        width: 100%;
-    }
+.homeReferenceMain::-webkit-scrollbar-track {
+    background: #0037AE;
+    border-radius: 10px;
+}
 
-    .homeInventaryFooter h2 {
-        font-size: 1.5rem;
-        margin: 0px;
-    }
+.homeReferenceMain::-webkit-scrollbar-thumb {
+    background: #0095DC;
+    border-radius: 10px;
+}
 
-    .homeInventaryFooter p {
-        margin: 0px;
-    }
-
-.homeInventaryAlternative {
+.homeReferenceAlternative {
     align-content: center;
     display: flex;
     flex-direction: column;

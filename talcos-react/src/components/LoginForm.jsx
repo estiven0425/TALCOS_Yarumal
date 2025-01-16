@@ -52,7 +52,7 @@ function LoginForm() {
                 contrasena_usuario: contrasenaUsuario,
             });
 
-            localStorage.setItem('token', response.data.token);
+            sessionStorage.setItem('token', response.data.token);
             redirect('/home');
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {

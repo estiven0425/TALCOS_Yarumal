@@ -88,7 +88,7 @@ CREATE TABLE `informe_inicial` (
 	`fecha_informe_inicial` DATE NOT NULL,
 	`hora_informe_inicial` TIME NOT NULL,
 	`turno_informe_inicial` VARCHAR(250) NOT NULL,
-	`bob-cat_informe_inicial` VARCHAR(250) NULL DEFAULT('No se registró'),
+	`bob_cat_informe_inicial` VARCHAR(250) NULL DEFAULT('No se registró'),
 	`molino_informe_inicial` VARCHAR(250) NULL DEFAULT('No se registró'),
 	`referencia_informe_inicial` VARCHAR(250) NULL DEFAULT('No se registró'),
 	`bulto_informe_inicial` VARCHAR(250) NULL DEFAULT('No se registró'),

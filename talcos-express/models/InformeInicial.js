@@ -113,22 +113,27 @@ const InformeInicial = sequelize.define(
 InformeInicial.belongsTo(Usuarios, {
     foreignKey: 'titular_informe_inicial',
     targetKey: 'id_usuario',
+    as: 'titular'
 });
 InformeInicial.belongsTo(Usuarios, {
     foreignKey: 'operador_informe_inicial',
     targetKey: 'id_usuario',
+    as: 'operador'
 });
 InformeInicial.belongsTo(Usuarios, {
     foreignKey: 'carguero_informe_inicial',
     targetKey: 'id_usuario',
+    as: 'carguero'
 });
 InformeInicial.belongsTo(Usuarios, {
     foreignKey: 'mecanico_informe_inicial',
     targetKey: 'id_usuario',
+    as: 'mecanico'
 });
 InformeInicial.belongsTo(Usuarios, {
     foreignKey: 'cdc_informe_inicial',
     targetKey: 'id_usuario',
+    as: 'cdc'
 });
 
 module.exports = InformeInicial;

@@ -4,67 +4,48 @@ import axios from 'axios';
 import Style from './styles/home-inventary.module.css';
 
 function HomeInventary() {
-    return (
+    const [referencia, setReferencia] = useState([]);
+    const localIP = import.meta.env.VITE_LOCAL_IP;
+
+    useEffect(() => {
+        const getReference = async () => {
+            try {
+                const response = await axios.get(`http://${localIP}:3000/referencias`);
+
+                setReferencia(response.data);
+            } catch (error) {
+                console.error("Error al obtener las referencias: ", error);
+            }
+        };
+
+        getReference();
+    }, [localIP]);
+
+    const talcProduced = referencia.reduce((total, referencia) => total + referencia.cantidad_referencia, 0);
+
+    return referencia.length > 0 ? (
         <motion.div className={Style.homeInventary}>
-            <section className={Style.homeInventaryPrimary}>
+            <header className={Style.homeInventaryHeader}>
                 <h1>Inventario de talco total producido</h1>
-            </section>
-            <section className={Style.homeInventarySecondary}>
-                <div>
-                    <h2>Super P</h2>
-                    <p>68500 Kg</p>
-                </div>
-                <div>
-                    <h2>Super N</h2>
-                    <p>10600 Kg</p>
-                </div>
-                <div>
-                    <h2>Extra</h2>
-                    <p>15000 Kg</p>
-                </div>
-                <div>
-                    <h2>TY - 10</h2>
-                    <p>1800 Kg</p>
-                </div>
-                <div>
-                    <h2>XT - 400</h2>
-                    <p>0 Kg</p>
-                </div>
-                <div>
-                    <h2>TY - 400</h2>
-                    <p>86200 Kg</p>
-                </div>
-                <div>
-                    <h2>TY - 500</h2>
-                    <p>0 Kg</p>
-                </div>
-                <div>
-                    <h2>TY - 500 E</h2>
-                    <p>5000 Kg</p>
-                </div>
-                <div>
-                    <h2>TY - 500 B</h2>
-                    <p>136300 Kg</p>
-                </div>
-                <div>
-                    <h2>TY - 100</h2>
-                    <p>0 Kg</p>
-                </div>
-                <div>
-                    <h2>TY - 500 I</h2>
-                    <p>10900 Kg</p>
-                </div>
-                <div>
-                    <h2>Otros</h2>
-                    <p>0 Kg</p>
-                </div>
-            </section>
-            <section className={Style.homeInventaryThird}>
+            </header>
+            <main className={Style.homeInventaryMain}>
+                {referencia.map((referencia) => (
+                    <div key={referencia.id_referencia}>
+                        <h2>{referencia.nombre_referencia}</h2>
+                        <p>{referencia.cantidad_referencia} Kg</p>
+                    </div>
+                ))}
+            </main>
+            <footer className={Style.homeInventaryFooter}>
                 <div>
                     <h2>Talco producido</h2>
-                    <p>165000 Kg</p>
+                    <p>{talcProduced} Kg</p>
                 </div>
-            </section>
+            </footer>
+        </motion.div>
+    ) : (
+        <motion.div className={Style.homeInventaryAlternative}>
+            <div className={Style.loader}></div>
         </motion.div>
     );
 }

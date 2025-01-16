@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const InformeInicial = require('../models/InformeInicial');
 const Usuarios = require('../models/Usuarios');
 
@@ -7,36 +8,77 @@ exports.leerInformeInicial = async (req, res) => {
             include: [
                 {
                     model: Usuarios,
+                    as: 'titular',
                     attributes: ['nombre_usuario'],
                     foreignKey: 'titular_informe_inicial'
                 },
                 {
                     model: Usuarios,
                     attributes: ['nombre_usuario'],
+                    as: 'operador',
                     foreignKey: 'operador_informe_inicial'
                 },
                 {
                     model: Usuarios,
                     attributes: ['nombre_usuario'],
+                    as: 'carguero',
                     foreignKey: 'carguero_informe_inicial'
                 },
                 {
                     model: Usuarios,
                     attributes: ['nombre_usuario'],
+                    as: 'mecanico',
                     foreignKey: 'mecanico_informe_inicial'
                 },
                 {
                     model: Usuarios,
                     attributes: ['nombre_usuario'],
+                    as: 'cdc',
                     foreignKey: 'cdc_informe_inicial'
                 }
             ],
-            where: { actividad_informe_inicial: true }
+            where: { actividad_informe_inicial: true },
         });
 
         res.json(informesIniciales);
     } catch (error) {
         res.status(500).send('Error del servidor: ' + error);
+    }
+};
+
+exports.turnoInformeInicial = async (req, res) => {
+    const { fecha, turno, inicioTurno, finTurno } = req.query;
+
+    let fechaConsulta = new Date(fecha);
+
+    const [horaInicio, minutoInicio] = inicioTurno.split(':').map(Number);
+    const [horaFin, minutoFin] = finTurno.split(':').map(Number);
+
+    if (horaFin < horaInicio) {
+        fechaConsulta.setDate(fechaConsulta.getDate() - 1);
+    }
+
+    fechaConsulta = fechaConsulta.toISOString().split('T')[0];
+
+    try {
+        const informes = await InformeInicial.findAll({
+            where: {
+                [Op.and]: [
+                    { fecha_informe_inicial: fechaConsulta },
+                    { turno_informe_inicial: turno },
+                    { actividad_informe_inicial: true }
+                ]
+            },
+            include: [
+                { model: Usuarios, as: 'titular', attributes: ['nombre_usuario'] },
+                { model: Usuarios, as: 'cdc', attributes: ['nombre_usuario'] },
+            ],
+            order: [['hora_informe_inicial', 'DESC']]
+        });
+
+        res.json(informes);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener informe inicial' });
     }
 };
 

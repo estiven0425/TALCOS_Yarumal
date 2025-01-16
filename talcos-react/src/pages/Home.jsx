@@ -1,4 +1,5 @@
 ﻿import HomeInventary from '../components/homeInventary';
+import HomeReference from '../components/HomeReference';
 import HomeShift from '../components/HomeShift';
 import ProtectedRoute from '../utils/ProtectedRoute';
 import Style from './styles/home.module.css';
@@ -13,13 +14,8 @@ function Home() {
                 <article className={Style['grid-span-2x3']}>
                     <HomeInventary />
                 </article>
-                <article className={Style['grid-span-2x2'] + ' homeReference'}>
-                    <h1>Referencias en producción</h1>
-                    <p>Molino 1: TY - 500 B, Bultos de 25 kilogramos</p>
-                    <p>Molino 2: TY - 400, Bultos de 40 kilogramos</p>
-                    <p>Molino 3: TY - 500 B, Bultos de 1000 kilogramos</p>
-                    <p>Molino 4: TY - 500 B, Bultos de 25 kilogramos</p>
-                    <p>Molino 5: Super P, Bultos de 750 kilogramos</p>
+                <article className={Style['grid-span-2x2']}>
+                    <HomeReference />
                 </article>
                 <article className={Style['grid-span-1x3'] + ' homeStateWindmill'}>
                     <h1>Estado de molinos</h1>

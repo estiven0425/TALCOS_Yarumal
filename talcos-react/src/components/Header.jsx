@@ -28,14 +28,14 @@ function Header() {
         return () => clearInterval(interval);
     }, []);
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         const getUsuario = async () => {
             try {
-                const res = await axios.post(`http://${localIP}:3000/login/get`, {
+                const response = await axios.post(`http://${localIP}:3000/login/get`, {
                     token: token,
                 });
 
-                setNombreUsuario(res.data.nombre_usuario);
+                setNombreUsuario(response.data.nombre_usuario);
             } catch (error) {
                 console.error("Error al obtener el usuario:", error);
             }
