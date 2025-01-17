@@ -54,10 +54,12 @@ const Mensajes = sequelize.define(
 Mensajes.belongsTo(Usuarios, {
     foreignKey: 'emisor_mensaje',
     targetKey: 'id_usuario',
+    as: 'emisor'
 });
 Mensajes.belongsTo(Usuarios, {
     foreignKey: 'receptor_mensaje',
     targetKey: 'id_usuario',
+    as: 'receptor'
 });
 
 module.exports = Mensajes;

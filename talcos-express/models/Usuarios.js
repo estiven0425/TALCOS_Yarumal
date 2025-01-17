@@ -64,6 +64,7 @@ const Usuarios = sequelize.define(
 Usuarios.belongsTo(Perfiles, {
     foreignKey: 'perfil_usuario',
     targetKey: 'id_perfil',
+    as: 'perfil'
 });
 
 module.exports = Usuarios;

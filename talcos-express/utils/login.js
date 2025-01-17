@@ -45,6 +45,7 @@ router.post('/get', async (req, res) => {
             include: [
                 {
                     model: Perfiles,
+                    as: 'perfil',
                     attributes: ['nombre_perfil']
                 },
             ],
@@ -57,7 +58,7 @@ router.post('/get', async (req, res) => {
                 telefono_usuario: usuario.telefono_usuario,
                 correo_usuario: usuario.correo_usuario,
                 contrato_usuario: usuario.contrato_usuario,
-                perfil_usuario: usuario.perfile.nombre_perfil
+                perfil_usuario: usuario.perfil
             });
         } else {
             res.status(404).json({ error: 'Usuario no encontrado' });

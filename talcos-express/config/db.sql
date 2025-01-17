@@ -117,7 +117,7 @@ CREATE TABLE `novedad` (
 	`referencia_novedad` VARCHAR(250) NULL DEFAULT('No se registró'),
 	`bulto_novedad` VARCHAR(250) NULL DEFAULT('No se registró'),
 	`operador_novedad` BIGINT(100) NULL,
-	`bob-cat` VARCHAR(250) NULL DEFAULT('No se registró'),
+	`bob_cat_novedad` VARCHAR(250) NULL DEFAULT('No se registró'),
 	`carguero_novedad` BIGINT(100) NULL,
 	`mecanico_novedad` BIGINT(100) NULL,
 	`inicio_paro_novedad` TIME NULL,

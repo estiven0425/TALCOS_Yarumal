@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const Novedad = require('../models/Novedad');
 const Usuarios = require('../models/Usuarios');
 
@@ -7,26 +8,63 @@ exports.leerNovedad = async (req, res) => {
             include: [
                 {
                     model: Usuarios,
+                    as: 'operador',
                     attributes: ['nombre_usuario'],
-                    foreignKey: 'operador_novedad'
                 },
                 {
                     model: Usuarios,
+                    as: 'carguero',
                     attributes: ['nombre_usuario'],
-                    foreignKey: 'carguero_novedad'
                 },
                 {
                     model: Usuarios,
+                    as: 'mecanico',
                     attributes: ['nombre_usuario'],
-                    foreignKey: 'mecanico_novedad'
                 }
             ],
-            where: { actividad_novedad: true }
+            where: { actividad_novedad: true },
         });
 
         res.json(novedades);
     } catch (error) {
         res.status(500).send('Error del servidor: ' + error);
+    }
+};
+
+exports.turnoNovedad = async (req, res) => {
+    const { fecha, turno, inicioTurno, finTurno } = req.query;
+
+    let fechaConsulta = new Date(fecha);
+
+    const [horaInicio, minutoInicio] = inicioTurno.split(':').map(Number);
+    const [horaFin, minutoFin] = finTurno.split(':').map(Number);
+
+    if (horaFin < horaInicio) {
+        fechaConsulta.setDate(fechaConsulta.getDate() - 1);
+    }
+
+    const fechaFormateada = fechaConsulta.toISOString().split('T')[0];
+
+    try {
+        const novedades = await Novedad.findAll({
+            where: {
+                [Op.and]: [
+                    { fecha_novedad: fechaFormateada },
+                    { turno_novedad: turno },
+                    { actividad_novedad: true }
+                ]
+            },
+            include: [
+                { model: Usuarios, as: 'operador', attributes: ['nombre_usuario'] },
+                { model: Usuarios, as: 'carguero', attributes: ['nombre_usuario'] },
+                { model: Usuarios, as: 'mecanico', attributes: ['nombre_usuario'] },
+            ],
+            order: [['hora_novedad', 'DESC']]
+        });
+
+        res.json(novedades);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener novedades' });
     }
 };
 

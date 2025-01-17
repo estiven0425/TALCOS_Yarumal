@@ -49,7 +49,7 @@ const Novedad = sequelize.define(
                 key: 'id_usuario',
             }
         },
-        bob_cat: {
+        bob_cat_novedad: {
             type: DataTypes.STRING(250),
             allowNull: true,
             defaultValue: 'No se registró',
@@ -116,14 +116,17 @@ const Novedad = sequelize.define(
 Novedad.belongsTo(Usuarios, {
     foreignKey: 'operador_novedad',
     targetKey: 'id_usuario',
+    as: 'operador'
 });
 Novedad.belongsTo(Usuarios, {
     foreignKey: 'carguero_novedad',
     targetKey: 'id_usuario',
+    as: 'carguero'
 });
 Novedad.belongsTo(Usuarios, {
     foreignKey: 'mecanico_novedad',
     targetKey: 'id_usuario',
+    as: 'mecanico'
 });
 
 module.exports = Novedad;

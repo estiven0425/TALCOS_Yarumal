@@ -18,6 +18,7 @@ const { notFoundHandler, globalErrorHandler } = require('./middlewares/errorHand
 // Importar rutas
 const perfilesRoutes = require('./routes/perfilesRoutes');
 const molinosRoutes = require('./routes/molinosRoutes');
+const bultosRoutes = require('./routes/bultosRoutes');
 const turnosRoutes = require('./routes/turnosRoutes');
 const referenciasRoutes = require('./routes/referenciasRoutes');
 const productosRechazadosRoutes = require('./routes/productosRechazadosRoutes');
@@ -42,6 +43,7 @@ app.use(cookieParser);
 // Usar rutas
 app.use('/perfiles', perfilesRoutes);
 app.use('/molinos', molinosRoutes);
+app.use('/bultos', bultosRoutes);
 app.use('/turnos', turnosRoutes);
 app.use('/referencias', referenciasRoutes);
 app.use('/productos_rechazados', productosRechazadosRoutes);

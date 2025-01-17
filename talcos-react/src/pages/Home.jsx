@@ -1,6 +1,7 @@
 ﻿import HomeInventary from '../components/homeInventary';
 import HomeReference from '../components/HomeReference';
 import HomeShift from '../components/HomeShift';
+import HomeStateWindmill from '../components/HomeStateWindmill';
 import ProtectedRoute from '../utils/ProtectedRoute';
 import Style from './styles/home.module.css';
 
@@ -17,13 +18,8 @@ function Home() {
                 <article className={Style['grid-span-2x2']}>
                     <HomeReference />
                 </article>
-                <article className={Style['grid-span-1x3'] + ' homeStateWindmill'}>
-                    <h1>Estado de molinos</h1>
-                    <p>Molino 1: Jaime Patiño, 35659 Hrs</p>
-                    <p>Molino 2: Camilo Salazar, 32789 Hrs</p>
-                    <p>Molino 3: Ricardo Correa, 37265 Hrs</p>
-                    <p>Molino 4: Santiago Sanchez, 31406 Hrs</p>
-                    <p>Molino 5: Julio Perez, 35061 Hrs</p>
+                <article className={Style['grid-span-1x3']}>
+                    <HomeStateWindmill />
                 </article>
                 <article className={Style['grid-span-2x1'] + ' homeStateShift'}>
                     <h1>Estado del turno</h1>

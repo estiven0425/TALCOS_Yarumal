@@ -7,6 +7,7 @@ import Header from './components/Header';
 import Login from './pages/Login';
 import Staff from './pages/Staff';
 import './styles/main.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>

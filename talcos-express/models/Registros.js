@@ -71,10 +71,12 @@ const Registros = sequelize.define(
 Registros.belongsTo(Usuarios, {
     foreignKey: 'titular_registro',
     targetKey: 'id_usuario',
+    as: 'titular'
 });
 Registros.belongsTo(Usuarios, {
     foreignKey: 'proveedor_registro',
     targetKey: 'id_usuario',
+    as: 'proveedor'
 });
 
 module.exports = Registros;
