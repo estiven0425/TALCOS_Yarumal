@@ -1,6 +1,8 @@
-﻿import HomeInventary from '../components/homeInventary';
+﻿import HomeFreighters from '../components/HomeFreighters';
+import HomeInventary from '../components/homeInventary';
 import HomeReference from '../components/HomeReference';
 import HomeShift from '../components/HomeShift';
+import HomeStateShift from '../components/HomeStateShift';
 import HomeStateWindmill from '../components/HomeStateWindmill';
 import ProtectedRoute from '../utils/ProtectedRoute';
 import Style from './styles/home.module.css';
@@ -21,17 +23,11 @@ function Home() {
                 <article className={Style['grid-span-1x3']}>
                     <HomeStateWindmill />
                 </article>
-                <article className={Style['grid-span-2x1'] + ' homeStateShift'}>
-                    <h1>Estado del turno</h1>
-                    <p>Informe inicial: ✔️</p>
-                    <p>Novedades: 0</p>
-                    <p>Informe final: ❌</p>
+                <article className={Style['grid-span-2x1']}>
+                    <HomeStateShift />
                 </article>
-                <article className={Style['grid-span-2x1'] + ' homeStateStaff'}>
-                    <h1>Estado de personal</h1>
-                    <p>Bob - Cat 2012 BC - 1: Andrés Lopez</p>
-                    <p>Bob - Cat 2016 BC - 2: Jairo Garza</p>
-                    <p>Mecánicos: Santiago Ortiz, Darío Correa</p>
+                <article className={Style['grid-span-2x1']}>
+                    <HomeFreighters />
                 </article>
             </section>
         </ProtectedRoute>

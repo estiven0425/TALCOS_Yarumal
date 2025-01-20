@@ -10,10 +10,10 @@ function HomeReference() {
     useEffect(() => {
         const getData = async () => {
             try {
-                const responseMolinos = await axios.get(`http://${localIP}:3000/molinos`);
-                const molinos = responseMolinos.data;
-                const responseTurnos = await axios.get(`http://${localIP}:3000/turnos`);
-                const turnos = responseTurnos.data;
+                const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
+                const mills = responseMills.data;
+                const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
+                const shifts = responseShifts.data;
                 const currentTime = new Date();
 
                 const compareTime = (hour, start, end) => {
@@ -30,7 +30,7 @@ function HomeReference() {
                     }
                 };
 
-                const currentShift = turnos.find(turno => compareTime(currentTime, turno.inicio_turno, turno.fin_turno));
+                const currentShift = shifts.find(shift => compareTime(currentTime, shift.inicio_turno, shift.fin_turno));
                 if (!currentShift) {
                     console.error("No se pudo determinar el turno actual.");
                     return;
@@ -38,14 +38,14 @@ function HomeReference() {
 
                 const currentDate = currentTime.toISOString().split('T')[0];
                 const { nombre_turno: turno, inicio_turno: inicioTurno, fin_turno: finTurno } = currentShift;
-                const responseInformes = await axios.get(`http://${localIP}:3000/informes_iniciales/turnoinformeinicial`, {
+                const responseReport = await axios.get(`http://${localIP}:3000/informes_iniciales/turnoinformeinicial`, {
                     params: {
                         fecha: currentDate,
                         turno, inicioTurno,
                         finTurno
                     }
                 });
-                const responseNovedades = await axios.get(`http://${localIP}:3000/novedades/turnonovedad`, {
+                const responseNews = await axios.get(`http://${localIP}:3000/novedades/turnonovedad`, {
                     params: {
                         fecha: currentDate,
                         turno, inicioTurno,
@@ -53,24 +53,24 @@ function HomeReference() {
                     }
                 });
 
-                const informes = responseInformes.data;
-                const novedades = responseNovedades.data;
-                const combinedData = molinos.map(molino => {
-                    const informe = informes
-                        .filter(informe => informe.molino_informe_inicial === molino.nombre_molino)
+                const reports = responseReport.data;
+                const news = responseNews.data;
+                const combinedData = mills.map(molino => {
+                    const report = reports
+                        .filter(report => report.molino_informe_inicial === molino.nombre_molino)
                         .sort((a, b) => new Date(b.hora_informe_inicial) - new Date(a.hora_informe_inicial))[0];
-                    const novedad = novedades
-                        .filter(novedad => novedad.molino_novedad === molino.nombre_molino)
+                    const novelty = news
+                        .filter(novelty => novelty.molino_novedad === molino.nombre_molino)
                         .sort((a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad))[0];
-                    const reciente = (informe && (!novedad || new Date(informe.fecha_informe_inicial + ' ' + informe.hora_informe_inicial) > new Date(novedad.fecha_novedad + ' ' + novedad.hora_novedad)))
-                        ? informe
-                        : novedad;
+                    const recent = (report && (!novelty || new Date(report.fecha_informe_inicial + ' ' + report.hora_informe_inicial) > new Date(novelty.fecha_novedad + ' ' + novelty.hora_novedad)))
+                        ? report
+                        : novelty;
 
                     return {
                         id_molino: molino.id_molino,
                         nombre_molino: molino.nombre_molino,
-                        referencia: reciente?.referencia_informe_inicial || reciente?.referencia_novedad || 'No se registró',
-                        bulto: reciente?.bulto_informe_inicial || reciente?.bulto_novedad || 'No se registró'
+                        referencia: recent?.referencia_informe_inicial || recent?.referencia_novedad || 'No se registró',
+                        bulto: recent?.bulto_informe_inicial || recent?.bulto_novedad || 'No se registró'
                     };
                 });
 

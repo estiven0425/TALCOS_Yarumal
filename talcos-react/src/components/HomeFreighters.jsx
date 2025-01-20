@@ -1,17 +1,18 @@
 ﻿import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import Style from './styles/home-state-windmill.module.css';
+import Style from './styles/home-freighters.module.css';
 
-function HomeStateWindmill() {
-    const [molino, setMolino] = useState([]);
+function HomeFreighters() {
+    const [bobCat, setBobCat] = useState([]);
+    const [mecanicos, setMecanicos] = useState([]);
     const localIP = import.meta.env.VITE_LOCAL_IP;
 
     useEffect(() => {
         const getData = async () => {
             try {
-                const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
-                const mills = responseMills.data;
+                const responseBobCats = await axios.get(`http://${localIP}:3000/bob_cats`);
+                const bobCats = responseBobCats.data;
                 const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
                 const shifts = responseShifts.data;
                 const currentTime = new Date();
@@ -55,27 +56,32 @@ function HomeStateWindmill() {
 
                 const reports = responseReport.data;
                 const news = responseNews.data;
-                const combinedData = mills.map(molino => {
+                const combinedDataBobCat = bobCats.map(bobCat => {
                     const report = reports
-                        .filter(report => report.molino_informe_inicial === molino.nombre_molino)
+                        .filter(report => report.bob_cat_informe_inicial === bobCat.nombre_bob_cat)
                         .sort((a, b) => new Date(b.hora_informe_inicial) - new Date(a.hora_informe_inicial))[0];
                     const novelty = news
-                        .filter(novelty => novelty.molino_novedad === molino.nombre_molino)
+                        .filter(novelty => novelty.bob_cat_novedad === bobCat.nombre_bob_cat)
                         .sort((a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad))[0];
                     const recent = (report && (!novelty || new Date(report.fecha_informe_inicial + ' ' + report.hora_informe_inicial) > new Date(novelty.fecha_novedad + ' ' + novelty.hora_novedad)))
                         ? report
                         : novelty;
 
                     return {
-                        id_molino: molino.id_molino,
-                        nombre_molino: molino.nombre_molino,
-                        operador: recent?.operador?.nombre_usuario || 'No se registró',
-                        horometro: report?.horometro_informe_inicial || 'No se registró',
-                        paro: novelty?.inicio_paro_novedad && !novelty?.fin_paro_novedad ? novelty?.inicio_paro_novedad : null
+                        id_bob_cat: bobCat.id_bob_cat,
+                        nombre_bob_cat: bobCat.nombre_bob_cat,
+                        carguero: recent?.carguero?.nombre_usuario || 'No se registró',
                     };
                 });
 
-                setMolino(combinedData);
+                const combinedDataMecanicos = reports.concat(news)
+                    .filter(record => record.mecanico_informe_inicial || record.mecanico_novedad)
+                    .map(record => ({
+                        nombre_mecanico: record.mecanico?.nombre_usuario || 'No se registró'
+                    }));
+
+                setBobCat(combinedDataBobCat);
+                setMecanicos(combinedDataMecanicos);
             } catch (error) {
                 console.error("Error al obtener los datos: ", error);
             }
@@ -84,37 +90,39 @@ function HomeStateWindmill() {
         getData();
     }, [localIP]);
 
-    return molino.length > 0 ? (
-        <motion.div className={Style.homeStateWindmill}>
-            <header className={Style.homeStateWindmillHeader}>
-                <h1>Estado de molinos</h1>
-            </header>
-            <main className={Style.homeStateWindmillMain}>
-                {molino.map(molino => (
-                    <div key={molino.id_molino}>
-                        <section className={Style.homeStateWindmillMainPrimary}>
-                            <h2>{molino.nombre_molino}</h2>
-                            <p>{molino.operador}</p>
-                        </section>
-                        <section className={Style.homeStateWindmillMainSecondary}>
-                            <p>
-                                {molino.paro ? (
-                                    <i className={`bi bi-x-circle-fill ${Style.homeStateWindmillMainSecondaryIconAlternative}`}></i>
-                                ) : (
-                                    <i className={`bi bi-check-circle-fill ${Style.homeStateWindmillMainSecondaryIcon}`}></i>
-                                )}
-                            </p>
-                            <p>{molino.horometro}</p>
-                        </section>
-                    </div>
-                ))}
-            </main>
+    return bobCat.length > 0 || mecanicos.length > 0 ? (
+        <motion.div className={Style.homeFreighters}>
+            <section className={Style.homeFreightersPrimary}>
+                <header className={Style.homeFreightersPrimaryHeader}>
+                    <h1>Cargueros</h1>
+                </header>
+                <main className={Style.homeFreightersPrimaryMain}>
+                    {bobCat.map(bobCat => (
+                        <div key={bobCat.id_bob_cat}>
+                            <h2>{bobCat.nombre_bob_cat}</h2>
+                            <p>{bobCat.carguero}</p>
+                        </div>
+                    ))}
+                </main>
+            </section>
+            <section className={Style.homeFreightersSecondary}>
+                <header className={Style.homeFreightersSecondaryHeader}>
+                    <h1>Mecánicos</h1>
+                </header>
+                <main className={Style.homeFreightersSecondaryMain}>
+                    {mecanicos.map((mecanico, index) => (
+                        <div key={index}>
+                            <p>{mecanico.nombre_mecanico}</p>
+                        </div>
+                    ))}
+                </main>
+            </section>
         </motion.div>
     ) : (
-        <motion.div className={Style.homeStateWindmillAlternative}>
+        <motion.div className={Style.homeFreightersAlternative}>
             <div className={Style.loader}></div>
         </motion.div>
     );
 }
 
-export default HomeStateWindmill;
+export default HomeFreighters;

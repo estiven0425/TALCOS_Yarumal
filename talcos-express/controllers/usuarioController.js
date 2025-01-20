@@ -8,6 +8,7 @@ exports.leerUsuario = async (req, res) => {
             include: [
                 {
                     model: Perfiles,
+                    as: 'perfil',
                     attributes: ['nombre_perfil'],
                     foreignKey: 'perfil_usuario'
                 },

@@ -1,4 +1,4 @@
-﻿.homeStateWindmill {
+﻿.homeStateShift {
     align-content: center;
     display: flex;
     flex-direction: column;
@@ -8,7 +8,7 @@
     height: 100%;
 }
 
-.homeStateWindmillHeader {
+.homeStateShiftHeader {
     align-content: center;
     display: flex;
     flex-direction: column;
@@ -16,25 +16,25 @@
     justify-content: center;
 }
 
-    .homeStateWindmillHeader h1 {
+    .homeStateShiftHeader h1 {
         font-size: 1.5rem;
         font-weight: 800;
         margin: 0px;
         text-align: center;
     }
 
-.homeStateWindmillMain {
+.homeStateShiftMain {
     align-content: flex-start;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     gap: 10px;
-    justify-content: flex-start;
+    justify-content: space-between;
     width: 100%;
     overflow: auto;
 }
 
-    .homeStateWindmillMain div {
+    .homeStateShiftMain div {
         align-content: center;
         align-items: center;
         display: flex;
@@ -44,54 +44,38 @@
         width: 100%;
     }
 
-.homeStateWindmillMainPrimary,
-.homeStateWindmillMainSecondary {
-    align-content: center;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-}
+        .homeStateShiftMain div h2,
+        .homeStateShiftMain div p {
+            font-size: 1rem;
+            margin: 0px;
+            text-align: center;
+        }
 
-    .homeStateWindmillMainPrimary h2 {
-        font-size: 1rem;
-        margin: 0px;
-    }
-
-    .homeStateWindmillMainPrimary p,
-    .homeStateWindmillMainSecondary p {
-        margin: 0px;
-    }
-
-    .homeStateWindmillMainSecondary p {
-        text-align: right;
-    }
-
-.homeStateWindmillMainSecondaryIcon {
+.homeStateShiftMainIcon {
     color: #0EC839;
     font-size: 1rem;
 }
 
-.homeStateWindmillMainSecondaryIconAlternative {
+.homeStateShiftMainIconAlternative {
     color: #C80E0E;
     font-size: 1rem;
 }
 
-.homeStateWindmillMain::-webkit-scrollbar {
+.homeStateShiftMain::-webkit-scrollbar {
     width: 10px;
 }
 
-.homeStateWindmillMain::-webkit-scrollbar-track {
+.homeStateShiftMain::-webkit-scrollbar-track {
     background: #0037AE;
     border-radius: 10px;
 }
 
-.homeStateWindmillMain::-webkit-scrollbar-thumb {
+.homeStateShiftMain::-webkit-scrollbar-thumb {
     background: #0095DC;
     border-radius: 10px;
 }
 
-.homeStateWindmillAlternative {
+.homeStateShiftAlternative {
     align-content: center;
     display: flex;
     flex-direction: column;

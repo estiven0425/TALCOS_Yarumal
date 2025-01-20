@@ -71,6 +71,9 @@ exports.turnoInformeInicial = async (req, res) => {
             },
             include: [
                 { model: Usuarios, as: 'titular', attributes: ['nombre_usuario'] },
+                { model: Usuarios, as: 'operador', attributes: ['nombre_usuario'] },
+                { model: Usuarios, as: 'carguero', attributes: ['nombre_usuario'] },
+                { model: Usuarios, as: 'mecanico', attributes: ['nombre_usuario'] },
                 { model: Usuarios, as: 'cdc', attributes: ['nombre_usuario'] },
             ],
             order: [['hora_informe_inicial', 'DESC']]

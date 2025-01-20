@@ -7,11 +7,13 @@ exports.leerMensaje = async (req, res) => {
             include: [
                 {
                     model: Usuarios,
+                    as: 'emisor',
                     attributes: ['nombre_usuario'],
                     foreignKey: 'emisor_mensaje'
                 },
                 {
                     model: Usuarios,
+                    as: 'receptor',
                     attributes: ['nombre_usuario'],
                     foreignKey: 'receptor_mensaje'
                 }

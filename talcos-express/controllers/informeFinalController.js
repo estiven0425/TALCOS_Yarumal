@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const InformeFinal = require('../models/InformeFinal');
 
 exports.leerInformeFinal = async (req, res) => {
@@ -9,6 +10,38 @@ exports.leerInformeFinal = async (req, res) => {
         res.json(informesFinales);
     } catch (error) {
         res.status(500).send('Error del servidor: ' + error);
+    }
+};
+
+exports.turnoInformeFinal = async (req, res) => {
+    const { fecha, turno, inicioTurno, finTurno } = req.query;
+
+    let fechaConsulta = new Date(fecha);
+
+    const [horaInicio, minutoInicio] = inicioTurno.split(':').map(Number);
+    const [horaFin, minutoFin] = finTurno.split(':').map(Number);
+
+    if (horaFin < horaInicio) {
+        fechaConsulta.setDate(fechaConsulta.getDate() - 1);
+    }
+
+    fechaConsulta = fechaConsulta.toISOString().split('T')[0];
+
+    try {
+        const informes = await InformeFinal.findAll({
+            where: {
+                [Op.and]: [
+                    { fecha_informe_final: fechaConsulta },
+                    { turno_informe_final: turno },
+                    { actividad_informe_final: true }
+                ]
+            },
+            order: [['hora_informe_final', 'DESC']]
+        });
+
+        res.json(informes);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener informe final' });
     }
 };
 

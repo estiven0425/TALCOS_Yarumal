@@ -1,4 +1,4 @@
-﻿.homeStateWindmill {
+﻿.homeFreighters {
     align-content: center;
     display: flex;
     flex-direction: column;
@@ -8,7 +8,18 @@
     height: 100%;
 }
 
-.homeStateWindmillHeader {
+.homeFreightersPrimary,
+.homeFreightersSecondary {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.homeFreightersPrimaryHeader,
+.homeFreightersSecondaryHeader {
     align-content: center;
     display: flex;
     flex-direction: column;
@@ -16,14 +27,16 @@
     justify-content: center;
 }
 
-    .homeStateWindmillHeader h1 {
+    .homeFreightersPrimaryHeader h1,
+    .homeFreightersSecondaryHeader h1 {
         font-size: 1.5rem;
         font-weight: 800;
         margin: 0px;
         text-align: center;
     }
 
-.homeStateWindmillMain {
+.homeFreightersPrimaryMain,
+.homeFreightersSecondaryMain {
     align-content: flex-start;
     display: flex;
     flex-direction: column;
@@ -34,7 +47,8 @@
     overflow: auto;
 }
 
-    .homeStateWindmillMain div {
+    .homeFreightersPrimaryMain div,
+    .homeFreightersSecondaryMain div {
         align-content: center;
         align-items: center;
         display: flex;
@@ -44,54 +58,33 @@
         width: 100%;
     }
 
-.homeStateWindmillMainPrimary,
-.homeStateWindmillMainSecondary {
-    align-content: center;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-}
+        .homeFreightersPrimaryMain div h2,
+        .homeFreightersSecondaryMain div h2,
+        .homeFreightersPrimaryMain div p,
+        .homeFreightersSecondaryMain div p {
+            font-size: 1rem;
+            margin: 0px;
+            text-align: center;
+        }
 
-    .homeStateWindmillMainPrimary h2 {
-        font-size: 1rem;
-        margin: 0px;
+    .homeFreightersPrimaryMain::-webkit-scrollbar,
+    .homeFreightersSecondaryMain::-webkit-scrollbar {
+        width: 10px;
     }
 
-    .homeStateWindmillMainPrimary p,
-    .homeStateWindmillMainSecondary p {
-        margin: 0px;
+    .homeFreightersPrimaryMain::-webkit-scrollbar-track,
+    .homeFreightersSecondaryMain::-webkit-scrollbar-track {
+        background: #0037AE;
+        border-radius: 10px;
     }
 
-    .homeStateWindmillMainSecondary p {
-        text-align: right;
+    .homeFreightersPrimaryMain::-webkit-scrollbar-thumb,
+    .homeFreightersSecondaryMain::-webkit-scrollbar-thumb {
+        background: #0095DC;
+        border-radius: 10px;
     }
 
-.homeStateWindmillMainSecondaryIcon {
-    color: #0EC839;
-    font-size: 1rem;
-}
-
-.homeStateWindmillMainSecondaryIconAlternative {
-    color: #C80E0E;
-    font-size: 1rem;
-}
-
-.homeStateWindmillMain::-webkit-scrollbar {
-    width: 10px;
-}
-
-.homeStateWindmillMain::-webkit-scrollbar-track {
-    background: #0037AE;
-    border-radius: 10px;
-}
-
-.homeStateWindmillMain::-webkit-scrollbar-thumb {
-    background: #0095DC;
-    border-radius: 10px;
-}
-
-.homeStateWindmillAlternative {
+.homeFreightersAlternative {
     align-content: center;
     display: flex;
     flex-direction: column;
