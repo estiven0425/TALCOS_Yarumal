@@ -33,6 +33,14 @@ function HomeShift() {
                     }
                 };
 
+                const calculateDuration = (start, end) => {
+                    const [startHour, startMinute] = start.split(':').map(Number);
+                    const [endHour, endMinute] = end.split(':').map(Number);
+                    const startMs = (startHour * 60 + startMinute) * 60000;
+                    const endMs = (endHour * 60 + endMinute) * 60000;
+                    return (endMs - startMs) / 3600000;
+                };
+
                 const currentShift = shifts.find(shift => compareTime(currentTime, shift.inicio_turno, shift.fin_turno));
                 const indexCurrentShift = shifts.findIndex(shift => shift.id_turno === currentShift.id_turno);
                 const nextTurn = shifts[(indexCurrentShift + 1) % shifts.length];
@@ -60,6 +68,34 @@ function HomeShift() {
                 setSupervisor(lastReport?.titular?.nombre_usuario || 'No disponible');
                 setControlCalidad(lastReport?.cdc?.nombre_usuario || 'No disponible');
 
+                const newResponse = await axios.get(`http://${localIP}:3000/novedades/turnonovedad`, {
+                    params: {
+                        fecha: currentDate,
+                        turno: currentShift.nombre_turno,
+                        inicioTurno: currentShift.inicio_turno,
+                        finTurno: currentShift.fin_turno,
+                    },
+                });
+
+                const novelty = newResponse.data;
+                const paroCount = novelty.filter(novedad => novedad.tipo_novedad === 'Paro');
+                const totalParoDuration = paroCount.reduce((total, novedad) => {
+                    const inicioParo = novedad.inicio_paro_novedad;
+                    let finParo = novedad.fin_paro_novedad;
+
+                    if (!finParo) {
+                        finParo = currentShift.fin_turno;
+                    }
+
+                    return total + calculateDuration(inicioParo, finParo);
+                }, 0);
+
+                const shiftDuration = calculateDuration(currentShift.inicio_turno, currentShift.fin_turno);
+                const efficiency = 100 - (totalParoDuration / shiftDuration) * 100;
+
+                setTotalStrike(paroCount.length);
+                setOverallEfficiency(efficiency.toFixed(2));
+
             } catch (error) {
                 console.error('Error al obtener turnos o informe inicial:', error);
             }
@@ -69,7 +105,7 @@ function HomeShift() {
     }, [localIP]);
 
     return currentShift !== null ? (
-        <motion.div className={Style.homeShift}>
+        <motion.div className={Style.homeShift} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <header className={Style.homeShiftHeader}>
                 <h1>Turno actual: {currentShift.inicio_turno} - {currentShift.fin_turno}</h1>
                 <p>Próximo turno: {nextTurn.inicio_turno} - {nextTurn.fin_turno}</p>
@@ -85,7 +121,7 @@ function HomeShift() {
                 </div>
                 <div>
                     <h2>Paros totales:</h2>
-                    {totalStrike ? (
+                    {totalStrike !== null ? (
                         <p>{totalStrike}</p>
                     ) : (
                         <p>Obteniendo datos...</p>
@@ -110,7 +146,7 @@ function HomeShift() {
             </main>
         </motion.div>
     ) : (
-        <motion.div className={Style.homeShiftAlternative}>
+        <motion.div className={Style.homeShiftAlternative} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <div className={Style.loader}></div>
         </motion.div>
     );

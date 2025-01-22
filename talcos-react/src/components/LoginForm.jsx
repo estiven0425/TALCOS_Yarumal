@@ -75,11 +75,11 @@ function LoginForm() {
                 </header>
                 <main className={Style.loginFormMain}>
                     <input
-                        id="documentoLogin"
-                        name="documentoLogin"
+                        id='documentoLogin'
+                        name='documentoLogin'
                         onChange={(e) => setDocumentoUsuario(e.target.value)}
-                        placeholder="Ingresa tu número de cédula"
-                        type="text"
+                        placeholder='Ingresa tu número de cédula'
+                        type='text'
                         value={documentoUsuario}
                     />
                     {!validationError.documentoUsuario ? (
@@ -95,11 +95,11 @@ function LoginForm() {
                         </motion.span>
                     )}
                     <input
-                        id="contrasenaLogin"
-                        name="contrasenaLogin"
+                        id='contrasenaLogin'
+                        name='contrasenaLogin'
                         onChange={(e) => setContrasenaUsuario(e.target.value)}
-                        placeholder="Ingresa tu contraseña"
-                        type="password"
+                        placeholder='Ingresa tu contraseña'
+                        type='password'
                         value={contrasenaUsuario}
                     />
                     {!validationError.contrasenaUsuario ? (
@@ -116,7 +116,7 @@ function LoginForm() {
                     )}
                 </main>
                 <footer className={Style.loginFormFooter}>
-                    <button type="submit">{loading ? (
+                    <button type='submit'>{loading ? (
                         <div className={Style.loader}></div>
                     ) :
                         'Iniciar sesión'

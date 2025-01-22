@@ -32,7 +32,7 @@ function HomeReference() {
 
                 const currentShift = shifts.find(shift => compareTime(currentTime, shift.inicio_turno, shift.fin_turno));
                 if (!currentShift) {
-                    console.error("No se pudo determinar el turno actual.");
+                    console.error('No se pudo determinar el turno actual.');
                     return;
                 }
 
@@ -76,7 +76,7 @@ function HomeReference() {
 
                 setMolino(combinedData);
             } catch (error) {
-                console.error("Error al obtener los datos: ", error);
+                console.error('Error al obtener los datos: ', error);
             }
         };
 
@@ -84,7 +84,7 @@ function HomeReference() {
     }, [localIP]);
 
     return molino.length > 0 ? (
-        <motion.div className={Style.homeReference}>
+        <motion.div className={Style.homeReference} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <header className={Style.homeReferenceHeader}>
                 <h1>Referencias en producción</h1>
             </header>
@@ -103,7 +103,7 @@ function HomeReference() {
             </main>
         </motion.div>
     ) : (
-        <motion.div className={Style.homeReferenceAlternative}>
+        <motion.div className={Style.homeReferenceAlternative} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <div className={Style.loader}></div>
         </motion.div>
     );

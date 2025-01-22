@@ -34,7 +34,7 @@ function HomeStateShift() {
 
                 const currentShift = shifts.find(shift => compareTime(currentTime, shift.inicio_turno, shift.fin_turno));
                 if (!currentShift) {
-                    console.error("No se pudo determinar el turno actual.");
+                    console.error('No se pudo determinar el turno actual.');
                     return;
                 }
 
@@ -43,21 +43,24 @@ function HomeStateShift() {
                 const responseStartReport = await axios.get(`http://${localIP}:3000/informes_iniciales/turnoinformeinicial`, {
                     params: {
                         fecha: currentDate,
-                        turno, inicioTurno,
+                        turno,
+                        inicioTurno,
                         finTurno
                     }
                 });
                 const responseNews = await axios.get(`http://${localIP}:3000/novedades/turnonovedad`, {
                     params: {
                         fecha: currentDate,
-                        turno, inicioTurno,
+                        turno,
+                        inicioTurno,
                         finTurno
                     }
                 });
                 const responseEndReport = await axios.get(`http://${localIP}:3000/informes_finales/turnoinformefinal`, {
                     params: {
                         fecha: currentDate,
-                        turno, inicioTurno,
+                        turno,
+                        inicioTurno,
                         finTurno
                     }
                 });
@@ -75,7 +78,7 @@ function HomeStateShift() {
                     endReport
                 });
             } catch (error) {
-                console.error("Error al obtener los datos: ", error);
+                console.error('Error al obtener los datos: ', error);
             }
         };
 
@@ -83,7 +86,7 @@ function HomeStateShift() {
     }, [localIP]);
 
     return shiftState ? (
-        <motion.div className={Style.homeStateShift}>
+        <motion.div className={Style.homeStateShift} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <header className={Style.homeStateShiftHeader}>
                 <h1>Estado del turno</h1>
             </header>
@@ -115,7 +118,7 @@ function HomeStateShift() {
             </main>
         </motion.div>
     ) : (
-        <motion.div className={Style.homeStateShiftAlternative}>
+        <motion.div className={Style.homeStateShiftAlternative} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <div className={Style.loader}></div>
         </motion.div>
     );

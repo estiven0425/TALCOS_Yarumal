@@ -32,7 +32,7 @@ function HomeStateWindmill() {
 
                 const currentShift = shifts.find(shift => compareTime(currentTime, shift.inicio_turno, shift.fin_turno));
                 if (!currentShift) {
-                    console.error("No se pudo determinar el turno actual.");
+                    console.error('No se pudo determinar el turno actual.');
                     return;
                 }
 
@@ -41,14 +41,16 @@ function HomeStateWindmill() {
                 const responseReport = await axios.get(`http://${localIP}:3000/informes_iniciales/turnoinformeinicial`, {
                     params: {
                         fecha: currentDate,
-                        turno, inicioTurno,
+                        turno,
+                        inicioTurno,
                         finTurno
                     }
                 });
                 const responseNews = await axios.get(`http://${localIP}:3000/novedades/turnonovedad`, {
                     params: {
                         fecha: currentDate,
-                        turno, inicioTurno,
+                        turno,
+                        inicioTurno,
                         finTurno
                     }
                 });
@@ -70,14 +72,14 @@ function HomeStateWindmill() {
                         id_molino: molino.id_molino,
                         nombre_molino: molino.nombre_molino,
                         operador: recent?.operador?.nombre_usuario || 'No se registró',
-                        horometro: report?.horometro_informe_inicial || 'No se registró',
+                        horometro: recent?.horometro_informe_inicial || recent?.horometro_fin_paro_novedad || 'No se registró',
                         paro: novelty?.inicio_paro_novedad && !novelty?.fin_paro_novedad ? novelty?.inicio_paro_novedad : null
                     };
                 });
 
                 setMolino(combinedData);
             } catch (error) {
-                console.error("Error al obtener los datos: ", error);
+                console.error('Error al obtener los datos: ', error);
             }
         };
 
@@ -85,7 +87,7 @@ function HomeStateWindmill() {
     }, [localIP]);
 
     return molino.length > 0 ? (
-        <motion.div className={Style.homeStateWindmill}>
+        <motion.div className={Style.homeStateWindmill} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <header className={Style.homeStateWindmillHeader}>
                 <h1>Estado de molinos</h1>
             </header>
@@ -104,14 +106,14 @@ function HomeStateWindmill() {
                                     <i className={`bi bi-check-circle-fill ${Style.homeStateWindmillMainSecondaryIcon}`}></i>
                                 )}
                             </p>
-                            <p>{molino.horometro}</p>
+                            <p>{molino.horometro} Hrs</p>
                         </section>
                     </div>
                 ))}
             </main>
         </motion.div>
     ) : (
-        <motion.div className={Style.homeStateWindmillAlternative}>
+        <motion.div className={Style.homeStateWindmillAlternative} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <div className={Style.loader}></div>
         </motion.div>
     );

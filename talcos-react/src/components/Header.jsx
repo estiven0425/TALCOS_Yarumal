@@ -37,7 +37,7 @@ function Header() {
 
                 setNombreUsuario(response.data.nombre_usuario);
             } catch (error) {
-                console.error("Error al obtener el usuario:", error);
+                console.error('Error al obtener el usuario: ', error);
             }
         };
         getUsuario();
@@ -51,7 +51,7 @@ function Header() {
                 <p className={Style.headerUserName}>{nombreUsuario}</p>
                 <NavBar />
             </motion.header>
-            <motion.main className={Style.main}>
+            <motion.main className={Style.main} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                 <Outlet />
             </motion.main>
         </>

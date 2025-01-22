@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    gap: 20px;
+    gap: 25px;
     height: 100%;
 }
 
@@ -26,12 +26,12 @@
 
         .home article::-webkit-scrollbar-track {
             background: #0037AE;
-            border-radius: 0px 10px 10px 0px;
+            border-radius: 10px;
         }
 
         .home article::-webkit-scrollbar-thumb {
             background: #0095DC;
-            border-radius: 0px 10px 10px 0px;
+            border-radius: 10px;
         }
 
 .grid-span-1x3 {

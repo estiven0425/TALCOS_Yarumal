@@ -58,6 +58,9 @@ app.use('/mensajes', mensajesRoutes);
 app.use('/registros', registrosRoutes);
 app.use('/login', login);
 
+// Ruta para archivos estáticos
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Ruta de verificación
 app.get('/verify', (req, res) => {
     const serverStatus = {

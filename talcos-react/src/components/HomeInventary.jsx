@@ -14,7 +14,7 @@ function HomeInventary() {
 
                 setReferencia(response.data);
             } catch (error) {
-                console.error("Error al obtener las referencias: ", error);
+                console.error('Error al obtener las referencias: ', error);
             }
         };
 
@@ -24,7 +24,7 @@ function HomeInventary() {
     const talcProduced = referencia.reduce((total, referencia) => total + referencia.cantidad_referencia, 0);
 
     return referencia.length > 0 ? (
-        <motion.div className={Style.homeInventary}>
+        <motion.div className={Style.homeInventary} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <header className={Style.homeInventaryHeader}>
                 <h1>Inventario de talco total producido</h1>
             </header>
@@ -44,7 +44,7 @@ function HomeInventary() {
             </footer>
         </motion.div>
     ) : (
-        <motion.div className={Style.homeInventaryAlternative}>
+        <motion.div className={Style.homeInventaryAlternative} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <div className={Style.loader}></div>
         </motion.div>
     );

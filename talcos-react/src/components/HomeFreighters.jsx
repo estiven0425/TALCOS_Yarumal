@@ -83,7 +83,7 @@ function HomeFreighters() {
                 setBobCat(combinedDataBobCat);
                 setMecanicos(combinedDataMecanicos);
             } catch (error) {
-                console.error("Error al obtener los datos: ", error);
+                console.error('Error al obtener los datos: ', error);
             }
         };
 
@@ -91,7 +91,7 @@ function HomeFreighters() {
     }, [localIP]);
 
     return bobCat.length > 0 || mecanicos.length > 0 ? (
-        <motion.div className={Style.homeFreighters}>
+        <motion.div className={Style.homeFreighters} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <section className={Style.homeFreightersPrimary}>
                 <header className={Style.homeFreightersPrimaryHeader}>
                     <h1>Cargueros</h1>
@@ -119,7 +119,7 @@ function HomeFreighters() {
             </section>
         </motion.div>
     ) : (
-        <motion.div className={Style.homeFreightersAlternative}>
+        <motion.div className={Style.homeFreightersAlternative} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <div className={Style.loader}></div>
         </motion.div>
     );
