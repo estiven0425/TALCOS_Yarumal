@@ -8,8 +8,8 @@ exports.leerInformeInicial = async (req, res) => {
             include: [
                 {
                     model: Usuarios,
-                    as: 'titular',
                     attributes: ['nombre_usuario'],
+                    as: 'titular',
                     foreignKey: 'titular_informe_inicial'
                 },
                 {
@@ -62,6 +62,33 @@ exports.turnoInformeInicial = async (req, res) => {
 
     try {
         const informes = await InformeInicial.findAll({
+            include: [
+                {
+                    model: Usuarios,
+                    attributes: ['nombre_usuario'],
+                    as: 'titular'
+                },
+                {
+                    model: Usuarios,
+                    attributes: ['nombre_usuario'],
+                    as: 'operador'
+                },
+                {
+                    model: Usuarios,
+                    attributes: ['nombre_usuario'],
+                    as: 'carguero'
+                },
+                {
+                    model: Usuarios,
+                    attributes: ['nombre_usuario'],
+                    as: 'mecanico'
+                },
+                {
+                    model: Usuarios,
+                    attributes: ['nombre_usuario'],
+                    as: 'cdc'
+                },
+            ],
             where: {
                 [Op.and]: [
                     { fecha_informe_inicial: fechaConsulta },
@@ -69,13 +96,6 @@ exports.turnoInformeInicial = async (req, res) => {
                     { actividad_informe_inicial: true }
                 ]
             },
-            include: [
-                { model: Usuarios, as: 'titular', attributes: ['nombre_usuario'] },
-                { model: Usuarios, as: 'operador', attributes: ['nombre_usuario'] },
-                { model: Usuarios, as: 'carguero', attributes: ['nombre_usuario'] },
-                { model: Usuarios, as: 'mecanico', attributes: ['nombre_usuario'] },
-                { model: Usuarios, as: 'cdc', attributes: ['nombre_usuario'] },
-            ],
             order: [['hora_informe_inicial', 'DESC']]
         });
 

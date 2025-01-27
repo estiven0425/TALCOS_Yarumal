@@ -7,14 +7,14 @@ exports.leerRegistro = async (req, res) => {
             include: [
                 {
                     model: Usuarios,
-                    as: 'titular',
                     attributes: ['nombre_usuario'],
+                    as: 'titular',
                     foreignKey: 'titular_registro'
                 },
                 {
                     model: Usuarios,
-                    as: 'proveedor',
                     attributes: ['nombre_usuario'],
+                    as: 'proveedor',
                     foreignKey: 'proveedor_registro'
                 }
             ],

@@ -30,5 +30,5 @@ body {
 #root {
     align-content: flex-start;
     box-sizing: border-box;
-    height: 100vh;
+    height: 100%;
 }

@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const Usuarios = require('../models/Usuarios');
 const Perfiles = require('../models/Perfiles');
@@ -8,12 +9,39 @@ exports.leerUsuario = async (req, res) => {
             include: [
                 {
                     model: Perfiles,
-                    as: 'perfil',
                     attributes: ['nombre_perfil'],
+                    as: 'perfil',
                     foreignKey: 'perfil_usuario'
                 },
             ],
             where: { actividad_usuario: true }
+        });
+
+        res.json(usuarios);
+    } catch (error) {
+        res.status(500).send('Error del servidor: ' + error);
+    }
+};
+
+exports.personalUsuario = async (req, res) => {
+    const { perfil } = req.query;
+
+    try {
+        const usuarios = await Usuarios.findAll({
+            include: [
+                {
+                    model: Perfiles,
+                    attributes: ['nombre_perfil'],
+                    as: 'perfil',
+                    foreignKey: 'perfil_usuario'
+                },
+            ],
+            where: {
+                [Op.and]: [
+                    { perfil_usuario: perfil },
+                    { actividad_usuario: true }
+                ]
+            }
         });
 
         res.json(usuarios);

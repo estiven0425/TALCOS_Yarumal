@@ -82,16 +82,6 @@
     width: 20px;
 }
 
-.loaderAlternative {
-    animation: spin 1s linear infinite;
-    border: 5px solid #0048B6;
-    border-radius: 50%;
-    border-top: 5px solid transparent;
-    box-sizing: border-box;
-    height: 15px;
-    width: 16.63px;
-}
-
 @keyframes spin {
     0% {
         transform: rotate(0deg);

@@ -1,4 +1,4 @@
-﻿import HomeFreighters from '../components/HomeFreighters';
+﻿import HomeFreighter from '../components/HomeFreighter';
 import HomeInventary from '../components/homeInventary';
 import HomeReference from '../components/HomeReference';
 import HomeShift from '../components/HomeShift';
@@ -27,7 +27,7 @@ function Home() {
                     <HomeStateShift />
                 </article>
                 <article className={Style['grid-span-2x1']}>
-                    <HomeFreighters />
+                    <HomeFreighter />
                 </article>
             </section>
         </ProtectedRoute>

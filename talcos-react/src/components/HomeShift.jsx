@@ -1,5 +1,5 @@
-﻿import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Style from './styles/home-shift.module.css';
 
@@ -17,6 +17,8 @@ function HomeShift() {
             try {
                 const response = await axios.get(`http://${localIP}:3000/turnos`);
                 const shifts = response.data;
+                const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
+                const mills = responseMills.data;
                 const currentTime = new Date();
 
                 const compareTime = (hour, start, end) => {
@@ -91,7 +93,8 @@ function HomeShift() {
                 }, 0);
 
                 const shiftDuration = calculateDuration(currentShift.inicio_turno, currentShift.fin_turno);
-                const efficiency = 100 - (totalParoDuration / shiftDuration) * 100;
+                const totalShiftHours = shiftDuration * mills.length;
+                const efficiency = 100 - (totalParoDuration / totalShiftHours) * 100;
 
                 setTotalStrike(paroCount.length);
                 setOverallEfficiency(efficiency.toFixed(2));

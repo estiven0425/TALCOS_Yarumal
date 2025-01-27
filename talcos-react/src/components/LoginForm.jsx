@@ -1,6 +1,6 @@
-﻿import { useState } from 'react';
+﻿import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import axios from 'axios';
 import Style from './styles/login-form.module.css';
 

@@ -5,9 +5,9 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
-    height: 100vh;
+    height: 100%;
     justify-content: space-around;
     left: 0px;
     position: fixed;
@@ -17,29 +17,29 @@
 
     .navBar section {
         align-content: center;
+        align-items: center;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 20px;
         justify-content: center;
     }
 
     .navBar a {
         align-content: center;
+        align-items: center;
         background-color: transparent;
         border-radius: 10px;
         box-sizing: border-box;
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: center;
-        height: 50px;
         outline: transparent 1px solid;
-        padding: 2.5px 0px 0px;
+        padding: 10px 12.5px;
         transition: all 0.5s ease-in-out;
-        width: 50px;
     }
 
         .navBar a:hover {

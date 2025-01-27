@@ -8,18 +8,18 @@ exports.leerNovedad = async (req, res) => {
             include: [
                 {
                     model: Usuarios,
-                    as: 'operador',
                     attributes: ['nombre_usuario'],
+                    as: 'operador'
                 },
                 {
                     model: Usuarios,
-                    as: 'carguero',
                     attributes: ['nombre_usuario'],
+                    as: 'carguero'
                 },
                 {
                     model: Usuarios,
-                    as: 'mecanico',
                     attributes: ['nombre_usuario'],
+                    as: 'mecanico'
                 }
             ],
             where: { actividad_novedad: true },
@@ -47,6 +47,23 @@ exports.turnoNovedad = async (req, res) => {
 
     try {
         const novedades = await Novedad.findAll({
+            include: [
+                {
+                    model: Usuarios,
+                    attributes: ['nombre_usuario'],
+                    as: 'operador'
+                },
+                {
+                    model: Usuarios,
+                    attributes: ['nombre_usuario'],
+                    as: 'carguero'
+                },
+                {
+                    model: Usuarios,
+                    attributes: ['nombre_usuario'],
+                    as: 'mecanico'
+                },
+            ],
             where: {
                 [Op.and]: [
                     { fecha_novedad: fechaFormateada },
@@ -54,11 +71,6 @@ exports.turnoNovedad = async (req, res) => {
                     { actividad_novedad: true }
                 ]
             },
-            include: [
-                { model: Usuarios, as: 'operador', attributes: ['nombre_usuario'] },
-                { model: Usuarios, as: 'carguero', attributes: ['nombre_usuario'] },
-                { model: Usuarios, as: 'mecanico', attributes: ['nombre_usuario'] },
-            ],
             order: [['hora_novedad', 'DESC']]
         });
 

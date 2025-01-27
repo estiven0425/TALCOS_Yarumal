@@ -38,7 +38,7 @@ CREATE TABLE `turnos` (
 CREATE TABLE `referencias` (
 	`id_referencia` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_referencia` VARCHAR(250) NOT NULL,
-	`cantidad_referencia` BIGINT(100) NOT NULL,
+	`cantidad_referencia` DECIMAL(5,2) NOT NULL,
 	`cliente_referencia` VARCHAR(250) NULL DEFAULT('No registrado'),
 	`actividad_referencia` BIT NOT NULL DEFAULT(1),
 	`actualizacion_referencia` TIMESTAMP NOT NULL,

@@ -1,11 +1,13 @@
-﻿import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProtectedRoute from '../utils/ProtectedRoute';
 import Style from './styles/staff.module.css';
 
 function Staff() {
     const [perfil, setPerfil] = useState([]);
+    const navigate = useNavigate();
     const localIP = import.meta.env.VITE_LOCAL_IP;
 
     useEffect(() => {
@@ -22,6 +24,10 @@ function Staff() {
         getProfile();
     }, [localIP]);
 
+    const redirect = (id_perfil) => {
+        navigate('/user', {state: id_perfil});
+    };
+
     return (
         <ProtectedRoute>
             <motion.section className={Style.staff}>
@@ -32,7 +38,7 @@ function Staff() {
                     {perfil.length > 0 ? (
                         <>
                             {perfil.map((perfil) => (
-                                <button className={Style.staffMainButton} key={perfil.id_perfil}>
+                                <button className={Style.staffMainButton} key={perfil.id_perfil} onClick={() => redirect(perfil.id_perfil)}>
                                     <h2>{perfil.nombre_perfil}</h2>
                                     <img alt="Icono" src={`http://${localIP}:3000/${perfil.icono_perfil}`}></img>
                                 </button>

@@ -1,9 +1,9 @@
-﻿import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Style from './styles/home-freighters.module.css';
+import Style from './styles/home-freighter.module.css';
 
-function HomeFreighters() {
+function HomeFreighter() {
     const [bobCat, setBobCat] = useState([]);
     const [mecanicos, setMecanicos] = useState([]);
     const localIP = import.meta.env.VITE_LOCAL_IP;
@@ -91,12 +91,12 @@ function HomeFreighters() {
     }, [localIP]);
 
     return bobCat.length > 0 || mecanicos.length > 0 ? (
-        <motion.div className={Style.homeFreighters} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <section className={Style.homeFreightersPrimary}>
-                <header className={Style.homeFreightersPrimaryHeader}>
-                    <h1>Cargueros</h1>
+        <motion.div className={Style.homeFreighter} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            <section className={Style.homeFreighterPrimary}>
+                <header className={Style.homeFreighterPrimaryHeader}>
+                    <h1>Operador de minicargadores</h1>
                 </header>
-                <main className={Style.homeFreightersPrimaryMain}>
+                <main className={Style.homeFreighterPrimaryMain}>
                     {bobCat.map(bobCat => (
                         <div key={bobCat.id_bob_cat}>
                             <h2>{bobCat.nombre_bob_cat}</h2>
@@ -105,11 +105,11 @@ function HomeFreighters() {
                     ))}
                 </main>
             </section>
-            <section className={Style.homeFreightersSecondary}>
-                <header className={Style.homeFreightersSecondaryHeader}>
+            <section className={Style.homeFreighterSecondary}>
+                <header className={Style.homeFreighterSecondaryHeader}>
                     <h1>Mecánicos</h1>
                 </header>
-                <main className={Style.homeFreightersSecondaryMain}>
+                <main className={Style.homeFreighterSecondaryMain}>
                     {mecanicos.map((mecanico, index) => (
                         <div key={index}>
                             <p>{mecanico.nombre_mecanico}</p>
@@ -119,10 +119,10 @@ function HomeFreighters() {
             </section>
         </motion.div>
     ) : (
-        <motion.div className={Style.homeFreightersAlternative} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+        <motion.div className={Style.homeFreighterAlternative} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <div className={Style.loader}></div>
         </motion.div>
     );
 }
 
-export default HomeFreighters;
+export default HomeFreighter;

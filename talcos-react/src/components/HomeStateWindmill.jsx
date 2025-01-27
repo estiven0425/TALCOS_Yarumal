@@ -1,5 +1,5 @@
-﻿import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Style from './styles/home-state-windmill.module.css';
 

@@ -1,9 +1,10 @@
 ﻿.login {
     align-content: center;
+    align-items: center;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     height: 100vh;
 }

@@ -1,9 +1,29 @@
+const { Op } = require('sequelize');
 const Perfiles = require('../models/Perfiles');
 
 exports.leerPerfil = async (req, res) => {
     try {
         const perfiles = await Perfiles.findAll({
             where: { actividad_perfil: true }
+        });
+
+        res.json(perfiles);
+    } catch (error) {
+        res.status(500).send('Error del servidor: ' + error);
+    }
+};
+
+exports.personalPerfil = async (req, res) => {
+    const { perfil } = req.query;
+
+    try {
+        const perfiles = await Perfiles.findAll({
+            where: {
+                [Op.and]: [
+                    { id_perfil: perfil },
+                    { actividad_perfil: true }
+                ]
+            }
         });
 
         res.json(perfiles);

@@ -15,7 +15,7 @@ const Referencias = sequelize.define(
             allowNull: false,
         },
         cantidad_referencia: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.DECIMAL(5, 2),
             allowNull: false,
         },
         cliente_referencia: {

@@ -1,4 +1,4 @@
-﻿.homeFreighters {
+﻿.homeFreighter {
     align-content: center;
     box-sizing: border-box;
     display: flex;
@@ -9,8 +9,8 @@
     height: 100%;
 }
 
-.homeFreightersPrimary,
-.homeFreightersSecondary {
+.homeFreighterPrimary,
+.homeFreighterSecondary {
     align-content: center;
     box-sizing: border-box;
     display: flex;
@@ -20,43 +20,43 @@
     gap: 10px;
 }
 
-.homeFreightersSecondary {
+.homeFreighterSecondary {
     padding-bottom: 10px;
 }
 
-.homeFreightersPrimaryHeader,
-.homeFreightersSecondaryHeader {
+.homeFreighterPrimaryHeader,
+.homeFreighterSecondaryHeader {
     align-content: center;
+    align-items: center;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
 }
 
-    .homeFreightersPrimaryHeader h1,
-    .homeFreightersSecondaryHeader h1 {
+    .homeFreighterPrimaryHeader h1,
+    .homeFreighterSecondaryHeader h1 {
         font-size: 1.5rem;
         font-weight: 800;
         margin: 0px;
         text-align: center;
     }
 
-.homeFreightersPrimaryMain,
-.homeFreightersSecondaryMain {
+.homeFreighterPrimaryMain,
+.homeFreighterSecondaryMain {
     align-content: flex-start;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    gap: 10px;
     justify-content: flex-start;
     width: 100%;
     overflow: auto;
 }
 
-    .homeFreightersPrimaryMain div,
-    .homeFreightersSecondaryMain div {
+    .homeFreighterPrimaryMain div,
+    .homeFreighterSecondaryMain div {
         align-content: center;
         align-items: center;
         box-sizing: border-box;
@@ -67,33 +67,33 @@
         width: 100%;
     }
 
-        .homeFreightersPrimaryMain div h2,
-        .homeFreightersSecondaryMain div h2,
-        .homeFreightersPrimaryMain div p,
-        .homeFreightersSecondaryMain div p {
+        .homeFreighterPrimaryMain div h2,
+        .homeFreighterSecondaryMain div h2,
+        .homeFreighterPrimaryMain div p,
+        .homeFreighterSecondaryMain div p {
             font-size: 1rem;
             margin: 0px;
             text-align: center;
         }
 
-    .homeFreightersPrimaryMain::-webkit-scrollbar,
-    .homeFreightersSecondaryMain::-webkit-scrollbar {
+    .homeFreighterPrimaryMain::-webkit-scrollbar,
+    .homeFreighterSecondaryMain::-webkit-scrollbar {
         width: 10px;
     }
 
-    .homeFreightersPrimaryMain::-webkit-scrollbar-track,
-    .homeFreightersSecondaryMain::-webkit-scrollbar-track {
+    .homeFreighterPrimaryMain::-webkit-scrollbar-track,
+    .homeFreighterSecondaryMain::-webkit-scrollbar-track {
         background: #0037AE;
         border-radius: 10px;
     }
 
-    .homeFreightersPrimaryMain::-webkit-scrollbar-thumb,
-    .homeFreightersSecondaryMain::-webkit-scrollbar-thumb {
+    .homeFreighterPrimaryMain::-webkit-scrollbar-thumb,
+    .homeFreighterSecondaryMain::-webkit-scrollbar-thumb {
         background: #0095DC;
         border-radius: 10px;
     }
 
-.homeFreightersAlternative {
+.homeFreighterAlternative {
     align-content: center;
     box-sizing: border-box;
     display: flex;
