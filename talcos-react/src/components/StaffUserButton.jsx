@@ -1,7 +1,10 @@
 ﻿import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Style from './styles/staff-user-button.module.css';
+import AddPerson from '../../public/addperson.svg';
+import EditPerson from '../../public/editperson.svg';
+import DeletePerson from '../../public/deleteperson.svg';
 
 function StaffUserButton() {
     const [perfil, setPerfil] = useState([]);
@@ -29,13 +32,30 @@ function StaffUserButton() {
 
     return (
         <>
-            {perfil.map((perfil) => (
-                <header key={perfil.id_perfil}>
-                    <button>crear {perfil.nombre_perfil}</button>
-                    <button>editar {perfil.nombre_perfil}</button>
-                    <button>eliminar {perfil.nombre_perfil}</button>
-                </header>
-            ))}
+            {perfil.length > 0 ? (
+                <>
+                    {perfil.map((perfil) => (
+                        <header className={Style.staffUserButtonHeader} key={perfil.id_perfil}>
+                            <button>
+                                <h2>crear {perfil.nombre_perfil.toLowerCase()}</h2>
+                                <img alt="Icono" src={AddPerson}></img>
+                            </button>
+                            <button>
+                                <h2>editar {perfil.nombre_perfil.toLowerCase()}</h2>
+                                <img alt="Icono" src={EditPerson}></img>
+                            </button>
+                            <button>
+                                <h2>eliminar {perfil.nombre_perfil.toLowerCase()}</h2>
+                                <img alt="Icono" src={DeletePerson}></img>
+                            </button>
+                        </header>
+                    ))}
+                </>
+            ) : (
+                <div className={Style.staffUserButtonAlternative}>
+                    <div className={Style.loader}></div>
+                </div>
+            )}
         </>
     );
 }

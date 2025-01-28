@@ -9,7 +9,7 @@ function StaffUser() {
         <ProtectedRoute>
             <motion.section className={Style.staffUser}>
                 <StaffUserButton />
-                <main>
+                <main className={Style.staffUserMain}>
                     <StaffUserList />
                 </main>
             </motion.section>
