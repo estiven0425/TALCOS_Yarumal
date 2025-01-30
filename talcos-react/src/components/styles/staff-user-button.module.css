@@ -6,6 +6,7 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     gap: 10px;
+    height: 30%;
     width: 100%;
 }
 
@@ -50,14 +51,14 @@
     }
 
     .staffUserButtonHeader button h2 {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         margin: 0px;
         text-align: center;
     }
 
     .staffUserButtonHeader button img {
-        height: 2.5rem;
-        width: 2.5rem;
+        height: 3rem;
+        width: 3rem;
     }
 
 .staffUserButtonAlternative {

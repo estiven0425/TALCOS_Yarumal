@@ -1,4 +1,5 @@
-﻿import { useLocation } from 'react-router-dom';
+﻿import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Style from './styles/staff-user-list.module.css';
@@ -30,7 +31,7 @@ function StaffUserList() {
     return (
         <>
             {usuario.length > 0 ? (
-                <table className={Style.staffUserMainTable}>
+                <motion.table className={Style.staffUserMainTable} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                     <thead className={Style.staffUserMainTableHead}>
                         <tr>
                             <th>Nombre</th>
@@ -51,11 +52,11 @@ function StaffUserList() {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                </motion.table>
             ) : (
-                <div className={Style.staffUserMainTableAlternative}>
-                    <div className={Style.loader}></div>
-                </div>
+                <motion.div className={Style.staffUserMainAlternative} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+                    <h2>No existen usuarios</h2>
+                </motion.div>
             )}
         </>
     );

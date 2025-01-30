@@ -1,5 +1,4 @@
-﻿import { motion } from 'framer-motion';
-import StaffUserButton from '../components/StaffUserButton';
+﻿import StaffUserButton from '../components/StaffUserButton';
 import StaffUserList from '../components/StaffUserList';
 import ProtectedRoute from '../utils/ProtectedRoute';
 import Style from './styles/staff-user.module.css';
@@ -7,12 +6,12 @@ import Style from './styles/staff-user.module.css';
 function StaffUser() {
     return (
         <ProtectedRoute>
-            <motion.section className={Style.staffUser}>
+            <section className={Style.staffUser}>
                 <StaffUserButton />
                 <main className={Style.staffUserMain}>
                     <StaffUserList />
                 </main>
-            </motion.section>
+            </section>
         </ProtectedRoute>
     );
 }

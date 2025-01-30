@@ -23,7 +23,6 @@ function LoginForm() {
         } else if (!/^[0-9]+$/.test(documentoUsuario)) {
             errors.documentoUsuario = 'El campo de documento no debe incluir letras.';
         }
-
         if (!contrasenaUsuario) {
             errors.contrasenaUsuario = 'El campo de contraseña es obligatorio.';
         } else if (contrasenaUsuario.length < 5) {
@@ -68,75 +67,73 @@ function LoginForm() {
     };
 
     return (
-        <>
-            <motion.form className={Style.loginForm} onSubmit={sendLoginForm} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-                <header className={Style.loginFormHeader}>
-                    <h1>Ingresa tus datos para acceder</h1>
-                </header>
-                <main className={Style.loginFormMain}>
-                    <input
-                        id='documentoLogin'
-                        name='documentoLogin'
-                        onChange={(e) => setDocumentoUsuario(e.target.value)}
-                        placeholder='Ingresa tu número de cédula'
-                        type='text'
-                        value={documentoUsuario}
-                    />
-                    {!validationError.documentoUsuario ? (
-                        <></>
-                    ) : (
-                        <motion.span
-                            className={Style.loginFormValidation}
-                            initial={{ zoom: 0 }}
-                            animate={{ zoom: 1 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            {validationError.documentoUsuario}
-                        </motion.span>
-                    )}
-                    <input
-                        id='contrasenaLogin'
-                        name='contrasenaLogin'
-                        onChange={(e) => setContrasenaUsuario(e.target.value)}
-                        placeholder='Ingresa tu contraseña'
-                        type='password'
-                        value={contrasenaUsuario}
-                    />
-                    {!validationError.contrasenaUsuario ? (
-                        <></>
-                    ) : (
-                        <motion.span
-                            className={Style.loginFormValidation}
-                            initial={{ zoom: 0 }}
-                            animate={{ zoom: 1 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            {validationError.contrasenaUsuario}
-                        </motion.span>
-                    )}
-                </main>
-                <footer className={Style.loginFormFooter}>
-                    <button type='submit'>{loading ? (
-                        <div className={Style.loader}></div>
-                    ) :
-                        'Iniciar sesión'
-                    }
-                    </button>
-                    {!serverError ? (
-                        <></>
-                    ) : (
-                        <motion.span
-                            className={Style.loginFormValidation}
-                            initial={{ zoom: 0 }}
-                            animate={{ zoom: 1 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            {serverError}
-                        </motion.span>
-                    )}
-                </footer>
-            </motion.form>
-        </>
+        <motion.form className={Style.loginForm} onSubmit={sendLoginForm} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            <header className={Style.loginFormHeader}>
+                <h1>Ingresa tus datos para acceder</h1>
+            </header>
+            <main className={Style.loginFormMain}>
+                <input
+                    id='documentoLogin'
+                    name='documentoLogin'
+                    onChange={(e) => setDocumentoUsuario(e.target.value)}
+                    placeholder='Ingresa tu número de cédula'
+                    type='text'
+                    value={documentoUsuario}
+                />
+                {!validationError.documentoUsuario ? (
+                    <></>
+                ) : (
+                    <motion.span
+                        className={Style.loginFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        {validationError.documentoUsuario}
+                    </motion.span>
+                )}
+                <input
+                    id='contrasenaLogin'
+                    name='contrasenaLogin'
+                    onChange={(e) => setContrasenaUsuario(e.target.value)}
+                    placeholder='Ingresa tu contraseña'
+                    type='password'
+                    value={contrasenaUsuario}
+                />
+                {!validationError.contrasenaUsuario ? (
+                    <></>
+                ) : (
+                    <motion.span
+                        className={Style.loginFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        {validationError.contrasenaUsuario}
+                    </motion.span>
+                )}
+            </main>
+            <footer className={Style.loginFormFooter}>
+                <button type='submit'>{loading ? (
+                    <div className={Style.loader}></div>
+                ) :
+                    'Iniciar sesión'
+                }
+                </button>
+                {!serverError ? (
+                    <></>
+                ) : (
+                    <motion.span
+                        className={Style.loginFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        {serverError}
+                    </motion.span>
+                )}
+            </footer>
+        </motion.form>
     );
 }
 

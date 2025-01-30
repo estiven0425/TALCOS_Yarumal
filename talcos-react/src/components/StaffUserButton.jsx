@@ -1,14 +1,13 @@
-﻿import { useEffect, useState } from 'react';
+﻿import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Style from './styles/staff-user-button.module.css';
-import AddPerson from '../../public/addperson.svg';
-import EditPerson from '../../public/editperson.svg';
-import DeletePerson from '../../public/deleteperson.svg';
 
 function StaffUserButton() {
     const [perfil, setPerfil] = useState([]);
     const location = useLocation();
+    const navigate = useNavigate();
     const profile = location.state || null;
     const localIP = import.meta.env.VITE_LOCAL_IP;
 
@@ -30,31 +29,67 @@ function StaffUserButton() {
         getProfile();
     }, [localIP, profile]);
 
+    const singularize = (word) => {
+        const exceptions = {
+            'superintendentes': 'superintendente',
+            'administradores': 'administrador'
+        };
+
+        if (exceptions[word]) {
+            return exceptions[word];
+        }
+        if (word.endsWith('ores')) {
+            return word.replace(/ores$/, 'or');
+        } else if (word.endsWith('ones')) {
+            return word.replace(/ones$/, 'ón');
+        } else if (word.endsWith('es') && !word.endsWith('iones')) {
+            return word.replace(/es$/, '');
+        } else if (word.endsWith('s')) {
+            return word.replace(/s$/, '');
+        }
+
+        return word;
+    };
+    const redirectCreate = (id_perfil) => {
+        navigate('/createuser', { state: id_perfil });
+    };
+    const redirectEdit = (id_perfil) => {
+        navigate('/edituser', { state: id_perfil });
+    };
+    const redirectDelete = (id_perfil) => {
+        navigate('/deleteuser', { state: id_perfil });
+    };
+
     return (
         <>
             {perfil.length > 0 ? (
                 <>
                     {perfil.map((perfil) => (
-                        <header className={Style.staffUserButtonHeader} key={perfil.id_perfil}>
-                            <button>
-                                <h2>crear {perfil.nombre_perfil.toLowerCase()}</h2>
-                                <img alt="Icono" src={AddPerson}></img>
+                        <motion.header
+                            className={Style.staffUserButtonHeader}
+                            key={perfil.id_perfil}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}>
+                            <button onClick={() => redirectCreate(perfil.id_perfil)} type='button'>
+                                <h2>crear {singularize(perfil.nombre_perfil.toLowerCase())}</h2>
+                                <img alt='Icono' src='/addperson.svg'></img>
                             </button>
-                            <button>
-                                <h2>editar {perfil.nombre_perfil.toLowerCase()}</h2>
-                                <img alt="Icono" src={EditPerson}></img>
+                            <button onClick={() => redirectEdit(perfil.id_perfil)} type='button'>
+                                <h2>editar {singularize(perfil.nombre_perfil.toLowerCase())}</h2>
+                                <img alt='Icono' src='/editperson.svg'></img>
                             </button>
-                            <button>
-                                <h2>eliminar {perfil.nombre_perfil.toLowerCase()}</h2>
-                                <img alt="Icono" src={DeletePerson}></img>
+                            <button onClick={() => redirectDelete(perfil.id_perfil)} type='button'>
+                                <h2>eliminar {singularize(perfil.nombre_perfil.toLowerCase())}</h2>
+                                <img alt='Icono' src='/deleteperson.svg'></img>
                             </button>
-                        </header>
+                        </motion.header>
                     ))}
                 </>
             ) : (
-                <div className={Style.staffUserButtonAlternative}>
+                <motion.div className={Style.staffUserButtonAlternative} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                     <div className={Style.loader}></div>
-                </div>
+                </motion.div>
             )}
         </>
     );

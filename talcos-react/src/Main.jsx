@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Header from './components/Header';
 import Login from './pages/Login';
 import Staff from './pages/Staff';
+import StaffCreateUser from './pages/StaffCreateUser';
 import StaffUser from './pages/StaffUser';
 import './styles/main.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')).render(
                     <Route path='home' element={<Home />} />
                     <Route path='staff' element={<Staff />} />
                     <Route path='user' element={<StaffUser />} />
+                    <Route path='createuser' element={<StaffCreateUser />} />
                 </Route>
                 <Route path="*" element={<Error />} />
             </Routes>

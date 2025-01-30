@@ -30,7 +30,7 @@ function Staff() {
 
     return (
         <ProtectedRoute>
-            <motion.section className={Style.staff}>
+            <motion.section className={Style.staff} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                 <header className={Style.staffHeader}>
                     <h1>Seleccione un perfil para acceder a sus usuarios y funciones</h1>
                 </header>
@@ -38,9 +38,9 @@ function Staff() {
                     {perfil.length > 0 ? (
                         <>
                             {perfil.map((perfil) => (
-                                <button className={Style.staffMainButton} key={perfil.id_perfil} onClick={() => redirect(perfil.id_perfil)}>
+                                <button className={Style.staffMainButton} key={perfil.id_perfil} onClick={() => redirect(perfil.id_perfil)} type='button'>
                                     <h2>{perfil.nombre_perfil}</h2>
-                                    <img alt="Icono" src={`http://${localIP}:3000/${perfil.icono_perfil}`}></img>
+                                    <img alt='Icono' src={`http://${localIP}:3000/${perfil.icono_perfil}`}></img>
                                 </button>
                             ))}
                         </>
