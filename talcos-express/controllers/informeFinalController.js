@@ -46,30 +46,10 @@ exports.turnoInformeFinal = async (req, res) => {
 };
 
 exports.crearInformeFinal = async (req, res) => {
-    const {
-        fecha_informe_final,
-        hora_informe_final,
-        turno_informe_final,
-        molino_informe_final,
-        referencia_informe_final,
-        bulto_informe_final,
-        cantidad_informe_final,
-        horometro_informe_final,
-        observacion_informe_final
-    } = req.body;
+    const informe_final = req.body;
 
     try {
-        const nuevoInformeFinal = await InformeFinal.create({
-            fecha_informe_final,
-            hora_informe_final,
-            turno_informe_final,
-            molino_informe_final,
-            referencia_informe_final,
-            bulto_informe_final,
-            cantidad_informe_final,
-            horometro_informe_final,
-            observacion_informe_final
-        });
+        const nuevoInformeFinal = await InformeFinal.bulkCreate(informe_final);
 
         res.status(201).json(nuevoInformeFinal);
     } catch (error) {
@@ -78,42 +58,34 @@ exports.crearInformeFinal = async (req, res) => {
 };
 
 exports.actualizarInformeFinal = async (req, res) => {
-    const {
-        id_informe_final,
-        fecha_informe_final,
-        hora_informe_final,
-        turno_informe_final,
-        molino_informe_final,
-        referencia_informe_final,
-        bulto_informe_final,
-        cantidad_informe_final,
-        horometro_informe_final,
-        observacion_informe_final,
-        actividad_informe_final
-    } = req.body;
+    const informe_final = req.body;
 
     try {
-        const informeFinal = await InformeFinal.findByPk(id_informe_final);
+        const updatePromises = informe_final.map(async (informe) => {
+            const informeFinal = await InformeFinal.findByPk(informe.id_informe_final);
 
-        if (informeFinal) {
-            await informeFinal.update({
-                fecha_informe_final,
-                hora_informe_final,
-                turno_informe_final,
-                molino_informe_final,
-                referencia_informe_final,
-                bulto_informe_final,
-                cantidad_informe_final,
-                horometro_informe_final,
-                observacion_informe_final,
-                actividad_informe_final
-            });
+            if (informeFinal) {
+                await informeFinal.update({
+                    fecha_informe_final: informe.fecha_informe_final,
+                    hora_informe_final: informe.hora_informe_final,
+                    turno_informe_final: informe.turno_informe_final,
+                    molino_informe_final: informe.molino_informe_final,
+                    referencia_informe_final: informe.referencia_informe_final,
+                    bulto_informe_final: informe.bulto_informe_final,
+                    cantidad_informe_final: informe.cantidad_informe_final,
+                    horometro_informe_final: informe.horometro_informe_final,
+                    observacion_informe_final: informe.observacion_informe_final,
+                    actividad_informe_final: informe.actividad_informe_final
+                });
+                return informeFinal;
+            } else {
+                throw new Error(`Informe final con id ${informe.id_informe_final} no encontrado`);
+            }
+        });
 
-            res.json(informeFinal);
-        } else {
-            res.status(404).json({ error: 'Informe final no encontrado' });
-        }
+        const resultados = await Promise.all(updatePromises);
+        res.json(resultados);
     } catch (error) {
-        res.status(500).json({ error: 'Error al actualizar el informe final' });
+        res.status(500).json({ error: 'Error al actualizar los informes finales' });
     }
 };

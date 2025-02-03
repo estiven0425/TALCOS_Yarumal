@@ -13,6 +13,7 @@ function StaffCreateUser() {
     const [correoUsuario, setCorreoUsuario] = useState('');
     const [contratoUsuario, setContratoUsuario] = useState('');
     const [contrasenaUsuario, setContrasenaUsuario] = useState('');
+    const [passwordVerify, setpasswordVerify] = useState('');
     const [loading, setLoading] = useState(false);
     const [SendStatus, setSendStatus] = useState(false);
     const [validationError, setValidationError] = useState({});
@@ -39,6 +40,15 @@ function StaffCreateUser() {
 
         getProfile();
     }, [localIP, profile]);
+    useEffect(() => {
+        if (SendStatus) {
+            const timer = setTimeout(() => {
+                navigate('/user', { state: perfil.id_perfil });
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [SendStatus, navigate, perfil.id_perfil]);
 
     const singularize = (word) => {
         const exceptions = {
@@ -90,6 +100,9 @@ function StaffCreateUser() {
         } else if (contrasenaUsuario.length < 5) {
             errors.contrasenaUsuario = 'La contraseña debe tener al menos 5 caracteres.';
         }
+        if (contrasenaUsuario !== passwordVerify) {
+            errors.passwordVerify = 'Las contraseñas no coinciden.';
+        }
 
         setValidationError(errors);
         setLoading(false);
@@ -140,128 +153,163 @@ function StaffCreateUser() {
             <motion.section className={Style.staffCreateUser} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                 {SendStatus === true ? (
                     <div className={Style.staffCreateUserFormAlternative}>
-                        <h1>{perfil.nombre_perfil ? singularize(perfil.nombre_perfil.toLowerCase()) : 'Perfil'} creado con éxtio</h1>
+                        <h1>{perfil.nombre_perfil ? singularize(perfil.nombre_perfil.toLowerCase()) : 'Usuario'} creado con éxtio</h1>
                     </div>
                 ) : (
                     <form className={Style.staffCreateUserForm} onSubmit={sendCreateUser}>
-                            <header className={Style.staffCreateUserFormHeader}>
-                            <h1>Complete los datos para crear un nuevo {perfil.nombre_perfil ? singularize(perfil.nombre_perfil.toLowerCase()) : 'Perfil'}</h1>
+                        <header className={Style.staffCreateUserFormHeader}>
+                            <h1>Complete los datos para crear un nuevo {perfil.nombre_perfil ? singularize(perfil.nombre_perfil.toLowerCase()) : 'Usuario'}</h1>
                         </header>
                         <main className={Style.staffCreateUserFormMain}>
-                            <label htmlFor="nombreUsuario">Nombre</label>
-                            <input
-                                id='nombreUsuario'
-                                name='nombreUsuario'
-                                onChange={(e) => setNombreUsuario(e.target.value)}
-                                placeholder='Ingresa el nombre del usuario'
-                                type='text'
-                                value={nombreUsuario}
-                            />
-                            {!validationError.nombreUsuario ? (
-                                <></>
-                            ) : (
-                                <motion.span
-                                    className={Style.staffCreateUserFormValidation}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    {validationError.nombreUsuario}
-                                </motion.span>
-                            )}
-                            <label htmlFor="documentoUsuario">Documento de identidad</label>
-                            <input
-                                id='documentoUsuario'
-                                name='documentoUsuario'
-                                onChange={(e) => setDocumentoUsuario(e.target.value)}
-                                placeholder='Ingresa el documento del usuario'
-                                type='text'
-                                value={documentoUsuario}
-                            />
-                            {!validationError.documentoUsuario ? (
-                                <></>
-                            ) : (
-                                <motion.span
-                                    className={Style.staffCreateUserFormValidation}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    {validationError.documentoUsuario}
-                                </motion.span>
-                            )}
-                            <label htmlFor="telefonoUsuario">Teléfono</label>
-                            <input
-                                id='telefonoUsuario'
-                                name='telefonoUsuario'
-                                onChange={(e) => setTelefonoUsuario(e.target.value)}
-                                placeholder='Ingresa el teléfono del usuario'
-                                type='text'
-                                value={telefonoUsuario}
-                            />
-                            {!validationError.telefonoUsuario ? (
-                                <></>
-                            ) : (
-                                <motion.span
-                                    className={Style.staffCreateUserFormValidation}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    {validationError.telefonoUsuario}
-                                </motion.span>
-                            )}
-                            <label htmlFor="correoUsuario">Correo electrónico</label>
-                            <input
-                                id='correoUsuario'
-                                name='correoUsuario'
-                                onChange={(e) => setCorreoUsuario(e.target.value)}
-                                placeholder='Ingresa el correo del usuario'
-                                type='text'
-                                value={correoUsuario}
-                            />
-                            {!validationError.correoUsuario ? (
-                                <></>
-                            ) : (
-                                <motion.span
-                                    className={Style.staffCreateUserFormValidation}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    {validationError.correoUsuario}
-                                </motion.span>
-                            )}
-                            <label htmlFor="contratoUsuario">Contrato</label>
-                            <input
-                                id='contratoUsuario'
-                                name='contratoUsuario'
-                                onChange={(e) => setContratoUsuario(e.target.value)}
-                                placeholder='Ingresa el número de contrato del usuario'
-                                type='text'
-                                value={contratoUsuario}
-                            />
-                            <label htmlFor="contrasenaUsuario">Contraseña</label>
-                            <input
-                                id='contrasenaUsuario'
-                                name='contrasenaUsuario'
-                                onChange={(e) => setContrasenaUsuario(e.target.value)}
-                                placeholder='Ingresa la contraseña del usuario'
-                                type='password'
-                                value={contrasenaUsuario}
-                            />
-                            {!validationError.contrasenaUsuario ? (
-                                <></>
-                            ) : (
-                                <motion.span
-                                    className={Style.staffCreateUserFormValidation}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    {validationError.contrasenaUsuario}
-                                </motion.span>
-                            )}
+                            <fieldset>
+                                <label htmlFor="nombreUsuario">Nombre</label>
+                                <input
+                                    id='nombreUsuario'
+                                    name='nombreUsuario'
+                                    onChange={(e) => setNombreUsuario(e.target.value)}
+                                    placeholder='Ingresa el nombre del usuario'
+                                    type='text'
+                                    value={nombreUsuario}
+                                />
+                                {!validationError.nombreUsuario ? (
+                                    <></>
+                                ) : (
+                                    <motion.span
+                                        className={Style.staffCreateUserFormValidation}
+                                        initial={{ zoom: 0 }}
+                                        animate={{ zoom: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        {validationError.nombreUsuario}
+                                    </motion.span>
+                                )}
+                            </fieldset>
+                            <fieldset>
+                                <label htmlFor="documentoUsuario">Documento de identidad</label>
+                                <input
+                                    id='documentoUsuario'
+                                    name='documentoUsuario'
+                                    onChange={(e) => setDocumentoUsuario(e.target.value)}
+                                    placeholder='Ingresa el documento del usuario'
+                                    type='text'
+                                    value={documentoUsuario}
+                                />
+                                {!validationError.documentoUsuario ? (
+                                    <></>
+                                ) : (
+                                    <motion.span
+                                        className={Style.staffCreateUserFormValidation}
+                                        initial={{ zoom: 0 }}
+                                        animate={{ zoom: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        {validationError.documentoUsuario}
+                                    </motion.span>
+                                )}
+                            </fieldset>
+                            <fieldset>
+                                <label htmlFor="telefonoUsuario">Teléfono</label>
+                                <input
+                                    id='telefonoUsuario'
+                                    name='telefonoUsuario'
+                                    onChange={(e) => setTelefonoUsuario(e.target.value)}
+                                    placeholder='Ingresa el teléfono del usuario'
+                                    type='text'
+                                    value={telefonoUsuario}
+                                />
+                                {!validationError.telefonoUsuario ? (
+                                    <></>
+                                ) : (
+                                    <motion.span
+                                        className={Style.staffCreateUserFormValidation}
+                                        initial={{ zoom: 0 }}
+                                        animate={{ zoom: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        {validationError.telefonoUsuario}
+                                    </motion.span>
+                                )}
+                            </fieldset>
+                            <fieldset>
+                                <label htmlFor="correoUsuario">Correo electrónico</label>
+                                <input
+                                    id='correoUsuario'
+                                    name='correoUsuario'
+                                    onChange={(e) => setCorreoUsuario(e.target.value)}
+                                    placeholder='Ingresa el correo del usuario'
+                                    type='text'
+                                    value={correoUsuario}
+                                />
+                                {!validationError.correoUsuario ? (
+                                    <></>
+                                ) : (
+                                    <motion.span
+                                        className={Style.staffCreateUserFormValidation}
+                                        initial={{ zoom: 0 }}
+                                        animate={{ zoom: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        {validationError.correoUsuario}
+                                    </motion.span>
+                                )}
+                            </fieldset>
+                                <fieldset className={Style.staffCreateUserFormMainEspecial}>
+                                <label htmlFor="contratoUsuario">Contrato</label>
+                                <input
+                                    id='contratoUsuario'
+                                    name='contratoUsuario'
+                                    onChange={(e) => setContratoUsuario(e.target.value)}
+                                    placeholder='Ingresa el número de contrato del usuario'
+                                    type='text'
+                                    value={contratoUsuario}
+                                />
+                            </fieldset>
+                            <fieldset>
+                                <label htmlFor="contrasenaUsuario">Contraseña</label>
+                                <input
+                                    id='contrasenaUsuario'
+                                    name='contrasenaUsuario'
+                                    onChange={(e) => setContrasenaUsuario(e.target.value)}
+                                    placeholder='Ingresa la contraseña del usuario'
+                                    type='password'
+                                    value={contrasenaUsuario}
+                                />
+                                {!validationError.contrasenaUsuario ? (
+                                    <></>
+                                ) : (
+                                    <motion.span
+                                        className={Style.staffCreateUserFormValidation}
+                                        initial={{ zoom: 0 }}
+                                        animate={{ zoom: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        {validationError.contrasenaUsuario}
+                                    </motion.span>
+                                )}
+                            </fieldset>
+                            <fieldset>
+                                <label htmlFor="passwordVerify">Confirmar contraseña</label>
+                                <input
+                                    id='passwordVerify'
+                                    name='passwordVerify'
+                                    onChange={(e) => setpasswordVerify(e.target.value)}
+                                    placeholder='Repite la contraseña del usuario'
+                                    type='password'
+                                    value={passwordVerify}
+                                />
+                                {!validationError.passwordVerify ? (
+                                    <></>
+                                ) : (
+                                    <motion.span
+                                        className={Style.staffCreateUserFormValidation}
+                                        initial={{ zoom: 0 }}
+                                        animate={{ zoom: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        {validationError.passwordVerify}
+                                    </motion.span>
+                                )}
+                            </fieldset>
                         </main>
                         <footer className={Style.staffCreateUserFormFooter}>
                             <button onClick={() => redirectStaffUser(perfil.id_perfil)} type='button'>
@@ -277,12 +325,12 @@ function StaffCreateUser() {
                                 <></>
                             ) : (
                                 <motion.span
-                                    className={Style.staffCreateUserFormValidation}
+                                    className={Style.staffCreateUserFormValidationServer}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.5 }}
                                 >
-                                    {serverError}
+                                    {serverError} aushdiahdasdjasjdado
                                 </motion.span>
                             )}
                         </footer>

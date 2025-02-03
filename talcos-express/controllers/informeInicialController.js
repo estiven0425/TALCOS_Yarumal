@@ -106,40 +106,10 @@ exports.turnoInformeInicial = async (req, res) => {
 };
 
 exports.crearInformeInicial = async (req, res) => {
-    const {
-        titular_informe_inicial,
-        fecha_informe_inicial,
-        hora_informe_inicial,
-        turno_informe_inicial,
-        bob_cat_informe_inicial,
-        molino_informe_inicial,
-        referencia_informe_inicial,
-        bulto_informe_inicial,
-        horometro_informe_inicial,
-        operador_informe_inicial,
-        carguero_informe_inicial,
-        mecanico_informe_inicial,
-        cdc_informe_inicial,
-        observacion_informe_inicial
-    } = req.body;
+    const informe_inicial = req.body;
 
     try {
-        const nuevoInforme = await InformeInicial.create({
-            titular_informe_inicial,
-            fecha_informe_inicial,
-            hora_informe_inicial,
-            turno_informe_inicial,
-            bob_cat_informe_inicial,
-            molino_informe_inicial,
-            referencia_informe_inicial,
-            bulto_informe_inicial,
-            horometro_informe_inicial,
-            operador_informe_inicial,
-            carguero_informe_inicial,
-            mecanico_informe_inicial,
-            cdc_informe_inicial,
-            observacion_informe_inicial
-        });
+        const nuevoInforme = await InformeInicial.bulkCreate(informe_inicial);
 
         res.status(201).json(nuevoInforme);
     } catch (error) {
@@ -148,52 +118,39 @@ exports.crearInformeInicial = async (req, res) => {
 };
 
 exports.actualizarInformeInicial = async (req, res) => {
-    const {
-        id_informe_inicial,
-        titular_informe_inicial,
-        fecha_informe_inicial,
-        hora_informe_inicial,
-        turno_informe_inicial,
-        bob_cat_informe_inicial,
-        molino_informe_inicial,
-        referencia_informe_inicial,
-        bulto_informe_inicial,
-        horometro_informe_inicial,
-        operador_informe_inicial,
-        carguero_informe_inicial,
-        mecanico_informe_inicial,
-        cdc_informe_inicial,
-        observacion_informe_inicial,
-        actividad_informe_inicial
-    } = req.body;
+    const informe_inicial = req.body;
 
     try {
-        const informe = await InformeInicial.findByPk(id_informe_inicial);
+        const updatePromises = informe_inicial.map(async (informe) => {
+            const informeInicial = await InformeInicial.findByPk(informe.id_informe_inicial);
 
-        if (informe) {
-            await informe.update({
-                titular_informe_inicial,
-                fecha_informe_inicial,
-                hora_informe_inicial,
-                turno_informe_inicial,
-                bob_cat_informe_inicial,
-                molino_informe_inicial,
-                referencia_informe_inicial,
-                bulto_informe_inicial,
-                horometro_informe_inicial,
-                operador_informe_inicial,
-                carguero_informe_inicial,
-                mecanico_informe_inicial,
-                cdc_informe_inicial,
-                observacion_informe_inicial,
-                actividad_informe_inicial
-            });
+            if (informeInicial) {
+                await informeInicial.update({
+                    titular_informe_inicial: informe.titular_informe_inicial,
+                    fecha_informe_inicial: informe.fecha_informe_inicial,
+                    hora_informe_inicial: informe.hora_informe_inicial,
+                    turno_informe_inicial: informe.turno_informe_inicial,
+                    bob_cat_informe_inicial: informe.bob_cat_informe_inicial,
+                    molino_informe_inicial: informe.molino_informe_inicial,
+                    referencia_informe_inicial: informe.referencia_informe_inicial,
+                    bulto_informe_inicial: informe.bulto_informe_inicial,
+                    horometro_informe_inicial: informe.horometro_informe_inicial,
+                    operador_informe_inicial: informe.operador_informe_inicial,
+                    carguero_informe_inicial: informe.carguero_informe_inicial,
+                    mecanico_informe_inicial: informe.mecanico_informe_inicial,
+                    cdc_informe_inicial: informe.cdc_informe_inicial,
+                    observacion_informe_inicial: informe.observacion_informe_inicial,
+                    actividad_informe_inicial: informe.actividad_informe_inicial
+                });
+                return informeInicial;
+            } else {
+                throw new Error(`Informe inicial con id ${informe.id_informe_inicial} no encontrado`);
+            }
+        });
 
-            res.json(informe);
-        } else {
-            res.status(404).json({ error: 'Informe inicial no encontrado' });
-        }
+        const resultados = await Promise.all(updatePromises);
+        res.json(resultados);
     } catch (error) {
-        res.status(500).json({ error: 'Error al actualizar el informe inicial' });
+        res.status(500).json({ error: 'Error al actualizar los informes iniciales' });
     }
 };

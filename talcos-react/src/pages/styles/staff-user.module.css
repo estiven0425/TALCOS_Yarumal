@@ -17,4 +17,19 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
     height: 100%;
+    overflow: auto;
 }
+
+    .staffUserMain::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .staffUserMain::-webkit-scrollbar-track {
+        background: #0037AE;
+        border-radius: 10px;
+    }
+
+    .staffUserMain::-webkit-scrollbar-thumb {
+        background: #0095DC;
+        border-radius: 10px;
+    }

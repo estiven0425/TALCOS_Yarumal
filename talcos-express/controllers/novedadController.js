@@ -81,46 +81,10 @@ exports.turnoNovedad = async (req, res) => {
 };
 
 exports.crearNovedad = async (req, res) => {
-    const {
-        fecha_novedad,
-        hora_novedad,
-        turno_novedad,
-        tipo_novedad,
-        molino_novedad,
-        referencia_novedad,
-        bulto_novedad,
-        operador_novedad,
-        bob_cat,
-        carguero_novedad,
-        mecanico_novedad,
-        inicio_paro_novedad,
-        fin_paro_novedad,
-        horometro_inicio_paro_novedad,
-        horometro_fin_paro_novedad,
-        motivo_paro_novedad,
-        observacion_novedad
-    } = req.body;
+    const novedad = req.body;
 
     try {
-        const nuevaNovedad = await Novedad.create({
-            fecha_novedad,
-            hora_novedad,
-            turno_novedad,
-            tipo_novedad,
-            molino_novedad,
-            referencia_novedad,
-            bulto_novedad,
-            operador_novedad,
-            bob_cat,
-            carguero_novedad,
-            mecanico_novedad,
-            inicio_paro_novedad,
-            fin_paro_novedad,
-            horometro_inicio_paro_novedad,
-            horometro_fin_paro_novedad,
-            motivo_paro_novedad,
-            observacion_novedad
-        });
+        const nuevaNovedad = await Novedad.bulkCreate(novedad);
 
         res.status(201).json(nuevaNovedad);
     } catch (error) {
@@ -129,58 +93,42 @@ exports.crearNovedad = async (req, res) => {
 };
 
 exports.actualizarNovedad = async (req, res) => {
-    const {
-        id_novedad,
-        fecha_novedad,
-        hora_novedad,
-        turno_novedad,
-        tipo_novedad,
-        molino_novedad,
-        referencia_novedad,
-        bulto_novedad,
-        operador_novedad,
-        bob_cat,
-        carguero_novedad,
-        mecanico_novedad,
-        inicio_paro_novedad,
-        fin_paro_novedad,
-        horometro_inicio_paro_novedad,
-        horometro_fin_paro_novedad,
-        motivo_paro_novedad,
-        observacion_novedad,
-        actividad_novedad
-    } = req.body;
+    const novedad = req.body;
 
     try {
-        const novedad = await Novedad.findByPk(id_novedad);
+        const updatePromises = novedad.map(async (novedad) => {
+            const novedadExistente = await Novedad.findByPk(novedad.id_novedad);
 
-        if (novedad) {
-            await novedad.update({
-                fecha_novedad,
-                hora_novedad,
-                turno_novedad,
-                tipo_novedad,
-                molino_novedad,
-                referencia_novedad,
-                bulto_novedad,
-                operador_novedad,
-                bob_cat,
-                carguero_novedad,
-                mecanico_novedad,
-                inicio_paro_novedad,
-                fin_paro_novedad,
-                horometro_inicio_paro_novedad,
-                horometro_fin_paro_novedad,
-                motivo_paro_novedad,
-                observacion_novedad,
-                actividad_novedad
-            });
+            if (novedadExistente) {
+                await novedadExistente.update({
+                    fecha_novedad: novedad.fecha_novedad,
+                    hora_novedad: novedad.hora_novedad,
+                    turno_novedad: novedad.turno_novedad,
+                    tipo_novedad: novedad.tipo_novedad,
+                    molino_novedad: novedad.molino_novedad,
+                    referencia_novedad: novedad.referencia_novedad,
+                    bulto_novedad: novedad.bulto_novedad,
+                    operador_novedad: novedad.operador_novedad,
+                    bob_cat: novedad.bob_cat,
+                    carguero_novedad: novedad.carguero_novedad,
+                    mecanico_novedad: novedad.mecanico_novedad,
+                    inicio_paro_novedad: novedad.inicio_paro_novedad,
+                    fin_paro_novedad: novedad.fin_paro_novedad,
+                    horometro_inicio_paro_novedad: novedad.horometro_inicio_paro_novedad,
+                    horometro_fin_paro_novedad: novedad.horometro_fin_paro_novedad,
+                    motivo_paro_novedad: novedad.motivo_paro_novedad,
+                    observacion_novedad: novedad.observacion_novedad,
+                    actividad_novedad: novedad.actividad_novedad
+                });
+                return novedadExistente;
+            } else {
+                throw new Error(`Novedad con id ${novedad.id_novedad} no encontrada`);
+            }
+        });
 
-            res.json(novedad);
-        } else {
-            res.status(404).json({ error: 'Novedad no encontrada' });
-        }
+        const resultados = await Promise.all(updatePromises);
+        res.json(resultados);
     } catch (error) {
-        res.status(500).json({ error: 'Error al actualizar la novedad' });
+        res.status(500).json({ error: 'Error al actualizar las novedades' });
     }
 };
