@@ -114,3 +114,26 @@ exports.actualizarUsuario = async (req, res) => {
         res.status(500).json({ error: 'Error al actualizar el usuario' });
     }
 };
+
+exports.eliminarUsuario = async (req, res) => {
+    const {
+        id_usuario,
+        actividad_usuario
+    } = req.body;
+
+    try {
+        const usuario = await Usuarios.findByPk(id_usuario);
+
+        if (usuario) {
+            await usuario.update({
+                actividad_usuario
+            });
+
+            res.json(usuario);
+        } else {
+            res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar el usuario' });
+    }
+};

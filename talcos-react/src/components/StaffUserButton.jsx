@@ -54,10 +54,10 @@ function StaffUserButton() {
         navigate('/createuser', { state: id_perfil });
     };
     const redirectEdit = (id_perfil) => {
-        navigate('/edituser', { state: id_perfil });
+        navigate('/listedituser', { state: id_perfil });
     };
     const redirectDelete = (id_perfil) => {
-        navigate('/deleteuser', { state: id_perfil });
+        navigate('/listdeleteuser', { state: id_perfil });
     };
 
     return (

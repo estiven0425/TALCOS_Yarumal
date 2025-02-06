@@ -7,7 +7,6 @@
 .staffUserMainTableHead,
 .staffUserMainTableBody {
     width: 100%;
-    border: 2px solid black;
 }
 
     .staffUserMainTableHead tr,
@@ -22,6 +21,7 @@
 
         .staffUserMainTableBody tr td {
             font-size: 1rem;
+            padding: 5px;
             text-align: center;
         }
 

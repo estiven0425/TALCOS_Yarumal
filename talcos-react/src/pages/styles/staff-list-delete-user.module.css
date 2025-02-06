@@ -1,0 +1,142 @@
+﻿.staffListDeleteUser {
+    align-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: space-between;
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+}
+
+.staffListDeleteUserHeader {
+    box-sizing: border-box;
+    width: 100%
+}
+
+    .staffListDeleteUserHeader h1 {
+        font-size: 1.5rem;
+        margin: 0px;
+        text-align: center;
+    }
+
+.staffListDeleteUserMain {
+    align-content: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+}
+
+.staffListDeleteUserMainTable {
+    border-collapse: separate;
+    border-spacing: 0px 10px;
+    width: 100%;
+}
+
+.staffListDeleteUserMainTableHead,
+.staffListDeleteUserMainTableBody {
+    width: 100%;
+}
+
+    .staffListDeleteUserMainTableHead tr,
+    .staffListDeleteUserMainTableBody tr {
+        width: 100%;
+    }
+
+        .staffListDeleteUserMainTableHead tr th {
+            font-size: 1rem;
+            text-align: center;
+        }
+
+    .staffListDeleteUserMainTableBody tr {
+        cursor: pointer;
+        outline: transparent 1px solid;
+        transition: all 0.5s ease-in-out;
+    }
+
+        .staffListDeleteUserMainTableBody tr:hover,
+        .staffListDeleteUserMainTableBody tr:focus {
+            background-color: #0048B6;
+        }
+
+
+        .staffListDeleteUserMainTableBody tr td {
+            font-size: 1rem;
+            padding: 5px;
+            text-align: center;
+        }
+
+            .staffListDeleteUserMainTableBody tr td:first-child {
+                border-radius: 20px 0px 0px 20px;
+            }
+
+            .staffListDeleteUserMainTableBody tr td:last-child {
+                border-radius: 0px 20px 20px 0px;
+            }
+
+.staffListDeleteUserMainAlternative {
+    align-content: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    height: 100%;
+}
+
+    .staffListDeleteUserMainAlternative h2 {
+        margin: 0px;
+        text-align: center;
+    }
+
+.staffListDeleteUserFooter {
+    align-content: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: 90%;
+}
+
+    .staffListDeleteUserFooter button {
+        background-color: #0037AE;
+        border-color: transparent;
+        border-radius: 20px;
+        color: #ffffff;
+        cursor: pointer;
+        max-height: 49px;
+        outline: transparent 1px solid;
+        padding: 15px;
+        transition: all 0.5s ease-in-out;
+    }
+
+        .staffListDeleteUserFooter button:hover {
+            background: #0095DC;
+        }
+
+        .staffListDeleteUserFooter button:focus {
+            outline: #0095DC 1px solid;
+        }
+
+.staffListDeleteUserMain::-webkit-scrollbar {
+    width: 10px;
+}
+
+.staffListDeleteUserMain::-webkit-scrollbar-track {
+    background: #0037AE;
+    border-radius: 10px;
+}
+
+.staffListDeleteUserMain::-webkit-scrollbar-thumb {
+    background: #0095DC;
+    border-radius: 10px;
+}

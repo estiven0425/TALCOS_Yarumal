@@ -3,11 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProtectedRoute from '../utils/ProtectedRoute';
-import Style from './styles/staff-create-user.module.css';
+import Style from './styles/staff-edit-user.module.css';
 
-function StaffCreateUser() {
+function StaffEditUser() {
     const [perfil, setPerfil] = useState([]);
+    const [idUsuario, setIdUsuario] = useState('');
     const [nombreUsuario, setNombreUsuario] = useState('');
+    const [perfilUsuario, setPerfilUsuario] = useState('');
     const [documentoUsuario, setDocumentoUsuario] = useState('');
     const [telefonoUsuario, setTelefonoUsuario] = useState('');
     const [correoUsuario, setCorreoUsuario] = useState('');
@@ -20,7 +22,7 @@ function StaffCreateUser() {
     const [serverError, setServerError] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const profile = location.state || null;
+    const user = location.state || null;
     const localIP = import.meta.env.VITE_LOCAL_IP;
 
     useEffect(() => {
@@ -28,27 +30,29 @@ function StaffCreateUser() {
             try {
                 const response = await axios.get(`http://${localIP}:3000/perfiles/personalperfil`, {
                     params: {
-                        perfil: profile
+                        perfil: user.perfil_usuario
                     }
                 });
 
                 setPerfil(response.data[0]);
+                setPerfilUsuario(user.perfil_usuario);
+                setIdUsuario(user.id_usuario);
             } catch (error) {
                 console.error('Error al obtener el perfil: ', error);
             }
         };
 
         getProfile();
-    }, [localIP, profile]);
+    }, [localIP, user]);
     useEffect(() => {
         if (SendStatus) {
             const timer = setTimeout(() => {
-                navigate('/user', { state: perfil.id_perfil });
+                navigate('/listedituser', { state: perfil.id_perfil });
             }, 3000);
 
             return () => clearTimeout(timer);
         }
-    }, [SendStatus, navigate, perfil.id_perfil]);
+    }, [SendStatus, navigate, perfil]);
 
     const singularize = (word) => {
         const exceptions = {
@@ -74,34 +78,26 @@ function StaffCreateUser() {
     const validation = () => {
         const errors = {};
 
-        if (!nombreUsuario) {
-            errors.nombreUsuario = "El nombre del usuario es obligatorio.";
-        } else if (nombreUsuario.length > 250) {
+        if (nombreUsuario && nombreUsuario.length > 250) {
             errors.nombreUsuario = "El nombre no puede ser mayor a 250 caracteres.";
         }
-        if (!documentoUsuario) {
-            errors.documentoUsuario = "El documento del usuario es obligatorio.";
-        } else if (!/^[0-9]+$/.test(documentoUsuario)) {
-            errors.documentoUsuario = "El documento debe ser solo numeros.";
+        if (documentoUsuario && !/^[0-9]+$/.test(documentoUsuario)) {
+            errors.documentoUsuario = "El documento debe ser solo números.";
         }
-        if (!telefonoUsuario) {
-            errors.telefonoUsuario = "El teléfono del usuario es obligatorio.";
-        } else if (!/^[0-9]+$/.test(telefonoUsuario)) {
-            errors.telefonoUsuario = "El teléfono debe ser solo numeros.";
+        if (telefonoUsuario && !/^[0-9]+$/.test(telefonoUsuario)) {
+            errors.telefonoUsuario = "El teléfono debe ser solo números.";
         }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoUsuario)) {
+        if (correoUsuario && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoUsuario)) {
             errors.correoUsuario = "El correo ingresado no tiene un formato válido.";
         }
-        if (!/^[0-9]+$/.test(contratoUsuario)) {
-            errors.contratoUsuario = "El contrato del usuario debe ser solo numeros.";
+        if (contratoUsuario && !/^[0-9]+$/.test(contratoUsuario)) {
+            errors.contratoUsuario = "El contrato del usuario debe ser solo números.";
         }
-        if (!contrasenaUsuario) {
-            errors.contrasenaUsuario = "La contraseña del usuario es obligatoria.";
-        } else if (contrasenaUsuario.length < 5) {
-            errors.contrasenaUsuario = 'La contraseña debe tener al menos 5 caracteres.';
+        if (contrasenaUsuario && contrasenaUsuario.length < 5) {
+            errors.contrasenaUsuario = "La contraseña debe tener al menos 5 caracteres.";
         }
         if (contrasenaUsuario !== passwordVerify) {
-            errors.passwordVerify = 'Las contraseñas no coinciden.';
+            errors.passwordVerify = "Las contraseñas no coinciden.";
         }
 
         setValidationError(errors);
@@ -110,7 +106,7 @@ function StaffCreateUser() {
         return Object.keys(errors).length === 0;
     };
 
-    const sendCreateUser = async (e) => {
+    const sendEditUser = async (e) => {
         e.preventDefault();
 
         if (!validation()) {
@@ -121,14 +117,15 @@ function StaffCreateUser() {
         setLoading(true);
 
         try {
-            await axios.post(`http://${localIP}:3000/usuarios`, {
-                nombre_usuario: nombreUsuario,
-                documento_usuario: documentoUsuario,
-                telefono_usuario: telefonoUsuario,
-                correo_usuario: correoUsuario === '' ? null : correoUsuario,
-                contrato_usuario: contratoUsuario === '' ? null : contratoUsuario,
-                perfil_usuario: profile,
-                contrasena_usuario: contrasenaUsuario,
+            await axios.put(`http://${localIP}:3000/usuarios`, {
+                id_usuario: idUsuario,
+                nombre_usuario: nombreUsuario === '' ? user.nombre_usuario : nombreUsuario,
+                documento_usuario: documentoUsuario === '' ? user.documento_usuario : documentoUsuario,
+                telefono_usuario: telefonoUsuario === '' ? user.telefono_usuario : telefonoUsuario,
+                correo_usuario: correoUsuario === '' ? user.correo_usuario : correoUsuario,
+                contrato_usuario: contratoUsuario === '' ? user.contrato_usuario : contratoUsuario,
+                perfil_usuario: perfilUsuario,
+                contrasena_usuario: contrasenaUsuario === '' ? user.contrasena_usuario : contrasenaUsuario,
             });
 
             setSendStatus(true);
@@ -137,7 +134,7 @@ function StaffCreateUser() {
                 setServerError(error.response.data.error);
                 setLoading(false);
             } else {
-                setServerError('Error al crear el usuario. Por favor, inténtelo de nuevo.');
+                setServerError('Error al editar el usuario. Por favor, inténtelo de nuevo.');
                 setLoading(false);
             }
         }
@@ -145,29 +142,29 @@ function StaffCreateUser() {
         setContrasenaUsuario('');
     };
     const redirectStaffUser = (id_perfil) => {
-        navigate('/user', { state: id_perfil });
+        navigate('/listedituser', { state: id_perfil });
     };
 
     return (
         <ProtectedRoute>
-            <motion.section className={Style.staffCreateUser} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            <motion.section className={Style.staffEditUser} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                 {SendStatus === true ? (
-                    <div className={Style.staffCreateUserFormAlternative}>
-                        <h1>{perfil.nombre_perfil ? singularize(perfil.nombre_perfil.toLowerCase()) : 'Usuario'} creado con éxtio</h1>
+                    <div className={Style.staffEditUserFormAlternative}>
+                        <h1>{perfil.nombre_perfil ? singularize(perfil.nombre_perfil.toLowerCase()) : 'Usuario'} editado con éxito</h1>
                     </div>
                 ) : (
-                    <form className={Style.staffCreateUserForm} onSubmit={sendCreateUser}>
-                        <header className={Style.staffCreateUserFormHeader}>
-                            <h1>Complete los datos para crear un nuevo {perfil.nombre_perfil ? singularize(perfil.nombre_perfil.toLowerCase()) : 'Usuario'}</h1>
+                    <form className={Style.staffEditUserForm} onSubmit={sendEditUser}>
+                        <header className={Style.staffEditUserFormHeader}>
+                            <h1>Complete los datos para editar el {perfil.nombre_perfil ? singularize(perfil.nombre_perfil.toLowerCase()) : 'Usuario'}</h1>
                         </header>
-                        <main className={Style.staffCreateUserFormMain}>
+                        <main className={Style.staffEditUserFormMain}>
                             <fieldset>
                                 <label htmlFor="nombreUsuario">Nombre</label>
                                 <input
                                     id='nombreUsuario'
                                     name='nombreUsuario'
                                     onChange={(e) => setNombreUsuario(e.target.value)}
-                                    placeholder='Ingresa el nombre del usuario'
+                                    placeholder={user.nombre_usuario}
                                     type='text'
                                     value={nombreUsuario}
                                 />
@@ -175,7 +172,7 @@ function StaffCreateUser() {
                                     <></>
                                 ) : (
                                     <motion.span
-                                        className={Style.staffCreateUserFormValidation}
+                                        className={Style.staffEditUserFormValidation}
                                         initial={{ zoom: 0 }}
                                         animate={{ zoom: 1 }}
                                         transition={{ duration: 0.5 }}
@@ -190,7 +187,7 @@ function StaffCreateUser() {
                                     id='documentoUsuario'
                                     name='documentoUsuario'
                                     onChange={(e) => setDocumentoUsuario(e.target.value)}
-                                    placeholder='Ingresa el documento del usuario'
+                                    placeholder={user.documento_usuario}
                                     type='text'
                                     value={documentoUsuario}
                                 />
@@ -198,7 +195,7 @@ function StaffCreateUser() {
                                     <></>
                                 ) : (
                                     <motion.span
-                                        className={Style.staffCreateUserFormValidation}
+                                        className={Style.staffEditUserFormValidation}
                                         initial={{ zoom: 0 }}
                                         animate={{ zoom: 1 }}
                                         transition={{ duration: 0.5 }}
@@ -213,7 +210,7 @@ function StaffCreateUser() {
                                     id='telefonoUsuario'
                                     name='telefonoUsuario'
                                     onChange={(e) => setTelefonoUsuario(e.target.value)}
-                                    placeholder='Ingresa el teléfono del usuario'
+                                    placeholder={user.telefono_usuario}
                                     type='text'
                                     value={telefonoUsuario}
                                 />
@@ -221,7 +218,7 @@ function StaffCreateUser() {
                                     <></>
                                 ) : (
                                     <motion.span
-                                        className={Style.staffCreateUserFormValidation}
+                                        className={Style.staffEditUserFormValidation}
                                         initial={{ zoom: 0 }}
                                         animate={{ zoom: 1 }}
                                         transition={{ duration: 0.5 }}
@@ -236,7 +233,7 @@ function StaffCreateUser() {
                                     id='correoUsuario'
                                     name='correoUsuario'
                                     onChange={(e) => setCorreoUsuario(e.target.value)}
-                                    placeholder='Ingresa el correo del usuario'
+                                    placeholder={user.correo_usuario ? user.correo_usuario : 'Ingresa el correo del usuario'}
                                     type='text'
                                     value={correoUsuario}
                                 />
@@ -244,7 +241,7 @@ function StaffCreateUser() {
                                     <></>
                                 ) : (
                                     <motion.span
-                                        className={Style.staffCreateUserFormValidation}
+                                        className={Style.staffEditUserFormValidation}
                                         initial={{ zoom: 0 }}
                                         animate={{ zoom: 1 }}
                                         transition={{ duration: 0.5 }}
@@ -253,13 +250,13 @@ function StaffCreateUser() {
                                     </motion.span>
                                 )}
                             </fieldset>
-                                <fieldset className={Style.staffCreateUserFormMainEspecial}>
+                            <fieldset className={Style.staffEditUserFormMainEspecial}>
                                 <label htmlFor="contratoUsuario">Contrato</label>
                                 <input
                                     id='contratoUsuario'
                                     name='contratoUsuario'
                                     onChange={(e) => setContratoUsuario(e.target.value)}
-                                    placeholder='Ingresa el número de contrato del usuario'
+                                    placeholder={user.contrato_usuario ? user.contrato_usuario : 'Ingresa el número de contrato del usuario'}
                                     type='text'
                                     value={contratoUsuario}
                                 />
@@ -278,7 +275,7 @@ function StaffCreateUser() {
                                     <></>
                                 ) : (
                                     <motion.span
-                                        className={Style.staffCreateUserFormValidation}
+                                        className={Style.staffEditUserFormValidation}
                                         initial={{ zoom: 0 }}
                                         animate={{ zoom: 1 }}
                                         transition={{ duration: 0.5 }}
@@ -301,7 +298,7 @@ function StaffCreateUser() {
                                     <></>
                                 ) : (
                                     <motion.span
-                                        className={Style.staffCreateUserFormValidation}
+                                        className={Style.staffEditUserFormValidation}
                                         initial={{ zoom: 0 }}
                                         animate={{ zoom: 1 }}
                                         transition={{ duration: 0.5 }}
@@ -311,21 +308,21 @@ function StaffCreateUser() {
                                 )}
                             </fieldset>
                         </main>
-                        <footer className={Style.staffCreateUserFormFooter}>
+                        <footer className={Style.staffEditUserFormFooter}>
                             <button onClick={() => redirectStaffUser(perfil.id_perfil)} type='button'>
                                 Cancelar
                             </button>
                             <button type='submit'>{loading ? (
                                 <div className={Style.loader}></div>
                             ) :
-                                `Crear ${perfil.nombre_perfil ? singularize(perfil.nombre_perfil.toLowerCase()) : 'Perfil'}`
+                                `Editar ${perfil.nombre_perfil ? singularize(perfil.nombre_perfil.toLowerCase()) : 'usuario'}`
                             }
                             </button>
                             {!serverError ? (
                                 <></>
                             ) : (
                                 <motion.span
-                                    className={Style.staffCreateUserFormValidationServer}
+                                    className={Style.staffEditUserFormValidationServer}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.5 }}
@@ -341,4 +338,4 @@ function StaffCreateUser() {
     );
 }
 
-export default StaffCreateUser;
+export default StaffEditUser;

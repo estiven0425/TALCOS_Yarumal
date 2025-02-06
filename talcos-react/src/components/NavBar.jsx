@@ -12,7 +12,7 @@ function NavBar() {
                 <Link className={`${Style.navBarStart} ${currentPath === '/home' ? Style.active : ''}`} to='/home'>
                     <i className={`bi bi-grid-1x2-fill ${Style.navBarIcon}`}></i>
                 </Link>
-                <Link className={`${Style.navBarStaff} ${currentPath === '/staff' || currentPath === '/user' || currentPath === '/createuser' ? Style.active : ''}`} to='/staff'>
+                <Link className={`${Style.navBarStaff} ${currentPath === '/staff' || currentPath === '/user' || currentPath === '/createuser' || currentPath === '/edituser' || currentPath === '/listedituser' || currentPath === '/deleteuser' || currentPath === '/listdeleteuser' ? Style.active : ''}`} to='/staff'>
                     <i className={`bi bi-people-fill ${Style.navBarIcon}`}></i>
                 </Link>
                 <Link className={`${Style.navBarReport} ${currentPath === '/report' ? Style.active : ''}`} to='/report'>
