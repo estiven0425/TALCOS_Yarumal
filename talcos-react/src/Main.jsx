@@ -4,7 +4,13 @@ import { StrictMode } from 'react'
 import Error from './pages/Error';
 import Home from './pages/Home';
 import Header from './components/Header';
+import Inventory from './pages/Inventory';
 import Login from './pages/Login';
+import Logout from './pages/Logout';
+import Monitoring from './pages/Monitoring';
+import Notification from './pages/Notification';
+import Report from './pages/Report';
+import Setting from './pages/Setting';
 import Staff from './pages/Staff';
 import StaffCreateUser from './pages/StaffCreateUser';
 import StaffDeleteUser from './pages/StaffDeleteUser';
@@ -29,6 +35,12 @@ createRoot(document.getElementById('root')).render(
                     <Route path='edituser' element={<StaffEditUser />} />
                     <Route path='listdeleteuser' element={<StaffListDeleteUser />} />
                     <Route path='deleteuser' element={<StaffDeleteUser />} />
+                    <Route path='report' element={<Report />} />
+                    <Route path='monitoring' element={<Monitoring />} />
+                    <Route path='inventory' element={<Inventory />} />
+                    <Route path='notification' element={<Notification />} />
+                    <Route path='setting' element={<Setting />} />
+                    <Route path='logout' element={<Logout />} />
                 </Route>
                 <Route path="*" element={<Error />} />
             </Routes>
