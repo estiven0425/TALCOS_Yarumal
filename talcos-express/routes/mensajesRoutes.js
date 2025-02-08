@@ -3,6 +3,7 @@ const router = express.Router();
 const mensajeController = require('../controllers/mensajeController');
 
 router.get('/', mensajeController.leerMensaje);
+router.get('/notificacionmensaje', mensajeController.notificacionMensaje);
 router.post('/', mensajeController.crearMensaje);
 router.put('/', mensajeController.actualizarMensaje);
 

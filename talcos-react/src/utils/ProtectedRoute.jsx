@@ -16,6 +16,7 @@ const ProtectedRoute = ({ children }) => {
                 });
             } catch (error) {
                 console.error('Error al obtener el usuario:', error);
+                console.clear();
                 navigate('/', { replace: true }, );
             }
         };

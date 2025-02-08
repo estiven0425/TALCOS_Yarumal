@@ -1,0 +1,113 @@
+﻿.staffListProfileHeader {
+    align-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+    .staffListProfileHeader h1 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin: 0px;
+        text-align: center;
+    }
+
+.staffListProfileMain {
+    box-sizing: border-box;
+    display: grid;
+    gap: 25px;
+    grid-template-columns: repeat(3, 1fr);
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+}
+
+.staffListProfileMainButton {
+    align-content: center;
+    align-items: center;
+    background-color: #0037AE;
+    border: none;
+    border-radius: 20px;
+    box-sizing: border-box;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: center;
+    outline: transparent 1px solid;
+    padding: 25px;
+    text-decoration: none;
+    transition: all 0.5s ease-in-out;
+}
+
+    .staffListProfileMainButton:hover {
+        background-color: #0048B6;
+    }
+
+    .staffListProfileMainButton:focus {
+        background-color: #0048B6;
+        outline: #0048B6 1px solid;
+    }
+
+    .staffListProfileMainButton h2 {
+        font-size: 1.5rem;
+        margin: 0px;
+        text-align: center;
+    }
+
+    .staffListProfileMainButton img {
+        height: 3rem;
+        width: 3rem;
+    }
+
+.staffListProfileMain::-webkit-scrollbar {
+    width: 10px;
+}
+
+.staffListProfileMain::-webkit-scrollbar-track {
+    background: #0037AE;
+    border-radius: 10px;
+}
+
+.staffListProfileMain::-webkit-scrollbar-thumb {
+    background: #0095DC;
+    border-radius: 10px;
+}
+
+.staffListProfileMainAlternative {
+    align-content: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+.loader {
+    animation: spin 1s linear infinite;
+    border: 5px solid #0048B6;
+    border-radius: 50%;
+    border-top: 5px solid transparent;
+    box-sizing: border-box;
+    height: 20px;
+    margin: -7.5px auto 0px;
+    width: 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

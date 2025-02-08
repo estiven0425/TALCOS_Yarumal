@@ -26,6 +26,34 @@ exports.leerMensaje = async (req, res) => {
     }
 };
 
+exports.notificacionMensaje = async (req, res) => {
+    const { id_usuario } = req.query;
+
+    try {
+        const mensajes = await Mensajes.findAll({
+            include: [
+                {
+                    model: Usuarios,
+                    attributes: ['nombre_usuario'],
+                    as: 'emisor',
+                    foreignKey: 'emisor_mensaje'
+                },
+                {
+                    model: Usuarios,
+                    attributes: ['nombre_usuario'],
+                    as: 'receptor',
+                    foreignKey: 'receptor_mensaje'
+                }
+            ],
+            where: { receptor_mensaje: id_usuario }
+        });
+
+        res.json(mensajes);
+    } catch (error) {
+        res.status(500).send('Error del servidor: ' + error);
+    }
+};
+
 exports.crearMensaje = async (req, res) => {
     const { fecha_mensaje, hora_mensaje, texto_mensaje, emisor_mensaje, receptor_mensaje } = req.body;
 
