@@ -18,8 +18,9 @@
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: flex-start;
+    gap: 25px;
     height: 100%;
+    justify-content: flex-start;
     padding: 10px;
     width: 70%;
 }
@@ -32,8 +33,9 @@
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: flex-start;
+    gap: 25px;
     height: 100%;
+    justify-content: flex-start;
     padding: 10px;
     width: 30%;
 }

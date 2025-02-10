@@ -1,1 +1,77 @@
-﻿
+﻿.notificationMessageReceivedHeader {
+    align-content: center;
+    align-content: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+    .notificationMessageReceivedHeader h1 {
+        font-size: 1.5rem;
+        margin: 0px;
+        text-align: center;
+    }
+
+.notificationMessageReceivedMain {
+    align-content: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 25px;
+    justify-content: flex-start;
+    overflow: auto;
+    width: 100%;
+}
+
+.notificationMessageReceivedMainArticle {
+    align-content: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.notificationMessageReceivedMainArticleHeader {
+    align-content: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+    .notificationMessageReceivedMainArticleHeader h2 {
+        font-size: 1.25rem;
+        margin: 0px;
+    }
+
+    .notificationMessageReceivedMainArticleHeader p {
+        font-size: 1rem;
+        margin: 0px;
+    }
+
+    .notificationMessageReceivedMainArticleHeader span {
+        margin: 0px 0px 0px 25px;
+    }
+
+.notificationMessageReceivedMainArticleMain {
+    align-content: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+    .notificationMessageReceivedMainArticleMain p {
+        font-size: 1rem;
+        margin: 0px;
+    }
