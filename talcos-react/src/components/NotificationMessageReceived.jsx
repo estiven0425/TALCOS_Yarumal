@@ -11,11 +11,14 @@ function NotificationMessageReceived() {
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
-        const decodedToken = jwtDecode(token);
-        const idUserToken = decodedToken.id_usuario;
-        setIdUsuario(idUserToken);
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setIdUsuario(decodedToken.id_usuario);
+        }
     }, []);
     useEffect(() => {
+        if (!idUsuario) return;
+
         const getMessage = async () => {
             try {
                 const response = await axios.get(`http://${localIP}:3000/mensajes/notificacionmensaje`, {

@@ -104,7 +104,7 @@ function NotificationMessageSend() {
                     </div>
                 ) : (
                     <form className={Style.notificationMessageSendMainForm} onSubmit={sendMessage}>
-                        <main>
+                        <header>
                             <select name='select' value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
                                 <option value='' disabled>Seleccionar destinatario</option>
                                 {usuario.map((usuario) => (
@@ -113,27 +113,6 @@ function NotificationMessageSend() {
                                     </option>
                                 ))}
                             </select>
-                            <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Ingresa el mensaje aquí' />
-                            {!validationError.message ? (
-                                <></>
-                            ) : (
-                                <motion.span
-                                    className={Style.notificationMessageSendMainFormValidation}
-                                    initial={{ zoom: 0 }}
-                                    animate={{ zoom: 1 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    {validationError.message}
-                                </motion.span>
-                            )}
-                        </main>
-                        <footer>
-                            <button type='submit'>{loading ? (
-                                <div className={Style.loader}></div>
-                            ) :
-                                <i className={`bi bi-send-fill ${Style.notificationMessageSendMainFormIcon}`}></i>
-                            }
-                            </button>
                             {!serverError ? (
                                 <></>
                             ) : (
@@ -146,7 +125,30 @@ function NotificationMessageSend() {
                                     {serverError}
                                 </motion.span>
                             )}
-                        </footer>
+                        </header>
+                            <main>
+                                <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Ingresa el mensaje aquí' type='text' />
+                            {!validationError.message ? (
+                                <></>
+                            ) : (
+                                <motion.span
+                                    className={Style.notificationMessageSendMainFormValidation}
+                                    initial={{ zoom: 0 }}
+                                    animate={{ zoom: 1 }}
+                                    transition={{ duration: 0.5 }}
+                                >
+                                    {validationError.message}
+                                </motion.span>
+                            )}
+                            <div>
+                                <button type='submit'>{loading ? (
+                                    <div className={Style.loader}></div>
+                                ) :
+                                    <i className={`bi bi-send-fill ${Style.notificationMessageSendMainFormIcon}`}></i>
+                                }
+                                </button>
+                            </div>
+                        </main>
                     </form>
                 )}
             </motion.main>
