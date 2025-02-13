@@ -28,7 +28,11 @@ function NotificationMessageSend() {
     useEffect(() => {
         const getUser = async () => {
             try {
-                const response = await axios.get(`http://${localIP}:3000/usuarios`);
+                const response = await axios.get(`http://${localIP}:3000/usuarios/mensajeusuario`, {
+                    params: {
+                        id_usuario: idUsuario
+                    }
+                });
                 setUsuario(response.data);
             } catch (error) {
                 console.error('Error al obtener los usuarios: ', error);
@@ -36,7 +40,7 @@ function NotificationMessageSend() {
         };
 
         getUser();
-    }, [localIP]);
+    }, [idUsuario, localIP]);
 
 
     const validation = () => {
@@ -126,8 +130,8 @@ function NotificationMessageSend() {
                                 </motion.span>
                             )}
                         </header>
-                            <main>
-                                <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Ingresa el mensaje aquí' type='text' />
+                        <main>
+                            <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Ingresa el mensaje aquí' type='text' />
                             {!validationError.message ? (
                                 <></>
                             ) : (

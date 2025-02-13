@@ -1,5 +1,5 @@
 ﻿import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Style from './styles/login-form.module.css';
@@ -12,6 +12,10 @@ function LoginForm() {
     const [loading, setLoading] = useState(false);
     const redirect = useNavigate();
     const localIP = import.meta.env.VITE_LOCAL_IP;
+
+    useEffect(() => {
+        sessionStorage.removeItem('token');
+    }, []);
 
     const validation = () => {
         const errors = {};

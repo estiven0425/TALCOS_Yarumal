@@ -16,18 +16,36 @@ let secretKey;
 router.post('/', async (req, res) => {
     try {
         const { documento_usuario, contrasena_usuario } = req.body;
+        const usuario = await Usuario.findOne({
+            where: { documento_usuario },
+            include: [
+                {
+                    model: Perfiles,
+                    as: 'perfil',
+                    attributes: ['id_perfil']
+                }
+            ]
+        });
 
-        const usuario = await Usuario.findOne({ where: { documento_usuario } });
-
-        if (usuario && bcrypt.compareSync(contrasena_usuario, usuario.contrasena_usuario)) {
-            secretKey = generateSecretKey();
-
-            const token = jwt.sign({ id_usuario: usuario.id_usuario }, secretKey);
-
-            res.json({ token });
-        } else {
-            res.status(401).json({ error: 'Credenciales inválidas' });
+        if (!usuario) {
+            return res.status(401).json({ error: 'Credenciales inválidas' });
         }
+
+        const contrasena = bcrypt.compareSync(contrasena_usuario, usuario.contrasena_usuario);
+
+        if (!contrasena) {
+            return res.status(401).json({ error: 'Credenciales inválidas' });
+        }
+
+        const perfilesPermitidos = [1, 2, 3, 4];
+        if (!perfilesPermitidos.includes(usuario.perfil.id_perfil)) {
+            return res.status(403).json({ error: 'Acceso denegado' });
+        }
+
+        secretKey = generateSecretKey();
+        const token = jwt.sign({ id_usuario: usuario.id_usuario }, secretKey);
+
+        res.json({ token });
     } catch (error) {
         res.status(500).json({ error: 'Error de servidor' });
     }
@@ -46,7 +64,7 @@ router.post('/get', async (req, res) => {
                 {
                     model: Perfiles,
                     as: 'perfil',
-                    attributes: ['nombre_perfil']
+                    attributes: ['id_perfil', 'nombre_perfil']
                 },
             ],
         });
@@ -58,7 +76,8 @@ router.post('/get', async (req, res) => {
                 telefono_usuario: usuario.telefono_usuario,
                 correo_usuario: usuario.correo_usuario,
                 contrato_usuario: usuario.contrato_usuario,
-                perfil_usuario: usuario.perfil
+                perfil_usuario: usuario.perfil.nombre_perfil,
+                id_perfil_usuario: usuario.perfil.id_perfil
             });
         } else {
             res.status(404).json({ error: 'Usuario no encontrado' });
