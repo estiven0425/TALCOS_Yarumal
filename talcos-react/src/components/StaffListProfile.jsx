@@ -16,7 +16,7 @@ function StaffListProfile() {
 
                 setPerfil(response.data);
             } catch (error) {
-                console.error("Error al obtener los perfiles: ", error);
+                console.error('Error al obtener los perfiles: ', error);
             }
         };
 

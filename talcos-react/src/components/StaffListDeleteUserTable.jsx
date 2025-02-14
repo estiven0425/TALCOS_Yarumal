@@ -98,7 +98,7 @@ function StaffListDeleteUserTable() {
                                     key={usuario.id_usuario}
                                     onClick={() => redirectDeleteUser(usuario)}
                                     onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
+                                        if (e.key === 'Enter') {
                                             redirectDeleteUser(usuario);
                                         }
                                     }}

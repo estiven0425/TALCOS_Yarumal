@@ -78,25 +78,25 @@ function StaffEditUserForm() {
         const errors = {};
 
         if (nombreUsuario && nombreUsuario.length > 250) {
-            errors.nombreUsuario = "El nombre no puede ser mayor a 250 caracteres.";
+            errors.nombreUsuario = 'El nombre no puede ser mayor a 250 caracteres.';
         }
         if (documentoUsuario && !/^[0-9]+$/.test(documentoUsuario)) {
-            errors.documentoUsuario = "El documento debe ser solo números.";
+            errors.documentoUsuario = 'El documento debe ser solo números.';
         }
         if (telefonoUsuario && !/^[0-9]+$/.test(telefonoUsuario)) {
-            errors.telefonoUsuario = "El teléfono debe ser solo números.";
+            errors.telefonoUsuario = 'El teléfono debe ser solo números.';
         }
         if (correoUsuario && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoUsuario)) {
-            errors.correoUsuario = "El correo ingresado no tiene un formato válido.";
+            errors.correoUsuario = 'El correo ingresado no tiene un formato válido.';
         }
         if (contratoUsuario && !/^[0-9]+$/.test(contratoUsuario)) {
-            errors.contratoUsuario = "El contrato del usuario debe ser solo números.";
+            errors.contratoUsuario = 'El contrato del usuario debe ser solo números.';
         }
         if (contrasenaUsuario && contrasenaUsuario.length < 5) {
-            errors.contrasenaUsuario = "La contraseña debe tener al menos 5 caracteres.";
+            errors.contrasenaUsuario = 'La contraseña debe tener al menos 5 caracteres.';
         }
         if (contrasenaUsuario !== passwordVerify) {
-            errors.passwordVerify = "Las contraseñas no coinciden.";
+            errors.passwordVerify = 'Las contraseñas no coinciden.';
         }
 
         setValidationError(errors);
@@ -157,7 +157,7 @@ function StaffEditUserForm() {
                     </header>
                     <main className={Style.staffEditUserFormMain}>
                         <fieldset>
-                            <label htmlFor="nombreUsuario">Nombre</label>
+                            <label htmlFor='nombreUsuario'>Nombre</label>
                             <input
                                 id='nombreUsuario'
                                 name='nombreUsuario'
@@ -180,7 +180,7 @@ function StaffEditUserForm() {
                             )}
                         </fieldset>
                         <fieldset>
-                            <label htmlFor="documentoUsuario">Documento de identidad</label>
+                            <label htmlFor='documentoUsuario'>Documento de identidad</label>
                             <input
                                 id='documentoUsuario'
                                 name='documentoUsuario'
@@ -203,7 +203,7 @@ function StaffEditUserForm() {
                             )}
                         </fieldset>
                         <fieldset>
-                            <label htmlFor="telefonoUsuario">Teléfono</label>
+                            <label htmlFor='telefonoUsuario'>Teléfono</label>
                             <input
                                 id='telefonoUsuario'
                                 name='telefonoUsuario'
@@ -226,7 +226,7 @@ function StaffEditUserForm() {
                             )}
                         </fieldset>
                         <fieldset>
-                            <label htmlFor="correoUsuario">Correo electrónico</label>
+                            <label htmlFor='correoUsuario'>Correo electrónico</label>
                             <input
                                 id='correoUsuario'
                                 name='correoUsuario'
@@ -249,7 +249,7 @@ function StaffEditUserForm() {
                             )}
                         </fieldset>
                         <fieldset className={Style.staffEditUserFormMainEspecial}>
-                            <label htmlFor="contratoUsuario">Contrato</label>
+                            <label htmlFor='contratoUsuario'>Contrato</label>
                             <input
                                 id='contratoUsuario'
                                 name='contratoUsuario'
@@ -260,7 +260,7 @@ function StaffEditUserForm() {
                             />
                         </fieldset>
                         <fieldset>
-                            <label htmlFor="contrasenaUsuario">Contraseña</label>
+                            <label htmlFor='contrasenaUsuario'>Contraseña</label>
                             <input
                                 id='contrasenaUsuario'
                                 name='contrasenaUsuario'
@@ -283,7 +283,7 @@ function StaffEditUserForm() {
                             )}
                         </fieldset>
                         <fieldset>
-                            <label htmlFor="passwordVerify">Confirmar contraseña</label>
+                            <label htmlFor='passwordVerify'>Confirmar contraseña</label>
                             <input
                                 id='passwordVerify'
                                 name='passwordVerify'

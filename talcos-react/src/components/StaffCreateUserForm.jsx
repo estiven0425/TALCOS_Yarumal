@@ -74,28 +74,28 @@ function StaffCreateUserForm() {
         const errors = {};
 
         if (!nombreUsuario) {
-            errors.nombreUsuario = "El nombre del usuario es obligatorio.";
+            errors.nombreUsuario = 'El nombre del usuario es obligatorio.';
         } else if (nombreUsuario.length > 250) {
-            errors.nombreUsuario = "El nombre no puede ser mayor a 250 caracteres.";
+            errors.nombreUsuario = 'El nombre no puede ser mayor a 250 caracteres.';
         }
         if (!documentoUsuario) {
-            errors.documentoUsuario = "El documento del usuario es obligatorio.";
+            errors.documentoUsuario = 'El documento del usuario es obligatorio.';
         } else if (!/^[0-9]+$/.test(documentoUsuario)) {
-            errors.documentoUsuario = "El documento debe ser solo numeros.";
+            errors.documentoUsuario = 'El documento debe ser solo numeros.';
         }
         if (!telefonoUsuario) {
-            errors.telefonoUsuario = "El teléfono del usuario es obligatorio.";
+            errors.telefonoUsuario = 'El teléfono del usuario es obligatorio.';
         } else if (!/^[0-9]+$/.test(telefonoUsuario)) {
-            errors.telefonoUsuario = "El teléfono debe ser solo numeros.";
+            errors.telefonoUsuario = 'El teléfono debe ser solo numeros.';
         }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoUsuario)) {
-            errors.correoUsuario = "El correo ingresado no tiene un formato válido.";
+            errors.correoUsuario = 'El correo ingresado no tiene un formato válido.';
         }
         if (!/^[0-9]+$/.test(contratoUsuario)) {
-            errors.contratoUsuario = "El contrato del usuario debe ser solo numeros.";
+            errors.contratoUsuario = 'El contrato del usuario debe ser solo numeros.';
         }
         if (!contrasenaUsuario) {
-            errors.contrasenaUsuario = "La contraseña del usuario es obligatoria.";
+            errors.contrasenaUsuario = 'La contraseña del usuario es obligatoria.';
         } else if (contrasenaUsuario.length < 5) {
             errors.contrasenaUsuario = 'La contraseña debe tener al menos 5 caracteres.';
         }
@@ -160,7 +160,7 @@ function StaffCreateUserForm() {
                     </header>
                     <main className={Style.staffCreateUserFormMain}>
                         <fieldset>
-                            <label htmlFor="nombreUsuario">Nombre</label>
+                            <label htmlFor='nombreUsuario'>Nombre</label>
                             <input
                                 id='nombreUsuario'
                                 name='nombreUsuario'
@@ -183,7 +183,7 @@ function StaffCreateUserForm() {
                             )}
                         </fieldset>
                         <fieldset>
-                            <label htmlFor="documentoUsuario">Documento de identidad</label>
+                            <label htmlFor='documentoUsuario'>Documento de identidad</label>
                             <input
                                 id='documentoUsuario'
                                 name='documentoUsuario'
@@ -206,7 +206,7 @@ function StaffCreateUserForm() {
                             )}
                         </fieldset>
                         <fieldset>
-                            <label htmlFor="telefonoUsuario">Teléfono</label>
+                            <label htmlFor='telefonoUsuario'>Teléfono</label>
                             <input
                                 id='telefonoUsuario'
                                 name='telefonoUsuario'
@@ -229,7 +229,7 @@ function StaffCreateUserForm() {
                             )}
                         </fieldset>
                         <fieldset>
-                            <label htmlFor="correoUsuario">Correo electrónico</label>
+                            <label htmlFor='correoUsuario'>Correo electrónico</label>
                             <input
                                 id='correoUsuario'
                                 name='correoUsuario'
@@ -252,7 +252,7 @@ function StaffCreateUserForm() {
                             )}
                         </fieldset>
                         <fieldset className={Style.staffCreateUserFormMainEspecial}>
-                            <label htmlFor="contratoUsuario">Contrato</label>
+                            <label htmlFor='contratoUsuario'>Contrato</label>
                             <input
                                 id='contratoUsuario'
                                 name='contratoUsuario'
@@ -263,7 +263,7 @@ function StaffCreateUserForm() {
                             />
                         </fieldset>
                         <fieldset>
-                            <label htmlFor="contrasenaUsuario">Contraseña</label>
+                            <label htmlFor='contrasenaUsuario'>Contraseña</label>
                             <input
                                 id='contrasenaUsuario'
                                 name='contrasenaUsuario'
@@ -286,7 +286,7 @@ function StaffCreateUserForm() {
                             )}
                         </fieldset>
                         <fieldset>
-                            <label htmlFor="passwordVerify">Confirmar contraseña</label>
+                            <label htmlFor='passwordVerify'>Confirmar contraseña</label>
                             <input
                                 id='passwordVerify'
                                 name='passwordVerify'

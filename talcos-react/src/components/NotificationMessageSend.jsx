@@ -46,8 +46,13 @@ function NotificationMessageSend() {
     const validation = () => {
         const errors = {};
 
-        if (message.length >= 1000) {
-            errors.message = "El mensaje no puede ser mayor a 1000 caracteres.";
+        if (!selectedUser) {
+            errors.message = 'Debe seleccionar un usuario.';
+        }
+        if (!message) {
+            errors.message = 'El mensaje no puede estar vacío.';
+        } else if (message.length >= 1000) {
+            errors.message = 'El mensaje no puede ser mayor a 1000 caracteres.';
         }
 
         setValidationError(errors);
@@ -129,9 +134,6 @@ function NotificationMessageSend() {
                                     {serverError}
                                 </motion.span>
                             )}
-                        </header>
-                        <main>
-                            <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Ingresa el mensaje aquí' type='text' />
                             {!validationError.message ? (
                                 <></>
                             ) : (
@@ -144,6 +146,9 @@ function NotificationMessageSend() {
                                     {validationError.message}
                                 </motion.span>
                             )}
+                        </header>
+                        <main>
+                            <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Ingresa el mensaje aquí' type='text' />
                             <div>
                                 <button type='submit'>{loading ? (
                                     <div className={Style.loader}></div>

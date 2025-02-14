@@ -14,7 +14,8 @@
         text-align: center;
     }
 
-.notificationMessageSendMainFormValidationServer {
+.notificationMessageSendMainFormValidationServer,
+.notificationMessageSendMainFormValidation {
     text-align: center;
 }
 

@@ -11,6 +11,7 @@ import Monitoring from './pages/Monitoring';
 import Notification from './pages/Notification';
 import Report from './pages/Report';
 import Setting from './pages/Setting';
+import SettingChangePassword from './pages/SettingChangePassword';
 import Staff from './pages/Staff';
 import StaffCreateUser from './pages/StaffCreateUser';
 import StaffDeleteUser from './pages/StaffDeleteUser';
@@ -40,6 +41,7 @@ createRoot(document.getElementById('root')).render(
                     <Route path='inventory' element={<Inventory />} />
                     <Route path='notification' element={<Notification />} />
                     <Route path='setting' element={<Setting />} />
+                    <Route path='changepassword' element={<SettingChangePassword />} />
                     <Route path='logout' element={<Logout />} />
                 </Route>
                 <Route path="*" element={<Error />} />

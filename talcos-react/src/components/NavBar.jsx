@@ -37,7 +37,7 @@ function NavBar() {
                 </Link>
 
                 {perfilUsuario === 1 && (
-                    <Link className={`${Style.navBarStaff} ${currentPath.startsWith('/staff') ? Style.active : ''}`} to='/staff'>
+                    <Link className={`${Style.navBarStaff} ${currentPath === '/staff' || currentPath === '/user' || currentPath === '/createuser' || currentPath === '/edituser' || currentPath === '/listedituser' || currentPath === '/deleteuser' || currentPath === '/listdeleteuser' ? Style.active : ''}`} to='/staff'>
                         <i className={`bi bi-people-fill ${Style.navBarIcon}`}></i>
                     </Link>
                 )}
@@ -67,7 +67,7 @@ function NavBar() {
                 <Link className={`${Style.navBarNotification} ${currentPath === '/notification' ? Style.active : ''}`} to='/notification'>
                     <i className={`bi bi-envelope-fill ${Style.navBarIcon}`}></i>
                 </Link>
-                <Link className={`${Style.navBarSetting} ${currentPath === '/setting' ? Style.active : ''}`} to='/setting'>
+                <Link className={`${Style.navBarSetting} ${currentPath === '/setting' || currentPath === '/changepassword' ? Style.active : ''}`} to='/setting'>
                     <i className={`bi bi-gear-fill ${Style.navBarIcon}`}></i>
                 </Link>
                 <Link className={`${Style.navBarLogOut} ${currentPath === '/logout' ? Style.active : ''}`} to='/logout'>
