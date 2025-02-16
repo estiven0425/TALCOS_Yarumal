@@ -1,0 +1,80 @@
+﻿.inventoryListHeader {
+    align-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+    .inventoryListHeader h1 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin: 0px;
+        text-align: center;
+    }
+
+.inventoryListMain {
+    box-sizing: border-box;
+    display: grid;
+    gap: 25px;
+    grid-template-columns: repeat(3, 1fr);
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+}
+
+.inventoryListMainButton {
+    align-content: center;
+    align-items: center;
+    background-color: #0037AE;
+    border: none;
+    border-radius: 20px;
+    box-sizing: border-box;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10px;
+    justify-content: center;
+    outline: transparent 1px solid;
+    padding: 25px;
+    text-decoration: none;
+    transition: all 0.5s ease-in-out;
+}
+
+    .inventoryListMainButton:hover {
+        background-color: #0048B6;
+    }
+
+    .inventoryListMainButton:focus {
+        background-color: #0048B6;
+        outline: #0048B6 1px solid;
+    }
+
+    .inventoryListMainButton h2 {
+        font-size: 1.5rem;
+        margin: 0px;
+        text-align: center;
+    }
+
+    .inventoryListMainButton img {
+        height: 3rem;
+        width: 3rem;
+    }
+
+.inventoryListMain::-webkit-scrollbar {
+    width: 10px;
+}
+
+.inventoryListMain::-webkit-scrollbar-track {
+    background: #0037AE;
+    border-radius: 10px;
+}
+
+.inventoryListMain::-webkit-scrollbar-thumb {
+    background: #0095DC;
+    border-radius: 10px;
+}

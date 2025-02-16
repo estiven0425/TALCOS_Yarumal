@@ -1,0 +1,59 @@
+﻿.logOutMain {
+    align-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: 100%;
+    justify-content: center;
+}
+
+    .logOutMain h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .logOutFooter {
+        align-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+    }
+
+    .logOutFooter button {
+        background-color: #0037AE;
+        border-color: transparent;
+        border-radius: 20px;
+        color: #ffffff;
+        cursor: pointer;
+        outline: transparent 1px solid;
+        padding: 15px 60px;
+        transition: all 0.5s ease-in-out;
+    }
+
+        .logOutFooter button:hover {
+            background: #0095DC;
+        }
+
+        .logOutFooter button:focus {
+            outline: #0095DC 1px solid;
+        }
+
+.logOutAlternative {
+    align-content: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    height: 100%;
+}
+
+    .logOutAlternative h1 {
+        margin: 0px;
+        text-align: center;
+    }
