@@ -1,0 +1,42 @@
+﻿.inventoryShiftListMainTable {
+    border-collapse: separate;
+    border-spacing: 0px 10px;
+    width: 100%;
+}
+
+.inventoryShiftListMainTableHead,
+.inventoryShiftListMainTableBody {
+    width: 100%;
+}
+
+    .inventoryShiftListMainTableHead tr,
+    .inventoryShiftListMainTableBody tr {
+        width: 100%;
+    }
+
+        .inventoryShiftListMainTableHead tr th {
+            font-size: 1rem;
+            text-align: center;
+            width: 33.33%;
+        }
+
+        .inventoryShiftListMainTableBody tr td {
+            font-size: 1rem;
+            text-align: center;
+            width: 33.33%
+        }
+
+.inventoryShiftListMainAlternative {
+    align-content: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    height: 100%;
+}
+
+    .inventoryShiftListMainAlternative h2 {
+        margin: 0px;
+        text-align: center;
+    }

@@ -88,10 +88,10 @@ function StaffCreateUserForm() {
         } else if (!/^[0-9]+$/.test(telefonoUsuario)) {
             errors.telefonoUsuario = 'El teléfono debe ser solo numeros.';
         }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoUsuario)) {
+        if (correoUsuario && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoUsuario)) {
             errors.correoUsuario = 'El correo ingresado no tiene un formato válido.';
         }
-        if (!/^[0-9]+$/.test(contratoUsuario)) {
+        if (contratoUsuario && !/^[0-9]+$/.test(contratoUsuario)) {
             errors.contratoUsuario = 'El contrato del usuario debe ser solo numeros.';
         }
         if (!contrasenaUsuario) {
@@ -261,6 +261,18 @@ function StaffCreateUserForm() {
                                 type='text'
                                 value={contratoUsuario}
                             />
+                            {!validationError.contratoUsuario ? (
+                                <></>
+                            ) : (
+                                <motion.span
+                                    className={Style.staffCreateUserFormValidation}
+                                    initial={{ zoom: 0 }}
+                                    animate={{ zoom: 1 }}
+                                    transition={{ duration: 0.5 }}
+                                >
+                                    {validationError.contratoUsuario}
+                                </motion.span>
+                            )}
                         </fieldset>
                         <fieldset>
                             <label htmlFor='contrasenaUsuario'>Contraseña</label>

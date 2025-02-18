@@ -50,3 +50,26 @@ exports.actualizarTurno = async (req, res) => {
         res.status(500).json({ error: 'Error al actualizar el turno' });
     }
 };
+
+exports.eliminarTurno = async (req, res) => {
+    const {
+        id_turno,
+        actividad_turno
+    } = req.body;
+
+    try {
+        const turno = await Turnos.findByPk(id_turno);
+
+        if (turno) {
+            await turno.update({
+                actividad_turno
+            });
+
+            res.json(turno);
+        } else {
+            res.status(404).json({ error: 'Turno no encontrado' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar el turno' });
+    }
+};

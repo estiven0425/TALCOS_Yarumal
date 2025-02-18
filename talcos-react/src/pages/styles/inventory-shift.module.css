@@ -1,0 +1,35 @@
+﻿.inventoryShift {
+    align-content: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 10px;
+    height: 100%;
+}
+
+.inventoryShiftMain {
+    align-content: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    height: 100%;
+    overflow: auto;
+}
+
+    .inventoryShiftMain::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .inventoryShiftMain::-webkit-scrollbar-track {
+        background: #0037AE;
+        border-radius: 10px;
+    }
+
+    .inventoryShiftMain::-webkit-scrollbar-thumb {
+        background: #0095DC;
+        border-radius: 10px;
+    }
