@@ -1,165 +1,170 @@
-const { Op } = require('sequelize');
-const bcrypt = require('bcrypt');
-const Usuarios = require('../models/Usuarios');
-const Perfiles = require('../models/Perfiles');
+const { Op } = require("sequelize");
+const bcrypt = require("bcrypt");
+const Usuarios = require("../models/Usuarios");
+const Perfiles = require("../models/Perfiles");
 
 exports.leerUsuario = async (req, res) => {
-    try {
-        const usuarios = await Usuarios.findAll({
-            include: [
-                {
-                    model: Perfiles,
-                    attributes: ['nombre_perfil'],
-                    as: 'perfil',
-                    foreignKey: 'perfil_usuario'
-                },
-            ],
-            where: { actividad_usuario: true }
-        });
+  try {
+    const usuarios = await Usuarios.findAll({
+      include: [
+        {
+          model: Perfiles,
+          attributes: ["nombre_perfil"],
+          as: "perfil",
+          foreignKey: "perfil_usuario",
+        },
+      ],
+      where: { actividad_usuario: true },
+    });
 
-        res.json(usuarios);
-    } catch (error) {
-        res.status(500).send('Error del servidor: ' + error);
-    }
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).send("Error del servidor: " + error);
+  }
 };
 
 exports.personalUsuario = async (req, res) => {
-    const { perfil } = req.query;
+  const { perfil } = req.query;
 
-    try {
-        const usuarios = await Usuarios.findAll({
-            include: [
-                {
-                    model: Perfiles,
-                    attributes: ['nombre_perfil'],
-                    as: 'perfil',
-                    foreignKey: 'perfil_usuario'
-                },
-            ],
-            where: {
-                [Op.and]: [
-                    { perfil_usuario: perfil },
-                    { actividad_usuario: true }
-                ]
-            }
-        });
+  try {
+    const usuarios = await Usuarios.findAll({
+      include: [
+        {
+          model: Perfiles,
+          attributes: ["nombre_perfil"],
+          as: "perfil",
+          foreignKey: "perfil_usuario",
+        },
+      ],
+      where: {
+        [Op.and]: [{ perfil_usuario: perfil }, { actividad_usuario: true }],
+      },
+    });
 
-        res.json(usuarios);
-    } catch (error) {
-        res.status(500).send('Error del servidor: ' + error);
-    }
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).send("Error del servidor: " + error);
+  }
 };
 
 exports.mensajeUsuario = async (req, res) => {
-    const { id_usuario } = req.query;
+  const { id_usuario } = req.query;
 
-    try {
-        const usuarios = await Usuarios.findAll({
-            include: [
-                {
-                    model: Perfiles,
-                    attributes: ['nombre_perfil'],
-                    as: 'perfil',
-                    foreignKey: 'perfil_usuario'
-                },
-            ],
-            where: {
-                perfil_usuario: { [Op.in]: [1, 2, 3, 4] },
-                actividad_usuario: true,
-                id_usuario: { [Op.ne]: id_usuario }
-            }
-        });
+  try {
+    const usuarios = await Usuarios.findAll({
+      include: [
+        {
+          model: Perfiles,
+          attributes: ["nombre_perfil"],
+          as: "perfil",
+          foreignKey: "perfil_usuario",
+        },
+      ],
+      where: {
+        perfil_usuario: { [Op.in]: [1, 2, 3, 4] },
+        actividad_usuario: true,
+        id_usuario: { [Op.ne]: id_usuario },
+      },
+    });
 
-        res.json(usuarios);
-    } catch (error) {
-        res.status(500).send('Error del servidor: ' + error);
-    }
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).send("Error del servidor: " + error);
+  }
 };
 
 exports.crearUsuario = async (req, res) => {
-    const { nombre_usuario, documento_usuario, telefono_usuario, correo_usuario, contrato_usuario, perfil_usuario, contrasena_usuario } = req.body;
+  const {
+    nombre_usuario,
+    documento_usuario,
+    telefono_usuario,
+    correo_usuario,
+    contrato_usuario,
+    perfil_usuario,
+    contrasena_usuario,
+  } = req.body;
 
-    try {
-        const contrasenaEncriptada = await bcrypt.hash(contrasena_usuario, 10);
-        const nuevoUsuario = await Usuarios.create({
-            nombre_usuario,
-            documento_usuario,
-            telefono_usuario,
-            correo_usuario,
-            contrato_usuario,
-            perfil_usuario,
-            contrasena_usuario: contrasenaEncriptada
-        });
+  try {
+    const contrasenaEncriptada = await bcrypt.hash(contrasena_usuario, 10);
+    const nuevoUsuario = await Usuarios.create({
+      nombre_usuario,
+      documento_usuario,
+      telefono_usuario,
+      correo_usuario,
+      contrato_usuario,
+      perfil_usuario,
+      contrasena_usuario: contrasenaEncriptada,
+    });
 
-        res.status(201).json(nuevoUsuario);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al crear el usuario' });
-    }
+    res.status(201).json(nuevoUsuario);
+  } catch (error) {
+    res.status(500).json({ error: "Error al crear el usuario" });
+  }
 };
 
 exports.actualizarUsuario = async (req, res) => {
-    const {
-        id_usuario,
+  const {
+    id_usuario,
+    nombre_usuario,
+    documento_usuario,
+    telefono_usuario,
+    correo_usuario,
+    contrato_usuario,
+    perfil_usuario,
+    contrasena_usuario,
+    actividad_usuario,
+  } = req.body;
+
+  try {
+    const usuario = await Usuarios.findByPk(id_usuario);
+
+    if (usuario) {
+      let contrasenaEncriptada = usuario.contrasena_usuario;
+
+      const compare = await bcrypt.compare(
+        contrasena_usuario,
+        usuario.contrasena_usuario
+      );
+      if (!compare) {
+        contrasenaEncriptada = await bcrypt.hash(contrasena_usuario, 10);
+      }
+
+      await usuario.update({
         nombre_usuario,
         documento_usuario,
         telefono_usuario,
         correo_usuario,
         contrato_usuario,
         perfil_usuario,
-        contrasena_usuario,
-        actividad_usuario
-    } = req.body;
+        contrasena_usuario: contrasenaEncriptada,
+        actividad_usuario,
+      });
 
-    try {
-        const usuario = await Usuarios.findByPk(id_usuario);
-
-        if (usuario) {
-            let contrasenaEncriptada = usuario.contrasena_usuario;
-
-            const compare = await bcrypt.compare(contrasena_usuario, usuario.contrasena_usuario);
-            if (!compare) {
-                contrasenaEncriptada = await bcrypt.hash(contrasena_usuario, 10);
-            }
-
-            await usuario.update({
-                nombre_usuario,
-                documento_usuario,
-                telefono_usuario,
-                correo_usuario,
-                contrato_usuario,
-                perfil_usuario,
-                contrasena_usuario: contrasenaEncriptada,
-                actividad_usuario
-            });
-
-            res.json(usuario);
-        } else {
-            res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-    } catch (error) {
-        res.status(500).json({ error: 'Error al actualizar el usuario' });
+      res.json(usuario);
+    } else {
+      res.status(404).json({ error: "Usuario no encontrado" });
     }
+  } catch (error) {
+    res.status(500).json({ error: "Error al actualizar el usuario" });
+  }
 };
 
 exports.eliminarUsuario = async (req, res) => {
-    const {
-        id_usuario,
-        actividad_usuario
-    } = req.body;
+  const { id_usuario, actividad_usuario } = req.body;
 
-    try {
-        const usuario = await Usuarios.findByPk(id_usuario);
+  try {
+    const usuario = await Usuarios.findByPk(id_usuario);
 
-        if (usuario) {
-            await usuario.update({
-                actividad_usuario
-            });
+    if (usuario) {
+      await usuario.update({
+        actividad_usuario,
+      });
 
-            res.json(usuario);
-        } else {
-            res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-    } catch (error) {
-        res.status(500).json({ error: 'Error al eliminar el usuario' });
+      res.json(usuario);
+    } else {
+      res.status(404).json({ error: "Usuario no encontrado" });
     }
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el usuario" });
+  }
 };

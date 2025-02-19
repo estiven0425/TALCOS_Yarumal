@@ -1,34 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 html {
-    background-image: url(../assets/fondo.jpeg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    color: #ffffff;
-    font-family: "Inter", serif;
-    font-size: 16px;
-    font-weight: 400;
+  background-image: url(../assets/fondo.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #ffffff;
+  font-family: "Inter", serif;
+  font-size: 16px;
+  font-weight: 400;
 }
 
-    html::-webkit-scrollbar {
-        width: 10px;
-    }
+html::-webkit-scrollbar {
+  width: 10px;
+}
 
-    html::-webkit-scrollbar-track {
-        background: #0037AE;
-    }
+html::-webkit-scrollbar-track {
+  background: #0037ae;
+}
 
-    html::-webkit-scrollbar-thumb {
-        background: #0095DC;
-        border-radius: 10px;
-    }
+html::-webkit-scrollbar-thumb {
+  background: #0095dc;
+  border-radius: 10px;
+}
 
 body {
-    margin: 0px;
+  margin: 0px;
 }
 
 #root {
-    align-content: flex-start;
-    box-sizing: border-box;
-    height: 100%;
+  align-content: flex-start;
+  box-sizing: border-box;
+  height: 100%;
 }

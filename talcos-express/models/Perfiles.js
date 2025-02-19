@@ -1,39 +1,39 @@
-const { sequelize } = require('../config/conectionDataBase');
-const { DataTypes } = require('sequelize');
+const { sequelize } = require("../config/conectionDataBase");
+const { DataTypes } = require("sequelize");
 
 const Perfiles = sequelize.define(
-    'perfiles',
-    {
-        id_perfil: {
-            type: DataTypes.BIGINT,
-            autoIncrement: true,
-            primaryKey: true,
-            allowNull: false,
-        },
-        nombre_perfil: {
-            type: DataTypes.STRING(250),
-            allowNull: false,
-        },
-        icono_perfil: {
-            type: DataTypes.STRING(1000),
-            allowNull: false,
-            defaultValue: 'uploads/icono_predeterminado.png',
-        },
-        actividad_perfil: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: true,
-        },
-        actualizacion_perfil: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW,
-        },
+  "perfiles",
+  {
+    id_perfil: {
+      type: DataTypes.BIGINT,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
     },
-    {
-        tableName: 'perfiles',
-        timestamps: false,
-    }
+    nombre_perfil: {
+      type: DataTypes.STRING(250),
+      allowNull: false,
+    },
+    icono_perfil: {
+      type: DataTypes.STRING(1000),
+      allowNull: false,
+      defaultValue: "uploads/icono_predeterminado.png",
+    },
+    actividad_perfil: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
+    actualizacion_perfil: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+  },
+  {
+    tableName: "perfiles",
+    timestamps: false,
+  }
 );
 
 module.exports = Perfiles;

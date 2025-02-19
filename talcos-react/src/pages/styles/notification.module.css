@@ -1,41 +1,41 @@
 ﻿.Notification {
-    align-content: stretch;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 25px;
-    justify-content: space-between;
-    height: 100%;
-    width: 100%;
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 25px;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
 }
 
 .NotificationMessageReceived {
-    align-content: stretch;
-    background-color: #0037AE;
-    border-radius: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 25px;
-    height: 100%;
-    justify-content: flex-start;
-    padding: 10px;
-    width: 70%;
+  align-content: stretch;
+  background-color: #0037ae;
+  border-radius: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 25px;
+  height: 100%;
+  justify-content: flex-start;
+  padding: 10px;
+  width: 70%;
 }
 
 .NotificationMessageSend {
-    align-content: stretch;
-    background-color: #0037AE;
-    border-radius: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 25px;
-    height: 100%;
-    justify-content: flex-start;
-    padding: 10px;
-    width: 30%;
+  align-content: stretch;
+  background-color: #0037ae;
+  border-radius: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 25px;
+  height: 100%;
+  justify-content: flex-start;
+  padding: 10px;
+  width: 30%;
 }

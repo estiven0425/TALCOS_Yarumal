@@ -1,40 +1,40 @@
 ﻿.staffUserMainTable {
-    border-collapse: separate;
-    border-spacing: 0px 10px;
-    width: 100%;
+  border-collapse: separate;
+  border-spacing: 0px 10px;
+  width: 100%;
 }
 
 .staffUserMainTableHead,
 .staffUserMainTableBody {
-    width: 100%;
+  width: 100%;
 }
 
-    .staffUserMainTableHead tr,
-    .staffUserMainTableBody tr {
-        width: 100%;
-    }
+.staffUserMainTableHead tr,
+.staffUserMainTableBody tr {
+  width: 100%;
+}
 
-        .staffUserMainTableHead tr th {
-            font-size: 1rem;
-            text-align: center;
-        }
+.staffUserMainTableHead tr th {
+  font-size: 1rem;
+  text-align: center;
+}
 
-        .staffUserMainTableBody tr td {
-            font-size: 1rem;
-            text-align: center;
-        }
+.staffUserMainTableBody tr td {
+  font-size: 1rem;
+  text-align: center;
+}
 
 .staffUserMainAlternative {
-    align-content: center;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    height: 100%;
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
 }
 
-    .staffUserMainAlternative h2 {
-        margin: 0px;
-        text-align: center;
-    }
+.staffUserMainAlternative h2 {
+  margin: 0px;
+  text-align: center;
+}

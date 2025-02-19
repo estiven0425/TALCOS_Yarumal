@@ -1,70 +1,67 @@
-const { Op } = require('sequelize');
-const Perfiles = require('../models/Perfiles');
+const { Op } = require("sequelize");
+const Perfiles = require("../models/Perfiles");
 
 exports.leerPerfil = async (req, res) => {
-    try {
-        const perfiles = await Perfiles.findAll({
-            where: { actividad_perfil: true }
-        });
+  try {
+    const perfiles = await Perfiles.findAll({
+      where: { actividad_perfil: true },
+    });
 
-        res.json(perfiles);
-    } catch (error) {
-        res.status(500).send('Error del servidor: ' + error);
-    }
+    res.json(perfiles);
+  } catch (error) {
+    res.status(500).send("Error del servidor: " + error);
+  }
 };
 
 exports.personalPerfil = async (req, res) => {
-    const { perfil } = req.query;
+  const { perfil } = req.query;
 
-    try {
-        const perfiles = await Perfiles.findAll({
-            where: {
-                [Op.and]: [
-                    { id_perfil: perfil },
-                    { actividad_perfil: true }
-                ]
-            }
-        });
+  try {
+    const perfiles = await Perfiles.findAll({
+      where: {
+        [Op.and]: [{ id_perfil: perfil }, { actividad_perfil: true }],
+      },
+    });
 
-        res.json(perfiles);
-    } catch (error) {
-        res.status(500).send('Error del servidor: ' + error);
-    }
+    res.json(perfiles);
+  } catch (error) {
+    res.status(500).send("Error del servidor: " + error);
+  }
 };
 
 exports.crearPerfil = async (req, res) => {
-    const { nombre_perfil, icono_perfil } = req.body;
+  const { nombre_perfil, icono_perfil } = req.body;
 
-    try {
-        const nuevoPerfil = await Perfiles.create({
-            nombre_perfil,
-            icono_perfil
-        });
+  try {
+    const nuevoPerfil = await Perfiles.create({
+      nombre_perfil,
+      icono_perfil,
+    });
 
-        res.status(201).json(nuevoPerfil);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al crear el perfil' });
-    }
+    res.status(201).json(nuevoPerfil);
+  } catch (error) {
+    res.status(500).json({ error: "Error al crear el perfil" });
+  }
 };
 
 exports.actualizarPerfil = async (req, res) => {
-    const { id_perfil, nombre_perfil, icono_perfil, actividad_perfil } = req.body;
+  const { id_perfil, nombre_perfil, icono_perfil, actividad_perfil } = req.body;
 
-    try {
-        const perfil = await Perfiles.findByPk(id_perfil);
+  try {
+    const perfil = await Perfiles.findByPk(id_perfil);
 
-        if (perfil) {
-            await perfil.update({
-                nombre_perfil,
-                icono_perfil,
-                actividad_perfil
-            });
+    if (perfil) {
+      await perfil.update({
+        nombre_perfil,
+        icono_perfil,
+        actividad_perfil,
+      });
 
-            res.json(perfil);
-        } else {
-            res.status(404).json({ error: 'Perfil no encontrado' });
-        }
-    } catch (error) {
-        res.status(500).json({ error: 'Error al actualizar el perfil' });
+      res.json(perfil);
+    } else {
+      res.status(404).json({ error: "Perfil no encontrado" });
     }
+  } catch (error) {
+    res.status(500).json({ error: "Error al actualizar el perfil" });
+  }
 };

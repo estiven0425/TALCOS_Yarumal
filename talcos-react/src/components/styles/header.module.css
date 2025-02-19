@@ -1,32 +1,32 @@
 ﻿.header {
-    align-content: center;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-end;
-    gap: 25px;
-    padding: 10px 10px 0px 75px;
-    position: fixed;
-    right: 0px;
-    top: 0px;
-    width: 100vw;
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 25px;
+  padding: 10px 10px 0px 75px;
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  width: 100vw;
 }
 
-    .header p {
-        font-size: 1rem;
-        margin: 0px;
-        text-align: center;
-    }
+.header p {
+  font-size: 1rem;
+  margin: 0px;
+  text-align: center;
+}
 
 .headerUserName {
-    border-left: #ffffff 1px solid;
-    padding-left: 25px
+  border-left: #ffffff 1px solid;
+  padding-left: 25px;
 }
 
 .main {
-    box-sizing: border-box;
-    height: calc(100vh - 28px);
-    margin: 28px 10px 0px 75px;
-    padding: 25px;
+  box-sizing: border-box;
+  height: calc(100vh - 28px);
+  margin: 28px 10px 0px 75px;
+  padding: 25px;
 }

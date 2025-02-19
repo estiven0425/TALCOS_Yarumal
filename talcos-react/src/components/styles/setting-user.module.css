@@ -1,101 +1,101 @@
 ﻿.settingUserHeader {
-    align-content: flex-start;
-    align-items: center;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 10px;
-    justify-content: center;
+  align-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+  justify-content: center;
 }
 
-    .settingUserHeader h2 {
-        font-size: 1.5rem;
-        margin: 0px;
-    }
+.settingUserHeader h2 {
+  font-size: 1.5rem;
+  margin: 0px;
+}
 
 .settingUserHeaderIcon {
-    color: #ffffff;
-    font-size: 6rem;
+  color: #ffffff;
+  font-size: 6rem;
 }
 
 .settingUserMain {
-    align-content: flex-start;
-    align-items: center;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    height: 100%;
-    justify-content: flex-start;
+  align-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: flex-start;
 }
 
 .settingUserTable {
-    border-collapse: separate;
-    border-spacing: 0px 10px;
-    width: 100%;
+  border-collapse: separate;
+  border-spacing: 0px 10px;
+  width: 100%;
 }
 
 .settingUserTableHead,
 .settingUserTableBody {
-    width: 100%;
+  width: 100%;
 }
 
-    .settingUserTableHead tr,
-    .settingUserTableBody tr {
-        width: 100%;
-    }
+.settingUserTableHead tr,
+.settingUserTableBody tr {
+  width: 100%;
+}
 
-        .settingUserTableHead tr th {
-            font-size: 1rem;
-            text-align: center;
-        }
+.settingUserTableHead tr th {
+  font-size: 1rem;
+  text-align: center;
+}
 
-        .settingUserTableBody tr td {
-            font-size: 1rem;
-            text-align: center;
-        }
+.settingUserTableBody tr td {
+  font-size: 1rem;
+  text-align: center;
+}
 
 .settingUserFooter {
-    align-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
 }
 
-    .settingUserFooter button {
-        background-color: #0037AE;
-        border-color: transparent;
-        border-radius: 20px;
-        color: #ffffff;
-        cursor: pointer;
-        outline: transparent 1px solid;
-        padding: 15px 60px;
-        transition: all 0.5s ease-in-out;
-    }
+.settingUserFooter button {
+  background-color: #0037ae;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  outline: transparent 1px solid;
+  padding: 15px 60px;
+  transition: all 0.5s ease-in-out;
+}
 
-        .settingUserFooter button:hover {
-            background: #0095DC;
-        }
+.settingUserFooter button:hover {
+  background: #0095dc;
+}
 
-        .settingUserFooter button:focus {
-            outline: #0095DC 1px solid;
-        }
+.settingUserFooter button:focus {
+  outline: #0095dc 1px solid;
+}
 
 .settingUserAlternative {
-    align-content: center;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    height: 100%;
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
 }
 
-    .settingUserAlternative h2 {
-        margin: 0px;
-        text-align: center;
-    }
+.settingUserAlternative h2 {
+  margin: 0px;
+  text-align: center;
+}

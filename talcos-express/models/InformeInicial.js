@@ -1,139 +1,138 @@
-const { sequelize } = require('../config/conectionDataBase');
-const { DataTypes } = require('sequelize');
-const Usuarios = require('./Usuarios');
+const { sequelize } = require("../config/conectionDataBase");
+const { DataTypes } = require("sequelize");
+const Usuarios = require("./Usuarios");
 
 const InformeInicial = sequelize.define(
-    'informe_inicial',
-    {
-        id_informe_inicial: {
-            type: DataTypes.BIGINT,
-            autoIncrement: true,
-            primaryKey: true,
-            allowNull: false,
-        },
-        titular_informe_inicial: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-            references: {
-                model: 'usuarios',
-                key: 'id_usuario',
-            }
-        },
-        fecha_informe_inicial: {
-            type: DataTypes.DATEONLY,
-            allowNull: false,
-        },
-        hora_informe_inicial: {
-            type: DataTypes.TIME,
-            allowNull: false,
-        },
-        turno_informe_inicial: {
-            type: DataTypes.STRING(250),
-            allowNull: false,
-        },
-        bob_cat_informe_inicial: {
-            type: DataTypes.STRING(250),
-            allowNull: true,
-            defaultValue: 'No se registró',
-        },
-        molino_informe_inicial: {
-            type: DataTypes.STRING(250),
-            allowNull: true,
-            defaultValue: 'No se registró',
-        },
-        referencia_informe_inicial: {
-            type: DataTypes.STRING(250),
-            allowNull: true,
-            defaultValue: 'No se registró',
-        },
-        bulto_informe_inicial: {
-            type: DataTypes.STRING(250),
-            allowNull: true,
-            defaultValue: 'No se registró',
-        },
-        horometro_informe_inicial: {
-            type: DataTypes.BIGINT,
-            allowNull: true,
-        },
-        operador_informe_inicial: {
-            type: DataTypes.BIGINT,
-            allowNull: true,
-            references: {
-                model: 'usuarios',
-                key: 'id_usuario',
-            }
-        },
-        carguero_informe_inicial: {
-            type: DataTypes.BIGINT,
-            allowNull: true,
-            references: {
-                model: 'usuarios',
-                key: 'id_usuario',
-            }
-        },
-        mecanico_informe_inicial: {
-            type: DataTypes.BIGINT,
-            allowNull: true,
-            references: {
-                model: 'usuarios',
-                key: 'id_usuario',
-            }
-        },
-        cdc_informe_inicial: {
-            type: DataTypes.BIGINT,
-            allowNull: true,
-            references: {
-                model: 'usuarios',
-                key: 'id_usuario',
-            }
-        },
-        observacion_informe_inicial: {
-            type: DataTypes.STRING(1000),
-            allowNull: true,
-            defaultValue: 'No se registró',
-        },
-        actividad_informe_inicial: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: true,
-        },
-        actualizacion_informe_inicial: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW,
-        },
+  "informe_inicial",
+  {
+    id_informe_inicial: {
+      type: DataTypes.BIGINT,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false,
     },
-    {
-        tableName: 'informe_inicial',
-        timestamps: false,
-    }
+    titular_informe_inicial: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      references: {
+        model: "usuarios",
+        key: "id_usuario",
+      },
+    },
+    fecha_informe_inicial: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    hora_informe_inicial: {
+      type: DataTypes.TIME,
+      allowNull: false,
+    },
+    turno_informe_inicial: {
+      type: DataTypes.STRING(250),
+      allowNull: false,
+    },
+    bob_cat_informe_inicial: {
+      type: DataTypes.STRING(250),
+      allowNull: true,
+      defaultValue: "No se registrï¿½",
+    },
+    molino_informe_inicial: {
+      type: DataTypes.STRING(250),
+      allowNull: true,
+      defaultValue: "No se registrï¿½",
+    },
+    referencia_informe_inicial: {
+      type: DataTypes.STRING(250),
+      allowNull: true,
+      defaultValue: "No se registrï¿½",
+    },
+    bulto_informe_inicial: {
+      type: DataTypes.STRING(250),
+      allowNull: true,
+      defaultValue: "No se registrï¿½",
+    },
+    horometro_informe_inicial: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+    },
+    operador_informe_inicial: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+      references: {
+        model: "usuarios",
+        key: "id_usuario",
+      },
+    },
+    carguero_informe_inicial: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+      references: {
+        model: "usuarios",
+        key: "id_usuario",
+      },
+    },
+    mecanico_informe_inicial: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+      references: {
+        model: "usuarios",
+        key: "id_usuario",
+      },
+    },
+    cdc_informe_inicial: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+      references: {
+        model: "usuarios",
+        key: "id_usuario",
+      },
+    },
+    observacion_informe_inicial: {
+      type: DataTypes.STRING(1000),
+      allowNull: true,
+      defaultValue: "No se registrï¿½",
+    },
+    actividad_informe_inicial: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
+    actualizacion_informe_inicial: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+  },
+  {
+    tableName: "informe_inicial",
+    timestamps: false,
+  }
 );
 
-
 InformeInicial.belongsTo(Usuarios, {
-    foreignKey: 'titular_informe_inicial',
-    targetKey: 'id_usuario',
-    as: 'titular'
+  foreignKey: "titular_informe_inicial",
+  targetKey: "id_usuario",
+  as: "titular",
 });
 InformeInicial.belongsTo(Usuarios, {
-    foreignKey: 'operador_informe_inicial',
-    targetKey: 'id_usuario',
-    as: 'operador'
+  foreignKey: "operador_informe_inicial",
+  targetKey: "id_usuario",
+  as: "operador",
 });
 InformeInicial.belongsTo(Usuarios, {
-    foreignKey: 'carguero_informe_inicial',
-    targetKey: 'id_usuario',
-    as: 'carguero'
+  foreignKey: "carguero_informe_inicial",
+  targetKey: "id_usuario",
+  as: "carguero",
 });
 InformeInicial.belongsTo(Usuarios, {
-    foreignKey: 'mecanico_informe_inicial',
-    targetKey: 'id_usuario',
-    as: 'mecanico'
+  foreignKey: "mecanico_informe_inicial",
+  targetKey: "id_usuario",
+  as: "mecanico",
 });
 InformeInicial.belongsTo(Usuarios, {
-    foreignKey: 'cdc_informe_inicial',
-    targetKey: 'id_usuario',
-    as: 'cdc'
+  foreignKey: "cdc_informe_inicial",
+  targetKey: "id_usuario",
+  as: "cdc",
 });
 
 module.exports = InformeInicial;
