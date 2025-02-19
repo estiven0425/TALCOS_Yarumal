@@ -5,11 +5,16 @@ import Error from './pages/Error';
 import Home from './pages/Home';
 import Header from './components/Header';
 import Inventory from './pages/Inventory';
+import InventoryCreateShift from './pages/InventoryCreateShift';
+import InventoryCreateWindmill from './pages/InventoryCreateWindmill';
 import InventoryDeleteShift from './pages/InventoryDeleteShift';
 import InventoryEditShift from './pages/InventoryEditShift';
-import InventoryShift from './pages/InventoryShift';
-import InventoryListEditShift from './pages/InventoryListEditShift';
+import InventoryEditWindmill from './pages/InventoryEditWindmill';
 import InventoryListDeleteShift from './pages/InventoryListDeleteShift';
+import InventoryListEditShift from './pages/InventoryListEditShift';
+import InventoryListEditWindmill from './pages/InventoryListEditWindmill';
+import InventoryShift from './pages/InventoryShift';
+import InventoryWindmill from './pages/InventoryWindmill';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Monitoring from './pages/Monitoring';
@@ -45,10 +50,15 @@ createRoot(document.getElementById('root')).render(
                     <Route path='monitoring' element={<Monitoring />} />
                     <Route path='inventory' element={<Inventory />} />
                     <Route path='inventoryshift' element={<InventoryShift />} />
+                    <Route path='createshift' element={<InventoryCreateShift />} />
                     <Route path='listeditshift' element={<InventoryListEditShift />} />
                     <Route path='editshift' element={<InventoryEditShift />} />
                     <Route path='listdeleteshift' element={<InventoryListDeleteShift />} />
                     <Route path='deleteshift' element={<InventoryDeleteShift />} />
+                    <Route path='inventorywindmill' element={<InventoryWindmill />} />
+                    <Route path='createwindmill' element={<InventoryCreateWindmill />} />
+                    <Route path='listeditwindmill' element={<InventoryListEditWindmill />} />
+                    <Route path='editwindmill' element={<InventoryEditWindmill />} />
                     <Route path='notification' element={<Notification />} />
                     <Route path='setting' element={<Setting />} />
                     <Route path='changepassword' element={<SettingChangePassword />} />

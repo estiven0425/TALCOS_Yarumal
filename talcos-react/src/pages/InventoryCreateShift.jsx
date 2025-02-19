@@ -1,12 +1,12 @@
-﻿import StaffCreateUserForm from '../components/StaffCreateUserForm';
+﻿import InventoryCreateShiftForm from '../components/InventoryCreateShiftForm';
 import ProtectedRoute from '../utils/ProtectedRoute';
-import Style from './styles/staff-create-user.module.css';
+import Style from './styles/inventory-create-shift.module.css';
 
 function InventoryCreateShift() {
     return (
         <ProtectedRoute>
             <section className={Style.inventoryCreateShift}>
-                <StaffCreateUserForm />
+                <InventoryCreateShiftForm />
             </section>
         </ProtectedRoute>
     );

@@ -45,6 +45,7 @@ function InventoryEditShiftForm() {
         try {
             await axios.put(`http://${localIP}:3000/turnos`, {
                 id_turno: idTurno,
+                nombre_turno: nombreTurno === '' ? shift.nombre_turno : nombreTurno,
                 inicio_turno: inicioTurno === '' ? shift.inicio_turno : inicioTurno,
                 fin_turno: finTurno === '' ? shift.fin_turno : finTurno,
             });

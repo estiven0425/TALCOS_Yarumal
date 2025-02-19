@@ -56,7 +56,7 @@ function NavBar() {
                 )}
 
                 <Link
-                    className={`${Style.navBarInventory} ${currentPath === '/inventory' || currentPath === '/inventoryshift' || currentPath === '/listeditshift' || currentPath === '/editshift' || currentPath === '/listdeleteshift' || currentPath === '/fastinventory' ? Style.active : ''}`}
+                    className={`${Style.navBarInventory} ${currentPath === '/inventory' || currentPath === '/inventoryshift' || currentPath === '/createshift' || currentPath === '/listeditshift' || currentPath === '/editshift' || currentPath === '/listdeleteshift' || currentPath === '/inventorywindmill' || currentPath === '/createwindmill' || currentPath === '/listeditwindmill' || currentPath === '/editwindmill' || currentPath === '/fastinventory' ? Style.active : ''}`}
                     to={perfilUsuario === 3 || perfilUsuario === 4 ? '/fastinventory' : '/inventory'}
                 >
                     <i className={`bi bi-inboxes-fill ${Style.navBarIcon}`}></i>

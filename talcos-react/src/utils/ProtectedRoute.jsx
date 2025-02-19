@@ -23,8 +23,8 @@ const ProtectedRoute = ({ children }) => {
                 const restrictions = {
                     1: ['/generatereport', '/fastinventory'],
                     2: ['/staff', '/user', '/createuser', '/listedituser', '/edituser', '/listdeleteuser', '/deleteuser', '/generatereport', '/fastinventory'],
-                    3: ['/staff', '/user', '/createuser', '/listedituser', '/edituser', '/listdeleteuser', '/deleteuser', '/report', '/monitoring', '/inventory', '/inventoryshift', '/listeditshift', '/editshift', '/listdeleteshift', '/deleteshift'],
-                    4: ['/staff', '/user', '/createuser', '/listedituser', '/edituser', '/listdeleteuser', '/deleteuser', '/report', '/monitoring', '/inventory', '/inventoryshift', '/listeditshift', '/editshift', '/listdeleteshift', '/deleteshift'],
+                    3: ['/staff', '/user', '/createuser', '/listedituser', '/edituser', '/listdeleteuser', '/deleteuser', '/report', '/monitoring', '/inventory', '/inventoryshift', '/createshift', '/listeditshift', '/editshift', '/listdeleteshift', '/deleteshift', '/inventorywindmill', '/createwindmill', '/listeditwindmill', '/editwindmill'],
+                    4: ['/staff', '/user', '/createuser', '/listedituser', '/edituser', '/listdeleteuser', '/deleteuser', '/report', '/monitoring', '/inventory', '/inventoryshift', '/createshift', '/listeditshift', '/editshift', '/listdeleteshift', '/deleteshift', '/inventorywindmill', '/createwindmill', '/listeditwindmill', '/editwindmill'],
                 };
 
                 if (restrictions[perfilUsuario]?.includes(location.pathname)) {

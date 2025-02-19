@@ -108,7 +108,6 @@ function StaffCreateUserForm() {
 
         return Object.keys(errors).length === 0;
     };
-
     const sendCreateUser = async (e) => {
         e.preventDefault();
 
