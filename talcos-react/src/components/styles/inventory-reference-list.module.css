@@ -1,0 +1,42 @@
+.inventoryReferenceListMainTable {
+  border-collapse: separate;
+  border-spacing: 0px 10px;
+  width: 100%;
+}
+
+.inventoryReferenceListMainTableHead,
+.inventoryReferenceListMainTableBody {
+  width: 100%;
+}
+
+.inventoryReferenceListMainTableHead tr,
+.inventoryReferenceListMainTableBody tr {
+  width: 100%;
+}
+
+.inventoryReferenceListMainTableHead tr th {
+  font-size: 1rem;
+  text-align: center;
+  width: 33.33%;
+}
+
+.inventoryReferenceListMainTableBody tr td {
+  font-size: 1rem;
+  text-align: center;
+  width: 33.33%;
+}
+
+.inventoryReferenceListMainAlternative {
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
+}
+
+.inventoryReferenceListMainAlternative h2 {
+  margin: 0px;
+  text-align: center;
+}

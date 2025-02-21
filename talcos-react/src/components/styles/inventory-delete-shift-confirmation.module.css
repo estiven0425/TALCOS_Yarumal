@@ -1,4 +1,4 @@
-﻿.staffDeleteUserConfirmationAlternative {
+﻿.inventoryDeleteShiftConfirmationAlternative {
   align-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.staffDeleteUserConfirmation {
+.inventoryDeleteShiftConfirmation {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -22,7 +22,7 @@
   width: 100%;
 }
 
-.staffDeleteUserConfirmationMain {
+.inventoryDeleteShiftConfirmationMain {
   align-content: stretch;
   box-sizing: border-box;
   display: flex;
@@ -32,11 +32,11 @@
   height: 100%;
 }
 
-.staffDeleteUserConfirmationMain h1 {
+.inventoryDeleteShiftConfirmationMain h1 {
   text-align: center;
 }
 
-.staffDeleteUserConfirmationFooter {
+.inventoryDeleteShiftConfirmationFooter {
   align-content: stretch;
   box-sizing: border-box;
   display: flex;
@@ -46,7 +46,7 @@
   gap: 10px;
 }
 
-.staffDeleteUserConfirmationFooter button {
+.inventoryDeleteShiftConfirmationFooter button {
   background-color: #0037ae;
   border-color: transparent;
   border-radius: 20px;
@@ -58,15 +58,15 @@
   transition: all 0.5s ease-in-out;
 }
 
-.staffDeleteUserConfirmationFooter button:hover {
+.inventoryDeleteShiftConfirmationFooter button:hover {
   background: #0095dc;
 }
 
-.staffDeleteUserConfirmationFooter button:focus {
+.inventoryDeleteShiftConfirmationFooter button:focus {
   outline: #0095dc 1px solid;
 }
 
-.staffDeleteUserConfirmationValidationServer {
+.inventoryDeleteShiftConfirmationValidationServer {
   text-align: center;
   transition: all 0.5s ease-in-out;
 }
@@ -81,16 +81,16 @@
   width: 20px;
 }
 
-.staffDeleteUserConfirmation::-webkit-scrollbar {
+.inventoryDeleteShiftConfirmation::-webkit-scrollbar {
   width: 10px;
 }
 
-.staffDeleteUserConfirmation::-webkit-scrollbar-track {
+.inventoryDeleteShiftConfirmation::-webkit-scrollbar-track {
   background: #0037ae;
   border-radius: 10px;
 }
 
-.staffDeleteUserConfirmation::-webkit-scrollbar-thumb {
+.inventoryDeleteShiftConfirmation::-webkit-scrollbar-thumb {
   background: #0095dc;
   border-radius: 10px;
 }

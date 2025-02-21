@@ -45,7 +45,7 @@ const InformeFinal = sequelize.define(
     observacion_informe_final: {
       type: DataTypes.STRING(1000),
       allowNull: true,
-      defaultValue: "No se registr�",
+      defaultValue: "No se registró",
     },
     actividad_informe_final: {
       type: DataTypes.BOOLEAN,

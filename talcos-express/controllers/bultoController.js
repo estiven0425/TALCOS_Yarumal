@@ -48,3 +48,23 @@ exports.actualizarBulto = async (req, res) => {
     res.status(500).json({ error: "Error al actualizar el bulto" });
   }
 };
+
+exports.eliminarBulto = async (req, res) => {
+  const { id_bulto, actividad_bulto } = req.body;
+
+  try {
+    const bulto = await Bultos.findByPk(id_bulto);
+
+    if (bulto) {
+      await bulto.update({
+        actividad_bulto,
+      });
+
+      res.json(bulto);
+    } else {
+      res.status(404).json({ error: "Bulto no encontrada" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el bulto" });
+  }
+};

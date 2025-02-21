@@ -1,0 +1,107 @@
+.inventoryDeleteReferenceConfirmationAlternative {
+    align-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .inventoryDeleteReferenceConfirmation {
+    align-content: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 15px;
+    justify-content: flex-end;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .inventoryDeleteReferenceConfirmationMain {
+    align-content: stretch;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .inventoryDeleteReferenceConfirmationMain h1 {
+    text-align: center;
+  }
+  
+  .inventoryDeleteReferenceConfirmationFooter {
+    align-content: stretch;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  
+  .inventoryDeleteReferenceConfirmationFooter button {
+    background-color: #0037ae;
+    border-color: transparent;
+    border-radius: 20px;
+    color: #ffffff;
+    cursor: pointer;
+    max-height: 49px;
+    outline: transparent 1px solid;
+    padding: 15px;
+    transition: all 0.5s ease-in-out;
+  }
+  
+  .inventoryDeleteReferenceConfirmationFooter button:hover {
+    background: #0095dc;
+  }
+  
+  .inventoryDeleteReferenceConfirmationFooter button:focus {
+    outline: #0095dc 1px solid;
+  }
+  
+  .inventoryDeleteReferenceConfirmationValidationServer {
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+  }
+  
+  .loader {
+    animation: spin 1s linear infinite;
+    border: 5px solid #0048b6;
+    border-radius: 50%;
+    border-top: 5px solid transparent;
+    height: 20px;
+    margin: -7.5px auto 0px;
+    width: 20px;
+  }
+  
+  .inventoryDeleteReferenceConfirmation::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .inventoryDeleteReferenceConfirmation::-webkit-scrollbar-track {
+    background: #0037ae;
+    border-radius: 10px;
+  }
+  
+  .inventoryDeleteReferenceConfirmation::-webkit-scrollbar-thumb {
+    background: #0095dc;
+    border-radius: 10px;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  

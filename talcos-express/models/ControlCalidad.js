@@ -45,7 +45,7 @@ const ControlCalidad = sequelize.define(
     observacion_control_calidad: {
       type: DataTypes.STRING(1000),
       allowNull: true,
-      defaultValue: "No se registr�",
+      defaultValue: "No se registró",
     },
     actividad_control_calidad: {
       type: DataTypes.BOOLEAN,

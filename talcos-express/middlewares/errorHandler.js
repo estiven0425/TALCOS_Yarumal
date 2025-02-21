@@ -1,4 +1,4 @@
-﻿const createError = require("http-errors");
+const createError = require("http-errors");
 
 // Manejador de errores 404
 const notFoundHandler = (req, res, next) => {

@@ -101,10 +101,31 @@ function NavBar() {
             currentPath === "/listeditshift" ||
             currentPath === "/editshift" ||
             currentPath === "/listdeleteshift" ||
+            currentPath === "/deleteshift" ||
             currentPath === "/inventorywindmill" ||
             currentPath === "/createwindmill" ||
             currentPath === "/listeditwindmill" ||
             currentPath === "/editwindmill" ||
+            currentPath === "/listdeletewindmill" ||
+            currentPath === "/deletewindmill" ||
+            currentPath === "/inventoryreference" ||
+            currentPath === "/createreference" ||
+            currentPath === "/listeditreference" ||
+            currentPath === "/editreference" ||
+            currentPath === "/listdeletereference" ||
+            currentPath === "/deletereference" ||
+            currentPath === "/inventorybulk" ||
+            currentPath === "/createbulk" ||
+            currentPath === "/listeditbulk" ||
+            currentPath === "/editbulk" ||
+            currentPath === "/listdeletebulk" ||
+            currentPath === "/deletebulk" ||
+            currentPath === "/inventoryrawmaterial" ||
+            currentPath === "/createrawmaterial" ||
+            currentPath === "/listeditrawmaterial" ||
+            currentPath === "/editrawmaterial" ||
+            currentPath === "/listdeleterawmaterial" ||
+            currentPath === "/deleterawmaterial" ||
             currentPath === "/fastinventory"
               ? Style.active
               : ""

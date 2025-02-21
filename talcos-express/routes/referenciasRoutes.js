@@ -5,5 +5,6 @@ const referenciaController = require("../controllers/referenciaController");
 router.get("/", referenciaController.leerReferencia);
 router.post("/", referenciaController.crearReferencia);
 router.put("/", referenciaController.actualizarReferencia);
+router.put("/eliminarreferencia", referenciaController.eliminarReferencia);
 
 module.exports = router;

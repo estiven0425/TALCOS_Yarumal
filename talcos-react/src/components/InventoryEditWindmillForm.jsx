@@ -19,8 +19,6 @@ function InventoryEditWindmillForm() {
   useEffect(() => {
     if (windmill) {
       setIdMolino(windmill.id_molino);
-      setNombreMolino(windmill.nombre_molino);
-      setHorometroMolino(windmill.horometro_molino);
     }
   }, [windmill]);
   useEffect(() => {
@@ -41,7 +39,7 @@ function InventoryEditWindmillForm() {
     setLoading(true);
 
     try {
-      await axios.put(`http://${localIP}:3000/Molinos`, {
+      await axios.put(`http://${localIP}:3000/molinos`, {
         id_molino: idMolino,
         nombre_molino:
           nombreMolino === "" ? windmill.nombre_molino : nombreMolino,
@@ -86,7 +84,7 @@ function InventoryEditWindmillForm() {
           transition={{ duration: 0.5 }}
         >
           <header className={Style.inventoryEditWindmillFormHeader}>
-            <h1>Complete los datos para editar el Molino</h1>
+            <h1>Complete los datos para editar el molino</h1>
           </header>
           <main className={Style.inventoryEditWindmillFormMain}>
             <fieldset>
@@ -95,7 +93,7 @@ function InventoryEditWindmillForm() {
                 id="nombreMolino"
                 name="nombreMolino"
                 onChange={(e) => setNombreMolino(e.target.value)}
-                placeholder={windmill.nombre_Molino}
+                placeholder={windmill.nombre_molino}
                 type="text"
                 value={nombreMolino}
               />

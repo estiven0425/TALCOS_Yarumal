@@ -1,4 +1,4 @@
-﻿const debug = require("debug")("talcos-express:server");
+const debug = require("debug")("talcos-express:server");
 
 function onListening(server) {
   return function () {

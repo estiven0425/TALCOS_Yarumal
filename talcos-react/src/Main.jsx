@@ -5,14 +5,34 @@ import Error from "./pages/Error";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import Inventory from "./pages/Inventory";
+import InventoryCreateBulk from "./pages/InventoryCreateBulk";
+// import InventoryCreateRawMaterial from "./pages/InventoryCreateRawMaterial";
+import InventoryCreateReference from "./pages/InventoryCreateReference";
 import InventoryCreateShift from "./pages/InventoryCreateShift";
 import InventoryCreateWindmill from "./pages/InventoryCreateWindmill";
+import InventoryDeleteBulk from "./pages/InventoryDeleteBulk";
+// import InventoryDeleteRawMaterial from "./pages/InventoryDeleteRawMaterial";
+import InventoryDeleteReference from "./pages/InventoryDeleteReference";
 import InventoryDeleteShift from "./pages/InventoryDeleteShift";
+import InventoryDeleteWindmill from "./pages/InventoryDeleteWindmill";
+import InventoryEditBulk from "./pages/InventoryEditBulk";
+// import InventoryEditRawMaterial from "./pages/InventoryEditRawMaterial";
+import InventoryEditReference from "./pages/InventoryEditReference";
 import InventoryEditShift from "./pages/InventoryEditShift";
 import InventoryEditWindmill from "./pages/InventoryEditWindmill";
+import InventoryListDeleteBulk from "./pages/InventoryListDeleteBulk";
+// import InventoryListDeleteRawMaterial from "./pages/InventoryListDeleteRawMaterial";
+import InventoryListDeleteReference from "./pages/InventoryListDeleteReference";
 import InventoryListDeleteShift from "./pages/InventoryListDeleteShift";
+import InventoryListDeleteWindmill from "./pages/InventoryListDeleteWindmill";
+import InventoryListEditBulk from "./pages/InventoryListEditBulk";
+// import InventoryListEditRawMaterial from "./pages/InventoryListEditRawMaterial";
+import InventoryListEditReference from "./pages/InventoryListEditReference";
 import InventoryListEditShift from "./pages/InventoryListEditShift";
 import InventoryListEditWindmill from "./pages/InventoryListEditWindmill";
+import InventoryBulk from "./pages/InventoryBulk";
+import InventoryRawMaterial from "./pages/InventoryRawMaterial";
+import InventoryReference from "./pages/InventoryReference";
 import InventoryShift from "./pages/InventoryShift";
 import InventoryWindmill from "./pages/InventoryWindmill";
 import Login from "./pages/Login";
@@ -65,6 +85,59 @@ createRoot(document.getElementById("root")).render(
             element={<InventoryListEditWindmill />}
           />
           <Route path="editwindmill" element={<InventoryEditWindmill />} />
+          <Route
+            path="listdeletewindmill"
+            element={<InventoryListDeleteWindmill />}
+          />
+          <Route path="deletewindmill" element={<InventoryDeleteWindmill />} />
+          <Route path="inventoryreference" element={<InventoryReference />} />
+          <Route
+            path="createreference"
+            element={<InventoryCreateReference />}
+          />
+          <Route
+            path="listeditreference"
+            element={<InventoryListEditReference />}
+          />
+          <Route path="editreference" element={<InventoryEditReference />} />
+          <Route
+            path="listdeletereference"
+            element={<InventoryListDeleteReference />}
+          />
+          <Route
+            path="deletereference"
+            element={<InventoryDeleteReference />}
+          />
+          <Route path="inventorybulk" element={<InventoryBulk />} />
+          <Route path="createbulk" element={<InventoryCreateBulk />} />
+          <Route path="listeditbulk" element={<InventoryListEditBulk />} />
+          <Route path="editbulk" element={<InventoryEditBulk />} />
+          <Route path="listdeletebulk" element={<InventoryListDeleteBulk />} />
+          <Route path="deletebulk" element={<InventoryDeleteBulk />} />
+          <Route
+            path="inventoryrawmaterial"
+            element={<InventoryRawMaterial />}
+          />
+          {/* <Route
+            path="createrawmaterial"
+            element={<InventoryCreateRawMaterial />}
+          />
+          <Route
+            path="listeditrawmaterial"
+            element={<InventoryListEditRawMaterial />}
+          />
+          <Route
+            path="editrawmaterial"
+            element={<InventoryEditRawMaterial />}
+          />
+          <Route
+            path="listdeleterawmaterial"
+            element={<InventoryListDeleteRawMaterial />}
+          />
+          <Route
+            path="deleterawmaterial"
+            element={<InventoryDeleteRawMaterial />}
+          /> */}
           <Route path="notification" element={<Notification />} />
           <Route path="setting" element={<Setting />} />
           <Route path="changepassword" element={<SettingChangePassword />} />

@@ -49,3 +49,23 @@ exports.actualizarMolino = async (req, res) => {
     res.status(500).json({ error: "Error al actualizar el Molino" });
   }
 };
+
+exports.eliminarMolino = async (req, res) => {
+  const { id_molino, actividad_molino } = req.body;
+
+  try {
+    const molino = await Molinos.findByPk(id_molino);
+
+    if (molino) {
+      await molino.update({
+        actividad_molino,
+      });
+
+      res.json(molino);
+    } else {
+      res.status(404).json({ error: "Molino no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el molino" });
+  }
+};

@@ -20,7 +20,6 @@ function InventoryEditShiftForm() {
   useEffect(() => {
     if (shift) {
       setIdTurno(shift.id_turno);
-      setNombreTurno(shift.nombre_turno);
       setInicioTurno(shift.inicio_turno);
       setFinTurno(shift.fin_turno);
     }

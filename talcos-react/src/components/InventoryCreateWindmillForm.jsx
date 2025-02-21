@@ -92,7 +92,7 @@ function InventoryCreateWindmillForm() {
           transition={{ duration: 0.5 }}
         >
           <header className={Style.inventoryCreateWindmillFormHeader}>
-            <h1>Complete los datos para crear el molino</h1>
+            <h1>Complete los datos para crear un nuevo molino</h1>
           </header>
           <main className={Style.inventoryCreateWindmillFormMain}>
             <fieldset>
@@ -119,7 +119,7 @@ function InventoryCreateWindmillForm() {
               )}
             </fieldset>
             <fieldset>
-              <label htmlFor="horometroMolino">Hora de inicio</label>
+              <label htmlFor="horometroMolino">Horómetro</label>
               <input
                 id="horometroMolino"
                 name="horometroMolino"

@@ -54,7 +54,7 @@ const Registros = sequelize.define(
     observacion_registro: {
       type: DataTypes.STRING(1000),
       allowNull: true,
-      defaultValue: "No se registr�",
+      defaultValue: "No se registró",
     },
     actualizacion_registro: {
       type: DataTypes.DATE,

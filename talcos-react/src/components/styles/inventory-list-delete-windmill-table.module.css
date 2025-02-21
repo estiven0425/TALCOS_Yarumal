@@ -1,0 +1,128 @@
+﻿.inventoryListDeleteWindmillTableHeader {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inventoryListDeleteWindmillTableHeader h1 {
+  font-size: 1.5rem;
+  margin: 0px;
+  text-align: center;
+}
+
+.inventoryListDeleteWindmillTableMain {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+}
+
+.inventoryListDeleteWindmillTableMainTable {
+  border-collapse: separate;
+  border-spacing: 0px 10px;
+  width: 100%;
+}
+
+.inventoryListDeleteWindmillTableMainTableHead,
+.inventoryListDeleteWindmillTableMainTableBody {
+  width: 100%;
+}
+
+.inventoryListDeleteWindmillTableMainTableHead tr,
+.inventoryListDeleteWindmillTableMainTableBody tr {
+  width: 100%;
+}
+
+.inventoryListDeleteWindmillTableMainTableHead tr th {
+  font-size: 1rem;
+  text-align: center;
+  width: 33.33%;
+}
+
+.inventoryListDeleteWindmillTableMainTableBody tr {
+  cursor: pointer;
+  outline: transparent 1px solid;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryListDeleteWindmillTableMainTableBody tr:hover,
+.inventoryListDeleteWindmillTableMainTableBody tr:focus {
+  background-color: #0048b6;
+}
+
+.inventoryListDeleteWindmillTableMainTableBody tr td {
+  font-size: 1rem;
+  text-align: center;
+  width: 33.33%;
+}
+
+.inventoryListDeleteWindmillTableMainTableBody tr td:first-child {
+  border-radius: 20px 0px 0px 20px;
+}
+
+.inventoryListDeleteWindmillTableMainTableBody tr td:last-child {
+  border-radius: 0px 20px 20px 0px;
+}
+
+.inventoryListDeleteWindmillTableMainAlternative {
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
+}
+
+.inventoryListDeleteWindmillTableMainAlternative h2 {
+  margin: 0px;
+  text-align: center;
+}
+
+.inventoryListDeleteWindmillTableFooter {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.inventoryListDeleteWindmillTableFooter button {
+  background-color: #0037ae;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  max-height: 49px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryListDeleteWindmillTableFooter button:hover {
+  background: #0095dc;
+}
+
+.inventoryListDeleteWindmillTableFooter button:focus {
+  outline: #0095dc 1px solid;
+}
+
+.inventoryListDeleteWindmillTableMain::-webkit-scrollbar {
+  width: 10px;
+}
+
+.inventoryListDeleteWindmillTableMain::-webkit-scrollbar-track {
+  background: #0037ae;
+  border-radius: 10px;
+}
+
+.inventoryListDeleteWindmillTableMain::-webkit-scrollbar-thumb {
+  background: #0095dc;
+  border-radius: 10px;
+}

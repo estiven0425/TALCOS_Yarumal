@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
     });
 
     if (!usuario) {
-      return res.status(401).json({ error: "Credenciales inv�lidas" });
+      return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
     const contrasena = bcrypt.compareSync(
@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
     );
 
     if (!contrasena) {
-      return res.status(401).json({ error: "Credenciales inv�lidas" });
+      return res.status(401).json({ error: "Credenciales inválidas" });
     }
 
     const perfilesPermitidos = [1, 2, 3, 4];

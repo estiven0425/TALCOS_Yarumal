@@ -40,7 +40,7 @@ function InventoryWindmillList() {
             {molino.map((molino) => (
               <tr key={molino.id_molino}>
                 <td>{molino.nombre_molino}</td>
-                <td>{molino.horometro_molino}</td>
+                <td>{molino.horometro_molino} Hrs</td>
               </tr>
             ))}
           </tbody>

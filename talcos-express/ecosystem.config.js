@@ -1,4 +1,4 @@
-﻿module.exports = {
+module.exports = {
   apps: [
     {
       name: "talcos-express",

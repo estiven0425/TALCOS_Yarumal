@@ -32,10 +32,10 @@ function InventoryCreateShiftForm() {
       errors.nombreTurno = "El nombre del turno es obligatorio.";
     }
     if (!inicioTurno) {
-      errors.inicioTurno = "La hora de inicio del turno es obligatorio.";
+      errors.inicioTurno = "La hora de inicio del turno es obligatoria.";
     }
     if (!finTurno) {
-      errors.finTurno = "La hora de finalización del turno es obligatorio.";
+      errors.finTurno = "La hora de finalización del turno es obligatoria.";
     }
 
     setValidationError(errors);
@@ -97,7 +97,7 @@ function InventoryCreateShiftForm() {
           transition={{ duration: 0.5 }}
         >
           <header className={Style.inventoryCreateShiftFormHeader}>
-            <h1>Complete los datos para crear el turno</h1>
+            <h1>Complete los datos para crear un nuevo turno</h1>
           </header>
           <main className={Style.inventoryCreateShiftFormMain}>
             <fieldset>

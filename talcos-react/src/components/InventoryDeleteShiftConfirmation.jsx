@@ -60,7 +60,7 @@ function InventoryDeleteShiftConfirmation() {
     <>
       {SendStatus === true ? (
         <motion.div
-          className={Style.staffDeleteUserConfirmationAlternative}
+          className={Style.inventoryDeleteShiftConfirmationAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -69,15 +69,15 @@ function InventoryDeleteShiftConfirmation() {
         </motion.div>
       ) : (
         <motion.div
-          className={Style.staffDeleteUserConfirmation}
+          className={Style.inventoryDeleteShiftConfirmation}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <main className={Style.staffDeleteUserConfirmationMain}>
+          <main className={Style.inventoryDeleteShiftConfirmationMain}>
             <h1>¿Seguro que desea eliminar el turno seleccionado?</h1>
           </main>
-          <footer className={Style.staffDeleteUserConfirmationFooter}>
+          <footer className={Style.inventoryDeleteShiftConfirmationFooter}>
             <button onClick={() => redirectInventory()} type="button">
               Cancelar
             </button>
@@ -92,7 +92,7 @@ function InventoryDeleteShiftConfirmation() {
               <></>
             ) : (
               <motion.span
-                className={Style.staffDeleteUserConfirmationValidationServer}
+                className={Style.inventoryDeleteShiftConfirmationValidationServer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}

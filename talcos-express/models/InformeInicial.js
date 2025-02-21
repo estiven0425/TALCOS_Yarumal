@@ -34,22 +34,22 @@ const InformeInicial = sequelize.define(
     bob_cat_informe_inicial: {
       type: DataTypes.STRING(250),
       allowNull: true,
-      defaultValue: "No se registr�",
+      defaultValue: "No se registró",
     },
     molino_informe_inicial: {
       type: DataTypes.STRING(250),
       allowNull: true,
-      defaultValue: "No se registr�",
+      defaultValue: "No se registró",
     },
     referencia_informe_inicial: {
       type: DataTypes.STRING(250),
       allowNull: true,
-      defaultValue: "No se registr�",
+      defaultValue: "No se registró",
     },
     bulto_informe_inicial: {
       type: DataTypes.STRING(250),
       allowNull: true,
-      defaultValue: "No se registr�",
+      defaultValue: "No se registró",
     },
     horometro_informe_inicial: {
       type: DataTypes.BIGINT,
@@ -90,7 +90,7 @@ const InformeInicial = sequelize.define(
     observacion_informe_inicial: {
       type: DataTypes.STRING(1000),
       allowNull: true,
-      defaultValue: "No se registr�",
+      defaultValue: "No se registró",
     },
     actividad_informe_inicial: {
       type: DataTypes.BOOLEAN,

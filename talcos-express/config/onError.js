@@ -1,4 +1,4 @@
-﻿function onError(port) {
+function onError(port) {
   return function (error) {
     if (error.syscall !== "listen") {
       throw error;

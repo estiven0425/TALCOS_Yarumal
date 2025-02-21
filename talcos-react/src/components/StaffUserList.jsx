@@ -44,7 +44,7 @@ function StaffUserList() {
             <tr>
               <th>Nombre</th>
               <th>Documento de identidad</th>
-              <th>teléfono</th>
+              <th>Teléfono</th>
               <th>Correo electrónico</th>
               <th>Contrato</th>
             </tr>

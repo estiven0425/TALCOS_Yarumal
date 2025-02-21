@@ -1,0 +1,146 @@
+.inventoryCreateReferenceFormAlternative {
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.inventoryCreateReferenceForm {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 15px;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+}
+
+.inventoryCreateReferenceFormHeader {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inventoryCreateReferenceFormHeader h1,
+.inventoryCreateReferenceFormAlternative h1 {
+  font-size: 1.5rem;
+  margin: 0px;
+  text-align: center;
+}
+
+.inventoryCreateReferenceFormMain {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 15px;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.inventoryCreateReferenceFormMain fieldset {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  padding: 0px;
+}
+
+.inventoryCreateReferenceFormMain fieldset label {
+  padding-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.inventoryCreateReferenceFormMain fieldset input {
+  border-color: transparent;
+  border-radius: 20px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryCreateReferenceFormFooter {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.inventoryCreateReferenceFormFooter button {
+  background-color: #0037ae;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  max-height: 49px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryCreateReferenceFormFooter button:hover {
+  background: #0095dc;
+}
+
+.inventoryCreateReferenceFormMain fieldset input:focus,
+.inventoryCreateReferenceFormFooter button:focus {
+  outline: #0095dc 1px solid;
+}
+
+.inventoryCreateReferenceFormValidation {
+  text-align: left;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryCreateReferenceFormValidationServer {
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+  border: 5px solid #0048b6;
+  border-radius: 50%;
+  border-top: 5px solid transparent;
+  height: 20px;
+  margin: -7.5px auto 0px;
+  width: 20px;
+}
+
+.inventoryCreateReferenceForm::-webkit-scrollbar {
+  width: 10px;
+}
+
+.inventoryCreateReferenceForm::-webkit-scrollbar-track {
+  background: #0037ae;
+  border-radius: 10px;
+}
+
+.inventoryCreateReferenceForm::-webkit-scrollbar-thumb {
+  background: #0095dc;
+  border-radius: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

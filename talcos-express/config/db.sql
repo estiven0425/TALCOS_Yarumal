@@ -56,7 +56,7 @@ CREATE TABLE `productos_rechazados` (
 CREATE TABLE `materias_primas` (
 	`id_materia_prima` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_materia_prima` VARCHAR(250) NOT NULL,
-	`cantidad_materia_prima` BIGINT(100) NOT NULL,
+	`cantidad_materia_prima`  DECIMAL(5,2) NOT NULL,
 	`actividad_materia_prima` BIT NOT NULL DEFAULT(1),
 	`actualizacion_materia_prima` TIMESTAMP NOT NULL,
 	CONSTRAINT PRIMARY KEY(`id_materia_prima`)

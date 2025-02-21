@@ -57,3 +57,23 @@ exports.actualizarReferencia = async (req, res) => {
     res.status(500).json({ error: "Error al actualizar la referencia" });
   }
 };
+
+exports.eliminarReferencia = async (req, res) => {
+  const { id_referencia, actividad_referencia } = req.body;
+
+  try {
+    const referencia = await Referencias.findByPk(id_referencia);
+
+    if (referencia) {
+      await referencia.update({
+        actividad_referencia,
+      });
+
+      res.json(referencia);
+    } else {
+      res.status(404).json({ error: "Referencia no encontrada" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar la referencia" });
+  }
+};

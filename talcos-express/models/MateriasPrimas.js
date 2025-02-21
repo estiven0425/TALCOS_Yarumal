@@ -15,7 +15,7 @@ const MateriasPrimas = sequelize.define(
       allowNull: false,
     },
     cantidad_materia_prima: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(5, 2),
       allowNull: false,
     },
     actividad_materia_prima: {

@@ -1,0 +1,128 @@
+.inventorytListEditReferenceTableHeader {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inventorytListEditReferenceTableHeader h1 {
+  font-size: 1.5rem;
+  margin: 0px;
+  text-align: center;
+}
+
+.inventorytListEditReferenceTableMain {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+}
+
+.inventorytListEditReferenceTableMainTable {
+  border-collapse: separate;
+  border-spacing: 0px 10px;
+  width: 100%;
+}
+
+.inventorytListEditReferenceTableMainTableHead,
+.inventorytListEditReferenceTableMainTableBody {
+  width: 100%;
+}
+
+.inventorytListEditReferenceTableMainTableHead tr,
+.inventorytListEditReferenceTableMainTableBody tr {
+  width: 100%;
+}
+
+.inventorytListEditReferenceTableMainTableHead tr th {
+  font-size: 1rem;
+  text-align: center;
+  width: 33.33%;
+}
+
+.inventorytListEditReferenceTableMainTableBody tr {
+  cursor: pointer;
+  outline: transparent 1px solid;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventorytListEditReferenceTableMainTableBody tr:hover,
+.inventorytListEditReferenceTableMainTableBody tr:focus {
+  background-color: #0048b6;
+}
+
+.inventorytListEditReferenceTableMainTableBody tr td {
+  font-size: 1rem;
+  text-align: center;
+  width: 33.33%;
+}
+
+.inventorytListEditReferenceTableMainTableBody tr td:first-child {
+  border-radius: 20px 0px 0px 20px;
+}
+
+.inventorytListEditReferenceTableMainTableBody tr td:last-child {
+  border-radius: 0px 20px 20px 0px;
+}
+
+.inventorytListEditReferenceTableMainAlternative {
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
+}
+
+.inventorytListEditReferenceTableMainAlternative h2 {
+  margin: 0px;
+  text-align: center;
+}
+
+.inventorytListEditReferenceTableFooter {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.inventorytListEditReferenceTableFooter button {
+  background-color: #0037ae;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  max-height: 49px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventorytListEditReferenceTableFooter button:hover {
+  background: #0095dc;
+}
+
+.inventorytListEditReferenceTableFooter button:focus {
+  outline: #0095dc 1px solid;
+}
+
+.inventorytListEditReferenceTableMain::-webkit-scrollbar {
+  width: 10px;
+}
+
+.inventorytListEditReferenceTableMain::-webkit-scrollbar-track {
+  background: #0037ae;
+  border-radius: 10px;
+}
+
+.inventorytListEditReferenceTableMain::-webkit-scrollbar-thumb {
+  background: #0095dc;
+  border-radius: 10px;
+}
