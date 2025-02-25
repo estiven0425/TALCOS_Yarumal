@@ -6,27 +6,27 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import Inventory from "./pages/Inventory";
 import InventoryCreateBulk from "./pages/InventoryCreateBulk";
-// import InventoryCreateRawMaterial from "./pages/InventoryCreateRawMaterial";
+import InventoryCreateRawMaterial from "./pages/InventoryCreateRawMaterial";
 import InventoryCreateReference from "./pages/InventoryCreateReference";
 import InventoryCreateShift from "./pages/InventoryCreateShift";
 import InventoryCreateWindmill from "./pages/InventoryCreateWindmill";
 import InventoryDeleteBulk from "./pages/InventoryDeleteBulk";
-// import InventoryDeleteRawMaterial from "./pages/InventoryDeleteRawMaterial";
+import InventoryDeleteRawMaterial from "./pages/InventoryDeleteRawMaterial";
 import InventoryDeleteReference from "./pages/InventoryDeleteReference";
 import InventoryDeleteShift from "./pages/InventoryDeleteShift";
 import InventoryDeleteWindmill from "./pages/InventoryDeleteWindmill";
 import InventoryEditBulk from "./pages/InventoryEditBulk";
-// import InventoryEditRawMaterial from "./pages/InventoryEditRawMaterial";
+import InventoryEditRawMaterial from "./pages/InventoryEditRawMaterial";
 import InventoryEditReference from "./pages/InventoryEditReference";
 import InventoryEditShift from "./pages/InventoryEditShift";
 import InventoryEditWindmill from "./pages/InventoryEditWindmill";
 import InventoryListDeleteBulk from "./pages/InventoryListDeleteBulk";
-// import InventoryListDeleteRawMaterial from "./pages/InventoryListDeleteRawMaterial";
+import InventoryListDeleteRawMaterial from "./pages/InventoryListDeleteRawMaterial";
 import InventoryListDeleteReference from "./pages/InventoryListDeleteReference";
 import InventoryListDeleteShift from "./pages/InventoryListDeleteShift";
 import InventoryListDeleteWindmill from "./pages/InventoryListDeleteWindmill";
 import InventoryListEditBulk from "./pages/InventoryListEditBulk";
-// import InventoryListEditRawMaterial from "./pages/InventoryListEditRawMaterial";
+import InventoryListEditRawMaterial from "./pages/InventoryListEditRawMaterial";
 import InventoryListEditReference from "./pages/InventoryListEditReference";
 import InventoryListEditShift from "./pages/InventoryListEditShift";
 import InventoryListEditWindmill from "./pages/InventoryListEditWindmill";
@@ -118,7 +118,7 @@ createRoot(document.getElementById("root")).render(
             path="inventoryrawmaterial"
             element={<InventoryRawMaterial />}
           />
-          {/* <Route
+          <Route
             path="createrawmaterial"
             element={<InventoryCreateRawMaterial />}
           />
@@ -137,7 +137,7 @@ createRoot(document.getElementById("root")).render(
           <Route
             path="deleterawmaterial"
             element={<InventoryDeleteRawMaterial />}
-          /> */}
+          />
           <Route path="notification" element={<Notification />} />
           <Route path="setting" element={<Setting />} />
           <Route path="changepassword" element={<SettingChangePassword />} />

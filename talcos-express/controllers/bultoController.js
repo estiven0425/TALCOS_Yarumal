@@ -62,7 +62,7 @@ exports.eliminarBulto = async (req, res) => {
 
       res.json(bulto);
     } else {
-      res.status(404).json({ error: "Bulto no encontrada" });
+      res.status(404).json({ error: "Bulto no encontrado" });
     }
   } catch (error) {
     res.status(500).json({ error: "Error al eliminar el bulto" });

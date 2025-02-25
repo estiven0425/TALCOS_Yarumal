@@ -1,97 +1,64 @@
 ﻿import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import Style from "./styles/inventory-list-profile.module.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Style from "./styles/inventory-list.module.css";
 
-function InventoryList() {
-  const navigate = useNavigate();
+function InventoryList({ location, head, index, body, name, optional }) {
+  const [item, setItem] = useState([]);
+  const localIP = import.meta.env.VITE_LOCAL_IP;
 
-  const redirect = (category) => {
-    navigate(`/${category}`);
-  };
+  useEffect(() => {
+    const getItem = async () => {
+      try {
+        const response = await axios.get(`http://${localIP}:3000/${location}`);
+
+        setItem(response.data);
+      } catch (error) {
+        console.error("Error al obtener los datos: ", error);
+      }
+    };
+
+    getItem();
+  }, [localIP]);
 
   return (
     <>
-      <motion.header
-        className={Style.inventoryListHeader}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1>
-          Seleccione una categoría para acceder a su contenido y funciones
-        </h1>
-      </motion.header>
-      <motion.main
-        className={Style.inventoryListMain}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <button
-          className={Style.inventoryListMainButton}
-          onClick={() => redirect("inventoryshift")}
-          type="button"
+      {item.length > 0 ? (
+        <motion.table
+          className={Style.inventoryListMainTable}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <h2>Turnos</h2>
-          <img alt="Icono" src="/turno.svg"></img>
-        </button>
-        <button
-          className={Style.inventoryListMainButton}
-          onClick={() => redirect("inventorywindmill")}
-          type="button"
+          <thead className={Style.inventoryListMainTableHead}>
+            <tr>
+              {head.map((head) => (
+                <th key={head}>{head}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className={Style.inventoryListMainTableBody}>
+            {item.map((item) => (
+              <tr key={item[index]}>
+                {body.map((body) => (
+                  <td key={body}>
+                    {item[body]} {optional[body] || ""}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </motion.table>
+      ) : (
+        <motion.div
+          className={Style.inventoryListMainAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <h2>Molinos</h2>
-          <img alt="Icono" src="/molino.svg"></img>
-        </button>
-        <button
-          className={Style.inventoryListMainButton}
-          onClick={() => redirect("inventoryreference")}
-          type="button"
-        >
-          <h2>Referencias</h2>
-          <img alt="Icono" src="/referencia.svg"></img>
-        </button>
-        <button
-          className={Style.inventoryListMainButton}
-          onClick={() => redirect("inventorybulk")}
-          type="button"
-        >
-          <h2>Bultos</h2>
-          <img alt="Icono" src="/bulto.svg"></img>
-        </button>
-        <button
-          className={Style.inventoryListMainButton}
-          onClick={() => redirect("inventoryrawmaterial")}
-          type="button"
-        >
-          <h2>Materia prima</h2>
-          <img alt="Icono" src="/materiaprima.svg"></img>
-        </button>
-        <button
-          className={Style.inventoryListMainButton}
-          onClick={() => redirect("inventoryrejectedmaterial")}
-          type="button"
-        >
-          <h2>Productos rechazados</h2>
-          <img alt="Icono" src="/productorechazado.svg"></img>
-        </button>
-        <button
-          className={Style.inventoryListMainButton}
-          onClick={() => redirect("inventoryprofile")}
-          type="button"
-        >
-          <h2>Perfiles</h2>
-          <img alt="Icono" src="/perfil.svg"></img>
-        </button>
-        <button
-          className={Style.inventoryListMainButton}
-          onClick={() => redirect("inventorybobcat")}
-          type="button"
-        >
-          <h2>Bob - Cat</h2>
-          <img alt="Icono" src="/bobcat.svg"></img>
-        </button>
-      </motion.main>
+          <h2>No existen {name}</h2>
+        </motion.div>
+      )}
     </>
   );
 }

@@ -53,3 +53,23 @@ exports.actualizarMateriaPrima = async (req, res) => {
     res.status(500).json({ error: "Error al actualizar la materia prima" });
   }
 };
+
+exports.eliminarMateriaPrima = async (req, res) => {
+  const { id_materia_prima, actividad_materia_prima } = req.body;
+
+  try {
+    const materiaPrima = await MateriasPrimas.findByPk(id_materia_prima);
+
+    if (materiaPrima) {
+      await materiaPrima.update({
+        actividad_materia_prima,
+      });
+
+      res.json(materiaPrima);
+    } else {
+      res.status(404).json({ error: "Materia prima no encontrada" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar la materia prima" });
+  }
+};

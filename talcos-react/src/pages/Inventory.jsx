@@ -1,4 +1,4 @@
-﻿import InventoryList from "../components/InventoryList";
+﻿import InventoryListProfile from "../components/InventoryListProfile";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import Style from "./styles/inventory.module.css";
 
@@ -6,7 +6,7 @@ function Inventory() {
   return (
     <ProtectedRoute>
       <section className={Style.inventory}>
-        <InventoryList />
+        <InventoryListProfile />
       </section>
     </ProtectedRoute>
   );
