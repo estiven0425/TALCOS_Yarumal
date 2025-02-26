@@ -51,13 +51,13 @@ function NavBar() {
         {perfilUsuario === 1 && (
           <Link
             className={`${Style.navBarStaff} ${
-              currentPath === "/staff" ||
-              currentPath === "/user" ||
-              currentPath === "/createuser" ||
-              currentPath === "/edituser" ||
-              currentPath === "/listedituser" ||
-              currentPath === "/deleteuser" ||
-              currentPath === "/listdeleteuser"
+              currentPath.startsWith("/staff") ||
+              currentPath.startsWith("/user") ||
+              currentPath.startsWith("/createuser") ||
+              currentPath.startsWith("/edituser") ||
+              currentPath.startsWith("/listedituser") ||
+              currentPath.startsWith("/deleteuser") ||
+              currentPath.startsWith("/listdeleteuser")
                 ? Style.active
                 : ""
             }`}
@@ -69,7 +69,8 @@ function NavBar() {
 
         <Link
           className={`${Style.navBarReport} ${
-            currentPath === "/report" || currentPath === "/generatereport"
+            currentPath.startsWith("/report") ||
+            currentPath.startsWith("/generatereport")
               ? Style.active
               : ""
           }`}
@@ -85,7 +86,7 @@ function NavBar() {
         {(perfilUsuario === 1 || perfilUsuario === 2) && (
           <Link
             className={`${Style.navBarMonitoring} ${
-              currentPath === "/monitoring" ? Style.active : ""
+              currentPath.startsWith("/monitoring") ? Style.active : ""
             }`}
             to="/monitoring"
           >
@@ -95,45 +96,15 @@ function NavBar() {
 
         <Link
           className={`${Style.navBarInventory} ${
-            currentPath === "/inventory" ||
-            currentPath === "/inventoryshift" ||
-            currentPath === "/createshift" ||
-            currentPath === "/listeditshift" ||
-            currentPath === "/editshift" ||
-            currentPath === "/listdeleteshift" ||
-            currentPath === "/deleteshift" ||
-            currentPath === "/inventorywindmill" ||
-            currentPath === "/createwindmill" ||
-            currentPath === "/listeditwindmill" ||
-            currentPath === "/editwindmill" ||
-            currentPath === "/listdeletewindmill" ||
-            currentPath === "/deletewindmill" ||
-            currentPath === "/inventoryreference" ||
-            currentPath === "/createreference" ||
-            currentPath === "/listeditreference" ||
-            currentPath === "/editreference" ||
-            currentPath === "/listdeletereference" ||
-            currentPath === "/deletereference" ||
-            currentPath === "/inventorybulk" ||
-            currentPath === "/createbulk" ||
-            currentPath === "/listeditbulk" ||
-            currentPath === "/editbulk" ||
-            currentPath === "/listdeletebulk" ||
-            currentPath === "/deletebulk" ||
-            currentPath === "/inventoryrawmaterial" ||
-            currentPath === "/createrawmaterial" ||
-            currentPath === "/listeditrawmaterial" ||
-            currentPath === "/editrawmaterial" ||
-            currentPath === "/listdeleterawmaterial" ||
-            currentPath === "/deleterawmaterial" ||
-            currentPath === "/fastinventory"
+            currentPath.startsWith("/inventory") ||
+            currentPath.startsWith("/fastinventory")
               ? Style.active
               : ""
           }`}
           to={
             perfilUsuario === 3 || perfilUsuario === 4
               ? "/fastinventory"
-              : "/inventory"
+              : "/inventory/inventorygeneral"
           }
         >
           <i className={`bi bi-inboxes-fill ${Style.navBarIcon}`}></i>
@@ -143,7 +114,7 @@ function NavBar() {
       <section>
         <Link
           className={`${Style.navBarNotification} ${
-            currentPath === "/notification" ? Style.active : ""
+            currentPath.startsWith("/notification") ? Style.active : ""
           }`}
           to="/notification"
         >
@@ -151,7 +122,8 @@ function NavBar() {
         </Link>
         <Link
           className={`${Style.navBarSetting} ${
-            currentPath === "/setting" || currentPath === "/changepassword"
+            currentPath.startsWith("/setting") ||
+            currentPath.startsWith("/changepassword")
               ? Style.active
               : ""
           }`}
@@ -161,7 +133,7 @@ function NavBar() {
         </Link>
         <Link
           className={`${Style.navBarLogOut} ${
-            currentPath === "/logout" ? Style.active : ""
+            currentPath.startsWith("/logout") ? Style.active : ""
           }`}
           to="/logout"
         >

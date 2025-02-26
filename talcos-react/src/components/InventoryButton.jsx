@@ -5,13 +5,13 @@ import Style from "./styles/inventory-button.module.css";
 function InventoryButton({ location, name }) {
   const navigate = useNavigate();
   const redirectCreate = () => {
-    navigate(`/create${location}`);
+    navigate(`/inventory/create${location}`);
   };
   const redirectEdit = () => {
-    navigate(`/listedit${location}`);
+    navigate(`/inventory/listedit${location}`);
   };
   const redirectDelete = () => {
-    navigate(`/listdelete${location}`);
+    navigate(`/inventory/listdelete${location}`);
   };
 
   return (

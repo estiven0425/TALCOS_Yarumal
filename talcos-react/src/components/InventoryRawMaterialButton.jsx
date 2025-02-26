@@ -5,13 +5,13 @@ import Style from "./styles/inventory-raw-material-button.module.css";
 function InventoryRawMaterialButton() {
   const navigate = useNavigate();
   const redirectCreate = () => {
-    navigate("/createrawmaterial");
+    navigate("/inventory/createrawmaterial");
   };
   const redirectEdit = () => {
-    navigate("/listeditrawmaterial");
+    navigate("/inventory/listeditrawmaterial");
   };
   const redirectDelete = () => {
-    navigate("/listdeleterawmaterial");
+    navigate("/inventory/listdeleterawmaterial");
   };
 
   return (

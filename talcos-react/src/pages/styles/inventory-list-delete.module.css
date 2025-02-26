@@ -1,11 +1,12 @@
-.inventoryEditBulk {
+﻿.inventoryListDelete {
   align-content: flex-start;
   align-items: center;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: flex-start;
+  gap: 10px;
+  justify-content: space-between;
   height: 100%;
   overflow: auto;
   width: 100%;

@@ -1,4 +1,4 @@
-.inventoryDeleteRawMaterialConfirmationAlternative {
+﻿.inventoryDeleteConfirmationAlternative {
   align-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.inventoryDeleteRawMaterialConfirmation {
+.inventoryDeleteConfirmation {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -22,7 +22,7 @@
   width: 100%;
 }
 
-.inventoryDeleteRawMaterialConfirmationMain {
+.inventoryDeleteConfirmationMain {
   align-content: stretch;
   box-sizing: border-box;
   display: flex;
@@ -32,11 +32,11 @@
   height: 100%;
 }
 
-.inventoryDeleteRawMaterialConfirmationMain h1 {
+.inventoryDeleteConfirmationMain h1 {
   text-align: center;
 }
 
-.inventoryDeleteRawMaterialConfirmationFooter {
+.inventoryDeleteConfirmationFooter {
   align-content: stretch;
   box-sizing: border-box;
   display: flex;
@@ -46,7 +46,7 @@
   gap: 10px;
 }
 
-.inventoryDeleteRawMaterialConfirmationFooter button {
+.inventoryDeleteConfirmationFooter button {
   background-color: #0037ae;
   border-color: transparent;
   border-radius: 20px;
@@ -58,15 +58,15 @@
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryDeleteRawMaterialConfirmationFooter button:hover {
+.inventoryDeleteConfirmationFooter button:hover {
   background: #0095dc;
 }
 
-.inventoryDeleteRawMaterialConfirmationFooter button:focus {
+.inventoryDeleteConfirmationFooter button:focus {
   outline: #0095dc 1px solid;
 }
 
-.inventoryDeleteRawMaterialConfirmationValidationServer {
+.inventoryDeleteConfirmationValidationServer {
   text-align: center;
   transition: all 0.5s ease-in-out;
 }
@@ -81,16 +81,16 @@
   width: 20px;
 }
 
-.inventoryDeleteRawMaterialConfirmation::-webkit-scrollbar {
+.inventoryDeleteConfirmation::-webkit-scrollbar {
   width: 10px;
 }
 
-.inventoryDeleteRawMaterialConfirmation::-webkit-scrollbar-track {
+.inventoryDeleteConfirmation::-webkit-scrollbar-track {
   background: #0037ae;
   border-radius: 10px;
 }
 
-.inventoryDeleteRawMaterialConfirmation::-webkit-scrollbar-thumb {
+.inventoryDeleteConfirmation::-webkit-scrollbar-thumb {
   background: #0095dc;
   border-radius: 10px;
 }

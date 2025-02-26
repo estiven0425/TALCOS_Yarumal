@@ -1,12 +1,25 @@
-﻿import InventoryListDeleteReferenceTable from "../components/InventoryListDeleteReferenceTable";
+﻿import InventoryListDeleteTable from "../components/InventoryListDeleteTable";
 import ProtectedRoute from "../utils/ProtectedRoute";
-import Style from "./styles/inventory-list-delete-reference.module.css";
+import Style from "./styles/inventory-list-delete.module.css";
 
 function InventoryListDeleteReference() {
   return (
     <ProtectedRoute>
-      <section className={Style.inventoryListDeleteReference}>
-        <InventoryListDeleteReferenceTable />
+      <section className={Style.inventoryListDelete}>
+        <InventoryListDeleteTable
+          endpoint="referencias"
+          redirectPath="reference"
+          title="una referencia"
+          head={["Nombre", "Cantidad", "Cliente"]}
+          index="id_referencia"
+          body={[
+            "nombre_referencia",
+            "cantidad_referencia",
+            "cliente_referencia",
+          ]}
+          optional={{ cantidad_referencia: "Tons" }}
+          name="referencias"
+        />
       </section>
     </ProtectedRoute>
   );

@@ -2,9 +2,9 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/inventory-list-edit-table.module.css";
+import Style from "./styles/inventory-list-delete-table.module.css";
 
-function InventoryListEditTable({
+function InventoryListDeleteTable({
   endpoint,
   redirectPath,
   title,
@@ -34,38 +34,38 @@ function InventoryListEditTable({
   const redirectInventory = () => {
     navigate(`/inventory/inventory${redirectPath}`);
   };
-  const redirectEditInventory = (data) => {
-    navigate(`/inventory/edit${redirectPath}`, { state: data });
+  const redirectDeleteInventory = (data) => {
+    navigate(`/inventory/delete${redirectPath}`, { state: data });
   };
 
   return (
     <>
-      <header className={Style.inventorytListEditTableHeader}>
+      <header className={Style.inventoryListDeleteTableHeader}>
         <h1>Seleccione {title} para editar</h1>
       </header>
-      <main className={Style.inventorytListEditTableMain}>
+      <main className={Style.inventoryListDeleteTableMain}>
         {item.length > 0 ? (
           <motion.table
-            className={Style.inventorytListEditTableMainTable}
+            className={Style.inventoryListDeleteTableMainTable}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <thead className={Style.inventorytListEditTableMainTableHead}>
+            <thead className={Style.inventoryListDeleteTableMainTableHead}>
               <tr>
                 {head.map((head) => (
                   <th key={head}>{head}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className={Style.inventorytListEditTableMainTableBody}>
+            <tbody className={Style.inventoryListDeleteTableMainTableBody}>
               {item.map((item) => (
                 <tr
                   key={item[index]}
-                  onClick={() => redirectEditInventory(item)}
+                  onClick={() => redirectDeleteInventory(item)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      redirectEditInventory(item);
+                      redirectDeleteInventory(item);
                     }
                   }}
                   tabIndex="0"
@@ -81,7 +81,7 @@ function InventoryListEditTable({
           </motion.table>
         ) : (
           <motion.div
-            className={Style.inventorytListEditTableMainAlternative}
+            className={Style.inventoryListDeleteTableMainAlternative}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -90,7 +90,7 @@ function InventoryListEditTable({
           </motion.div>
         )}
       </main>
-      <footer className={Style.inventorytListEditTableFooter}>
+      <footer className={Style.inventoryListDeleteTableFooter}>
         <button type="button" onClick={() => redirectInventory()}>
           Volver
         </button>
@@ -99,4 +99,4 @@ function InventoryListEditTable({
   );
 }
 
-export default InventoryListEditTable;
+export default InventoryListDeleteTable;

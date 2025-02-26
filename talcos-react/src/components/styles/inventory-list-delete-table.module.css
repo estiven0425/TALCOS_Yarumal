@@ -1,15 +1,15 @@
-.inventoryListDeleteRawMaterialTableHeader {
+﻿.inventoryListDeleteTableHeader {
   box-sizing: border-box;
   width: 100%;
 }
 
-.inventoryListDeleteRawMaterialTableHeader h1 {
+.inventoryListDeleteTableHeader h1 {
   font-size: 1.5rem;
   margin: 0px;
   text-align: center;
 }
 
-.inventoryListDeleteRawMaterialTableMain {
+.inventoryListDeleteTableMain {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -21,54 +21,54 @@
   width: 100%;
 }
 
-.inventoryListDeleteRawMaterialTableMainTable {
+.inventoryListDeleteTableMainTable {
   border-collapse: separate;
   border-spacing: 0px 10px;
   width: 100%;
 }
 
-.inventoryListDeleteRawMaterialTableMainTableHead,
-.inventoryListDeleteRawMaterialTableMainTableBody {
+.inventoryListDeleteTableMainTableHead,
+.inventoryListDeleteTableMainTableBody {
   width: 100%;
 }
 
-.inventoryListDeleteRawMaterialTableMainTableHead tr,
-.inventoryListDeleteRawMaterialTableMainTableBody tr {
+.inventoryListDeleteTableMainTableHead tr,
+.inventoryListDeleteTableMainTableBody tr {
   width: 100%;
 }
 
-.inventoryListDeleteRawMaterialTableMainTableHead tr th {
+.inventoryListDeleteTableMainTableHead tr th {
   font-size: 1rem;
   text-align: center;
   width: 33.33%;
 }
 
-.inventoryListDeleteRawMaterialTableMainTableBody tr {
+.inventoryListDeleteTableMainTableBody tr {
   cursor: pointer;
   outline: transparent 1px solid;
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryListDeleteRawMaterialTableMainTableBody tr:hover,
-.inventoryListDeleteRawMaterialTableMainTableBody tr:focus {
+.inventoryListDeleteTableMainTableBody tr:hover,
+.inventoryListDeleteTableMainTableBody tr:focus {
   background-color: #0048b6;
 }
 
-.inventoryListDeleteRawMaterialTableMainTableBody tr td {
+.inventoryListDeleteTableMainTableBody tr td {
   font-size: 1rem;
   text-align: center;
   width: 33.33%;
 }
 
-.inventoryListDeleteRawMaterialTableMainTableBody tr td:first-child {
+.inventoryListDeleteTableMainTableBody tr td:first-child {
   border-radius: 20px 0px 0px 20px;
 }
 
-.inventoryListDeleteRawMaterialTableMainTableBody tr td:last-child {
+.inventoryListDeleteTableMainTableBody tr td:last-child {
   border-radius: 0px 20px 20px 0px;
 }
 
-.inventoryListDeleteRawMaterialTableMainAlternative {
+.inventoryListDeleteTableMainAlternative {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -78,12 +78,12 @@
   height: 100%;
 }
 
-.inventoryListDeleteRawMaterialTableMainAlternative h2 {
+.inventoryListDeleteTableMainAlternative h2 {
   margin: 0px;
   text-align: center;
 }
 
-.inventoryListDeleteRawMaterialTableFooter {
+.inventoryListDeleteTableFooter {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -93,7 +93,7 @@
   width: 100%;
 }
 
-.inventoryListDeleteRawMaterialTableFooter button {
+.inventoryListDeleteTableFooter button {
   background-color: #0037ae;
   border-color: transparent;
   border-radius: 20px;
@@ -105,24 +105,24 @@
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryListDeleteRawMaterialTableFooter button:hover {
+.inventoryListDeleteTableFooter button:hover {
   background: #0095dc;
 }
 
-.inventoryListDeleteRawMaterialTableFooter button:focus {
+.inventoryListDeleteTableFooter button:focus {
   outline: #0095dc 1px solid;
 }
 
-.inventoryListDeleteRawMaterialTableMain::-webkit-scrollbar {
+.inventoryListDeleteTableMain::-webkit-scrollbar {
   width: 10px;
 }
 
-.inventoryListDeleteRawMaterialTableMain::-webkit-scrollbar-track {
+.inventoryListDeleteTableMain::-webkit-scrollbar-track {
   background: #0037ae;
   border-radius: 10px;
 }
 
-.inventoryListDeleteRawMaterialTableMain::-webkit-scrollbar-thumb {
+.inventoryListDeleteTableMain::-webkit-scrollbar-thumb {
   background: #0095dc;
   border-radius: 10px;
 }

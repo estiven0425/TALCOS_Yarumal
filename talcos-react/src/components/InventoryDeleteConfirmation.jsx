@@ -1,42 +1,52 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/inventory-delete-raw-material-confirmation.module.css";
+import Style from "./styles/inventory-delete-confirmation.module.css";
 
-function InventoryDeleteRawMaterialConfirmation() {
-  const [idMateriaPrima, setIdMateriaPrima] = useState("");
+function InventoryDeleteConfirmation({
+  dataId,
+  redirectPath,
+  endpoint,
+  name,
+  nameError,
+  nameConfirmation,
+  title,
+  nameButton,
+}) {
+  const [idItem, setIdItem] = useState("");
   const [loading, setLoading] = useState(false);
-  const [SendStatus, setSendStatus] = useState(false);
+  const [sendStatus, setSendStatus] = useState(false);
   const [serverError, setServerError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const rawMaterial = location.state || null;
+  const item = location.state || null;
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
-    if (rawMaterial) {
-      setIdMateriaPrima(rawMaterial.id_materia_prima);
+    if (item) {
+      setIdItem(item[dataId]);
     }
-  }, [rawMaterial]);
+  }, [item, dataId]);
+
   useEffect(() => {
-    if (SendStatus) {
+    if (sendStatus) {
       const timer = setTimeout(() => {
-        navigate("/listdeleterawmaterial");
+        navigate(`/inventory/listdelete${redirectPath}`);
       }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [SendStatus, navigate]);
+  }, [sendStatus, navigate, redirectPath]);
 
-  const sendDeleteRawMaterial = async () => {
+  const sendDelete = async () => {
     setServerError(null);
     setLoading(true);
 
     try {
-      await axios.put(`http://${localIP}:3000/materias_primas/eliminarmateriaprima`, {
-        id_materia_prima: idMateriaPrima,
-        actividad_materia_prima: false,
+      await axios.put(`http://${localIP}:3000/${endpoint}`, {
+        [dataId]: idItem,
+        [name]: false,
       });
 
       setSendStatus(true);
@@ -46,55 +56,54 @@ function InventoryDeleteRawMaterialConfirmation() {
         setLoading(false);
       } else {
         setServerError(
-          "Error al eliminar la materia prima. Por favor, inténtelo de nuevo."
+          `Error al eliminar ${nameError}. Por favor, inténtelo de nuevo.`
         );
         setLoading(false);
       }
     }
   };
+
   const redirectInventory = () => {
-    navigate("/listdeleterawmaterial");
+    navigate(`/inventory/listdelete${redirectPath}`);
   };
 
   return (
     <>
-      {SendStatus === true ? (
+      {sendStatus === true ? (
         <motion.div
-          className={Style.inventoryDeleteRawMaterialConfirmationAlternative}
+          className={Style.inventoryDeleteConfirmationAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1>Materia prima eliminada con éxito</h1>
+          <h1>{nameConfirmation} con éxito</h1>
         </motion.div>
       ) : (
         <motion.div
-          className={Style.inventoryDeleteRawMaterialConfirmation}
+          className={Style.inventoryDeleteConfirmation}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <main className={Style.inventoryDeleteRawMaterialConfirmationMain}>
-            <h1>¿Seguro que desea eliminar la materia prima seleccionada?</h1>
+          <main className={Style.inventoryDeleteConfirmationMain}>
+            <h1>{title}</h1>
           </main>
-          <footer className={Style.inventoryDeleteRawMaterialConfirmationFooter}>
+          <footer className={Style.inventoryDeleteConfirmationFooter}>
             <button onClick={() => redirectInventory()} type="button">
               Cancelar
             </button>
-            <button type="submit" onClick={() => sendDeleteRawMaterial()}>
+            <button type="submit" onClick={() => sendDelete()}>
               {loading ? (
                 <div className={Style.loader}></div>
               ) : (
-                "Eliminar materia prima"
+                `Eliminar ${nameButton}`
               )}
             </button>
             {!serverError ? (
               <></>
             ) : (
               <motion.span
-                className={
-                  Style.inventoryDeleteRawMaterialConfirmationValidationServer
-                }
+                className={Style.inventoryDeleteConfirmationValidationServer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -109,4 +118,4 @@ function InventoryDeleteRawMaterialConfirmation() {
   );
 }
 
-export default InventoryDeleteRawMaterialConfirmation;
+export default InventoryDeleteConfirmation;

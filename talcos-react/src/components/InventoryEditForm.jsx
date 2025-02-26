@@ -1,12 +1,13 @@
 ﻿import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/inventory-create-form.module.css";
+import Style from "./styles/inventory-edit-form.module.css";
 
-function InventoryCreateForm({
+function InventoryEditForm({
   redirectPath,
   fields,
+  dataId,
   endpoint,
   nameError,
   nameConfirmation,
@@ -16,50 +17,32 @@ function InventoryCreateForm({
   const [datos, setDatos] = useState({});
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
-  const [validationError, setValidationError] = useState({});
   const [serverError, setServerError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const item = location.state || null;
   const localIP = import.meta.env.VITE_LOCAL_IP;
+
+  useEffect(() => {
+    if (item) {
+      const initialData = {};
+      fields.forEach((field) => {
+        initialData[dataId] = item[dataId] || "";
+        initialData[field.name] = item[field.name] || "";
+      });
+      setDatos(initialData);
+    }
+  }, [item, fields]);
 
   useEffect(() => {
     if (sendStatus) {
       const timer = setTimeout(() => {
-        navigate(`/inventory/inventory${redirectPath}`);
+        navigate(`/inventory/listedit${redirectPath}`);
       }, 3000);
 
       return () => clearTimeout(timer);
     }
   }, [sendStatus, navigate, redirectPath]);
-
-  const validation = () => {
-    const errors = {};
-
-    fields.forEach((field) => {
-      if (field.required && !datos[field.name]) {
-        errors[field.name] =
-          field.validationMessage || "Este campo es obligatorio.";
-      }
-      if (
-        field.type === "text" &&
-        datos[field.name] &&
-        !datos[field.name].trim()
-      ) {
-        errors[field.name] = "Este campo solo acepta texto.";
-      }
-      if (
-        field.type === "number" &&
-        datos[field.name] &&
-        !/^\d+(\.\d+)?$/.test(datos[field.name])
-      ) {
-        errors[field.name] = "Este campo solo acepta números.";
-      }
-    });
-
-    setValidationError(errors);
-    setLoading(false);
-
-    return Object.keys(errors).length === 0;
-  };
 
   const handleChange = (e) => {
     setDatos({
@@ -68,19 +51,14 @@ function InventoryCreateForm({
     });
   };
 
-  const sendCreate = async (e) => {
+  const sendEdit = async (e) => {
     e.preventDefault();
-
-    if (!validation()) {
-      return;
-    }
 
     setServerError(null);
     setLoading(true);
 
     try {
-      await axios.post(`http://${localIP}:3000/${endpoint}`, datos);
-
+      await axios.put(`http://${localIP}:3000/${endpoint}`, datos);
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
@@ -88,7 +66,7 @@ function InventoryCreateForm({
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear ${nameError}. Por favor, inténtelo de nuevo.`
+          `Error al editar ${nameError}. Por favor, inténtelo de nuevo.`
         );
         setLoading(false);
       }
@@ -96,14 +74,14 @@ function InventoryCreateForm({
   };
 
   const redirectInventory = () => {
-    navigate(`/inventory/inventory${redirectPath}`);
+    navigate(`/inventory/listedit${redirectPath}`);
   };
 
   return (
     <>
       {sendStatus === true ? (
         <motion.div
-          className={Style.inventoryCreateFormAlternative}
+          className={Style.inventoryEditFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -112,16 +90,16 @@ function InventoryCreateForm({
         </motion.div>
       ) : (
         <motion.form
-          className={Style.inventoryCreateForm}
-          onSubmit={sendCreate}
+          className={Style.inventoryEditForm}
+          onSubmit={sendEdit}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <header className={Style.inventoryCreateFormHeader}>
+          <header className={Style.inventoryEditFormHeader}>
             <h1>{title}</h1>
           </header>
-          <main className={Style.inventoryCreateFormMain}>
+          <main className={Style.inventoryEditFormMain}>
             {fields.map((field) => (
               <fieldset key={field.name}>
                 <label htmlFor={field.name}>{field.label}</label>
@@ -129,26 +107,13 @@ function InventoryCreateForm({
                   id={field.name}
                   name={field.name}
                   onChange={handleChange}
-                  placeholder={field.placeholder}
+                  placeholder={item[field.name] || field.placeholder}
                   type={field.type}
-                  value={datos[field.name] || ""}
                 />
-                {!validationError[field.name] ? (
-                  <></>
-                ) : (
-                  <motion.span
-                    className={Style.inventoryCreateFormValidation}
-                    initial={{ zoom: 0 }}
-                    animate={{ zoom: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {validationError[field.name]}
-                  </motion.span>
-                )}
               </fieldset>
             ))}
           </main>
-          <footer className={Style.inventoryCreateFormFooter}>
+          <footer className={Style.inventoryEditFormFooter}>
             <button onClick={() => redirectInventory()} type="button">
               Cancelar
             </button>
@@ -156,14 +121,14 @@ function InventoryCreateForm({
               {loading ? (
                 <div className={Style.loader}></div>
               ) : (
-                `Crear ${nameButton}`
+                `Editar ${nameButton}`
               )}
             </button>
             {!serverError ? (
               <></>
             ) : (
               <motion.span
-                className={Style.inventoryCreateFormValidationServer}
+                className={Style.inventoryEditFormValidationServer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -178,4 +143,4 @@ function InventoryCreateForm({
   );
 }
 
-export default InventoryCreateForm;
+export default InventoryEditForm;

@@ -1,13 +1,10 @@
-﻿import InventoryListProfile from "../components/InventoryListProfile";
+﻿import { Outlet } from "react-router-dom";
 import ProtectedRoute from "../utils/ProtectedRoute";
-import Style from "./styles/inventory.module.css";
 
 function Inventory() {
   return (
     <ProtectedRoute>
-      <section className={Style.inventory}>
-        <InventoryListProfile />
-      </section>
+      <Outlet />
     </ProtectedRoute>
   );
 }

@@ -29,7 +29,7 @@ function InventoryListProfile() {
       >
         <button
           className={Style.inventoryListProfileMainButton}
-          onClick={() => redirect("inventoryshift")}
+          onClick={() => redirect("inventory/inventoryshift")}
           type="button"
         >
           <h2>Turnos</h2>
@@ -37,7 +37,7 @@ function InventoryListProfile() {
         </button>
         <button
           className={Style.inventoryListProfileMainButton}
-          onClick={() => redirect("inventorywindmill")}
+          onClick={() => redirect("inventory/inventorywindmill")}
           type="button"
         >
           <h2>Molinos</h2>
@@ -45,7 +45,7 @@ function InventoryListProfile() {
         </button>
         <button
           className={Style.inventoryListProfileMainButton}
-          onClick={() => redirect("inventoryreference")}
+          onClick={() => redirect("inventory/inventoryreference")}
           type="button"
         >
           <h2>Referencias</h2>
@@ -53,7 +53,7 @@ function InventoryListProfile() {
         </button>
         <button
           className={Style.inventoryListProfileMainButton}
-          onClick={() => redirect("inventorybulk")}
+          onClick={() => redirect("inventory/inventorybulk")}
           type="button"
         >
           <h2>Bultos</h2>
@@ -61,7 +61,7 @@ function InventoryListProfile() {
         </button>
         <button
           className={Style.inventoryListProfileMainButton}
-          onClick={() => redirect("inventoryrawmaterial")}
+          onClick={() => redirect("inventory/inventoryrawmaterial")}
           type="button"
         >
           <h2>Materia prima</h2>
@@ -69,7 +69,7 @@ function InventoryListProfile() {
         </button>
         <button
           className={Style.inventoryListProfileMainButton}
-          onClick={() => redirect("inventoryrejectedmaterial")}
+          onClick={() => redirect("inventory/inventoryrejectedmaterial")}
           type="button"
         >
           <h2>Productos rechazados</h2>
@@ -77,7 +77,7 @@ function InventoryListProfile() {
         </button>
         <button
           className={Style.inventoryListProfileMainButton}
-          onClick={() => redirect("inventoryprofile")}
+          onClick={() => redirect("inventory/inventoryprofile")}
           type="button"
         >
           <h2>Perfiles</h2>
@@ -85,7 +85,7 @@ function InventoryListProfile() {
         </button>
         <button
           className={Style.inventoryListProfileMainButton}
-          onClick={() => redirect("inventorybobcat")}
+          onClick={() => redirect("inventory/inventorybobcat")}
           type="button"
         >
           <h2>Bob - Cat</h2>
