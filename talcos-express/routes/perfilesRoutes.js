@@ -6,5 +6,6 @@ router.get("/", perfilController.leerPerfil);
 router.get("/personalperfil", perfilController.personalPerfil);
 router.post("/", perfilController.crearPerfil);
 router.put("/", perfilController.actualizarPerfil);
+router.put("/eliminarperfil", perfilController.eliminarPerfil);
 
 module.exports = router;

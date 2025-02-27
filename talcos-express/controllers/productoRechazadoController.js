@@ -64,3 +64,25 @@ exports.actualizarProductoRechazado = async (req, res) => {
       .json({ error: "Error al actualizar el producto rechazado" });
   }
 };
+
+exports.eliminarProductoRechazado = async (req, res) => {
+  const { id_producto_rechazado, actividad_producto_rechazado } = req.body;
+
+  try {
+    const productoRechazado = await ProductosRechazados.findByPk(
+      id_producto_rechazado
+    );
+
+    if (productoRechazado) {
+      await productoRechazado.update({
+        actividad_producto_rechazado,
+      });
+
+      res.json(productoRechazado);
+    } else {
+      res.status(404).json({ error: "Producto rechazado no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el producto rechazado" });
+  }
+};

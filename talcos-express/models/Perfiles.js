@@ -17,7 +17,7 @@ const Perfiles = sequelize.define(
     icono_perfil: {
       type: DataTypes.STRING(1000),
       allowNull: false,
-      defaultValue: "uploads/icono_predeterminado.png",
+      defaultValue: "uploads/icono_predeterminado.svg",
     },
     actividad_perfil: {
       type: DataTypes.BOOLEAN,

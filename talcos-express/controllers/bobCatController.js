@@ -46,3 +46,23 @@ exports.actualizarBobCat = async (req, res) => {
     res.status(500).json({ error: "Error al actualizar el BobCat" });
   }
 };
+
+exports.eliminarBobCat = async (req, res) => {
+  const { id_bob_cat, actividad_bob_cat } = req.body;
+
+  try {
+    const bobCat = await BobCats.findByPk(id_bob_cat);
+
+    if (bobCat) {
+      await bobCat.update({
+        actividad_bob_cat,
+      });
+
+      res.json(bobCat);
+    } else {
+      res.status(404).json({ error: "Bob - cat no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el bob - cat" });
+  }
+};

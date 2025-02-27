@@ -5,5 +5,9 @@ const productoRechazadoController = require("../controllers/productoRechazadoCon
 router.get("/", productoRechazadoController.leerProductoRechazado);
 router.post("/", productoRechazadoController.crearProductoRechazado);
 router.put("/", productoRechazadoController.actualizarProductoRechazado);
+router.put(
+  "/eliminarproductorechazado",
+  productoRechazadoController.eliminarProductoRechazado
+);
 
 module.exports = router;

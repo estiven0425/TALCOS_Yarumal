@@ -30,12 +30,11 @@ exports.personalPerfil = async (req, res) => {
 };
 
 exports.crearPerfil = async (req, res) => {
-  const { nombre_perfil, icono_perfil } = req.body;
+  const { nombre_perfil } = req.body;
 
   try {
     const nuevoPerfil = await Perfiles.create({
       nombre_perfil,
-      icono_perfil,
     });
 
     res.status(201).json(nuevoPerfil);
@@ -45,7 +44,7 @@ exports.crearPerfil = async (req, res) => {
 };
 
 exports.actualizarPerfil = async (req, res) => {
-  const { id_perfil, nombre_perfil, icono_perfil, actividad_perfil } = req.body;
+  const { id_perfil, nombre_perfil, actividad_perfil } = req.body;
 
   try {
     const perfil = await Perfiles.findByPk(id_perfil);
@@ -53,7 +52,6 @@ exports.actualizarPerfil = async (req, res) => {
     if (perfil) {
       await perfil.update({
         nombre_perfil,
-        icono_perfil,
         actividad_perfil,
       });
 
@@ -63,5 +61,25 @@ exports.actualizarPerfil = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar el perfil" });
+  }
+};
+
+exports.eliminarPerfil = async (req, res) => {
+  const { id_perfil, actividad_perfil } = req.body;
+
+  try {
+    const perfil = await Perfiles.findByPk(id_perfil);
+
+    if (perfil) {
+      await perfil.update({
+        actividad_perfil,
+      });
+
+      res.json(perfil);
+    } else {
+      res.status(404).json({ error: "Perfil no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el perfil" });
   }
 };

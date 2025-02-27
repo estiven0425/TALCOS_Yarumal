@@ -5,7 +5,7 @@ USE `talcos_yarumal`;
 CREATE TABLE `perfiles` (
 	`id_perfil` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_perfil` VARCHAR(250) NOT NULL,
-	`icono_perfil` VARCHAR(1000) NOT NULL DEFAULT('uploads/icono_predeterminado.png'),
+	`icono_perfil` VARCHAR(1000) NOT NULL DEFAULT('uploads/icono_predeterminado.svg'),
 	`actividad_perfil` BIT NOT NULL DEFAULT(1),
 	`actualizacion_perfil` TIMESTAMP NOT NULL,
 	CONSTRAINT PRIMARY KEY(`id_perfil`)
@@ -47,7 +47,7 @@ CREATE TABLE `referencias` (
 CREATE TABLE `productos_rechazados` (
 	`id_producto_rechazado` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_producto_rechazado` VARCHAR(250) NOT NULL,
-	`cantidad_producto_rechazado` BIGINT(100) NOT NULL,
+	`cantidad_producto_rechazado` DECIMAL(5,2) NOT NULL,
 	`retencion_producto_rechazado` DECIMAL(5,2) NOT NULL,
 	`actividad_producto_rechazado` BIT NOT NULL DEFAULT(1),
 	`actualizacion_producto_rechazado` TIMESTAMP NOT NULL,

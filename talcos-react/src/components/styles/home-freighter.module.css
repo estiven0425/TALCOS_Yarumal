@@ -68,12 +68,17 @@
 }
 
 .homeFreighterPrimaryMain div h2,
-.homeFreighterSecondaryMain div h2,
+.homeFreighterSecondaryMain div h2 {
+  font-size: 1rem;
+  margin: 0px;
+  text-align: left;
+}
+
 .homeFreighterPrimaryMain div p,
 .homeFreighterSecondaryMain div p {
   font-size: 1rem;
   margin: 0px;
-  text-align: center;
+  text-align: right;
 }
 
 .homeFreighterPrimaryMain::-webkit-scrollbar,

@@ -15,7 +15,7 @@ const ProductosRechazados = sequelize.define(
       allowNull: false,
     },
     cantidad_producto_rechazado: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(5, 2),
       allowNull: false,
     },
     retencion_producto_rechazado: {

@@ -6,32 +6,49 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import Inventory from "./pages/Inventory";
 import InventoryGeneral from "./pages/InventoryGeneral";
+import InventoryCreateBobCat from "./pages/InventoryCreateBobCat";
 import InventoryCreateBulk from "./pages/InventoryCreateBulk";
+import InventoryCreateProfile from "./pages/InventoryCreateProfile";
 import InventoryCreateRawMaterial from "./pages/InventoryCreateRawMaterial";
 import InventoryCreateReference from "./pages/InventoryCreateReference";
+import InventoryCreateRejectedMaterial from "./pages/InventoryCreateRejectedMaterial";
 import InventoryCreateShift from "./pages/InventoryCreateShift";
 import InventoryCreateWindmill from "./pages/InventoryCreateWindmill";
+import InventoryDeleteBobCat from "./pages/InventoryDeleteBobCat";
 import InventoryDeleteBulk from "./pages/InventoryDeleteBulk";
+import InventoryDeleteProfile from "./pages/InventoryDeleteProfile";
 import InventoryDeleteRawMaterial from "./pages/InventoryDeleteRawMaterial";
 import InventoryDeleteReference from "./pages/InventoryDeleteReference";
+import InventoryDeleteRejectedMaterial from "./pages/InventoryDeleteRejectedMaterial";
 import InventoryDeleteShift from "./pages/InventoryDeleteShift";
 import InventoryDeleteWindmill from "./pages/InventoryDeleteWindmill";
+import InventoryEditBobCat from "./pages/InventoryEditBobCat";
 import InventoryEditBulk from "./pages/InventoryEditBulk";
+import InventoryEditProfile from "./pages/InventoryEditProfile";
 import InventoryEditRawMaterial from "./pages/InventoryEditRawMaterial";
 import InventoryEditReference from "./pages/InventoryEditReference";
+import InventoryEditRejectedMaterial from "./pages/InventoryEditRejectedMaterial";
 import InventoryEditShift from "./pages/InventoryEditShift";
 import InventoryEditWindmill from "./pages/InventoryEditWindmill";
+import InventoryListDeleteBobCat from "./pages/InventoryListDeleteBobCat";
 import InventoryListDeleteBulk from "./pages/InventoryListDeleteBulk";
+import InventoryListDeleteProfile from "./pages/InventoryListDeleteProfile";
 import InventoryListDeleteRawMaterial from "./pages/InventoryListDeleteRawMaterial";
 import InventoryListDeleteReference from "./pages/InventoryListDeleteReference";
+import InventoryListDeleteRejectedMaterial from "./pages/InventoryListDeleteRejectedMaterial";
 import InventoryListDeleteShift from "./pages/InventoryListDeleteShift";
 import InventoryListDeleteWindmill from "./pages/InventoryListDeleteWindmill";
+import InventoryListEditBobCat from "./pages/InventoryListEditBobCat";
 import InventoryListEditBulk from "./pages/InventoryListEditBulk";
+import InventoryListEditProfile from "./pages/InventoryListEditProfile";
 import InventoryListEditRawMaterial from "./pages/InventoryListEditRawMaterial";
 import InventoryListEditReference from "./pages/InventoryListEditReference";
+import InventoryListEditRejectedMaterial from "./pages/InventoryListEditRejectedMaterial";
 import InventoryListEditShift from "./pages/InventoryListEditShift";
 import InventoryListEditWindmill from "./pages/InventoryListEditWindmill";
+import InventoryBobCat from "./pages/InventoryBobCat";
 import InventoryBulk from "./pages/InventoryBulk";
+import InventoryProfile from "./pages/InventoryProfile";
 import InventoryRawMaterial from "./pages/InventoryRawMaterial";
 import InventoryReference from "./pages/InventoryReference";
 import InventoryRejectedMaterial from "./pages/InventoryRejectedMaterial";
@@ -150,31 +167,55 @@ createRoot(document.getElementById("root")).render(
               path="deleterawmaterial"
               element={<InventoryDeleteRawMaterial />}
             />
-
             <Route
               path="inventoryrejectedmaterial"
               element={<InventoryRejectedMaterial />}
             />
             <Route
               path="createrejectedmaterial"
-              element={<InventoryCreateRawMaterial />}
+              element={<InventoryCreateRejectedMaterial />}
             />
             <Route
               path="listeditrejectedmaterial"
-              element={<InventoryListEditRawMaterial />}
+              element={<InventoryListEditRejectedMaterial />}
             />
             <Route
               path="editrejectedmaterial"
-              element={<InventoryEditRawMaterial />}
+              element={<InventoryEditRejectedMaterial />}
             />
             <Route
               path="listdeleterejectedmaterial"
-              element={<InventoryListDeleteRawMaterial />}
+              element={<InventoryListDeleteRejectedMaterial />}
             />
             <Route
               path="deleterejectedmaterial"
-              element={<InventoryDeleteRawMaterial />}
+              element={<InventoryDeleteRejectedMaterial />}
             />
+            <Route path="inventoryprofile" element={<InventoryProfile />} />
+            <Route path="createprofile" element={<InventoryCreateProfile />} />
+            <Route
+              path="listeditprofile"
+              element={<InventoryListEditProfile />}
+            />
+            <Route path="editprofile" element={<InventoryEditProfile />} />
+            <Route
+              path="listdeleteprofile"
+              element={<InventoryListDeleteProfile />}
+            />
+            <Route path="deleteprofile" element={<InventoryDeleteProfile />} />
+
+            <Route path="inventorybobcat" element={<InventoryBobCat />} />
+            <Route path="createbobcat" element={<InventoryCreateBobCat />} />
+            <Route
+              path="listeditbobcat"
+              element={<InventoryListEditBobCat />}
+            />
+            <Route path="editbobcat" element={<InventoryEditBobCat />} />
+            <Route
+              path="listdeletebobcat"
+              element={<InventoryListDeleteBobCat />}
+            />
+            <Route path="deletebobcat" element={<InventoryDeleteBobCat />} />
           </Route>
           <Route path="notification" element={<Notification />} />
           <Route path="setting" element={<Setting />} />

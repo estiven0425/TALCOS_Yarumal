@@ -1,5 +1,5 @@
 import InventoryList from "../components/InventoryList";
-import InventoryRawMaterialButton from "../components/InventoryRawMaterialButton";
+import InventoryRejectedMaterialButton from "../components/InventoryRejectedMaterialButton";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import Style from "./styles/inventory-general.module.css";
 
@@ -7,7 +7,7 @@ function InventoryRejectedMaterial() {
   return (
     <ProtectedRoute>
       <section className={Style.inventory}>
-        <InventoryRawMaterialButton />
+        <InventoryRejectedMaterialButton />
         <main className={Style.inventoryMain}>
           <InventoryList
             location="productos_rechazados"
