@@ -7,12 +7,12 @@ function InventoryListDeleteProfile() {
     <ProtectedRoute>
       <section className={Style.inventoryListDelete}>
         <InventoryListDeleteTable
-          endpoint="perfiles"
+          endpoint="perfiles/conteoperfil"
           redirectPath="profile"
           title="un perfil"
-          head={["Nombre", "Usuarios"]}
+          head={["Nombre", "Cantidad de usuarios"]}
           index="id_perfil"
-          body={["nombre_perfil"]}
+          body={["nombre_perfil", "cantidad_usuarios"]}
           optional={{}}
           name="perfiles"
         />

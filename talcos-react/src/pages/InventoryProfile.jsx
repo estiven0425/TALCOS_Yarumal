@@ -10,10 +10,10 @@ function InventoryProfile() {
         <InventoryButton location="profile" name="perfil" />
         <main className={Style.inventoryMain}>
           <InventoryList
-            location="perfiles"
-            head={["Nombre", "Usuarios"]}
+            location="perfiles/conteoperfil"
+            head={["Nombre", "Cantidad de usuarios"]}
             index="id_perfil"
-            body={["nombre_perfil"]}
+            body={["nombre_perfil", "cantidad_usuarios"]}
             optional={{}}
             name="perfiles"
           />

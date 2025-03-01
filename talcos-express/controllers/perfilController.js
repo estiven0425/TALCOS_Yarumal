@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const Perfiles = require("../models/Perfiles");
+const { sequelize } = require("../config/conectionDataBase");
 
 exports.leerPerfil = async (req, res) => {
   try {
@@ -25,6 +26,21 @@ exports.personalPerfil = async (req, res) => {
 
     res.json(perfiles);
   } catch (error) {
+    res.status(500).send("Error del servidor: " + error);
+  }
+};
+
+exports.conteoPerfil = async (req, res) => {
+  try {
+    const [perfiles] = await sequelize.query(
+      "CALL obtener_usuarios_de_perfil()",
+      {
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+    res.json(perfiles);
+  } catch (error) {
+    console.error("Error al obtener los perfiles:", error);
     res.status(500).send("Error del servidor: " + error);
   }
 };

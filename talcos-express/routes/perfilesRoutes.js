@@ -4,6 +4,7 @@ const perfilController = require("../controllers/perfilController");
 
 router.get("/", perfilController.leerPerfil);
 router.get("/personalperfil", perfilController.personalPerfil);
+router.get("/conteoperfil", perfilController.conteoPerfil);
 router.post("/", perfilController.crearPerfil);
 router.put("/", perfilController.actualizarPerfil);
 router.put("/eliminarperfil", perfilController.eliminarPerfil);

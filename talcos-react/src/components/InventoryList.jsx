@@ -11,8 +11,11 @@ function InventoryList({ location, head, index, body, name, optional }) {
     const getItem = async () => {
       try {
         const response = await axios.get(`http://${localIP}:3000/${location}`);
+        const data = Array.isArray(response.data)
+          ? response.data
+          : Object.values(response.data);
 
-        setItem(response.data);
+        setItem(data);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       }
