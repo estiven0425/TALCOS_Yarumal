@@ -35,7 +35,7 @@ const InformeFinal = sequelize.define(
       allowNull: false,
     },
     cantidad_informe_final: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(5, 2),
       allowNull: false,
     },
     horometro_informe_final: {

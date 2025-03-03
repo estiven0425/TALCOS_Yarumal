@@ -15,6 +15,10 @@ const Registros = sequelize.define(
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
+    hora_registro: {
+      type: DataTypes.TIME,
+      allowNull: false,
+    },
     titular_registro: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -31,25 +35,29 @@ const Registros = sequelize.define(
         key: "id_usuario",
       },
     },
+    tipo_registro: {
+      type: DataTypes.STRING(250),
+      allowNull: false,
+    },
     mp_registro: {
       type: DataTypes.STRING(250),
       allowNull: false,
     },
     valor_mp_registro: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      allowNull: true,
     },
     valor_t_registro: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      allowNull: true,
     },
     peso_mp_registro: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(5, 2),
       allowNull: false,
     },
     peso_neto_registro: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
+      type: DataTypes.DECIMAL(5, 2),
+      allowNull: true,
     },
     observacion_registro: {
       type: DataTypes.STRING(1000),

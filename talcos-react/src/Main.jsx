@@ -50,6 +50,7 @@ import InventoryBobCat from "./pages/InventoryBobCat";
 import InventoryBulk from "./pages/InventoryBulk";
 import InventoryProfile from "./pages/InventoryProfile";
 import InventoryRawMaterial from "./pages/InventoryRawMaterial";
+import InventoryRawMaterialRegister from "./pages/InventoryRawMaterialRegister";
 import InventoryReference from "./pages/InventoryReference";
 import InventoryRejectedMaterial from "./pages/InventoryRejectedMaterial";
 import InventoryShift from "./pages/InventoryShift";
@@ -168,6 +169,10 @@ createRoot(document.getElementById("root")).render(
               element={<InventoryDeleteRawMaterial />}
             />
             <Route
+              path="registerrawmaterial"
+              element={<InventoryRawMaterialRegister />}
+            />
+            <Route
               path="inventoryrejectedmaterial"
               element={<InventoryRejectedMaterial />}
             />
@@ -203,7 +208,6 @@ createRoot(document.getElementById("root")).render(
               element={<InventoryListDeleteProfile />}
             />
             <Route path="deleteprofile" element={<InventoryDeleteProfile />} />
-
             <Route path="inventorybobcat" element={<InventoryBobCat />} />
             <Route path="createbobcat" element={<InventoryCreateBobCat />} />
             <Route

@@ -13,6 +13,9 @@ function InventoryRawMaterialButton() {
   const redirectDelete = () => {
     navigate("/inventory/listdeleterawmaterial");
   };
+  const redirectRegister = () => {
+    navigate("/inventory/registerrawmaterial");
+  };
 
   return (
     <>
@@ -36,7 +39,7 @@ function InventoryRawMaterialButton() {
         </button>
         <button
           className={Style.inventoryRawMaterialButtonHeaderEspecial}
-          onClick={() => redirectDelete()}
+          onClick={() => redirectRegister()}
           type="button"
         >
           <h2>Registros</h2>
