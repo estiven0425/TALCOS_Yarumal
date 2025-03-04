@@ -27,30 +27,10 @@ exports.leerRegistro = async (req, res) => {
 };
 
 exports.crearRegistro = async (req, res) => {
-  const {
-    fecha_registro,
-    titular_registro,
-    proveedor_registro,
-    mp_registro,
-    valor_mp_registro,
-    valor_t_registro,
-    peso_mp_registro,
-    peso_neto_registro,
-    observacion_registro,
-  } = req.body;
+  const { fullRecord } = req.body;
 
   try {
-    const nuevoRegistro = await Registros.create({
-      fecha_registro,
-      titular_registro,
-      proveedor_registro,
-      mp_registro,
-      valor_mp_registro,
-      valor_t_registro,
-      peso_mp_registro,
-      peso_neto_registro,
-      observacion_registro,
-    });
+    const nuevoRegistro = await Registros.bulkCreate(fullRecord);
 
     res.status(201).json(nuevoRegistro);
   } catch (error) {

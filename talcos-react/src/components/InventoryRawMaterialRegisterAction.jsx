@@ -22,11 +22,31 @@ function InventoryRawMaterialRegisterAction({ item }) {
     ];
   };
 
+  const sumValues = (records, key) => {
+    return records.reduce((total, record) => {
+      const keys = key.split(".");
+      let value = record;
+      keys.forEach((k) => {
+        value = value[k];
+      });
+      return total + parseFloat(value || 0);
+    }, 0);
+  };
+
+  const redirectCreate = (data) => {
+    navigate("/inventory/createregisterrawmaterial", { state: data });
+  };
+
   return (
     <>
       {item ? (
         <>
-          <main className={Style.inventoryRawMaterialRegisterActionMain}>
+          <motion.main
+            className={Style.inventoryRawMaterialRegisterActionMain}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <div>
               <h2>Proveedor</h2>
               <p>
@@ -53,51 +73,57 @@ function InventoryRawMaterialRegisterAction({ item }) {
             </div>
             <div>
               <h2>Valor de la materia prima</h2>
-              <p>
-                {uniqueValues(item, "valor_mp_registro").map((value, index) => (
-                  <span key={index}>
-                    {value}
-                    <br />
-                  </span>
-                ))}
-              </p>
+              <p>{sumValues(item, "valor_mp_registro").toFixed(0)}</p>
             </div>
             <div>
               <h2>Valor de transporte</h2>
-              <p>
-                {uniqueValues(item, "valor_t_registro").map((value, index) => (
-                  <span key={index}>
-                    {value}
-                    <br />
-                  </span>
-                ))}
-              </p>
+              <p>{sumValues(item, "valor_t_registro").toFixed(0)}</p>
             </div>
-          </main>
-          <footer
+          </motion.main>
+          <motion.footer
             className={
               Style.inventoryRawMaterialRegisterActionFooterAlternative
             }
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
             <button type="button">Imprimir registro</button>
             <button type="button">Detalles registro</button>
             <button type="button">Eliminar registro</button>
-          </footer>
+          </motion.footer>
         </>
       ) : (
         <>
-          <header className={Style.inventoryRawMaterialRegisterActionHeader}>
+          <motion.header
+            className={Style.inventoryRawMaterialRegisterActionHeader}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <h2>Selecciona un registro para ver sus detalles y funciones</h2>
-          </header>
-          <main
+          </motion.header>
+          <motion.main
             className={Style.inventoryRawMaterialRegisterActionMainAlternative}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
             <h2>O selecciona una de las siguiente opciones</h2>
-          </main>
-          <footer className={Style.inventoryRawMaterialRegisterActionFooter}>
-            <button type="button">Registrar entrada</button>
-            <button type="button">Registrar salida</button>
-          </footer>
+          </motion.main>
+          <motion.footer
+            className={Style.inventoryRawMaterialRegisterActionFooter}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <button type="button" onClick={() => redirectCreate("Entrada")}>
+              Registrar entrada
+            </button>
+            <button type="button" onClick={() => redirectCreate("Salida")}>
+              Registrar salida
+            </button>
+          </motion.footer>
         </>
       )}
     </>

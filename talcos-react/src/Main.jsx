@@ -10,6 +10,7 @@ import InventoryCreateBobCat from "./pages/InventoryCreateBobCat";
 import InventoryCreateBulk from "./pages/InventoryCreateBulk";
 import InventoryCreateProfile from "./pages/InventoryCreateProfile";
 import InventoryCreateRawMaterial from "./pages/InventoryCreateRawMaterial";
+import InventoryCreateRawMaterialRegister from "./pages/InventoryCreateRawMaterialRegister";
 import InventoryCreateReference from "./pages/InventoryCreateReference";
 import InventoryCreateRejectedMaterial from "./pages/InventoryCreateRejectedMaterial";
 import InventoryCreateShift from "./pages/InventoryCreateShift";
@@ -171,6 +172,10 @@ createRoot(document.getElementById("root")).render(
             <Route
               path="registerrawmaterial"
               element={<InventoryRawMaterialRegister />}
+            />
+            <Route
+              path="createregisterrawmaterial"
+              element={<InventoryCreateRawMaterialRegister />}
             />
             <Route
               path="inventoryrejectedmaterial"

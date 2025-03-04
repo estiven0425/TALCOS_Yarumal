@@ -1,0 +1,195 @@
+﻿.inventoryCreateRawMaterialRegisterAlternative {
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegister {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 15px;
+  justify-content: space-between;
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegisterHeader {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegisterHeader h1,
+.inventoryCreateRawMaterialRegisterAlternative h1 {
+  font-size: 1.5rem;
+  margin: 0px;
+  text-align: center;
+}
+
+.inventoryCreateRawMaterialRegisterMain {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegisterMain div {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.inventoryCreateRawMaterialRegisterMain div fieldset,
+.inventoryCreateRawMaterialRegisterMain fieldset {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  padding: 0px;
+}
+
+.inventoryCreateRawMaterialRegisterMain div fieldset label,
+.inventoryCreateRawMaterialRegisterMain fieldset label {
+  padding-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegisterMain div fieldset select,
+.inventoryCreateRawMaterialRegisterMain div fieldset input,
+.inventoryCreateRawMaterialRegisterMain fieldset input {
+  border-color: transparent;
+  border-radius: 20px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryCreateRawMaterialRegisterMain div fieldset select::-webkit-scrollbar {
+  width: 10px;
+}
+
+.inventoryCreateRawMaterialRegisterMain
+  div
+  fieldset
+  select::-webkit-scrollbar-track {
+  background: #0037ae;
+  border-radius: 10px;
+}
+
+.inventoryCreateRawMaterialRegisterMain
+  div
+  fieldset
+  select::-webkit-scrollbar-thumb {
+  background: #017fd3;
+  border-radius: 10px;
+}
+
+.inventoryCreateRawMaterialRegisterMainEspecial {
+  grid-column: span 2;
+}
+
+.inventoryCreateRawMaterialRegisterMain div hr {
+  width: 99%;
+}
+
+.inventoryCreateRawMaterialRegisterMain button:hover {
+  background: #0095dc;
+}
+
+.inventoryCreateRawMaterialRegisterMain button:focus {
+  outline: #0095dc 1px solid;
+}
+
+.inventoryCreateRawMaterialRegisterFooter {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.inventoryCreateRawMaterialRegisterFooter button {
+  background-color: #0037ae;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  max-height: 49px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryCreateRawMaterialRegisterFooter button:hover {
+  background: #0095dc;
+}
+
+.inventoryCreateRawMaterialRegisterMain fieldset input:focus,
+.inventoryCreateRawMaterialRegisterMain fieldset select:focus,
+.inventoryCreateRawMaterialRegisterFooter button:focus {
+  outline: #0095dc 1px solid;
+}
+
+.inventoryCreateRawMaterialRegisterValidation {
+  text-align: left;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryCreateRawMaterialRegisterValidationServer {
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+  border: 5px solid #0048b6;
+  border-radius: 50%;
+  border-top: 5px solid transparent;
+  height: 20px;
+  margin: -7.5px auto 0px;
+  width: 20px;
+}
+
+.inventoryCreateRawMaterialRegister::-webkit-scrollbar {
+  width: 10px;
+}
+
+.inventoryCreateRawMaterialRegister::-webkit-scrollbar-track {
+  background: #0037ae;
+  border-radius: 10px;
+}
+
+.inventoryCreateRawMaterialRegister::-webkit-scrollbar-thumb {
+  background: #0095dc;
+  border-radius: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

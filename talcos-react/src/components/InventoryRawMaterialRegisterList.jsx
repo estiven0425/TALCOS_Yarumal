@@ -1,7 +1,6 @@
 ﻿import { es } from "date-fns/locale";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import InventoryRawMaterialRegisterAction from "./InventoryRawMaterialRegisterAction";
@@ -63,7 +62,12 @@ function InventoryRawMaterialRegisterList() {
     <>
       {item.length > 0 ? (
         <>
-          <section className={Style.inventoryRawMaterialRegisterListPrimary}>
+          <motion.section
+            className={Style.inventoryRawMaterialRegisterListPrimary}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             {Object.entries(groupByDateTime(item)).map(
               ([date, dateTimeGroups]) => (
                 <article key={date}>
@@ -95,21 +99,34 @@ function InventoryRawMaterialRegisterList() {
                 </article>
               )
             )}
-          </section>
-          <section className={Style.inventoryRawMaterialRegisterListSecondary}>
+          </motion.section>
+          <motion.section
+            className={Style.inventoryRawMaterialRegisterListSecondary}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <InventoryRawMaterialRegisterAction item={selectedItem} />
-          </section>
+          </motion.section>
         </>
       ) : (
         <>
-          <section
+          <motion.section
             className={Style.inventoryRawMaterialRegisterListPrimaryAlternative}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
             <h2>No existen registros de materia prima</h2>
-          </section>
-          <section className={Style.inventoryRawMaterialRegisterListSecondary}>
+          </motion.section>
+          <motion.section
+            className={Style.inventoryRawMaterialRegisterListSecondary}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <InventoryRawMaterialRegisterAction />
-          </section>
+          </motion.section>
         </>
       )}
     </>
