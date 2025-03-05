@@ -1,5 +1,6 @@
 const Registros = require("../models/Registros");
 const Usuarios = require("../models/Usuarios");
+const MateriasPrimas = require("../models/MateriasPrimas");
 
 exports.leerRegistro = async (req, res) => {
   try {
@@ -18,6 +19,7 @@ exports.leerRegistro = async (req, res) => {
           foreignKey: "proveedor_registro",
         },
       ],
+      where: { actividad_registro: true },
     });
 
     res.json(registros);
@@ -31,6 +33,27 @@ exports.crearRegistro = async (req, res) => {
 
   try {
     const nuevoRegistro = await Registros.bulkCreate(fullRecord);
+
+    for (const record of fullRecord) {
+      const materiaPrima = await MateriasPrimas.findOne({
+        where: { nombre_materia_prima: record.mp_registro },
+      });
+
+      if (materiaPrima) {
+        let nuevaCantidad;
+        if (record.tipo_registro === "Entrada") {
+          nuevaCantidad =
+            parseFloat(materiaPrima.cantidad_materia_prima) +
+            parseFloat(record.peso_mp_registro);
+        } else if (record.tipo_registro === "Salida") {
+          nuevaCantidad =
+            parseFloat(materiaPrima.cantidad_materia_prima) -
+            parseFloat(record.peso_mp_registro);
+        }
+
+        await materiaPrima.update({ cantidad_materia_prima: nuevaCantidad });
+      }
+    }
 
     res.status(201).json(nuevoRegistro);
   } catch (error) {
@@ -50,7 +73,7 @@ exports.actualizarRegistro = async (req, res) => {
     peso_mp_registro,
     peso_neto_registro,
     observacion_registro,
-    actualizacion_registro,
+    actividad_registro,
   } = req.body;
 
   try {
@@ -67,7 +90,7 @@ exports.actualizarRegistro = async (req, res) => {
         peso_mp_registro,
         peso_neto_registro,
         observacion_registro,
-        actualizacion_registro,
+        actividad_registro,
       });
 
       res.json(registro);
@@ -76,5 +99,20 @@ exports.actualizarRegistro = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar el registro" });
+  }
+};
+
+exports.eliminarRegistros = async (req, res) => {
+  const { ids_registros } = req.body;
+
+  try {
+    await Registros.update(
+      { actividad_registro: false },
+      { where: { id_registro: ids_registros } }
+    );
+
+    res.status(200).json({ message: "Registros eliminados correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar los registros" });
   }
 };

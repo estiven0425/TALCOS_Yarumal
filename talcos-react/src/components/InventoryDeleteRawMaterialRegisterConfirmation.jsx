@@ -4,49 +4,39 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Style from "./styles/inventory-delete-confirmation.module.css";
 
-function InventoryDeleteConfirmation({
-  dataId,
-  redirectPath,
-  endpoint,
-  name,
-  nameError,
-  nameConfirmation,
-  title,
-  nameButton,
-}) {
-  const [idItem, setIdItem] = useState("");
+function InventoryDeleteRawMaterialRegisterConfirmation() {
+  const [idItem, setIdItem] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
   const [serverError, setServerError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const item = location.state || null;
+  const data = location.state || null;
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
-    if (item) {
-      setIdItem(item[dataId]);
+    if (data) {
+      setIdItem(data);
     }
-  }, [item, dataId]);
+  }, [data]);
 
   useEffect(() => {
     if (sendStatus) {
       const timer = setTimeout(() => {
-        navigate(`/inventory/listdelete${redirectPath}`);
+        navigate("/inventory/registerrawmaterial");
       }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [sendStatus, navigate, redirectPath]);
+  }, [sendStatus, navigate]);
 
   const sendDelete = async () => {
     setServerError(null);
     setLoading(true);
 
     try {
-      await axios.put(`http://${localIP}:3000/${endpoint}`, {
-        [dataId]: idItem,
-        [name]: false,
+      await axios.put(`http://${localIP}:3000/registros/eliminarregistros`, {
+        ids_registros: idItem,
       });
 
       setSendStatus(true);
@@ -56,7 +46,7 @@ function InventoryDeleteConfirmation({
         setLoading(false);
       } else {
         setServerError(
-          `Error al eliminar ${nameError}. Por favor, inténtelo de nuevo.`
+          "Error al eliminar el registro. Por favor, inténtelo de nuevo."
         );
         setLoading(false);
       }
@@ -64,7 +54,7 @@ function InventoryDeleteConfirmation({
   };
 
   const redirectInventory = () => {
-    navigate(`/inventory/listdelete${redirectPath}`);
+    navigate("/inventory/registerrawmaterial");
   };
 
   return (
@@ -76,7 +66,7 @@ function InventoryDeleteConfirmation({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1>{nameConfirmation} con éxito</h1>
+          <h1>Registro eliminado con éxito</h1>
         </motion.div>
       ) : (
         <motion.div
@@ -86,17 +76,17 @@ function InventoryDeleteConfirmation({
           transition={{ duration: 0.5 }}
         >
           <main className={Style.inventoryDeleteConfirmationMain}>
-            <h1>{title}</h1>
+            <h1>¿Seguro que desea eliminar el registro seleccionado?</h1>
           </main>
           <footer className={Style.inventoryDeleteConfirmationFooter}>
-            <button onClick={() => redirectInventory()} type="button">
+            <button onClick={redirectInventory} type="button">
               Cancelar
             </button>
-            <button type="button" onClick={() => sendDelete()}>
+            <button type="button" onClick={sendDelete}>
               {loading ? (
                 <div className={Style.loader}></div>
               ) : (
-                `Eliminar ${nameButton}`
+                "Eliminar registro"
               )}
             </button>
             {!serverError ? (
@@ -118,4 +108,4 @@ function InventoryDeleteConfirmation({
   );
 }
 
-export default InventoryDeleteConfirmation;
+export default InventoryDeleteRawMaterialRegisterConfirmation;

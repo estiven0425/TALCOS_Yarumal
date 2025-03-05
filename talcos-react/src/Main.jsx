@@ -19,6 +19,7 @@ import InventoryDeleteBobCat from "./pages/InventoryDeleteBobCat";
 import InventoryDeleteBulk from "./pages/InventoryDeleteBulk";
 import InventoryDeleteProfile from "./pages/InventoryDeleteProfile";
 import InventoryDeleteRawMaterial from "./pages/InventoryDeleteRawMaterial";
+import InventoryDeleteRawMaterialRegister from "./pages/InventoryDeleteRawMaterialRegister";
 import InventoryDeleteReference from "./pages/InventoryDeleteReference";
 import InventoryDeleteRejectedMaterial from "./pages/InventoryDeleteRejectedMaterial";
 import InventoryDeleteShift from "./pages/InventoryDeleteShift";
@@ -52,6 +53,7 @@ import InventoryBulk from "./pages/InventoryBulk";
 import InventoryProfile from "./pages/InventoryProfile";
 import InventoryRawMaterial from "./pages/InventoryRawMaterial";
 import InventoryRawMaterialRegister from "./pages/InventoryRawMaterialRegister";
+import InventoryRawMaterialRegisterDetail from "./pages/InventoryRawMaterialRegisterDetail";
 import InventoryReference from "./pages/InventoryReference";
 import InventoryRejectedMaterial from "./pages/InventoryRejectedMaterial";
 import InventoryShift from "./pages/InventoryShift";
@@ -176,6 +178,14 @@ createRoot(document.getElementById("root")).render(
             <Route
               path="createregisterrawmaterial"
               element={<InventoryCreateRawMaterialRegister />}
+            />
+            <Route
+              path="detailregisterrawmaterial"
+              element={<InventoryRawMaterialRegisterDetail />}
+            />
+            <Route
+              path="deleteregisterrawmaterial"
+              element={<InventoryDeleteRawMaterialRegister />}
             />
             <Route
               path="inventoryrejectedmaterial"

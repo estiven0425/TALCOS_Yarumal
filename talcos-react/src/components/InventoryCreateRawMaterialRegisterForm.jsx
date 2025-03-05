@@ -34,6 +34,7 @@ function InventoryCreateRawMaterialRegister() {
       setTipoRegistro(data);
     }
   }, [data]);
+
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     const getUsuario = async () => {
@@ -49,6 +50,7 @@ function InventoryCreateRawMaterialRegister() {
     };
     getUsuario();
   }, [localIP]);
+
   useEffect(() => {
     const getSupplier = async () => {
       try {
@@ -64,6 +66,7 @@ function InventoryCreateRawMaterialRegister() {
 
     getSupplier();
   }, [localIP]);
+
   useEffect(() => {
     const getRawMaterial = async () => {
       try {
@@ -170,7 +173,9 @@ function InventoryCreateRawMaterialRegister() {
     setLoading(true);
 
     const fechaRegistro = new Date().toISOString().split("T")[0];
-    const horaRegistro = new Date().toLocaleTimeString();
+    const horaRegistro = new Date().toLocaleTimeString("en-GB", {
+      hour12: false,
+    });
     const fullRecord = registros.map((registro) => ({
       fecha_registro: fechaRegistro,
       hora_registro: horaRegistro,
@@ -224,7 +229,10 @@ function InventoryCreateRawMaterialRegister() {
           transition={{ duration: 0.5 }}
         >
           <header className={Style.inventoryCreateRawMaterialRegisterHeader}>
-            <h1>Complete los datos para crear un nuevo registro</h1>
+            <h1>
+              Complete los datos para crear un nuevo registro de{" "}
+              {tipoRegistro === "Entrada" ? "entrada" : "salida"}
+            </h1>
           </header>
           <main className={Style.inventoryCreateRawMaterialRegisterMain}>
             {registros.map((registro, index) => (

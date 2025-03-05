@@ -1,11 +1,9 @@
 ﻿import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import Style from "./styles/inventory-raw-material-register-action.module.css";
 
 function InventoryRawMaterialRegisterAction({ item }) {
   const navigate = useNavigate();
-  const localIP = import.meta.env.VITE_LOCAL_IP;
 
   const uniqueValues = (records, key) => {
     return [
@@ -35,6 +33,13 @@ function InventoryRawMaterialRegisterAction({ item }) {
 
   const redirectCreate = (data) => {
     navigate("/inventory/createregisterrawmaterial", { state: data });
+  };
+  const redirectDetail = () => {
+    navigate("/inventory/detailregisterrawmaterial", { state: item });
+  };
+  const redirectDelete = () => {
+    const ids_registros = item.map((record) => record.id_registro);
+    navigate("/inventory/deleteregisterrawmaterial", { state: ids_registros });
   };
 
   return (
@@ -89,8 +94,12 @@ function InventoryRawMaterialRegisterAction({ item }) {
             transition={{ duration: 0.5 }}
           >
             <button type="button">Imprimir registro</button>
-            <button type="button">Detalles registro</button>
-            <button type="button">Eliminar registro</button>
+            <button type="button" onClick={redirectDetail}>
+              Detalles registro
+            </button>
+            <button type="button" onClick={redirectDelete}>
+              Eliminar registro
+            </button>
           </motion.footer>
         </>
       ) : (

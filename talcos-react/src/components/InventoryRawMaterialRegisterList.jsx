@@ -1,5 +1,5 @@
 ﻿import { es } from "date-fns/locale";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -39,23 +39,38 @@ function InventoryRawMaterialRegisterList() {
     return items.reduce((groups, item) => {
       const dateTime = `${item.fecha_registro} ${item.hora_registro}`;
       const formattedDate = format(
-        new Date(item.fecha_registro),
-        "EEEE dd 'de' MMMM 'del' yyyy",
+        parseISO(item.fecha_registro),
+        "yyyy-MM-dd",
         {
           locale: es,
         }
       );
-      const capitalizedDate =
-        formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-      if (!groups[capitalizedDate]) {
-        groups[capitalizedDate] = {};
+      if (!groups[formattedDate]) {
+        groups[formattedDate] = {};
       }
-      if (!groups[capitalizedDate][dateTime]) {
-        groups[capitalizedDate][dateTime] = [];
+      if (!groups[formattedDate][dateTime]) {
+        groups[formattedDate][dateTime] = [];
       }
-      groups[capitalizedDate][dateTime].push(item);
+      groups[formattedDate][dateTime].push(item);
       return groups;
     }, {});
+  };
+
+  const sortedDates = (groupedItems) => {
+    return Object.entries(groupedItems).sort(
+      ([dateA], [dateB]) => new Date(dateB) - new Date(dateA)
+    );
+  };
+
+  const formatDate = (date) => {
+    const formattedDate = format(
+      parseISO(date),
+      "EEEE dd 'de' MMMM 'del' yyyy",
+      {
+        locale: es,
+      }
+    );
+    return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
   };
 
   return (
@@ -68,7 +83,7 @@ function InventoryRawMaterialRegisterList() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {Object.entries(groupByDateTime(item)).map(
+            {sortedDates(groupByDateTime(item)).map(
               ([date, dateTimeGroups]) => (
                 <article key={date}>
                   <section
@@ -76,7 +91,7 @@ function InventoryRawMaterialRegisterList() {
                       Style.inventoryRawMaterialRegisterListPrimaryDate
                     }
                   >
-                    <h2>{date}</h2>
+                    <h2>{formatDate(date)}</h2>
                   </section>
                   <section
                     className={

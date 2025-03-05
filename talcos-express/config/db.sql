@@ -188,6 +188,7 @@ CREATE TABLE `registros` (
 	`peso_mp_registro` DECIMAL(5,2) NOT NULL,
 	`peso_neto_registro` DECIMAL(5,2) NULL,
 	`observacion_registro` VARCHAR(1000) NULL DEFAULT('No se registró'),
+	`actividad_registro` BIT NOT NULL DEFAULT(1),
 	`actualizacion_registro` TIMESTAMP NOT NULL,
 	CONSTRAINT PRIMARY KEY(`id_registro`),
 	CONSTRAINT FOREIGN KEY(`titular_registro`) REFERENCES `usuarios`(`id_usuario`),

@@ -64,6 +64,11 @@ const Registros = sequelize.define(
       allowNull: true,
       defaultValue: "No se registró",
     },
+    actividad_registro: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
     actualizacion_registro: {
       type: DataTypes.DATE,
       allowNull: false,

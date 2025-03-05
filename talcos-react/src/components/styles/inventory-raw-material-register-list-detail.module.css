@@ -1,4 +1,4 @@
-﻿.inventoryRawMaterialRegisterListPrimary {
+﻿.inventoryRawMaterialRegisterListDetailPrimary {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -12,7 +12,7 @@
   width: 70%;
 }
 
-.inventoryRawMaterialRegisterListPrimary article {
+.inventoryRawMaterialRegisterListDetailPrimary article {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -22,7 +22,7 @@
   justify-content: flex-start;
 }
 
-.inventoryRawMaterialRegisterListPrimaryDate {
+.inventoryRawMaterialRegisterListDetailPrimaryDate {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -31,13 +31,13 @@
   justify-content: flex-start;
 }
 
-.inventoryRawMaterialRegisterListPrimaryDate h2 {
+.inventoryRawMaterialRegisterListDetailPrimaryDate h2 {
   font-size: 1.5rem;
   margin: 0px;
   text-align: left;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject {
+.inventoryRawMaterialRegisterListDetailPrimaryobject {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -48,7 +48,7 @@
   width: 100%;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject button {
+.inventoryRawMaterialRegisterListDetailPrimaryobject button {
   align-content: center;
   align-items: center;
   background-color: #0037ae;
@@ -68,27 +68,27 @@
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject button:hover {
+.inventoryRawMaterialRegisterListDetailPrimaryobject button:hover {
   background-color: #0048b6;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject button:focus {
+.inventoryRawMaterialRegisterListDetailPrimaryobject button:focus {
   background-color: #0048b6;
   outline: #0048b6 1px solid;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject button h2 {
+.inventoryRawMaterialRegisterListDetailPrimaryobject button h2 {
   font-size: 1rem;
   margin: 0px;
   text-align: center;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject button img {
+.inventoryRawMaterialRegisterListDetailPrimaryobject button img {
   height: 2rem;
   width: 2rem;
 }
 
-.inventoryRawMaterialRegisterListPrimaryAlternative {
+.inventoryRawMaterialRegisterListDetailPrimaryAlternative {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -99,7 +99,7 @@
   width: 70%;
 }
 
-.inventoryRawMaterialRegisterListPrimaryAlternative h2 {
+.inventoryRawMaterialRegisterListDetailPrimaryAlternative h2 {
   margin: 0px;
   text-align: center;
 }
@@ -118,16 +118,16 @@
   width: 30%;
 }
 
-.inventoryRawMaterialRegisterListPrimary::-webkit-scrollbar {
+.inventoryRawMaterialRegisterListDetailPrimary::-webkit-scrollbar {
   width: 10px;
 }
 
-.inventoryRawMaterialRegisterListPrimary::-webkit-scrollbar-track {
+.inventoryRawMaterialRegisterListDetailPrimary::-webkit-scrollbar-track {
   background: #0037ae;
   border-radius: 10px;
 }
 
-.inventoryRawMaterialRegisterListPrimary::-webkit-scrollbar-thumb {
+.inventoryRawMaterialRegisterListDetailPrimary::-webkit-scrollbar-thumb {
   background: #0095dc;
   border-radius: 10px;
 }
