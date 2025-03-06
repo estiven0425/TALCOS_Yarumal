@@ -12,96 +12,59 @@
   width: 70%;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimary article {
-  align-content: flex-start;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  gap: 10px;
-  justify-content: flex-start;
-}
-
-.inventoryRawMaterialRegisterListDetailPrimaryDate {
-  align-content: flex-start;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-}
-
-.inventoryRawMaterialRegisterListDetailPrimaryDate h2 {
-  font-size: 1.5rem;
-  margin: 0px;
-  text-align: left;
-}
-
-.inventoryRawMaterialRegisterListDetailPrimaryobject {
-  align-content: center;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: flex-start;
+.inventoryRawMaterialRegisterListDetailPrimaryTable {
+  border-collapse: separate;
+  border-spacing: 0px 10px;
   width: 100%;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryobject button {
-  align-content: center;
-  align-items: center;
-  background-color: #0037ae;
-  border: none;
-  border-radius: 20px;
-  box-sizing: border-box;
-  color: #ffffff;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  gap: 10px;
-  justify-content: center;
-  outline: transparent 1px solid;
-  padding: 15px 52px;
-  text-decoration: none;
-  transition: all 0.5s ease-in-out;
-}
-
-.inventoryRawMaterialRegisterListDetailPrimaryobject button:hover {
-  background-color: #0048b6;
-}
-
-.inventoryRawMaterialRegisterListDetailPrimaryobject button:focus {
-  background-color: #0048b6;
-  outline: #0048b6 1px solid;
-}
-
-.inventoryRawMaterialRegisterListDetailPrimaryobject button h2 {
+.inventoryRawMaterialRegisterListDetailPrimaryTable caption {
   font-size: 1rem;
+  text-align: left;
+}
+
+.inventoryRawMaterialRegisterListDetailPrimaryTable caption h2 {
+  display: inline;
+  font-size: 1.5rem;
   margin: 0px;
+}
+
+.inventoryRawMaterialRegisterListDetailPrimaryTableHead,
+.inventoryRawMaterialRegisterListDetailPrimaryTableBody,
+.inventoryRawMaterialRegisterListDetailPrimaryTableFooter {
+  width: 100%;
+}
+
+.inventoryRawMaterialRegisterListDetailPrimaryTableHead tr,
+.inventoryRawMaterialRegisterListDetailPrimaryTableBody tr,
+.inventoryRawMaterialRegisterListDetailPrimaryTableFooter tr {
+  width: 100%;
+}
+.inventoryRawMaterialRegisterListDetailPrimaryTableHead tr th {
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: baseline;
+  width: 16.66%;
+}
+
+.inventoryRawMaterialRegisterListDetailPrimaryTableFooter tr th {
+  padding-top: 15px;
+  vertical-align: baseline;
   text-align: center;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryobject button img {
-  height: 2rem;
-  width: 2rem;
-}
-
-.inventoryRawMaterialRegisterListDetailPrimaryAlternative {
-  align-content: center;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  height: 100%;
-  width: 70%;
-}
-
-.inventoryRawMaterialRegisterListDetailPrimaryAlternative h2 {
-  margin: 0px;
+.inventoryRawMaterialRegisterListDetailPrimaryTableBody tr td {
+  font-size: 1rem;
   text-align: center;
+  vertical-align: baseline;
+  width: 16.66%;
+}
+
+.inventoryRawMaterialRegisterListDetailPrimaryTableFooter tr td {
+  font-size: 1rem;
+  text-align: left;
+  vertical-align: baseline;
+  width: 100%;
 }
 
 .inventoryRawMaterialRegisterListSecondary {

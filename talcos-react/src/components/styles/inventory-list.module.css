@@ -17,12 +17,14 @@
 .inventoryListMainTableHead tr th {
   font-size: 1rem;
   text-align: center;
+  vertical-align: baseline;
   width: 33.33%;
 }
 
 .inventoryListMainTableBody tr td {
   font-size: 1rem;
   text-align: center;
+  vertical-align: baseline;
   width: 33.33%;
 }
 

@@ -16,11 +16,13 @@
 
 .staffUserMainTableHead tr th {
   font-size: 1rem;
+  vertical-align: baseline;
   text-align: center;
 }
 
 .staffUserMainTableBody tr td {
   font-size: 1rem;
+  vertical-align: baseline;
   text-align: center;
 }
 

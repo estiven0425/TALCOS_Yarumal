@@ -2,7 +2,7 @@
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Style from "./styles/inventory-raw-material-register-detail-action.module.css";
+import Style from "./styles/inventory-raw-material-register-action-detail.module.css";
 
 function InventoryRawMaterialRegisterActionDetail({ item }) {
   const navigate = useNavigate();
@@ -74,9 +74,7 @@ function InventoryRawMaterialRegisterActionDetail({ item }) {
         </div>
       </motion.main>
       <motion.footer
-        className={
-          Style.inventoryRawMaterialRegisterActionDetailFooterAlternative
-        }
+        className={Style.inventoryRawMaterialRegisterActionDetailFooter}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}

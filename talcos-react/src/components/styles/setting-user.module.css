@@ -49,11 +49,15 @@
 .settingUserTableHead tr th {
   font-size: 1rem;
   text-align: center;
+  vertical-align: baseline;
+  width: 20%;
 }
 
 .settingUserTableBody tr td {
   font-size: 1rem;
   text-align: center;
+  vertical-align: baseline;
+  width: 20%;
 }
 
 .settingUserFooter {

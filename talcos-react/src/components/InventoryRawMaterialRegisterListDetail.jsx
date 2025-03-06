@@ -56,7 +56,7 @@ function InventoryRawMaterialRegisterListDetail() {
           transition={{ duration: 0.5 }}
         >
           <caption>
-            {item.length > 0 && `${item[0].tipo_registro}`}
+            <h2>{item.length > 0 && `${item[0].tipo_registro}`}</h2>
             <span>
               {" "}
               Hora de registro:{" "}
@@ -84,13 +84,19 @@ function InventoryRawMaterialRegisterListDetail() {
           >
             {renderRows(item)}
           </tbody>
-          <tfoot>
+          <tfoot
+            className={
+              Style.inventoryRawMaterialRegisterListDetailPrimaryTableFooter
+            }
+          >
             <tr>
               <th colSpan="6">Observaciones</th>
             </tr>
             <tr>
               <td colSpan="6">
-                {item.length > 0 && `${item[0].observacion_registro}`}
+                {item.length > 0 && `${item[0].observacion_registro}` !== ""
+                  ? `${item[0].observacion_registro}`
+                  : "No se registró"}
               </td>
             </tr>
           </tfoot>
