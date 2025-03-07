@@ -6,11 +6,11 @@ import Style from "./styles/notification.module.css";
 function Notification() {
   return (
     <ProtectedRoute>
-      <section className={Style.Notification}>
-        <section className={Style.NotificationMessageReceived}>
+      <section className={Style.notification}>
+        <section className={Style.notificationMessageReceived}>
           <NotificationMessageReceived />
         </section>
-        <section className={Style.NotificationMessageSend}>
+        <section className={Style.notificationMessageSend}>
           <NotificationMessageSend />
         </section>
       </section>

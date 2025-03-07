@@ -1,5 +1,5 @@
 ﻿import HomeFreighter from "../components/HomeFreighter";
-import HomeInventary from "../components/homeInventary";
+import HomeInventory from "../components/homeInventory";
 import HomeReference from "../components/HomeReference";
 import HomeShift from "../components/HomeShift";
 import HomeStateShift from "../components/HomeStateShift";
@@ -15,7 +15,7 @@ function Home() {
           <HomeShift />
         </article>
         <article className={Style["grid-span-2x3"]}>
-          <HomeInventary />
+          <HomeInventory />
         </article>
         <article className={Style["grid-span-2x2"]}>
           <HomeReference />

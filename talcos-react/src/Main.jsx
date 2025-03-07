@@ -1,77 +1,80 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
-import Error from "./pages/Error";
-import Home from "./pages/Home";
 import Header from "./components/Header";
-import Inventory from "./pages/Inventory";
-import InventoryGeneral from "./pages/InventoryGeneral";
-import InventoryCreateBobCat from "./pages/InventoryCreateBobCat";
-import InventoryCreateBulk from "./pages/InventoryCreateBulk";
-import InventoryCreateProfile from "./pages/InventoryCreateProfile";
-import InventoryCreateRawMaterial from "./pages/InventoryCreateRawMaterial";
-import InventoryCreateRawMaterialRegister from "./pages/InventoryCreateRawMaterialRegister";
-import InventoryCreateReference from "./pages/InventoryCreateReference";
-import InventoryCreateRejectedMaterial from "./pages/InventoryCreateRejectedMaterial";
-import InventoryCreateShift from "./pages/InventoryCreateShift";
-import InventoryCreateWindmill from "./pages/InventoryCreateWindmill";
-import InventoryDeleteBobCat from "./pages/InventoryDeleteBobCat";
-import InventoryDeleteBulk from "./pages/InventoryDeleteBulk";
-import InventoryDeleteProfile from "./pages/InventoryDeleteProfile";
-import InventoryDeleteRawMaterial from "./pages/InventoryDeleteRawMaterial";
-import InventoryDeleteRawMaterialRegister from "./pages/InventoryDeleteRawMaterialRegister";
-import InventoryDeleteReference from "./pages/InventoryDeleteReference";
-import InventoryDeleteRejectedMaterial from "./pages/InventoryDeleteRejectedMaterial";
-import InventoryDeleteShift from "./pages/InventoryDeleteShift";
-import InventoryDeleteWindmill from "./pages/InventoryDeleteWindmill";
-import InventoryEditBobCat from "./pages/InventoryEditBobCat";
-import InventoryEditBulk from "./pages/InventoryEditBulk";
-import InventoryEditProfile from "./pages/InventoryEditProfile";
-import InventoryEditRawMaterial from "./pages/InventoryEditRawMaterial";
-import InventoryEditReference from "./pages/InventoryEditReference";
-import InventoryEditRejectedMaterial from "./pages/InventoryEditRejectedMaterial";
-import InventoryEditShift from "./pages/InventoryEditShift";
-import InventoryEditWindmill from "./pages/InventoryEditWindmill";
-import InventoryListDeleteBobCat from "./pages/InventoryListDeleteBobCat";
-import InventoryListDeleteBulk from "./pages/InventoryListDeleteBulk";
-import InventoryListDeleteProfile from "./pages/InventoryListDeleteProfile";
-import InventoryListDeleteRawMaterial from "./pages/InventoryListDeleteRawMaterial";
-import InventoryListDeleteReference from "./pages/InventoryListDeleteReference";
-import InventoryListDeleteRejectedMaterial from "./pages/InventoryListDeleteRejectedMaterial";
-import InventoryListDeleteShift from "./pages/InventoryListDeleteShift";
-import InventoryListDeleteWindmill from "./pages/InventoryListDeleteWindmill";
-import InventoryListEditBobCat from "./pages/InventoryListEditBobCat";
-import InventoryListEditBulk from "./pages/InventoryListEditBulk";
-import InventoryListEditProfile from "./pages/InventoryListEditProfile";
-import InventoryListEditRawMaterial from "./pages/InventoryListEditRawMaterial";
-import InventoryListEditReference from "./pages/InventoryListEditReference";
-import InventoryListEditRejectedMaterial from "./pages/InventoryListEditRejectedMaterial";
-import InventoryListEditShift from "./pages/InventoryListEditShift";
-import InventoryListEditWindmill from "./pages/InventoryListEditWindmill";
-import InventoryBobCat from "./pages/InventoryBobCat";
-import InventoryBulk from "./pages/InventoryBulk";
-import InventoryProfile from "./pages/InventoryProfile";
-import InventoryRawMaterial from "./pages/InventoryRawMaterial";
-import InventoryRawMaterialRegister from "./pages/InventoryRawMaterialRegister";
-import InventoryRawMaterialRegisterDetail from "./pages/InventoryRawMaterialRegisterDetail";
-import InventoryReference from "./pages/InventoryReference";
-import InventoryRejectedMaterial from "./pages/InventoryRejectedMaterial";
-import InventoryShift from "./pages/InventoryShift";
-import InventoryWindmill from "./pages/InventoryWindmill";
-import Login from "./pages/Login";
-import Logout from "./pages/Logout";
-import Monitoring from "./pages/Monitoring";
-import Notification from "./pages/Notification";
-import Report from "./pages/Report";
-import Setting from "./pages/Setting";
-import SettingChangePassword from "./pages/SettingChangePassword";
-import Staff from "./pages/Staff";
-import StaffCreateUser from "./pages/StaffCreateUser";
-import StaffDeleteUser from "./pages/StaffDeleteUser";
-import StaffEditUser from "./pages/StaffEditUser";
-import StaffListEditUser from "./pages/StaffListEditUser";
-import StaffListDeleteUser from "./pages/StaffListDeleteUser";
-import StaffUser from "./pages/StaffUser";
+import {
+  Error,
+  FastInventory,
+  Home,
+  Inventory,
+  InventoryGeneral,
+  InventoryCreateBobCat,
+  InventoryCreateBulk,
+  InventoryCreateProfile,
+  InventoryCreateRawMaterial,
+  InventoryCreateRawMaterialRegister,
+  InventoryCreateReference,
+  InventoryCreateRejectedMaterial,
+  InventoryCreateShift,
+  InventoryCreateWindmill,
+  InventoryDeleteBobCat,
+  InventoryDeleteBulk,
+  InventoryDeleteProfile,
+  InventoryDeleteRawMaterial,
+  InventoryDeleteRawMaterialRegister,
+  InventoryDeleteReference,
+  InventoryDeleteRejectedMaterial,
+  InventoryDeleteShift,
+  InventoryDeleteWindmill,
+  InventoryEditBobCat,
+  InventoryEditBulk,
+  InventoryEditProfile,
+  InventoryEditRawMaterial,
+  InventoryEditReference,
+  InventoryEditRejectedMaterial,
+  InventoryEditShift,
+  InventoryEditWindmill,
+  InventoryListDeleteBobCat,
+  InventoryListDeleteBulk,
+  InventoryListDeleteProfile,
+  InventoryListDeleteRawMaterial,
+  InventoryListDeleteReference,
+  InventoryListDeleteRejectedMaterial,
+  InventoryListDeleteShift,
+  InventoryListDeleteWindmill,
+  InventoryListEditBobCat,
+  InventoryListEditBulk,
+  InventoryListEditProfile,
+  InventoryListEditRawMaterial,
+  InventoryListEditReference,
+  InventoryListEditRejectedMaterial,
+  InventoryListEditShift,
+  InventoryListEditWindmill,
+  InventoryBobCat,
+  InventoryBulk,
+  InventoryProfile,
+  InventoryRawMaterial,
+  InventoryRawMaterialRegister,
+  InventoryRawMaterialRegisterDetail,
+  InventoryReference,
+  InventoryRejectedMaterial,
+  InventoryShift,
+  InventoryWindmill,
+  Login,
+  Logout,
+  Monitoring,
+  Notification,
+  Report,
+  Setting,
+  SettingChangePassword,
+  Staff,
+  StaffCreateUser,
+  StaffDeleteUser,
+  StaffEditUser,
+  StaffListEditUser,
+  StaffListDeleteUser,
+  StaffUser,
+} from "./pages";
 import "./styles/main.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -236,6 +239,7 @@ createRoot(document.getElementById("root")).render(
             />
             <Route path="deletebobcat" element={<InventoryDeleteBobCat />} />
           </Route>
+          <Route path="fastinventory" element={<FastInventory />} />
           <Route path="notification" element={<Notification />} />
           <Route path="setting" element={<Setting />} />
           <Route path="changepassword" element={<SettingChangePassword />} />

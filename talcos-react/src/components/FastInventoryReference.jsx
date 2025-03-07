@@ -1,9 +1,9 @@
 ﻿import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/home-inventary.module.css";
+import Style from "./styles/fast-inventory-list.module.css";
 
-function HomeInventary() {
+function FastInventoryReference() {
   const [referencia, setReferencia] = useState([]);
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
@@ -29,33 +29,43 @@ function HomeInventary() {
   ).toFixed(2);
 
   return referencia.length > 0 ? (
-    <motion.div
-      className={Style.homeInventary}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <header className={Style.homeInventaryHeader}>
+    <>
+      <motion.header
+        className={Style.fastInventoryListHeader}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <h1>Inventario de talco en bodega</h1>
-      </header>
-      <main className={Style.homeInventaryMain}>
+      </motion.header>
+      <motion.main
+        className={Style.fastInventoryListMain}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         {referencia.map((referencia) => (
           <div key={referencia.id_referencia}>
             <h2>{referencia.nombre_referencia}</h2>
             <p>{referencia.cantidad_referencia} Tons</p>
           </div>
         ))}
-      </main>
-      <footer className={Style.homeInventaryFooter}>
+      </motion.main>
+      <motion.footer
+        className={Style.fastInventoryListFooter}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <div>
           <h2>Talco total en bodega</h2>
           <p>{talcProduced} Tons</p>
         </div>
-      </footer>
-    </motion.div>
+      </motion.footer>
+    </>
   ) : (
     <motion.div
-      className={Style.homeInventaryAlternative}
+      className={Style.fastInventoryListAlternative}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -65,4 +75,4 @@ function HomeInventary() {
   );
 }
 
-export default HomeInventary;
+export default FastInventoryReference;
