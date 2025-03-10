@@ -1,15 +1,15 @@
-﻿.inventoryListDeleteTableHeader {
+.inventoryListTableHeader {
   box-sizing: border-box;
   width: 100%;
 }
 
-.inventoryListDeleteTableHeader h1 {
+.inventoryListTableHeader h1 {
   font-size: 1.5rem;
   margin: 0px;
   text-align: center;
 }
 
-.inventoryListDeleteTableMain {
+.inventoryListTableMain {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -21,56 +21,56 @@
   width: 100%;
 }
 
-.inventoryListDeleteTableMainTable {
+.inventoryListTableMainTable {
   border-collapse: separate;
   border-spacing: 0px 10px;
   width: 100%;
 }
 
-.inventoryListDeleteTableMainTableHead,
-.inventoryListDeleteTableMainTableBody {
+.inventoryListTableMainTableHead,
+.inventoryListTableMainTableBody {
   width: 100%;
 }
 
-.inventoryListDeleteTableMainTableHead tr,
-.inventoryListDeleteTableMainTableBody tr {
+.inventoryListTableMainTableHead tr,
+.inventoryListTableMainTableBody tr {
   width: 100%;
 }
 
-.inventoryListDeleteTableMainTableHead tr th {
+.inventoryListTableMainTableHead tr th {
   font-size: 1rem;
   text-align: center;
   vertical-align: baseline;
   width: 33.33%;
 }
 
-.inventoryListDeleteTableMainTableBody tr {
+.inventoryListTableMainTableBody tr {
   cursor: pointer;
   outline: transparent 1px solid;
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryListDeleteTableMainTableBody tr:hover,
-.inventoryListDeleteTableMainTableBody tr:focus {
+.inventoryListTableMainTableBody tr:hover,
+.inventoryListTableMainTableBody tr:focus {
   background-color: #0048b6;
 }
 
-.inventoryListDeleteTableMainTableBody tr td {
+.inventoryListTableMainTableBody tr td {
   font-size: 1rem;
   text-align: center;
   vertical-align: baseline;
   width: 33.33%;
 }
 
-.inventoryListDeleteTableMainTableBody tr td:first-child {
+.inventoryListTableMainTableBody tr td:first-child {
   border-radius: 20px 0px 0px 20px;
 }
 
-.inventoryListDeleteTableMainTableBody tr td:last-child {
+.inventoryListTableMainTableBody tr td:last-child {
   border-radius: 0px 20px 20px 0px;
 }
 
-.inventoryListDeleteTableMainAlternative {
+.inventoryListTableMainAlternative {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -80,12 +80,12 @@
   height: 100%;
 }
 
-.inventoryListDeleteTableMainAlternative h2 {
+.inventoryListTableMainAlternative h2 {
   margin: 0px;
   text-align: center;
 }
 
-.inventoryListDeleteTableFooter {
+.inventoryListTableFooter {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -95,7 +95,7 @@
   width: 100%;
 }
 
-.inventoryListDeleteTableFooter button {
+.inventoryListTableFooter button {
   background-color: #0037ae;
   border-color: transparent;
   border-radius: 20px;
@@ -107,24 +107,24 @@
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryListDeleteTableFooter button:hover {
+.inventoryListTableFooter button:hover {
   background: #0095dc;
 }
 
-.inventoryListDeleteTableFooter button:focus {
+.inventoryListTableFooter button:focus {
   outline: #0095dc 1px solid;
 }
 
-.inventoryListDeleteTableMain::-webkit-scrollbar {
+.inventoryListTableMain::-webkit-scrollbar {
   width: 10px;
 }
 
-.inventoryListDeleteTableMain::-webkit-scrollbar-track {
+.inventoryListTableMain::-webkit-scrollbar-track {
   background: #0037ae;
   border-radius: 10px;
 }
 
-.inventoryListDeleteTableMain::-webkit-scrollbar-thumb {
+.inventoryListTableMain::-webkit-scrollbar-thumb {
   background: #0095dc;
   border-radius: 10px;
 }

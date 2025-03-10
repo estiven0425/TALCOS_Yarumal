@@ -1,4 +1,5 @@
 const ProductosRechazados = require("../models/productosRechazados");
+const Referencias = require("../models/Referencias");
 
 exports.leerProductoRechazado = async (req, res) => {
   try {
@@ -57,6 +58,48 @@ exports.actualizarProductoRechazado = async (req, res) => {
       res.json(productoRechazado);
     } else {
       res.status(404).json({ error: "Producto rechazado no encontrado" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error al actualizar el producto rechazado" });
+  }
+};
+
+exports.reasignarProductoRechazado = async (req, res) => {
+  const {
+    id_producto_rechazado,
+    cantidad_producto_rechazado,
+    referenciaSeleccionada,
+  } = req.body;
+
+  try {
+    const productoRechazado = await ProductosRechazados.findByPk(
+      id_producto_rechazado
+    );
+    const referencia = await Referencias.findByPk(referenciaSeleccionada);
+
+    if (productoRechazado && referencia) {
+      const nuevaCantidadProductoRechazado =
+        parseFloat(productoRechazado.cantidad_producto_rechazado) -
+        parseFloat(cantidad_producto_rechazado);
+      const nuevaCantidadReferencia =
+        parseFloat(referencia.cantidad_referencia) +
+        parseFloat(cantidad_producto_rechazado);
+
+      await productoRechazado.update({
+        cantidad_producto_rechazado: nuevaCantidadProductoRechazado,
+      });
+
+      await referencia.update({
+        cantidad_referencia: nuevaCantidadReferencia,
+      });
+
+      res.json({ productoRechazado, referencia });
+    } else {
+      res
+        .status(404)
+        .json({ error: "Producto rechazado o referencia no encontrados" });
     }
   } catch (error) {
     res

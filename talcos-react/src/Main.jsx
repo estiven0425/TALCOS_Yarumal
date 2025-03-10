@@ -30,6 +30,7 @@ import {
   InventoryEditBulk,
   InventoryEditProfile,
   InventoryEditRawMaterial,
+  InventoryEditReasignedRejectedMaterial,
   InventoryEditReference,
   InventoryEditRejectedMaterial,
   InventoryEditShift,
@@ -50,6 +51,7 @@ import {
   InventoryListEditRejectedMaterial,
   InventoryListEditShift,
   InventoryListEditWindmill,
+  InventoryListReasignedRejectedMaterial,
   InventoryBobCat,
   InventoryBulk,
   InventoryProfile,
@@ -213,6 +215,14 @@ createRoot(document.getElementById("root")).render(
             <Route
               path="deleterejectedmaterial"
               element={<InventoryDeleteRejectedMaterial />}
+            />
+            <Route
+              path="listreasignedrejectedmaterial"
+              element={<InventoryListReasignedRejectedMaterial />}
+            />
+            <Route
+              path="reasignedrejectedmaterial"
+              element={<InventoryEditReasignedRejectedMaterial />}
             />
             <Route path="inventoryprofile" element={<InventoryProfile />} />
             <Route path="createprofile" element={<InventoryCreateProfile />} />

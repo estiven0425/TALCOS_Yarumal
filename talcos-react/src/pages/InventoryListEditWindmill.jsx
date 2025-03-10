@@ -1,11 +1,11 @@
 ﻿import InventoryListEditTable from "../components/InventoryListEditTable";
 import ProtectedRoute from "../utils/ProtectedRoute";
-import Style from "./styles/inventory-list-edit.module.css";
+import Style from "./styles/inventory-list.module.css";
 
 function InventoryListEditWindmill() {
   return (
     <ProtectedRoute>
-      <section className={Style.inventorytListEdit}>
+      <section className={Style.inventoryList}>
         <InventoryListEditTable
           endpoint="molinos"
           redirectPath="windmill"

@@ -27,6 +27,7 @@ export { default as InventoryEditProfile } from "./InventoryEditProfile";
 export { default as InventoryEditRawMaterial } from "./InventoryEditRawMaterial";
 export { default as InventoryEditReference } from "./InventoryEditReference";
 export { default as InventoryEditRejectedMaterial } from "./InventoryEditRejectedMaterial";
+export { default as InventoryEditReasignedRejectedMaterial } from "./InventoryEditReasignedRejectedMaterial";
 export { default as InventoryEditShift } from "./InventoryEditShift";
 export { default as InventoryEditWindmill } from "./InventoryEditWindmill";
 export { default as InventoryListDeleteBobCat } from "./InventoryListDeleteBobCat";
@@ -45,6 +46,7 @@ export { default as InventoryListEditReference } from "./InventoryListEditRefere
 export { default as InventoryListEditRejectedMaterial } from "./InventoryListEditRejectedMaterial";
 export { default as InventoryListEditShift } from "./InventoryListEditShift";
 export { default as InventoryListEditWindmill } from "./InventoryListEditWindmill";
+export { default as InventoryListReasignedRejectedMaterial } from "./InventoryListReasignedRejectedMaterial";
 export { default as InventoryBobCat } from "./InventoryBobCat";
 export { default as InventoryBulk } from "./InventoryBulk";
 export { default as InventoryProfile } from "./InventoryProfile";

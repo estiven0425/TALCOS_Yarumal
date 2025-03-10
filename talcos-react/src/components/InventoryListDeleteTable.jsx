@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/inventory-list-delete-table.module.css";
+import Style from "./styles/inventory-list-table.module.css";
 
 function InventoryListDeleteTable({
   endpoint,
@@ -43,25 +43,25 @@ function InventoryListDeleteTable({
 
   return (
     <>
-      <header className={Style.inventoryListDeleteTableHeader}>
+      <header className={Style.inventoryListTableHeader}>
         <h1>Seleccione {title} para editar</h1>
       </header>
-      <main className={Style.inventoryListDeleteTableMain}>
+      <main className={Style.inventoryListTableMain}>
         {item.length > 0 ? (
           <motion.table
-            className={Style.inventoryListDeleteTableMainTable}
+            className={Style.inventoryListTableMainTable}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <thead className={Style.inventoryListDeleteTableMainTableHead}>
+            <thead className={Style.inventoryListTableMainTableHead}>
               <tr>
                 {head.map((head) => (
                   <th key={head}>{head}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className={Style.inventoryListDeleteTableMainTableBody}>
+            <tbody className={Style.inventoryListTableMainTableBody}>
               {item.map((item) => (
                 <tr
                   key={item[index]}
@@ -84,7 +84,7 @@ function InventoryListDeleteTable({
           </motion.table>
         ) : (
           <motion.div
-            className={Style.inventoryListDeleteTableMainAlternative}
+            className={Style.inventoryListTableMainAlternative}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -93,7 +93,7 @@ function InventoryListDeleteTable({
           </motion.div>
         )}
       </main>
-      <footer className={Style.inventoryListDeleteTableFooter}>
+      <footer className={Style.inventoryListTableFooter}>
         <button type="button" onClick={() => redirectInventory()}>
           Volver
         </button>

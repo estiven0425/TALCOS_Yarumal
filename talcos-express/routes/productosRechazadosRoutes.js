@@ -6,6 +6,10 @@ router.get("/", productoRechazadoController.leerProductoRechazado);
 router.post("/", productoRechazadoController.crearProductoRechazado);
 router.put("/", productoRechazadoController.actualizarProductoRechazado);
 router.put(
+  "/reasignarproductorechazado",
+  productoRechazadoController.reasignarProductoRechazado
+);
+router.put(
   "/eliminarproductorechazado",
   productoRechazadoController.eliminarProductoRechazado
 );

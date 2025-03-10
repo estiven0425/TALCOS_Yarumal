@@ -1,11 +1,11 @@
 import InventoryListDeleteTable from "../components/InventoryListDeleteTable";
 import ProtectedRoute from "../utils/ProtectedRoute";
-import Style from "./styles/inventory-list-delete.module.css";
+import Style from "./styles/inventory-list.module.css";
 
 function InventoryListDeleteRejectedMaterial() {
   return (
     <ProtectedRoute>
-      <section className={Style.inventoryListDelete}>
+      <section className={Style.inventoryList}>
         <InventoryListDeleteTable
           endpoint="productos_rechazados"
           redirectPath="rejectedmaterial"

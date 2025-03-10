@@ -13,6 +13,9 @@ function InventoryRejectedMaterialButton() {
   const redirectDelete = () => {
     navigate("/inventory/listdeleterejectedmaterial");
   };
+  const redirectReasigned = () => {
+    navigate("/inventory/listreasignedrejectedmaterial");
+  };
 
   return (
     <>
@@ -36,7 +39,7 @@ function InventoryRejectedMaterialButton() {
         </button>
         <button
           className={Style.inventoryRejectedMaterialButtonHeaderEspecial}
-          onClick={() => redirectDelete()}
+          onClick={() => redirectReasigned()}
           type="button"
         >
           <h2>Reasignar</h2>

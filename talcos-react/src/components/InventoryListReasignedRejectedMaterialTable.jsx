@@ -4,50 +4,43 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Style from "./styles/inventory-list-table.module.css";
 
-function InventoryListEditTable({
-  endpoint,
-  redirectPath,
-  title,
-  head,
-  index,
-  body,
-  name,
-  optional,
-}) {
-  const [item, setItem] = useState([]);
+function InventoryListReasignedRejectedMaterialTable({}) {
+  const [productoRechazado, setProductoRechazado] = useState([]);
   const navigate = useNavigate();
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
-    const getItem = async () => {
+    const getRejectetMaterial = async () => {
       try {
-        const response = await axios.get(`http://${localIP}:3000/${endpoint}`);
+        const response = await axios.get(
+          `http://${localIP}:3000/productos_rechazados`
+        );
         const data = Array.isArray(response.data)
           ? response.data
           : Object.values(response.data);
 
-        setItem(data);
+        setProductoRechazado(data);
       } catch (error) {
-        console.error("Error al obtener los datos: ", error);
+        console.error("Error al obtener los prdouctos rechazados: ", error);
       }
     };
 
-    getItem();
+    getRejectetMaterial();
   }, [localIP]);
   const redirectInventory = () => {
-    navigate(`/inventory/inventory${redirectPath}`);
+    navigate(`/inventory/inventoryrejectedmaterial`);
   };
-  const redirectEditInventory = (data) => {
-    navigate(`/inventory/edit${redirectPath}`, { state: data });
+  const redirectReasignedInventory = (data) => {
+    navigate(`/inventory/reasignedrejectedmaterial`, { state: data });
   };
 
   return (
     <>
       <header className={Style.inventoryListTableHeader}>
-        <h1>Seleccione {title} para editar</h1>
+        <h1>Seleccione un producto rechazado para reasignar</h1>
       </header>
       <main className={Style.inventoryListTableMain}>
-        {item.length > 0 ? (
+        {productoRechazado.length > 0 ? (
           <motion.table
             className={Style.inventoryListTableMainTable}
             initial={{ opacity: 0 }}
@@ -56,28 +49,26 @@ function InventoryListEditTable({
           >
             <thead className={Style.inventoryListTableMainTableHead}>
               <tr>
-                {head.map((head) => (
-                  <th key={head}>{head}</th>
-                ))}
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Retención</th>
               </tr>
             </thead>
             <tbody className={Style.inventoryListTableMainTableBody}>
-              {item.map((item) => (
+              {productoRechazado.map((productoRechazado) => (
                 <tr
-                  key={item[index]}
-                  onClick={() => redirectEditInventory(item)}
+                  key={productoRechazado.id_producto_rechazado}
+                  onClick={() => redirectReasignedInventory(productoRechazado)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      redirectEditInventory(item);
+                      redirectReasignedInventory(productoRechazado);
                     }
                   }}
                   tabIndex="0"
                 >
-                  {body.map((body) => (
-                    <td key={body}>
-                      {item[body]} {optional[body] || ""}
-                    </td>
-                  ))}
+                  <td>{productoRechazado.nombre_producto_rechazado}</td>
+                  <td>{productoRechazado.cantidad_producto_rechazado}</td>
+                  <td>{productoRechazado.retencion_producto_rechazado}</td>
                 </tr>
               ))}
             </tbody>
@@ -89,7 +80,7 @@ function InventoryListEditTable({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <h2>No existen {name}</h2>
+            <h2>No existen productos rechazados</h2>
           </motion.div>
         )}
       </main>
@@ -102,4 +93,4 @@ function InventoryListEditTable({
   );
 }
 
-export default InventoryListEditTable;
+export default InventoryListReasignedRejectedMaterialTable;
