@@ -48,7 +48,7 @@
   border-radius: 20px;
   color: #ffffff;
   cursor: pointer;
-  max-height: 49px;
+  max-height: 39px;
   outline: transparent 1px solid;
   padding: 10px;
   transition: all 0.5s ease-in-out;
@@ -67,10 +67,8 @@
   border: 5px solid #0048b6;
   border-radius: 50%;
   border-top: 5px solid transparent;
-  box-sizing: border-box;
   height: 20px;
   margin: -7.5px auto 0px;
-  margin: 6px 6px 11px;
   width: 20px;
 }
 

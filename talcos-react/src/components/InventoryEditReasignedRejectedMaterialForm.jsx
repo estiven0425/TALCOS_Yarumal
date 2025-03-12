@@ -10,7 +10,7 @@ function InventoryEditReasignedRejectedMaterialForm() {
   const [sendStatus, setSendStatus] = useState(false);
   const [serverError, setServerError] = useState(null);
   const [referencias, setReferencias] = useState([]);
-  const [referenciaSeleccionada, setReferenciaSeleccionada] = useState("");
+  const [selectedReference, setSelectedReference] = useState("");
   const [validationError, setValidationError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,21 +46,14 @@ function InventoryEditReasignedRejectedMaterialForm() {
     }
   }, [sendStatus, navigate]);
 
-  const handleChange = (e) => {
-    setDatos({
-      ...datos,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleReferenciaChange = (e) => {
-    setReferenciaSeleccionada(e.target.value);
+  const handleReferenceChange = (e) => {
+    setSelectedReference(e.target.value);
   };
 
   const sendReasigned = async (e) => {
     e.preventDefault();
 
-    if (!referenciaSeleccionada) {
+    if (!selectedReference) {
       setValidationError("El campo de referencia es obligatorio.");
       return;
     }
@@ -74,7 +67,7 @@ function InventoryEditReasignedRejectedMaterialForm() {
         {
           id_producto_rechazado: datos.id_producto_rechazado,
           cantidad_producto_rechazado: datos.cantidad_producto_rechazado,
-          referenciaSeleccionada,
+          referenciaSeleccionada: selectedReference,
         }
       );
 
@@ -161,8 +154,8 @@ function InventoryEditReasignedRejectedMaterialForm() {
               <select
                 id="referencia"
                 name="referencia"
-                onChange={handleReferenciaChange}
-                value={referenciaSeleccionada}
+                onChange={handleReferenceChange}
+                value={selectedReference}
               >
                 <option value="">Selecciona una referencia</option>
                 {referencias.map((referencia) => (
@@ -179,8 +172,8 @@ function InventoryEditReasignedRejectedMaterialForm() {
                   className={
                     Style.inventoryEditReasignedRejectedMaterialFormValidation
                   }
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ zoom: 0 }}
+                  animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
                 >
                   {validationError}
