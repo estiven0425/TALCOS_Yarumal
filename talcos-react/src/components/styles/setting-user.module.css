@@ -82,11 +82,11 @@
 }
 
 .settingUserFooter button:hover {
-  background: #0095dc;
+  background-color: #0048b6;
 }
 
 .settingUserFooter button:focus {
-  outline: #0095dc 1px solid;
+  background-color: #0048b6;
 }
 
 .settingUserAlternative {

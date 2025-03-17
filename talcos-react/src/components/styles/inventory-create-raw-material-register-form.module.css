@@ -82,26 +82,6 @@
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryCreateRawMaterialRegisterMain div fieldset select::-webkit-scrollbar {
-  width: 10px;
-}
-
-.inventoryCreateRawMaterialRegisterMain
-  div
-  fieldset
-  select::-webkit-scrollbar-track {
-  background: #0037ae;
-  border-radius: 10px;
-}
-
-.inventoryCreateRawMaterialRegisterMain
-  div
-  fieldset
-  select::-webkit-scrollbar-thumb {
-  background: #017fd3;
-  border-radius: 10px;
-}
-
 .inventoryCreateRawMaterialRegisterMainEspecial {
   grid-column: span 2;
 }

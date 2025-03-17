@@ -65,20 +65,6 @@
   width: 3rem;
 }
 
-.staffListProfileMain::-webkit-scrollbar {
-  width: 10px;
-}
-
-.staffListProfileMain::-webkit-scrollbar-track {
-  background: #0037ae;
-  border-radius: 10px;
-}
-
-.staffListProfileMain::-webkit-scrollbar-thumb {
-  background: #0095dc;
-  border-radius: 10px;
-}
-
 .staffListProfileMainAlternative {
   align-content: center;
   box-sizing: border-box;

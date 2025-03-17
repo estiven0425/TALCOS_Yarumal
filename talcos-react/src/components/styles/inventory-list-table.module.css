@@ -108,23 +108,9 @@
 }
 
 .inventoryListTableFooter button:hover {
-  background: #0095dc;
+  background-color: #0048b6;
 }
 
 .inventoryListTableFooter button:focus {
-  outline: #0095dc 1px solid;
-}
-
-.inventoryListTableMain::-webkit-scrollbar {
-  width: 10px;
-}
-
-.inventoryListTableMain::-webkit-scrollbar-track {
-  background: #0037ae;
-  border-radius: 10px;
-}
-
-.inventoryListTableMain::-webkit-scrollbar-thumb {
-  background: #0095dc;
-  border-radius: 10px;
+  background-color: #0048b6;
 }

@@ -7,12 +7,12 @@ function Notification() {
   return (
     <ProtectedRoute>
       <section className={Style.notification}>
-        <section className={Style.notificationMessageReceived}>
+        <aside className={Style.notificationMessageReceived}>
           <NotificationMessageReceived />
-        </section>
-        <section className={Style.notificationMessageSend}>
+        </aside>
+        <aside className={Style.notificationMessageSend}>
           <NotificationMessageSend />
-        </section>
+        </aside>
       </section>
     </ProtectedRoute>
   );

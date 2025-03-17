@@ -95,11 +95,14 @@
 }
 
 .staffEditUserFormFooter button:hover {
-  background: #0095dc;
+  background-color: #0048b6;
 }
 
-.staffEditUserFormMain fieldset input:focus,
-.staffEditUserUserFormFooter button:focus {
+.staffEditUserFormFooter button:focus {
+  background-color: #0048b6;
+}
+
+.staffEditUserFormMain fieldset input:focus {
   outline: #0095dc 1px solid;
 }
 
@@ -121,20 +124,6 @@
   height: 20px;
   margin: -7.5px auto 0px;
   width: 20px;
-}
-
-.staffEditUser::-webkit-scrollbar {
-  width: 10px;
-}
-
-.staffEditUser::-webkit-scrollbar-track {
-  background: #0037ae;
-  border-radius: 10px;
-}
-
-.staffEditUser::-webkit-scrollbar-thumb {
-  background: #0095dc;
-  border-radius: 10px;
 }
 
 @keyframes spin {

@@ -157,7 +157,9 @@ function InventoryEditReasignedRejectedMaterialForm() {
                 onChange={handleReferenceChange}
                 value={selectedReference}
               >
-                <option value="">Selecciona una referencia</option>
+                <option value="" disabled>
+                  Selecciona una referencia
+                </option>
                 {referencias.map((referencia) => (
                   <option
                     key={referencia.id_referencia}

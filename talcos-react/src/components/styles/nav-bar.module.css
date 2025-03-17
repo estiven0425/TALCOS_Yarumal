@@ -47,7 +47,7 @@
 }
 
 .navBar a:focus {
-  outline: #017fd3 1px solid;
+  background-color: #017fd3;
 }
 
 .navBar .active {

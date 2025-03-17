@@ -106,23 +106,9 @@
 }
 
 .staffListDeleteUserTableFooter button:hover {
-  background: #0095dc;
+  background-color: #0048b6;
 }
 
 .staffListDeleteUserTableFooter button:focus {
-  outline: #0095dc 1px solid;
-}
-
-.staffListDeleteUserTableMain::-webkit-scrollbar {
-  width: 10px;
-}
-
-.staffListDeleteUserTableMain::-webkit-scrollbar-track {
-  background: #0037ae;
-  border-radius: 10px;
-}
-
-.staffListDeleteUserTableMain::-webkit-scrollbar-thumb {
-  background: #0095dc;
-  border-radius: 10px;
+  background-color: #0048b6;
 }

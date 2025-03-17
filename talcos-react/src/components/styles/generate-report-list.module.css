@@ -1,31 +1,15 @@
-﻿.inventoryListProfileHeader {
-  align-content: center;
-  align-items: center;
+﻿.generateReportList {
+  align-content: stretch;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: center;
-}
-
-.inventoryListProfileHeader h1 {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin: 0px;
-  text-align: center;
-}
-
-.inventoryListProfileMain {
-  box-sizing: border-box;
-  display: grid;
-  gap: 25px;
-  grid-template-columns: repeat(3, 1fr);
   height: 100%;
+  justify-content: space-between;
   overflow: auto;
-  width: 100%;
 }
 
-.inventoryListProfileMainButton {
+.generateReportListButton {
   align-content: center;
   align-items: center;
   background-color: #0037ae;
@@ -40,26 +24,26 @@
   gap: 10px;
   justify-content: center;
   outline: transparent 1px solid;
-  padding: 25px;
+  padding: 10px;
   text-decoration: none;
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryListProfileMainButton:hover {
+.generateReportListButton:hover {
   background-color: #0048b6;
 }
 
-.inventoryListProfileMainButton:focus {
+.generateReportListButton:focus {
   background-color: #0048b6;
 }
 
-.inventoryListProfileMainButton h2 {
+.generateReportListButton h2 {
   font-size: 1.5rem;
   margin: 0px;
   text-align: center;
 }
 
-.inventoryListProfileMainButton img {
-  height: 3rem;
-  width: 3rem;
+.generateReportListButton img {
+  height: 2rem;
+  width: 2rem;
 }

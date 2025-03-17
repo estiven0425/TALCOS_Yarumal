@@ -48,20 +48,6 @@
   margin: 0px;
 }
 
-.fastInventoryListMain::-webkit-scrollbar {
-  width: 10px;
-}
-
-.fastInventoryListMain::-webkit-scrollbar-track {
-  background: #0037ae;
-  border-radius: 10px;
-}
-
-.fastInventoryListMain::-webkit-scrollbar-thumb {
-  background: #0095dc;
-  border-radius: 10px;
-}
-
 .fastInventoryListFooter {
   align-content: flex-start;
   box-sizing: border-box;

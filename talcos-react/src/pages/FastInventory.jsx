@@ -7,12 +7,12 @@ function FastInventory() {
   return (
     <ProtectedRoute>
       <section className={Style.fastInventory}>
-        <section className={Style.fastInventoryRawMaterial}>
+        <aside className={Style.fastInventoryRawMaterial}>
           <FastInventoryRawMaterial />
-        </section>
-        <section className={Style.fastInventoryReference}>
+        </aside>
+        <aside className={Style.fastInventoryReference}>
           <FastInventoryReference />
-        </section>
+        </aside>
       </section>
     </ProtectedRoute>
   );

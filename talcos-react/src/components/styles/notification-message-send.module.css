@@ -90,20 +90,6 @@
   background-color: #017fd3;
 }
 
-.notificationMessageSendMainForm header select::-webkit-scrollbar {
-  width: 10px;
-}
-
-.notificationMessageSendMainForm header select::-webkit-scrollbar-track {
-  background: #0037ae;
-  border-radius: 10px;
-}
-
-.notificationMessageSendMainForm header select::-webkit-scrollbar-thumb {
-  background: #017fd3;
-  border-radius: 10px;
-}
-
 .notificationMessageSendMainForm main {
   align-content: center;
   box-sizing: border-box;

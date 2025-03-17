@@ -56,27 +56,32 @@ function NotificationMessageReceived() {
       >
         {mensaje.length > 0 ? (
           <>
-            {mensaje.map((mensaje) => (
-              <article
-                className={Style.notificationMessageReceivedMainArticle}
-                key={mensaje.id_mensaje}
-              >
-                <section
-                  className={Style.notificationMessageReceivedMainArticleHeader}
+            {mensaje
+              .slice()
+              .reverse()
+              .map((mensaje) => (
+                <article
+                  className={Style.notificationMessageReceivedMainArticle}
+                  key={mensaje.id_mensaje}
                 >
-                  <h2>{mensaje.emisor?.nombre_usuario}</h2>
-                  <p>
-                    {mensaje.fecha_mensaje}
-                    <span>{mensaje.hora_mensaje.slice(0, 5)}</span>
-                  </p>
-                </section>
-                <section
-                  className={Style.notificationMessageReceivedMainArticleMain}
-                >
-                  <p>{mensaje.texto_mensaje}</p>
-                </section>
-              </article>
-            ))}
+                  <section
+                    className={
+                      Style.notificationMessageReceivedMainArticleHeader
+                    }
+                  >
+                    <h2>{mensaje.emisor?.nombre_usuario}</h2>
+                    <p>
+                      {mensaje.fecha_mensaje}
+                      <span>{mensaje.hora_mensaje.slice(0, 5)}</span>
+                    </p>
+                  </section>
+                  <section
+                    className={Style.notificationMessageReceivedMainArticleMain}
+                  >
+                    <p>{mensaje.texto_mensaje}</p>
+                  </section>
+                </article>
+              ))}
           </>
         ) : (
           <article

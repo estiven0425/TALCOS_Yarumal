@@ -36,11 +36,11 @@
 }
 
 .logOutFooter button:hover {
-  background: #0095dc;
+  background-color: #0048b6;
 }
 
 .logOutFooter button:focus {
-  outline: #0095dc 1px solid;
+  background-color: #0048b6;
 }
 
 .logOutAlternative {

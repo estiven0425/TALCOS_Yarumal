@@ -1,0 +1,35 @@
+﻿.generateReport {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+}
+
+.generateReportStatus {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 30%;
+  justify-content: flex-start;
+  overflow: auto;
+  width: 100%;
+}
+
+.generateReportList {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 70%;
+  justify-content: flex-start;
+  overflow: auto;
+  width: 100%;
+}

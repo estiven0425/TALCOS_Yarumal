@@ -80,17 +80,3 @@
   padding: 10px;
   width: 30%;
 }
-
-.inventoryRawMaterialRegisterListDetailPrimary::-webkit-scrollbar {
-  width: 10px;
-}
-
-.inventoryRawMaterialRegisterListDetailPrimary::-webkit-scrollbar-track {
-  background: #0037ae;
-  border-radius: 10px;
-}
-
-.inventoryRawMaterialRegisterListDetailPrimary::-webkit-scrollbar-thumb {
-  background: #0095dc;
-  border-radius: 10px;
-}

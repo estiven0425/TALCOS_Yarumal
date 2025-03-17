@@ -37,7 +37,6 @@
 
 .inventoryRejectedMaterialButtonHeader button:focus {
   background-color: #0048b6;
-  outline: #0048b6 1px solid;
 }
 
 .inventoryRejectedMaterialButtonHeader button h2 {

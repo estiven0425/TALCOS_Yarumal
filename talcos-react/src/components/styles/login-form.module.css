@@ -68,11 +68,14 @@
 }
 
 .loginFormFooter button:hover {
-  background: #0095dc;
+  background-color: #0048b6;
 }
 
-.loginFormMain input:focus,
 .loginFormFooter button:focus {
+  background-color: #0048b6;
+}
+
+.loginFormMain input:focus {
   outline: #0095dc 1px solid;
 }
 
