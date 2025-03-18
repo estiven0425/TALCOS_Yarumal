@@ -7,19 +7,24 @@ import Style from "./styles/inventory-create-raw-material-register-form.module.c
 function InventoryCreateRawMaterialRegister() {
   const [proveedor, setProveedor] = useState([]);
   const [materiaPrima, setMateriaPrima] = useState([]);
+  const [transportador, setTransportador] = useState([]);
   const [titularRegistro, setTitularRegistro] = useState("");
+  const [remisionRegistro, setRemisionRegistro] = useState("");
+  const [idProveedorRegistro, setIdProveedorRegistro] = useState("");
+  const [documentoProveedorRegistro, setDocumentoProveedorRegistro] =
+    useState("");
+  const [idTransportadorRegistro, setIdTransportadorRegistro] = useState("");
+  const [documentoTransportadorRegistro, setDocumentoTransportadorRegistro] =
+    useState("");
   const [tipoRegistro, setTipoRegistro] = useState("");
+  const [mpRegistro, setMpRegistro] = useState("");
+  const [valorMpRegistro, setValorMpRegistro] = useState("");
+  const [pesoMpRegistro, setPesoMpRegistro] = useState("");
+  const [conceptoRegistro, setConceptoRegistro] = useState("");
+  const [zonaRegistro, setZonaRegistro] = useState("");
+  const [bonificacionRegistro, setBonificacionRegistro] = useState("");
+  const [valorTRegistro, setValorTRegistro] = useState("");
   const [observacionRegistro, setObservacionRegistro] = useState("");
-  const [registros, setRegistros] = useState([
-    {
-      proveedor: "",
-      mpRegistro: "",
-      valorMpRegistro: "",
-      pesoMpRegistro: "",
-      valorTRegistro: "",
-      pesoNetoRegistro: "",
-    },
-  ]);
   const [loading, setLoading] = useState(false);
   const [SendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
@@ -68,6 +73,22 @@ function InventoryCreateRawMaterialRegister() {
   }, [localIP]);
 
   useEffect(() => {
+    const getConveyor = async () => {
+      try {
+        const response = await axios.get(
+          `http://${localIP}:3000/usuarios/registrotransportador`
+        );
+
+        setTransportador(response.data);
+      } catch (error) {
+        console.error("Error al obtener los transportadores: ", error);
+      }
+    };
+
+    getConveyor();
+  }, [localIP]);
+
+  useEffect(() => {
     const getRawMaterial = async () => {
       try {
         const response = await axios.get(
@@ -96,70 +117,60 @@ function InventoryCreateRawMaterialRegister() {
   const validation = () => {
     const errors = {};
 
-    registros.forEach((registro, index) => {
-      if (!registro.proveedor) {
-        errors[`proveedor${index}`] = "El proveedor es obligatorio.";
-      }
-      if (!registro.mpRegistro) {
-        errors[`mpRegistro${index}`] = "La materia prima es obligatoria.";
-      }
-      if (!registro.valorMpRegistro) {
-        errors[`valorMpRegistro${index}`] =
-          "El valor de la materia prima es obligatorio.";
-      } else if (!/^[0-9]+$/.test(registro.valorMpRegistro)) {
-        errors[`valorMpRegistro${index}`] =
-          "El valor de la materia prima debe ser un número válido.";
-      }
-
-      if (!registro.pesoMpRegistro) {
-        errors[`pesoMpRegistro${index}`] =
-          "El peso de la materia prima es obligatorio.";
-      } else if (!/^[0-9.,]+$/.test(registro.pesoMpRegistro)) {
-        errors[`pesoMpRegistro${index}`] =
-          "El peso de la materia prima debe ser un número válido.";
-      }
-
-      if (
-        registro.valorTRegistro &&
-        !/^[0-9]+$/.test(registro.valorTRegistro)
-      ) {
-        errors[`valorTRegistro${index}`] =
-          "El valor del transporte debe ser un número válido.";
-      }
-      if (
-        registro.pesoNetoRegistro &&
-        !/^[0-9.,]+$/.test(registro.pesoNetoRegistro)
-      ) {
-        errors[`pesoNetoRegistro${index}`] =
-          "El peso neto debe ser un número válido.";
-      }
-    });
+    if (!remisionRegistro) {
+      errors.remisionRegistro = "La remisión del registro es obligatoria.";
+    } else if (!/^[0-9]+$/.test(remisionRegistro)) {
+      errors.remisionRegistro =
+        "La remisión del registro debe ser un número válido.";
+    }
+    if (!idTransportadorRegistro) {
+      errors.proveedorRegistro = "El proveedor es obligatorio.";
+    }
+    if (!idTransportadorRegistro) {
+      errors.transportadorRegistro = "El transportador es obligatorio.";
+    }
+    if (!mpRegistro) {
+      errors.mpRegistro = "La materia prima es obligatoria.";
+    }
+    if (!valorMpRegistro) {
+      errors.valorMpRegistro = "El valor de la materia prima es obligatorio.";
+    } else if (!/^[0-9]+$/.test(valorMpRegistro)) {
+      errors.valorMpRegistro =
+        "El valor de la materia prima debe ser un número válido.";
+    }
+    if (!pesoMpRegistro) {
+      errors.pesoMpRegistro = "El peso de la materia prima es obligatorio.";
+    } else if (!/^[0-9.,]+$/.test(pesoMpRegistro)) {
+      errors.pesoMpRegistro =
+        "El peso de la materia prima debe ser un número válido.";
+    }
+    if (!conceptoRegistro) {
+      errors.conceptoRegistro = "El valor del concepto es obligatorio.";
+    } else if (!/^[0-9]+$/.test(conceptoRegistro)) {
+      errors.conceptoRegistro =
+        "El valor del concepto debe ser un número válido.";
+    }
+    if (!zonaRegistro) {
+      errors.zonaRegistro = "El valor de la zona prima es obligatorio.";
+    }
+    if (!bonificacionRegistro) {
+      errors.bonificacionRegistro =
+        "El valor de la bonificacion por tonelada es obligatorio.";
+    } else if (!/^[0-9.,]+$/.test(bonificacionRegistro)) {
+      errors.bonificacionRegistro =
+        "El valor de la bonificacion por tonelada debe ser un número válido.";
+    }
+    if (!valorTRegistro) {
+      errors.valorTRegistro = "El valor del transporte es obligatorio.";
+    } else if (!/^[0-9]+$/.test(valorTRegistro)) {
+      errors.valorTRegistro =
+        "El valor del transporte debe ser un número válido.";
+    }
 
     setValidationError(errors);
     setLoading(false);
 
     return Object.keys(errors).length === 0;
-  };
-
-  const addRegister = () => {
-    setRegistros([
-      ...registros,
-      {
-        proveedor: "",
-        mpRegistro: "",
-        valorMpRegistro: "",
-        pesoMpRegistro: "",
-        valorTRegistro: "",
-        pesoNetoRegistro: "",
-      },
-    ]);
-  };
-
-  const handleRegistroChange = (index, field, value) => {
-    const newRegistros = [...registros];
-
-    newRegistros[index][field] = value;
-    setRegistros(newRegistros);
   };
 
   const sendCreateRegister = async (e) => {
@@ -170,31 +181,39 @@ function InventoryCreateRawMaterialRegister() {
     }
 
     setServerError(null);
-    setLoading(true);
+    // setLoading(true);
 
     const fechaRegistro = new Date().toISOString().split("T")[0];
     const horaRegistro = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
-    const fullRecord = registros.map((registro) => ({
+    const monthRegistro = new Date().getMonth() + 1;
+    const fullRecord = {
       fecha_registro: fechaRegistro,
       hora_registro: horaRegistro,
+      mes_registro: monthRegistro,
       titular_registro: titularRegistro,
+      remision_registro: remisionRegistro,
+      id_proveedor_registro: idProveedorRegistro,
+      documento_proveedor_registro: documentoProveedorRegistro,
+      id_transportador_registro: idTransportadorRegistro,
+      documento_transportador_registro: documentoTransportadorRegistro,
       tipo_registro: tipoRegistro,
+      mp_registro: mpRegistro,
+      valor_mp_registro: valorMpRegistro,
+      concepto_registro: conceptoRegistro,
+      zona_registro: zonaRegistro,
+      bonificacion_registro: bonificacionRegistro,
+      valor_t_registro: valorTRegistro,
+      peso_mp_registro: pesoMpRegistro,
       observacion_registro: observacionRegistro,
-      proveedor_registro: registro.proveedor,
-      mp_registro: registro.mpRegistro,
-      valor_mp_registro: registro.valorMpRegistro,
-      valor_t_registro: registro.valorTRegistro,
-      peso_mp_registro: registro.pesoMpRegistro,
-      peso_neto_registro: registro.pesoNetoRegistro,
-    }));
+    };
 
     try {
       await axios.post(`http://${localIP}:3000/registros`, {
         fullRecord: fullRecord,
       });
-
+      
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
@@ -235,248 +254,358 @@ function InventoryCreateRawMaterialRegister() {
             </h1>
           </header>
           <main className={Style.inventoryCreateRawMaterialRegisterMain}>
-            {registros.map((registro, index) => (
-              <div key={index}>
-                <fieldset
-                  className={
-                    Style.inventoryCreateRawMaterialRegisterMainEspecial
-                  }
-                >
-                  <label htmlFor={`proveedor${index}`}>Proveedor</label>
-                  <select
-                    id={`proveedor${index}`}
-                    name={`proveedor${index}`}
-                    onChange={(e) =>
-                      handleRegistroChange(index, "proveedor", e.target.value)
-                    }
-                    value={registro.proveedor}
-                  >
-                    <option value="">Selecciona un proveedor</option>
-                    {proveedor.map((prov) => (
-                      <option key={prov.id_usuario} value={prov.id_usuario}>
-                        {prov.nombre_usuario}
-                      </option>
-                    ))}
-                  </select>
-                  {!validationError[`proveedor${index}`] ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={
-                        Style.inventoryCreateRawMaterialRegisterValidation
-                      }
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError[`proveedor${index}`]}
-                    </motion.span>
-                  )}
-                </fieldset>
-                <fieldset
-                  className={
-                    Style.inventoryCreateRawMaterialRegisterMainEspecial
-                  }
-                >
-                  <label htmlFor={`mpRegistro${index}`}>Materia Prima</label>
-                  <select
-                    id={`mpRegistro${index}`}
-                    name={`mpRegistro${index}`}
-                    onChange={(e) =>
-                      handleRegistroChange(index, "mpRegistro", e.target.value)
-                    }
-                    value={registro.mpRegistro}
-                  >
-                    <option value="">Selecciona una materia prima</option>
-                    {materiaPrima.map((mp) => (
-                      <option
-                        key={mp.nombre_materia_prima}
-                        value={mp.nombre_materia_prima}
-                      >
-                        {mp.nombre_materia_prima}
-                      </option>
-                    ))}
-                  </select>
-                  {!validationError[`mpRegistro${index}`] ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={
-                        Style.inventoryCreateRawMaterialRegisterValidation
-                      }
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError[`mpRegistro${index}`]}
-                    </motion.span>
-                  )}
-                </fieldset>
-                <fieldset>
-                  <label htmlFor={`valorMpRegistro${index}`}>
-                    Valor Materia Prima
-                  </label>
-                  <input
-                    id={`valorMpRegistro${index}`}
-                    name={`valorMpRegistro${index}`}
-                    onChange={(e) =>
-                      handleRegistroChange(
-                        index,
-                        "valorMpRegistro",
-                        e.target.value
-                      )
-                    }
-                    placeholder="Ingresa el valor de la materia prima"
-                    type="text"
-                    value={registro.valorMpRegistro}
-                  />
-                  {!validationError[`valorMpRegistro${index}`] ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={
-                        Style.inventoryCreateRawMaterialRegisterValidation
-                      }
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError[`valorMpRegistro${index}`]}
-                    </motion.span>
-                  )}
-                </fieldset>
-                <fieldset>
-                  <label htmlFor={`pesoMpRegistro${index}`}>
-                    Peso Materia Prima
-                  </label>
-                  <input
-                    id={`pesoMpRegistro${index}`}
-                    name={`pesoMpRegistro${index}`}
-                    onChange={(e) =>
-                      handleRegistroChange(
-                        index,
-                        "pesoMpRegistro",
-                        e.target.value
-                      )
-                    }
-                    placeholder="Ingresa el peso de la materia prima"
-                    type="text"
-                    value={registro.pesoMpRegistro}
-                  />
-                  {!validationError[`pesoMpRegistro${index}`] ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={
-                        Style.inventoryCreateRawMaterialRegisterValidation
-                      }
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError[`pesoMpRegistro${index}`]}
-                    </motion.span>
-                  )}
-                </fieldset>
-                <fieldset>
-                  <label htmlFor={`valorTRegistro${index}`}>
-                    Valor Transporte
-                  </label>
-                  <input
-                    id={`valorTRegistro${index}`}
-                    name={`valorTRegistro${index}`}
-                    onChange={(e) =>
-                      handleRegistroChange(
-                        index,
-                        "valorTRegistro",
-                        e.target.value
-                      )
-                    }
-                    placeholder="Ingresa el valor del transporte"
-                    type="text"
-                    value={registro.valorTRegistro}
-                  />
-                  {!validationError[`valorTRegistro${index}`] ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={
-                        Style.inventoryCreateRawMaterialRegisterValidation
-                      }
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError[`valorTRegistro${index}`]}
-                    </motion.span>
-                  )}
-                </fieldset>
-                <fieldset>
-                  <label htmlFor={`pesoNetoRegistro${index}`}>Peso Neto</label>
-                  <input
-                    id={`pesoNetoRegistro${index}`}
-                    name={`pesoNetoRegistro${index}`}
-                    onChange={(e) =>
-                      handleRegistroChange(
-                        index,
-                        "pesoNetoRegistro",
-                        e.target.value
-                      )
-                    }
-                    placeholder="Ingresa el peso neto"
-                    type="text"
-                    value={registro.pesoNetoRegistro}
-                  />
-                  {!validationError[`pesoNetoRegistro${index}`] ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={
-                        Style.inventoryCreateRawMaterialRegisterValidation
-                      }
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError[`pesoNetoRegistro${index}`]}
-                    </motion.span>
-                  )}
-                </fieldset>
-                <hr
-                  className={
-                    Style.inventoryCreateRawMaterialRegisterMainEspecial
-                  }
+            <div>
+              <fieldset
+                className={Style.inventoryCreateRawMaterialRegisterMainEspecial}
+              >
+                <label htmlFor="remisionRegistro">Remisión</label>
+                <input
+                  id="remisionRegistro"
+                  name="remisionRegistro"
+                  onChange={(e) => setRemisionRegistro(e.target.value)}
+                  placeholder="Ingresa la remisión del registro"
+                  type="text"
+                  value={remisionRegistro}
                 />
-              </div>
-            ))}
-            <fieldset>
-              <label htmlFor="observacionRegistro">Observación</label>
-              <input
-                id="observacionRegistro"
-                name="observacionRegistro"
-                onChange={(e) => setObservacionRegistro(e.target.value)}
-                placeholder="Ingresa una observación"
-                type="text"
-                value={observacionRegistro}
-              />
-              {!validationError.observacionRegistro ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.inventoryCreateRawMaterialRegisterValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
+                {!validationError.remisionRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.remisionRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset>
+                <label htmlFor="proveedorRegistro">Proveedor</label>
+                <select
+                  id="proveedorRegistro"
+                  name="proveedorRegistro"
+                  onChange={(e) => {
+                    const selected = JSON.parse(e.target.value);
+
+                    setIdProveedorRegistro(selected.id_usuario);
+                    setDocumentoProveedorRegistro(selected.documento_usuario);
+                  }}
+                  value={
+                    idProveedorRegistro
+                      ? JSON.stringify(
+                          proveedor.find(
+                            (proveedor) =>
+                              proveedor.id_usuario === idProveedorRegistro
+                          )
+                        )
+                      : ""
+                  }
                 >
-                  {validationError.observacionRegistro}
-                </motion.span>
-              )}
-            </fieldset>
+                  <option value="" disabled>
+                    Selecciona un proveedor
+                  </option>
+                  {proveedor.map((proveedor) => (
+                    <option
+                      key={proveedor.id_usuario}
+                      value={JSON.stringify(proveedor)}
+                    >
+                      {proveedor.nombre_usuario}
+                    </option>
+                  ))}
+                </select>
+                {!validationError.proveedorRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.proveedorRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset>
+                <label htmlFor="transportadorRegistro">Transportador</label>
+                <select
+                  id="transportadorRegistro"
+                  name="transportadorRegistro"
+                  onChange={(e) => {
+                    const selected = JSON.parse(e.target.value);
+
+                    setIdTransportadorRegistro(selected.id_usuario);
+                    setDocumentoTransportadorRegistro(
+                      selected.documento_usuario
+                    );
+                  }}
+                  value={
+                    idTransportadorRegistro
+                      ? JSON.stringify(
+                          transportador.find(
+                            (transportador) =>
+                              transportador.id_usuario ===
+                              idTransportadorRegistro
+                          )
+                        )
+                      : ""
+                  }
+                >
+                  <option value="" disabled>
+                    Selecciona un transportador
+                  </option>
+                  {transportador.map((transportador) => (
+                    <option
+                      key={transportador.id_usuario}
+                      value={JSON.stringify(transportador)}
+                    >
+                      {transportador.nombre_usuario}
+                    </option>
+                  ))}
+                </select>
+                {!validationError.transportadorRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.transportadorRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset
+                className={Style.inventoryCreateRawMaterialRegisterMainEspecial}
+              >
+                <label htmlFor="mpRegistro">Materia Prima</label>
+                <select
+                  id="mpRegistro"
+                  name="mpRegistro"
+                  onChange={(e) => setMpRegistro(e.target.value)}
+                  value={mpRegistro}
+                >
+                  <option value="" disabled>
+                    Selecciona una materia prima
+                  </option>
+                  {materiaPrima.map((mp) => (
+                    <option
+                      key={mp.nombre_materia_prima}
+                      value={mp.nombre_materia_prima}
+                    >
+                      {mp.nombre_materia_prima}
+                    </option>
+                  ))}
+                </select>
+                {!validationError.mpRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.mpRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset>
+                <label htmlFor="valorMpRegistro">Valor Materia Prima</label>
+                <input
+                  id="valorMpRegistro"
+                  name="valorMpRegistro"
+                  onChange={(e) => setValorMpRegistro(e.target.value)}
+                  placeholder="Ingresa el valor de la materia prima"
+                  type="text"
+                  value={valorMpRegistro}
+                />
+                {!validationError.valorMpRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.valorMpRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset>
+                <label htmlFor="pesoMpRegistro">Peso Materia Prima</label>
+                <input
+                  id="pesoMpRegistro"
+                  name="pesoMpRegistro"
+                  onChange={(e) => setPesoMpRegistro(e.target.value)}
+                  placeholder="Ingresa el peso de la materia prima"
+                  type="text"
+                  value={pesoMpRegistro}
+                />
+                {!validationError.pesoMpRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.pesoMpRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset>
+                <label htmlFor="conceptoRegistro">Concepto</label>
+                <input
+                  id="conceptoRegistro"
+                  name="conceptoRegistro"
+                  onChange={(e) => setConceptoRegistro(e.target.value)}
+                  placeholder="Ingresa el concepto del registro"
+                  type="text"
+                  value={conceptoRegistro}
+                />
+                {!validationError.conceptoRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.conceptoRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset>
+                <label htmlFor="zonaRegistro">Zona</label>
+                <input
+                  id="zonaRegistro"
+                  name="zonaRegistro"
+                  onChange={(e) => setZonaRegistro(e.target.value)}
+                  placeholder="Ingresa la zona del registro"
+                  type="text"
+                  value={zonaRegistro}
+                />
+                {!validationError.zonaRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.zonaRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset
+                className={Style.inventoryCreateRawMaterialRegisterMainEspecial}
+              >
+                <label htmlFor="bonificacionRegistro">
+                  Bonificación por tonelada
+                </label>
+                <input
+                  id="bonificacionRegistro"
+                  name="bonificacionRegistro"
+                  onChange={(e) => setBonificacionRegistro(e.target.value)}
+                  placeholder="Ingresa la bonificación por tonelada del registro"
+                  type="text"
+                  value={bonificacionRegistro}
+                />
+                {!validationError.bonificacionRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.bonificacionRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset
+                className={Style.inventoryCreateRawMaterialRegisterMainEspecial}
+              >
+                <label htmlFor="valorTRegistro">Valor Transporte</label>
+                <input
+                  id="valorTRegistro"
+                  name="valorTRegistro"
+                  onChange={(e) => setValorTRegistro(e.target.value)}
+                  placeholder="Ingresa el valor del transporte"
+                  type="text"
+                  value={valorTRegistro}
+                />
+                {!validationError.valorTRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.valorTRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset
+                className={Style.inventoryCreateRawMaterialRegisterMainEspecial}
+              >
+                <label htmlFor="observacionRegistro">Observación</label>
+                <input
+                  id="observacionRegistro"
+                  name="observacionRegistro"
+                  onChange={(e) => setObservacionRegistro(e.target.value)}
+                  placeholder="Ingresa una observación"
+                  type="text"
+                  value={observacionRegistro}
+                />
+                {!validationError.observacionRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.observacionRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+            </div>
           </main>
           <footer className={Style.inventoryCreateRawMaterialRegisterFooter}>
-            <button onClick={addRegister} type="button">
-              Agregar Materia Prima
-            </button>
             <button
               onClick={() => navigate("/inventory/registerrawmaterial")}
               type="button"

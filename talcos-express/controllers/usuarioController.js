@@ -96,6 +96,29 @@ exports.registroUsuario = async (req, res) => {
   }
 };
 
+exports.registroTransportador = async (req, res) => {
+  try {
+    const usuarios = await Usuarios.findAll({
+      include: [
+        {
+          model: Perfiles,
+          attributes: ["nombre_perfil"],
+          as: "perfil",
+          foreignKey: "perfil_usuario",
+        },
+      ],
+      where: {
+        perfil_usuario: 10,
+        actividad_usuario: true,
+      },
+    });
+
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).send("Error del servidor: " + error);
+  }
+};
+
 exports.crearUsuario = async (req, res) => {
   const {
     nombre_usuario,
