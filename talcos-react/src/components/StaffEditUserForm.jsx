@@ -133,10 +133,7 @@ function StaffEditUserForm() {
         contrato_usuario:
           contratoUsuario === "" ? user.contrato_usuario : contratoUsuario,
         perfil_usuario: perfilUsuario,
-        contrasena_usuario:
-          contrasenaUsuario === ""
-            ? user.contrasena_usuario
-            : contrasenaUsuario,
+        contrasena_usuario: contrasenaUsuario === "" ? null : contrasenaUsuario,
       });
 
       setSendStatus(true);

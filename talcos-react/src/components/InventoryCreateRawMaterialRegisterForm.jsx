@@ -10,10 +10,11 @@ function InventoryCreateRawMaterialRegister() {
   const [transportador, setTransportador] = useState([]);
   const [titularRegistro, setTitularRegistro] = useState("");
   const [remisionRegistro, setRemisionRegistro] = useState("");
-  const [idProveedorRegistro, setIdProveedorRegistro] = useState("");
+  const [nombreProveedorRegistro, setNombreProveedorRegistro] = useState("");
   const [documentoProveedorRegistro, setDocumentoProveedorRegistro] =
     useState("");
-  const [idTransportadorRegistro, setIdTransportadorRegistro] = useState("");
+  const [nombreTransportadorRegistro, setNombreTransportadorRegistro] =
+    useState("");
   const [documentoTransportadorRegistro, setDocumentoTransportadorRegistro] =
     useState("");
   const [tipoRegistro, setTipoRegistro] = useState("");
@@ -123,10 +124,10 @@ function InventoryCreateRawMaterialRegister() {
       errors.remisionRegistro =
         "La remisión del registro debe ser un número válido.";
     }
-    if (!idTransportadorRegistro) {
+    if (!nombreTransportadorRegistro) {
       errors.proveedorRegistro = "El proveedor es obligatorio.";
     }
-    if (!idTransportadorRegistro) {
+    if (!nombreTransportadorRegistro) {
       errors.transportadorRegistro = "El transportador es obligatorio.";
     }
     if (!mpRegistro) {
@@ -181,7 +182,7 @@ function InventoryCreateRawMaterialRegister() {
     }
 
     setServerError(null);
-    // setLoading(true);
+    setLoading(true);
 
     const fechaRegistro = new Date().toISOString().split("T")[0];
     const horaRegistro = new Date().toLocaleTimeString("en-GB", {
@@ -194,18 +195,18 @@ function InventoryCreateRawMaterialRegister() {
       mes_registro: monthRegistro,
       titular_registro: titularRegistro,
       remision_registro: remisionRegistro,
-      id_proveedor_registro: idProveedorRegistro,
+      nombre_proveedor_registro: nombreProveedorRegistro,
       documento_proveedor_registro: documentoProveedorRegistro,
-      id_transportador_registro: idTransportadorRegistro,
+      nombre_transportador_registro: nombreTransportadorRegistro,
       documento_transportador_registro: documentoTransportadorRegistro,
       tipo_registro: tipoRegistro,
       mp_registro: mpRegistro,
       valor_mp_registro: valorMpRegistro,
+      peso_mp_registro: pesoMpRegistro,
       concepto_registro: conceptoRegistro,
       zona_registro: zonaRegistro,
       bonificacion_registro: bonificacionRegistro,
       valor_t_registro: valorTRegistro,
-      peso_mp_registro: pesoMpRegistro,
       observacion_registro: observacionRegistro,
     };
 
@@ -213,7 +214,7 @@ function InventoryCreateRawMaterialRegister() {
       await axios.post(`http://${localIP}:3000/registros`, {
         fullRecord: fullRecord,
       });
-      
+
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
@@ -239,7 +240,7 @@ function InventoryCreateRawMaterialRegister() {
         >
           <h1>Registro creado con éxito</h1>
         </motion.div>
-      ) : (
+      ) : data === "Registro manual" ? (
         <motion.form
           className={Style.inventoryCreateRawMaterialRegister}
           onSubmit={sendCreateRegister}
@@ -248,10 +249,7 @@ function InventoryCreateRawMaterialRegister() {
           transition={{ duration: 0.5 }}
         >
           <header className={Style.inventoryCreateRawMaterialRegisterHeader}>
-            <h1>
-              Complete los datos para crear un nuevo registro de{" "}
-              {tipoRegistro === "Entrada" ? "entrada" : "salida"}
-            </h1>
+            <h1>Complete los datos para crear un nuevo registro de entrada</h1>
           </header>
           <main className={Style.inventoryCreateRawMaterialRegisterMain}>
             <div>
@@ -290,15 +288,16 @@ function InventoryCreateRawMaterialRegister() {
                   onChange={(e) => {
                     const selected = JSON.parse(e.target.value);
 
-                    setIdProveedorRegistro(selected.id_usuario);
+                    setNombreProveedorRegistro(selected.nombre_usuario);
                     setDocumentoProveedorRegistro(selected.documento_usuario);
                   }}
                   value={
-                    idProveedorRegistro
+                    nombreProveedorRegistro
                       ? JSON.stringify(
                           proveedor.find(
                             (proveedor) =>
-                              proveedor.id_usuario === idProveedorRegistro
+                              proveedor.nombre_usuario ===
+                              nombreProveedorRegistro
                           )
                         )
                       : ""
@@ -339,18 +338,18 @@ function InventoryCreateRawMaterialRegister() {
                   onChange={(e) => {
                     const selected = JSON.parse(e.target.value);
 
-                    setIdTransportadorRegistro(selected.id_usuario);
+                    setNombreTransportadorRegistro(selected.nombre_usuario);
                     setDocumentoTransportadorRegistro(
                       selected.documento_usuario
                     );
                   }}
                   value={
-                    idTransportadorRegistro
+                    nombreTransportadorRegistro
                       ? JSON.stringify(
                           transportador.find(
                             (transportador) =>
-                              transportador.id_usuario ===
-                              idTransportadorRegistro
+                              transportador.nombre_usuario ===
+                              nombreTransportadorRegistro
                           )
                         )
                       : ""
@@ -635,6 +634,8 @@ function InventoryCreateRawMaterialRegister() {
             )}
           </footer>
         </motion.form>
+      ) : (
+        <> </>
       )}
     </>
   );

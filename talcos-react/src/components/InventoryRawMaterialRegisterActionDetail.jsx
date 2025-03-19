@@ -1,5 +1,5 @@
 ﻿import { es } from "date-fns/locale";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -11,65 +11,29 @@ function InventoryRawMaterialRegisterActionDetail({ item }) {
   const navigate = useNavigate();
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
-  const sumValues = (records, key) => {
-    return records.reduce((total, record) => {
-      const keys = key.split(".");
-      let value = record;
-      keys.forEach((k) => {
-        value = value[k];
-      });
-      return total + parseFloat(value || 0);
-    }, 0);
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const formattedDate = format(date, "EEEE d 'de' MMMM 'del' yyyy", {
-      locale: es,
-    });
+  const formatDate = (date) => {
+    const formattedDate = format(
+      parseISO(date),
+      "EEEE dd 'de' MMMM 'del' yyyy",
+      {
+        locale: es,
+      }
+    );
     return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
   };
 
   const printItem = async (e) => {
     e.preventDefault();
 
-    const renderRows = (records) => {
-      const renderedProviders = new Set();
-      return records.map((record, index) => {
-        const showProvider = !renderedProviders.has(
-          record.proveedor.nombre_usuario
-        );
-        if (showProvider) {
-          renderedProviders.add(record.proveedor.nombre_usuario);
+    const formatDate = (date) => {
+      const formattedDate = format(
+        parseISO(date),
+        "EEEE dd 'de' MMMM 'del' yyyy",
+        {
+          locale: es,
         }
-        return `
-          <tr key=${index}>
-            <td>${showProvider ? record.proveedor.nombre_usuario : ""}</td>
-            <td>${record.mp_registro}</td>
-            <td>$ ${record.valor_mp_registro}</td>
-            <td>${record.peso_mp_registro} Tons</td>
-            <td>$ ${record.valor_t_registro}</td>
-            <td>${record.peso_neto_registro} Tons</td>
-          </tr>
-          `;
-      });
-    };
-    const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      const formattedDate = format(date, "EEEE d 'de' MMMM 'del' yyyy", {
-        locale: es,
-      });
+      );
       return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-    };
-    const sumValues = (records, key) => {
-      return records.reduce((total, record) => {
-        const keys = key.split(".");
-        let value = record;
-        keys.forEach((k) => {
-          value = value[k];
-        });
-        return total + parseFloat(value || 0);
-      }, 0);
     };
     const formatTime = (time) => {
       return time.slice(0, 5);
@@ -142,7 +106,7 @@ function InventoryRawMaterialRegisterActionDetail({ item }) {
         font-size: 1rem;
         text-align: center;
         vertical-align: baseline;
-        width: 16.66%;
+        width: 14.28%;
       }
 
       .tableBody tr:nth-child(odd) {
@@ -159,7 +123,7 @@ function InventoryRawMaterialRegisterActionDetail({ item }) {
         font-size: 1rem;
         text-align: center;
         vertical-align: baseline;
-        width: 16.66%;
+        width: 14.28%;
       }
 
       .tableFooter tr th {
@@ -178,56 +142,73 @@ function InventoryRawMaterialRegisterActionDetail({ item }) {
     <aside class="aside">
       <div>
         <h2>Fecha de registro</h2>
-        <p>${formatDate(item[0].fecha_registro)}</p>
+        <p>${formatDate(item.fecha_registro)}</p>
       </div>
       <div>
         <h2>Hora de registro</h2>
-        <p>${formatTime(item[0].hora_registro)}</p>
+        <p>${formatTime(item.hora_registro)}</p>
       </div>
       <div>
         <h2>Tipo de registro</h2>
-        <p>${item[0].tipo_registro}</p>
+        <p>${item.tipo_registro}</p>
       </div>
       <div>
-        <h2>Registro de materia prima</h2>
-        <p>N° ${item[0].id_registro}</p>
+        <h2>Remision</h2>
+        <p>${item.remision_registro}</p>
       </div>
       <div>
-        <h2>Valor de la materia prima</h2>
-        <p>${sumValues(item, "valor_mp_registro").toFixed(0)}</p>
+        <h2>Concepto</h2>
+        <p>${item.concepto_registro}</p>
+      </div>
+      <div>
+        <h2>Zona</h2>
+        <p>${item.zona_registro}</p>
+      </div>
+      <div>
+        <h2>Bonificación por tonelada</h2>
+        <p>${item.bonificacion_registro}</p>
       </div>
       <div>
         <h2>Valor de transporte</h2>
-        <p>${sumValues(item, "valor_t_registro").toFixed(0)}</p>
+        <p>${item.valor_t_registro}</p>
       </div>
       <div class="asideSpecial">
         <h2>Realizado por</h2>
-        <p>${item[0].titular.nombre_usuario}</p>
+        <p>${item.titular.nombre_usuario}</p>
       </div>
     </aside>
     <table class="table">
       <thead class="tableHead">
         <tr>
           <th>Proveedor</th>
+          <th>Documento proveedor</th>
+          <th>Transportador</th>
+          <th>Documento transportador</th>
           <th>Materia prima</th>
           <th>Valor materia prima</th>
           <th>Peso materia prima</th>
-          <th>Valor transporte</th>
-          <th>Peso neto</th>
         </tr>
       </thead>
       <tbody class="tableBody">
-        ${renderRows(item).join("")}
+        <tr>
+          <td>${item.nombre_proveedor_registro}</td>
+          <td>${item.documento_proveedor_registro}</td>
+          <td>${item.nombre_transportador_registro}</td>
+          <td>${item.documento_transportador_registro}</td>
+          <td>${item.mp_registro}</td>
+          <td>$ ${item.valor_mp_registro}</td>
+          <td>${item.peso_mp_registro} Tons</td>
+        </tr>
       </tbody>
       <tfoot class="tableFooter">
         <tr>
-          <th colSpan="6">Observaciones</th>
+          <th colSpan="7">Observaciones</th>
         </tr>
         <tr>
-          <td colSpan="6">
+          <td colSpan="7">
             ${
-              item[0].observacion_registro !== ""
-                ? item[0].observacion_registro
+              item.observacion_registro !== ""
+                ? item.observacion_registro
                 : "No se registró"
             }
           </td>
@@ -240,8 +221,9 @@ function InventoryRawMaterialRegisterActionDetail({ item }) {
       const response = await axios.post(
         `http://${localIP}:3000/pdf`,
         {
-          titulo: `${item[0].tipo_registro} de materia prima`,
+          titulo: `${item.tipo_registro} de materia prima`,
           contenido: contenido,
+          nombre: "Registro de materia prima",
         },
         {
           responseType: "blob",
@@ -252,7 +234,7 @@ function InventoryRawMaterialRegisterActionDetail({ item }) {
       );
       const a = document.createElement("a");
       a.href = url;
-      a.download = "reporte.pdf";
+      a.download = "registro_de_materia_prima.pdf";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -262,7 +244,6 @@ function InventoryRawMaterialRegisterActionDetail({ item }) {
       console.log("Error al imprimir: ", error);
     }
   };
-
   const redirectRegister = () => {
     navigate("/inventory/registerrawmaterial");
   };
@@ -276,23 +257,31 @@ function InventoryRawMaterialRegisterActionDetail({ item }) {
         transition={{ duration: 0.5 }}
       >
         <div>
-          <h2>{item.length > 0 && formatDate(item[0].fecha_registro)}</h2>
-        </div>
-        <div>
-          <h2>Registro de materia prima</h2>
-          <p>N° {item.length > 0 && `${item[0].id_registro}`}</p>
+          <h2>{formatDate(item.fecha_registro)}</h2>
         </div>
         <div>
           <h2>Realizado por</h2>
-          <p>{item.length > 0 && `${item[0].titular.nombre_usuario}`}</p>
+          <p>{item.titular.nombre_usuario}</p>
         </div>
         <div>
-          <h2>Valor de la materia prima</h2>
-          <p>{sumValues(item, "valor_mp_registro").toFixed(0)}</p>
+          <h2>Remision</h2>
+          <p>{item.remision_registro}</p>
         </div>
         <div>
-          <h2>Valor de transporte</h2>
-          <p>{sumValues(item, "valor_t_registro").toFixed(0)}</p>
+          <h2>Concepto</h2>
+          <p>{item.concepto_registro}</p>
+        </div>
+        <div>
+          <h2>Zona</h2>
+          <p>{item.zona_registro}</p>
+        </div>
+        <div>
+          <h2>Bonificación por tonelada</h2>
+          <p>{item.bonificacion_registro}</p>
+        </div>
+        <div>
+          <h2>Valor transporte</h2>
+          <p>$ {item.valor_t_registro}</p>
         </div>
       </motion.main>
       <motion.footer

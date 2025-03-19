@@ -12,12 +12,6 @@ exports.leerRegistro = async (req, res) => {
           as: "titular",
           foreignKey: "titular_registro",
         },
-        {
-          model: Usuarios,
-          attributes: ["nombre_usuario"],
-          as: "proveedor",
-          foreignKey: "proveedor_registro",
-        },
       ],
       where: { actividad_registro: true },
     });
@@ -32,28 +26,7 @@ exports.crearRegistro = async (req, res) => {
   const { fullRecord } = req.body;
 
   try {
-    const nuevoRegistro = await Registros.bulkCreate(fullRecord);
-
-    for (const record of fullRecord) {
-      const materiaPrima = await MateriasPrimas.findOne({
-        where: { nombre_materia_prima: record.mp_registro },
-      });
-
-      if (materiaPrima) {
-        let nuevaCantidad;
-        if (record.tipo_registro === "Entrada") {
-          nuevaCantidad =
-            parseFloat(materiaPrima.cantidad_materia_prima) +
-            parseFloat(record.peso_mp_registro);
-        } else if (record.tipo_registro === "Salida") {
-          nuevaCantidad =
-            parseFloat(materiaPrima.cantidad_materia_prima) -
-            parseFloat(record.peso_mp_registro);
-        }
-
-        await materiaPrima.update({ cantidad_materia_prima: nuevaCantidad });
-      }
-    }
+    const nuevoRegistro = await Registros.create(fullRecord);
 
     res.status(201).json(nuevoRegistro);
   } catch (error) {
@@ -65,13 +38,22 @@ exports.actualizarRegistro = async (req, res) => {
   const {
     id_registro,
     fecha_registro,
+    hora_registro,
+    mes_registro,
     titular_registro,
-    proveedor_registro,
+    remision_registro,
+    nombre_proveedor_registro,
+    documento_proveedor_registro,
+    nombre_transportador_registro,
+    documento_transportador_registro,
+    tipo_registro,
     mp_registro,
     valor_mp_registro,
-    valor_t_registro,
     peso_mp_registro,
-    peso_neto_registro,
+    concepto_registro,
+    zona_registro,
+    bonificacion_registro,
+    valor_t_registro,
     observacion_registro,
     actividad_registro,
   } = req.body;
@@ -82,13 +64,22 @@ exports.actualizarRegistro = async (req, res) => {
     if (registro) {
       await registro.update({
         fecha_registro,
+        hora_registro,
+        mes_registro,
         titular_registro,
-        proveedor_registro,
+        remision_registro,
+        nombre_proveedor_registro,
+        documento_proveedor_registro,
+        nombre_transportador_registro,
+        documento_transportador_registro,
+        tipo_registro,
         mp_registro,
         valor_mp_registro,
-        valor_t_registro,
         peso_mp_registro,
-        peso_neto_registro,
+        concepto_registro,
+        zona_registro,
+        bonificacion_registro,
+        valor_t_registro,
         observacion_registro,
         actividad_registro,
       });

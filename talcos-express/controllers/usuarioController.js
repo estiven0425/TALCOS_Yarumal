@@ -167,11 +167,7 @@ exports.actualizarUsuario = async (req, res) => {
     if (usuario) {
       let contrasenaEncriptada = usuario.contrasena_usuario;
 
-      const compare = await bcrypt.compare(
-        contrasena_usuario,
-        usuario.contrasena_usuario
-      );
-      if (!compare) {
+      if (contrasena_usuario && contrasena_usuario.trim() !== "") {
         contrasenaEncriptada = await bcrypt.hash(contrasena_usuario, 10);
       }
 
@@ -191,6 +187,7 @@ exports.actualizarUsuario = async (req, res) => {
       res.status(404).json({ error: "Usuario no encontrado" });
     }
   } catch (error) {
+    console.error("Error al actualizar el usuario:", error);
     res.status(500).json({ error: "Error al actualizar el usuario" });
   }
 };

@@ -6,7 +6,7 @@ const { es } = require("date-fns/locale");
 
 const generarPDF = async (req, res) => {
   try {
-    const { titulo, contenido } = req.body;
+    const { titulo, contenido, nombre } = req.body;
     const logoPath = path.join(__dirname, "../uploads/logo.png");
 
     let logoBase64 = "";
@@ -210,17 +210,11 @@ const generarPDF = async (req, res) => {
 
     await browser.close();
 
-    fs.writeFileSync("debug.pdf", pdfBuffer);
-
-    if (res.headersSent) {
-      console.error(
-        "Los encabezados ya fueron enviados antes de res.end(pdfBuffer)"
-      );
-      return;
-    }
-
+    const sanitizedTitle = nombre.replace(/[^a-zA-Z0-9-_]/g, "_");
+    const fileName = `${sanitizedTitle}.pdf`;
+    
     res.setHeader("Content-Length", pdfBuffer.length);
-    res.setHeader("Content-Disposition", "attachment; filename=reporte.pdf");
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
     res.setHeader("Content-Type", "application/pdf");
 
     res.end(pdfBuffer);

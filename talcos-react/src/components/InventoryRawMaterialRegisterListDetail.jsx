@@ -5,37 +5,15 @@ import InventoryRawMaterialRegisterActionDetail from "./InventoryRawMaterialRegi
 import Style from "./styles/inventory-raw-material-register-list-detail.module.css";
 
 function InventoryRawMaterialRegisterListDetail() {
-  const [item, setItem] = useState([]);
+  const [item, setItem] = useState(null);
   const location = useLocation();
-  const data = location.state || [];
+  const data = location.state || null;
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (data) {
       setItem(data);
     }
   }, [data]);
-
-  const renderRows = (records) => {
-    const renderedProviders = new Set();
-    return records.map((record, index) => {
-      const showProvider = !renderedProviders.has(
-        record.proveedor.nombre_usuario
-      );
-      if (showProvider) {
-        renderedProviders.add(record.proveedor.nombre_usuario);
-      }
-      return (
-        <tr key={index}>
-          <td>{showProvider ? record.proveedor.nombre_usuario : ""}</td>
-          <td>{record.mp_registro}</td>
-          <td>${record.valor_mp_registro}</td>
-          <td>{record.peso_mp_registro} Tons</td>
-          <td>${record.valor_t_registro}</td>
-          <td>{record.peso_neto_registro} Tons</td>
-        </tr>
-      );
-    });
-  };
 
   const formatTime = (time) => {
     return time.slice(0, 5);
@@ -43,73 +21,95 @@ function InventoryRawMaterialRegisterListDetail() {
 
   return (
     <>
-      <motion.section
-        className={Style.inventoryRawMaterialRegisterListDetailPrimary}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <motion.table
-          className={Style.inventoryRawMaterialRegisterListDetailPrimaryTable}
+      {item ? (
+        <>
+          <motion.section
+            className={Style.inventoryRawMaterialRegisterListDetailPrimary}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <motion.table
+              className={
+                Style.inventoryRawMaterialRegisterListDetailPrimaryTable
+              }
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <caption>
+                <h2>{item.tipo_registro} </h2>
+                <span>Hora de registro: {formatTime(item.hora_registro)}</span>
+              </caption>
+              <thead
+                className={
+                  Style.inventoryRawMaterialRegisterListDetailPrimaryTableHead
+                }
+              >
+                <tr>
+                  <th>Proveedor</th>
+                  <th>Documento proveedor</th>
+                  <th>Transportador</th>
+                  <th>Documento transportador</th>
+                  <th>Materia prima</th>
+                  <th>Valor materia prima</th>
+                  <th>Peso materia prima</th>
+                </tr>
+              </thead>
+              <tbody
+                className={
+                  Style.inventoryRawMaterialRegisterListDetailPrimaryTableBody
+                }
+              >
+                <tr>
+                  <td>{item.nombre_proveedor_registro}</td>
+                  <td>{item.documento_proveedor_registro}</td>
+                  <td>{item.nombre_transportador_registro}</td>
+                  <td>{item.documento_transportador_registro}</td>
+                  <td>{item.mp_registro}</td>
+                  <td>$ {item.valor_mp_registro}</td>
+                  <td>{item.peso_mp_registro} Tons</td>
+                </tr>
+              </tbody>
+              <tfoot
+                className={
+                  Style.inventoryRawMaterialRegisterListDetailPrimaryTableFooter
+                }
+              >
+                <tr>
+                  <th colSpan="7">Observaciones</th>
+                </tr>
+                <tr>
+                  <td colSpan="7">
+                    {item.observacion_registro !== ""
+                      ? item.observacion_registro
+                      : "No se registró"}
+                  </td>
+                </tr>
+              </tfoot>
+            </motion.table>
+          </motion.section>
+          <motion.section
+            className={Style.inventoryRawMaterialRegisterListSecondary}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <InventoryRawMaterialRegisterActionDetail item={item} />
+          </motion.section>
+        </>
+      ) : (
+        <motion.section
+          className={
+            Style.inventoryRawMaterialRegisterListDetailPrimaryAlternative
+          }
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <caption>
-            <h2>{item.length > 0 && `${item[0].tipo_registro}`}</h2>
-            <span>
-              {" "}
-              Hora de registro:{" "}
-              {item.length > 0 && `${formatTime(item[0].hora_registro)}`}
-            </span>
-          </caption>
-          <thead
-            className={
-              Style.inventoryRawMaterialRegisterListDetailPrimaryTableHead
-            }
-          >
-            <tr>
-              <th>Proveedor</th>
-              <th>Materia prima</th>
-              <th>Valor materia prima</th>
-              <th>Peso materia prima</th>
-              <th>Valor transporte</th>
-              <th>Peso neto</th>
-            </tr>
-          </thead>
-          <tbody
-            className={
-              Style.inventoryRawMaterialRegisterListDetailPrimaryTableBody
-            }
-          >
-            {renderRows(item)}
-          </tbody>
-          <tfoot
-            className={
-              Style.inventoryRawMaterialRegisterListDetailPrimaryTableFooter
-            }
-          >
-            <tr>
-              <th colSpan="6">Observaciones</th>
-            </tr>
-            <tr>
-              <td colSpan="6">
-                {item.length > 0 && `${item[0].observacion_registro}` !== ""
-                  ? `${item[0].observacion_registro}`
-                  : "No se registró"}
-              </td>
-            </tr>
-          </tfoot>
-        </motion.table>
-      </motion.section>
-      <motion.section
-        className={Style.inventoryRawMaterialRegisterListSecondary}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <InventoryRawMaterialRegisterActionDetail item={item} />
-      </motion.section>
+          <div className={Style.loader}></div>
+        </motion.section>
+      )}
     </>
   );
 }

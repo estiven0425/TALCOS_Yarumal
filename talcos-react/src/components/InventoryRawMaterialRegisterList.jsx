@@ -7,61 +7,26 @@ import InventoryRawMaterialRegisterAction from "./InventoryRawMaterialRegisterAc
 import Style from "./styles/inventory-raw-material-register-List.module.css";
 
 function InventoryRawMaterialRegisterList() {
-  const [item, setItem] = useState([]);
+  const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
-    const getItem = async () => {
+    const getItems = async () => {
       try {
         const response = await axios.get(`http://${localIP}:3000/registros`);
-        setItem(response.data);
+        setItems(response.data);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       }
     };
 
-    getItem();
+    getItems();
   }, [localIP]);
 
-  const handleButtonClick = (records) => {
-    if (
-      selectedItem &&
-      selectedItem[0].id_registro === records[0].id_registro
-    ) {
-      setSelectedItem(null);
-    } else {
-      setSelectedItem(records);
-    }
+  const handleButtonClick = (record) => {
+    setSelectedItem(selectedItem === record ? null : record);
   };
-
-  const groupByDateTime = (items) => {
-    return items.reduce((groups, item) => {
-      const dateTime = `${item.fecha_registro} ${item.hora_registro}`;
-      const formattedDate = format(
-        parseISO(item.fecha_registro),
-        "yyyy-MM-dd",
-        {
-          locale: es,
-        }
-      );
-      if (!groups[formattedDate]) {
-        groups[formattedDate] = {};
-      }
-      if (!groups[formattedDate][dateTime]) {
-        groups[formattedDate][dateTime] = [];
-      }
-      groups[formattedDate][dateTime].push(item);
-      return groups;
-    }, {});
-  };
-
-  const sortedDates = (groupedItems) => {
-    return Object.entries(groupedItems).sort(
-      ([dateA], [dateB]) => new Date(dateB) - new Date(dateA)
-    );
-  };
-
   const formatDate = (date) => {
     const formattedDate = format(
       parseISO(date),
@@ -72,10 +37,21 @@ function InventoryRawMaterialRegisterList() {
     );
     return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
   };
+  const groupedItems = items.reduce((groups, item) => {
+    const date = item.fecha_registro;
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(item);
+    return groups;
+  }, {});
+  const sortedDates = Object.keys(groupedItems).sort((a, b) => {
+    return new Date(b) - new Date(a);
+  });
 
   return (
     <>
-      {item.length > 0 ? (
+      {sortedDates.length > 0 ? (
         <>
           <motion.section
             className={Style.inventoryRawMaterialRegisterListPrimary}
@@ -83,37 +59,31 @@ function InventoryRawMaterialRegisterList() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {sortedDates(groupByDateTime(item)).map(
-              ([date, dateTimeGroups]) => (
-                <article key={date}>
-                  <section
-                    className={
-                      Style.inventoryRawMaterialRegisterListPrimaryDate
-                    }
-                  >
-                    <h2>{formatDate(date)}</h2>
-                  </section>
-                  <section
-                    className={
-                      Style.inventoryRawMaterialRegisterListPrimaryobject
-                    }
-                  >
-                    {Object.entries(dateTimeGroups).map(
-                      ([dateTime, records]) => (
-                        <button
-                          key={dateTime}
-                          onClick={() => handleButtonClick(records)}
-                          type="button"
-                        >
-                          <h2>{dateTime.split(" ")[1].slice(0, 5)}</h2>
-                          <img alt="Icono" src="/doc.svg"></img>
-                        </button>
-                      )
-                    )}
-                  </section>
-                </article>
-              )
-            )}
+            {sortedDates.map((date) => (
+              <article key={date}>
+                <section
+                  className={Style.inventoryRawMaterialRegisterListPrimaryDate}
+                >
+                  <h2>{formatDate(date)}</h2>
+                </section>
+                <section
+                  className={
+                    Style.inventoryRawMaterialRegisterListPrimaryobject
+                  }
+                >
+                  {groupedItems[date].map((record) => (
+                    <button
+                      key={record.id_registro}
+                      onClick={() => handleButtonClick(record)}
+                      type="button"
+                    >
+                      <h2>{record.hora_registro.slice(0, 5)}</h2>
+                      <img alt="Icono" src="/doc.svg"></img>
+                    </button>
+                  ))}
+                </section>
+              </article>
+            ))}
           </motion.section>
           <motion.section
             className={Style.inventoryRawMaterialRegisterListSecondary}

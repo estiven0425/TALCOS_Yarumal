@@ -17,6 +17,10 @@ const Registros = sequelize.define(
     },
     hora_registro: {
       type: DataTypes.TIME,
+      allowNull: true,
+    },
+    mes_registro: {
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     titular_registro: {
@@ -27,13 +31,25 @@ const Registros = sequelize.define(
         key: "id_usuario",
       },
     },
-    proveedor_registro: {
+    remision_registro: {
       type: DataTypes.BIGINT,
       allowNull: false,
-      references: {
-        model: "usuarios",
-        key: "id_usuario",
-      },
+    },
+    nombre_proveedor_registro: {
+      type: DataTypes.STRING(250),
+      allowNull: false,
+    },
+    documento_proveedor_registro: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
+    nombre_transportador_registro: {
+      type: DataTypes.STRING(250),
+      allowNull: false,
+    },
+    documento_transportador_registro: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
     },
     tipo_registro: {
       type: DataTypes.STRING(250),
@@ -45,18 +61,26 @@ const Registros = sequelize.define(
     },
     valor_mp_registro: {
       type: DataTypes.BIGINT,
-      allowNull: true,
-    },
-    valor_t_registro: {
-      type: DataTypes.BIGINT,
-      allowNull: true,
+      allowNull: false,
     },
     peso_mp_registro: {
       type: DataTypes.DECIMAL(5, 2),
       allowNull: false,
     },
-    peso_neto_registro: {
-      type: DataTypes.DECIMAL(5, 2),
+    concepto_registro: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
+    zona_registro: {
+      type: DataTypes.STRING(250),
+      allowNull: false,
+    },
+    bonificacion_registro: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
+    valor_t_registro: {
+      type: DataTypes.BIGINT,
       allowNull: true,
     },
     observacion_registro: {
@@ -85,11 +109,6 @@ Registros.belongsTo(Usuarios, {
   foreignKey: "titular_registro",
   targetKey: "id_usuario",
   as: "titular",
-});
-Registros.belongsTo(Usuarios, {
-  foreignKey: "proveedor_registro",
-  targetKey: "id_usuario",
-  as: "proveedor",
 });
 
 module.exports = Registros;
