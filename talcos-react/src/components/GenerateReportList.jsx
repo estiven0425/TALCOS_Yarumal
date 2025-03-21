@@ -6,7 +6,7 @@ function GenerateReportList() {
   const navigate = useNavigate();
 
   const redirect = (category) => {
-    navigate(`/${category}`);
+    navigate(`/generatereport/${category}`);
   };
 
   return (
@@ -19,7 +19,7 @@ function GenerateReportList() {
       >
         <button
           className={Style.generateReportListButton}
-          onClick={() => redirect("inventory/inventoryshift")}
+          onClick={() => redirect("initialreport")}
           type="button"
         >
           <h2>Informe inicial</h2>
@@ -27,7 +27,7 @@ function GenerateReportList() {
         </button>
         <button
           className={Style.generateReportListButton}
-          onClick={() => redirect("inventory/inventorywindmill")}
+          onClick={() => redirect("novelty")}
           type="button"
         >
           <h2>Novedad</h2>
@@ -35,7 +35,7 @@ function GenerateReportList() {
         </button>
         <button
           className={Style.generateReportListButton}
-          onClick={() => redirect("inventory/inventoryreference")}
+          onClick={() => redirect("finalreport")}
           type="button"
         >
           <h2>Informe final</h2>
@@ -43,7 +43,7 @@ function GenerateReportList() {
         </button>
         <button
           className={Style.generateReportListButton}
-          onClick={() => redirect("inventory/inventorybulk")}
+          onClick={() => redirect("qualitycontrol")}
           type="button"
         >
           <h2>Control de calidad</h2>

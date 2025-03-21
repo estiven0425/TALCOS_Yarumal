@@ -6,6 +6,7 @@ import Style from "./styles/setting-user.module.css";
 
 function SettingUser() {
   const [isReady, setIsReady] = useState(false);
+  const [idUsuario, setIdUsuario] = useState("");
   const [nombreUsuario, setNombreUsuario] = useState("");
   const [documentoUsuario, setDocumentoUsuario] = useState("");
   const [telefonoUsuario, setTelefonoUsuario] = useState("");
@@ -24,6 +25,7 @@ function SettingUser() {
           token: token,
         });
 
+        setIdUsuario(response.data.id_usuario);
         setNombreUsuario(response.data.nombre_usuario);
         setDocumentoUsuario(response.data.documento_usuario);
         setTelefonoUsuario(response.data.telefono_usuario);
@@ -116,7 +118,7 @@ function SettingUser() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <button type="button" onClick={() => redirectUser(idPerfilUsuario)}>
+            <button type="button" onClick={() => redirectUser(idUsuario)}>
               Cambiar contraseña
             </button>
           </motion.footer>

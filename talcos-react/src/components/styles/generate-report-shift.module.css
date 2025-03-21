@@ -10,7 +10,7 @@
   height: 100%;
 }
 
-.generateReportShiftHeader {
+.generateReportShiftPrimary {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -22,19 +22,19 @@
   width: 35%;
 }
 
-.generateReportShiftHeader h1 {
+.generateReportShiftPrimary h1 {
   font-size: 1.5rem;
   margin: 0px;
   text-align: center;
 }
 
-.generateReportShiftHeader p {
+.generateReportShiftPrimary p {
   font-size: 1rem;
   margin: 0px;
   text-align: center;
 }
 
-.generateReportShiftMain {
+.generateReportShiftSecondary {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -46,7 +46,7 @@
   overflow: auto;
 }
 
-.generateReportShiftMain div {
+.generateReportShiftSecondary div {
   align-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -57,19 +57,19 @@
   width: 100%;
 }
 
-.generateReportShiftMain div h2,
-.generateReportShiftMain div p {
+.generateReportShiftSecondary div h2,
+.generateReportShiftSecondary div p {
   font-size: 1rem;
   margin: 0px;
   text-align: center;
 }
 
-.generateReportShiftMainIcon {
+.generateReportShiftSecondaryIcon {
   color: #0ec839;
   font-size: 1rem;
 }
 
-.generateReportShiftMainIconAlternative {
+.generateReportShiftSecondaryIconAlternative {
   color: #c80e0e;
   font-size: 1rem;
 }

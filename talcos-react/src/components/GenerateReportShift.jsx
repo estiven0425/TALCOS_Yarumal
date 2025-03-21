@@ -124,14 +124,14 @@ function GenerateReportShift() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <header className={Style.generateReportShiftHeader}>
+      <article className={Style.generateReportShiftPrimary}>
         <h1>Estado del turno</h1>
         <p>
           {formatDate()} ({currentShift.nombre_turno}):{" "}
           {currentShift.inicio_turno} - {currentShift.fin_turno}
         </p>
-      </header>
-      <main className={Style.generateReportShiftMain}>
+      </article>
+      <article className={Style.generateReportShiftSecondary}>
         <div>
           <h2>Informe inicial</h2>
           <p>
@@ -141,7 +141,7 @@ function GenerateReportShift() {
               ></i>
             ) : (
               <i
-                className={`bi bi-x-circle-fill ${Style.generateReportShiftMainIconAlternative}`}
+                className={`bi bi-x-circle-fill ${Style.generateReportShiftSecondaryIconAlternative}`}
               ></i>
             )}
           </p>
@@ -159,12 +159,12 @@ function GenerateReportShift() {
               ></i>
             ) : (
               <i
-                className={`bi bi-x-circle-fill ${Style.generateReportShiftMainIconAlternative}`}
+                className={`bi bi-x-circle-fill ${Style.generateReportShiftSecondaryIconAlternative}`}
               ></i>
             )}
           </p>
         </div>
-      </main>
+      </article>
     </motion.section>
   ) : (
     <motion.div
