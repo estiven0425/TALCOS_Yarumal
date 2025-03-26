@@ -23,12 +23,32 @@
   width: 100%;
 }
 
+
+.inventoryCreateRawMaterialRegisterSecondary {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 2.5%;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
 .inventoryCreateRawMaterialRegisterHeader {
   box-sizing: border-box;
   width: 100%;
 }
 
+.inventoryCreateRawMaterialRegisterHeaderSecondary {
+  box-sizing: border-box;
+  height: 13%;
+  width: 100%;
+}
+
 .inventoryCreateRawMaterialRegisterHeader h1,
+.inventoryCreateRawMaterialRegisterHeaderSecondary h1,
 .inventoryCreateRawMaterialRegisterAlternative h1 {
   font-size: 1.5rem;
   margin: 0px;
@@ -83,6 +103,132 @@
   transition: all 0.5s ease-in-out;
 }
 
+.inventoryCreateRawMaterialRegisterMainSecondary {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+  height: 75%;
+  justify-content: flex-start;
+  overflow: auto;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectioninput fieldset {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  padding: 0px;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectioninput fieldset h2 {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0px;
+  padding-bottom: 5px;
+  text-align: left;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectioninput fieldset label {
+  background-color: #0037ae;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 10.5px 0px;
+  transition: all 0.5s ease-in-out;
+  text-align: center;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectioninput
+  fieldset
+  label
+  img {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectioninput
+  fieldset
+  label:hover {
+  background-color: #0048b6;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectioninput
+  fieldset
+  label:focus {
+  background-color: #0048b6;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectioninput fieldset input {
+  display: none;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable {
+  align-content: stretch;
+  background-color: #0037ae;
+  border-radius: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  overflow: auto;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable h2 {
+  background-color: #0048b6;
+  font-size: 1.5rem;
+  margin: 0px;
+  padding: 5px;	
+  text-align: center;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable table {
+  border-collapse: collapse;
+  border-spacing: 0px 10px;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable table thead,
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable table tbody {
+  background-color: #0048b6;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable table thead tr,
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable table tbody tr {
+  border: none;
+  width: 100%;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable table thead tr th,
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable table tbody tr th,
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable table tbody tr td {
+  border: none;
+  font-size: 1rem;
+  padding: 5px;
+  text-align: center;
+  vertical-align: baseline;
+  width: 20%;
+}
+
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable
+  table
+  thead
+  tr
+  th:nth-child(even),
+.inventoryCreateRawMaterialRegisterMainSecondarySectionTable
+  td:nth-child(even) {
+  background-color: #0037ae;
+}
+
 .inventoryCreateRawMaterialRegisterMainEspecial {
   grid-column: span 2;
 }
@@ -127,8 +273,39 @@
 
 .inventoryCreateRawMaterialRegisterFooter button:focus {
   background-color: #0048b6;
-
 }
+
+.inventoryCreateRawMaterialRegisterFooterSecondary {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+  height: 17%;
+  justify-content: flex-start;
+}
+
+.inventoryCreateRawMaterialRegisterFooterSecondary button {
+  background-color: #0037ae;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  max-height: 49px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryCreateRawMaterialRegisterFooterSecondary button:hover {
+  background-color: #0048b6;
+}
+
+.inventoryCreateRawMaterialRegisterFooterSecondary button:focus {
+  background-color: #0048b6;
+}
+
 .inventoryCreateRawMaterialRegisterMain fieldset input:focus,
 .inventoryCreateRawMaterialRegisterMain fieldset select:focus {
   outline: #0095dc 1px solid;

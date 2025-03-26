@@ -4,7 +4,8 @@ const registroController = require("../controllers/registroController");
 
 router.get("/", registroController.leerRegistro);
 router.post("/", registroController.crearRegistro);
+router.post("/importarregistro", registroController.importarRegistro);
 router.put("/", registroController.actualizarRegistro);
-router.put("/eliminarregistros", registroController.eliminarRegistros);
+router.put("/eliminarregistro", registroController.eliminarRegistros);
 
 module.exports = router;

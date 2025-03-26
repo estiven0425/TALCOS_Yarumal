@@ -1,6 +1,6 @@
 ﻿import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Style from "./styles/inventory-create-raw-material-register-form.module.css";
 
@@ -26,6 +26,8 @@ function InventoryCreateRawMaterialRegister() {
   const [bonificacionRegistro, setBonificacionRegistro] = useState("");
   const [valorTRegistro, setValorTRegistro] = useState("");
   const [observacionRegistro, setObservacionRegistro] = useState("");
+  const [archivoRegistro, setArchivoRegistro] = useState(null);
+  const [datosArchivo, setDatosArchivo] = useState([]);
   const [loading, setLoading] = useState(false);
   const [SendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
@@ -118,60 +120,139 @@ function InventoryCreateRawMaterialRegister() {
   const validation = () => {
     const errors = {};
 
-    if (!remisionRegistro) {
+    if (tipoRegistro === "Registro manual" && !remisionRegistro) {
       errors.remisionRegistro = "La remisión del registro es obligatoria.";
-    } else if (!/^[0-9]+$/.test(remisionRegistro)) {
+    } else if (
+      tipoRegistro === "Registro manual" &&
+      !/^[0-9]+$/.test(remisionRegistro)
+    ) {
       errors.remisionRegistro =
         "La remisión del registro debe ser un número válido.";
     }
-    if (!nombreTransportadorRegistro) {
+    if (tipoRegistro === "Registro manual" && !nombreTransportadorRegistro) {
       errors.proveedorRegistro = "El proveedor es obligatorio.";
     }
-    if (!nombreTransportadorRegistro) {
+    if (tipoRegistro === "Registro manual" && !nombreTransportadorRegistro) {
       errors.transportadorRegistro = "El transportador es obligatorio.";
     }
-    if (!mpRegistro) {
+    if (tipoRegistro === "Registro manual" && !mpRegistro) {
       errors.mpRegistro = "La materia prima es obligatoria.";
     }
-    if (!valorMpRegistro) {
+    if (tipoRegistro === "Registro manual" && !valorMpRegistro) {
       errors.valorMpRegistro = "El valor de la materia prima es obligatorio.";
-    } else if (!/^[0-9]+$/.test(valorMpRegistro)) {
+    } else if (
+      tipoRegistro === "Registro manual" &&
+      !/^[0-9]+$/.test(valorMpRegistro)
+    ) {
       errors.valorMpRegistro =
         "El valor de la materia prima debe ser un número válido.";
     }
-    if (!pesoMpRegistro) {
+    if (tipoRegistro === "Registro manual" && !pesoMpRegistro) {
       errors.pesoMpRegistro = "El peso de la materia prima es obligatorio.";
-    } else if (!/^[0-9.,]+$/.test(pesoMpRegistro)) {
+    } else if (
+      tipoRegistro === "Registro manual" &&
+      !/^[0-9.,]+$/.test(pesoMpRegistro)
+    ) {
       errors.pesoMpRegistro =
         "El peso de la materia prima debe ser un número válido.";
     }
-    if (!conceptoRegistro) {
+    if (tipoRegistro === "Registro manual" && !conceptoRegistro) {
       errors.conceptoRegistro = "El valor del concepto es obligatorio.";
-    } else if (!/^[0-9]+$/.test(conceptoRegistro)) {
+    } else if (
+      tipoRegistro === "Registro manual" &&
+      !/^[0-9]+$/.test(conceptoRegistro)
+    ) {
       errors.conceptoRegistro =
         "El valor del concepto debe ser un número válido.";
     }
-    if (!zonaRegistro) {
+    if (tipoRegistro === "Registro manual" && !zonaRegistro) {
       errors.zonaRegistro = "El valor de la zona prima es obligatorio.";
     }
-    if (!bonificacionRegistro) {
+    if (tipoRegistro === "Registro manual" && !bonificacionRegistro) {
       errors.bonificacionRegistro =
         "El valor de la bonificacion por tonelada es obligatorio.";
-    } else if (!/^[0-9.,]+$/.test(bonificacionRegistro)) {
+    } else if (
+      tipoRegistro === "Registro manual" &&
+      !/^[0-9.,]+$/.test(bonificacionRegistro)
+    ) {
       errors.bonificacionRegistro =
         "El valor de la bonificacion por tonelada debe ser un número válido.";
     }
-    if (!valorTRegistro) {
+    if (tipoRegistro === "Registro manual" && !valorTRegistro) {
       errors.valorTRegistro = "El valor del transporte es obligatorio.";
-    } else if (!/^[0-9]+$/.test(valorTRegistro)) {
+    } else if (
+      tipoRegistro === "Registro manual" &&
+      !/^[0-9]+$/.test(valorTRegistro)
+    ) {
       errors.valorTRegistro =
         "El valor del transporte debe ser un número válido.";
+    }
+    if (tipoRegistro === "Registro importado" && !archivoRegistro) {
+      errors.archivoRegistro =
+        "El archivo a importar del registro es obligatorio.";
     }
 
     setValidationError(errors);
     setLoading(false);
 
     return Object.keys(errors).length === 0;
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        try {
+          const jsonData = JSON.parse(event.target.result);
+
+          if (
+            typeof jsonData === "object" &&
+            !Array.isArray(jsonData) &&
+            jsonData !== null
+          ) {
+            const jsonArray = [jsonData];
+            setDatosArchivo(jsonArray);
+            setArchivoRegistro(file.name);
+            setValidationError({});
+          } else if (
+            Array.isArray(jsonData) &&
+            jsonData.every((item) =>
+              [
+                "fecha_registro",
+                "remision_registro",
+                "nombre_proveedor_registro",
+                "documento_proveedor_registro",
+                "nombre_transportador_registro",
+                "documento_transportador_registro",
+                "mp_registro",
+                "valor_mp_registro",
+                "peso_mp_registro",
+                "concepto_registro",
+                "zona_registro",
+                "bonificacion_registro",
+                "valor_t_registro",
+                "observacion_registro",
+              ].every((key) => key in item)
+            )
+          ) {
+            setDatosArchivo(jsonData);
+            setArchivoRegistro(file.name);
+            setValidationError({});
+          } else {
+            throw new Error("Estructura del JSON no válida.");
+          }
+        } catch (error) {
+          setValidationError({
+            archivoRegistro:
+              "El archivo no es un JSON válido o tiene una estructura incorrecta.",
+          });
+        }
+      };
+      reader.readAsText(file);
+    }
   };
 
   const sendCreateRegister = async (e) => {
@@ -229,6 +310,48 @@ function InventoryCreateRawMaterialRegister() {
     }
   };
 
+  const sendCreateRegisterSecondary = async (e) => {
+    e.preventDefault();
+
+    if (!validation()) {
+      return;
+    }
+
+    setServerError(null);
+    setLoading(true);
+
+    const horaRegistro = new Date().toLocaleTimeString("en-GB", {
+      hour12: false,
+    });
+    const monthRegistro = new Date().getMonth() + 1;
+    const fullRecord = datosArchivo.map((registro) => ({
+      ...registro,
+      hora_registro: horaRegistro,
+      mes_registro: monthRegistro,
+      titular_registro: titularRegistro,
+      tipo_registro: tipoRegistro,
+    }));
+
+    try {
+      await axios.post(
+        `http://${localIP}:3000/registros/importarregistro`,
+        fullRecord
+      );
+
+      setSendStatus(true);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.error) {
+        setServerError(error.response.data.error);
+        setLoading(false);
+      } else {
+        setServerError(
+          "Error al crear el registro. Por favor, inténtelo de nuevo."
+        );
+        setLoading(false);
+      }
+    }
+  };
+
   return (
     <>
       {SendStatus === true ? (
@@ -249,7 +372,9 @@ function InventoryCreateRawMaterialRegister() {
           transition={{ duration: 0.5 }}
         >
           <header className={Style.inventoryCreateRawMaterialRegisterHeader}>
-            <h1>Complete los datos para crear un nuevo registro de entrada</h1>
+            <h1>
+              Complete los datos para crear un nuevo registro de materia prima
+            </h1>
           </header>
           <main className={Style.inventoryCreateRawMaterialRegisterMain}>
             <div>
@@ -635,7 +760,148 @@ function InventoryCreateRawMaterialRegister() {
           </footer>
         </motion.form>
       ) : (
-        <> </>
+        <motion.form
+          className={Style.inventoryCreateRawMaterialRegisterSecondary}
+          onSubmit={sendCreateRegisterSecondary}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <header
+            className={Style.inventoryCreateRawMaterialRegisterHeaderSecondary}
+          >
+            <h1>
+              Seleccione un arhivo JSON para importar un nuevo registro de
+              materia prima
+            </h1>
+          </header>
+          <main
+            className={Style.inventoryCreateRawMaterialRegisterMainSecondary}
+          >
+            <section
+              className={
+                Style.inventoryCreateRawMaterialRegisterMainSecondarySectioninput
+              }
+            >
+              <fieldset>
+                <h2>Arhivo JSON</h2>
+                <label htmlFor="archivoRegistro">
+                  <img alt="Icono" src="/import.svg"></img>
+                </label>
+                <input
+                  accept=".json"
+                  id="archivoRegistro"
+                  name="archivoRegistro"
+                  onChange={handleFileChange}
+                  type="file"
+                />
+                {!validationError.archivoRegistro ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.inventoryCreateRawMaterialRegisterValidation
+                    }
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.archivoRegistro}
+                  </motion.span>
+                )}
+              </fieldset>
+            </section>
+            <section
+              className={
+                Style.inventoryCreateRawMaterialRegisterMainSecondarySectionTable
+              }
+            >
+              <h2>Contenido del archivo</h2>
+              {datosArchivo.length > 0 ? (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Clave</th>
+                      {datosArchivo.map((_, index) => (
+                        <th key={index}>Valor {index + 1}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      "fecha_registro",
+                      "remision_registro",
+                      "nombre_proveedor_registro",
+                      "documento_proveedor_registro",
+                      "nombre_transportador_registro",
+                      "documento_transportador_registro",
+                      "mp_registro",
+                      "valor_mp_registro",
+                      "peso_mp_registro",
+                      "concepto_registro",
+                      "zona_registro",
+                      "bonificacion_registro",
+                      "valor_t_registro",
+                      "observacion_registro",
+                    ].map((key) => (
+                      <tr key={key}>
+                        <th>{key}</th>
+                        {datosArchivo.map((row, index) => (
+                          <td key={index}>
+                            {row[key] !== undefined &&
+                            row[key] !== null &&
+                            row[key] !== ""
+                              ? row[key]
+                              : "No se registró"}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>No hay datos cargados</td>
+                    </tr>
+                  </tbody>
+                </table>
+              )}
+            </section>
+          </main>
+          <footer
+            className={Style.inventoryCreateRawMaterialRegisterFooterSecondary}
+          >
+            <button
+              onClick={() => navigate("/inventory/registerrawmaterial")}
+              type="button"
+            >
+              Cancelar
+            </button>
+            <button type="submit">
+              {loading ? (
+                <div className={Style.loader}></div>
+              ) : (
+                "Crear Registro"
+              )}
+            </button>
+            {!serverError ? (
+              <></>
+            ) : (
+              <motion.span
+                className={
+                  Style.inventoryCreateRawMaterialRegisterValidationServer
+                }
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                {serverError}
+              </motion.span>
+            )}
+          </footer>
+        </motion.form>
       )}
     </>
   );

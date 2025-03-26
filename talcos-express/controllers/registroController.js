@@ -27,10 +27,47 @@ exports.crearRegistro = async (req, res) => {
 
   try {
     const nuevoRegistro = await Registros.create(fullRecord);
+    const materiaPrima = await MateriasPrimas.findOne({
+      where: { nombre_materia_prima: fullRecord.mp_registro },
+    });
+
+    if (materiaPrima) {
+      const nuevaCantidad =
+        parseFloat(materiaPrima.cantidad_materia_prima) +
+        parseFloat(fullRecord.peso_mp_registro);
+
+      await materiaPrima.update({ cantidad_materia_prima: nuevaCantidad });
+    }
 
     res.status(201).json(nuevoRegistro);
   } catch (error) {
     res.status(500).json({ error: "Error al crear el registro" });
+  }
+};
+
+exports.importarRegistro = async (req, res) => {
+  const fullRecord = req.body;
+
+  try {
+    const nuevosRegistros = await Registros.bulkCreate(fullRecord);
+
+    for (const record of fullRecord) {
+      const materiaPrima = await MateriasPrimas.findOne({
+        where: { nombre_materia_prima: record.mp_registro },
+      });
+
+      if (materiaPrima) {
+        const nuevaCantidad =
+          parseFloat(materiaPrima.cantidad_materia_prima) +
+          parseFloat(record.peso_mp_registro);
+
+        await materiaPrima.update({ cantidad_materia_prima: nuevaCantidad });
+      }
+    }
+
+    res.status(201).json(nuevosRegistros);
+  } catch (error) {
+    res.status(500).json({ error: "Error al crear los registros" });
   }
 };
 
