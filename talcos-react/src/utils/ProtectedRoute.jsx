@@ -23,7 +23,14 @@ const ProtectedRoute = ({ children }) => {
         });
         const perfilUsuario = response.data.id_perfil_usuario;
         const restrictions = {
-          1: ["/generatereport", "/fastinventory"],
+          1: [
+            "/generatereport",
+            "/generatereport/initialreport",
+            "/generatereport/novelty",
+            "/generatereport/finalreport",
+            "/generatereport/qualitycontrol",
+            "/fastinventory",
+          ],
           2: [
             "/staff",
             "/user",
@@ -33,6 +40,10 @@ const ProtectedRoute = ({ children }) => {
             "/listdeleteuser",
             "/deleteuser",
             "/generatereport",
+            "/generatereport/initialreport",
+            "/generatereport/novelty",
+            "/generatereport/finalreport",
+            "/generatereport/qualitycontrol",
             "/fastinventory",
           ],
           3: [
@@ -79,6 +90,7 @@ const ProtectedRoute = ({ children }) => {
             "/inventory/deleterawmaterial",
             "/inventory/registerrawmaterial",
             "/inventory/createregisterrawmaterial",
+            "/inventory/detailregisterrawmaterial",
             "/inventory/deleteregisterrawmaterial",
             "/inventory/inventoryrejectedmaterial",
             "/inventory/createrejectedmaterial",
@@ -144,9 +156,10 @@ const ProtectedRoute = ({ children }) => {
             "/inventory/listdeleterawmaterial",
             "/inventory/deleterawmaterial",
             "/inventory/registerrawmaterial",
-            "/inventory/inventoryrejectedmaterial",
             "/inventory/createregisterrawmaterial",
+            "/inventory/detailregisterrawmaterial",
             "/inventory/deleteregisterrawmaterial",
+            "/inventory/inventoryrejectedmaterial",
             "/inventory/createrejectedmaterial",
             "/inventory/listeditrejectedmaterial",
             "/inventory/editrejectedmaterial",

@@ -1,6 +1,5 @@
-﻿.inventoryCreate {
-  align-content: flex-start;
-  align-items: center;
+﻿.generateInitialReport {
+  align-content: stretch;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

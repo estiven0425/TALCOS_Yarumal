@@ -5,7 +5,9 @@ import Header from "./components/Header";
 import {
   Error,
   FastInventory,
+  GenerateInitialReport,
   GenerateReport,
+  GenerateReportMenu,
   Home,
   Inventory,
   InventoryGeneral,
@@ -96,7 +98,10 @@ createRoot(document.getElementById("root")).render(
           <Route path="listdeleteuser" element={<StaffListDeleteUser />} />
           <Route path="deleteuser" element={<StaffDeleteUser />} />
           <Route path="report" element={<Report />} />
-          <Route path="generatereport" element={<GenerateReport />} />
+          <Route path="generatereport" element={<GenerateReport />}>
+            <Route path="generatereportmenu" element={<GenerateReportMenu />} />
+            <Route path="initialreport" element={<GenerateInitialReport />} />
+          </Route>
           <Route path="monitoring" element={<Monitoring />} />
           <Route path="inventory" element={<Inventory />}>
             <Route path="inventorygeneral" element={<InventoryGeneral />} />

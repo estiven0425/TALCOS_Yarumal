@@ -28,7 +28,7 @@ function InventoryRawMaterialRegisterAction({ item }) {
       return time.slice(0, 5);
     };
 
-    const contenido = `
+    const content = `
     <style>
       .aside {
         align-content: flex-start;
@@ -211,7 +211,7 @@ function InventoryRawMaterialRegisterAction({ item }) {
         `http://${localIP}:3000/pdf`,
         {
           titulo: `${item.tipo_registro} de materia prima`,
-          contenido: contenido,
+          contenido: content,
           nombre: "Registro de materia prima",
         },
         {

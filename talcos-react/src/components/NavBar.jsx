@@ -76,7 +76,7 @@ function NavBar() {
           }`}
           to={
             perfilUsuario === 3 || perfilUsuario === 4
-              ? "/generatereport"
+              ? "/generatereport/generatereportmenu"
               : "/report"
           }
         >

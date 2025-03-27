@@ -1,4 +1,4 @@
-﻿.generateReport {
+﻿.generateReportMenu {
   align-content: stretch;
   box-sizing: border-box;
   display: flex;
@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.generateReportStatus {
+.generateReportMenuStatus {
   align-content: stretch;
   box-sizing: border-box;
   display: flex;
@@ -22,7 +22,7 @@
   width: 100%;
 }
 
-.generateReportList {
+.generateReportMenuList {
   align-content: stretch;
   box-sizing: border-box;
   display: flex;

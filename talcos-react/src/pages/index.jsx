@@ -1,6 +1,8 @@
 export { default as Error } from "./Error";
 export { default as FastInventory } from "./FastInventory";
+export { default as GenerateInitialReport } from "./GenerateInitialReport";
 export { default as GenerateReport } from "./GenerateReport";
+export { default as GenerateReportMenu } from "./GenerateReportMenu";
 export { default as Home } from "./Home";
 export { default as Inventory } from "./Inventory";
 export { default as InventoryGeneral } from "./InventoryGeneral";

@@ -5,7 +5,7 @@ import axios from "axios";
 import Style from "./styles/inventory-edit-reasigned-rejected-material-form.module.css";
 
 function InventoryEditReasignedRejectedMaterialForm() {
-  const [datos, setDatos] = useState({});
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
   const [serverError, setServerError] = useState(null);
@@ -19,7 +19,7 @@ function InventoryEditReasignedRejectedMaterialForm() {
 
   useEffect(() => {
     if (item) {
-      setDatos(item);
+      setData(item);
     }
   }, [item]);
 
@@ -65,8 +65,8 @@ function InventoryEditReasignedRejectedMaterialForm() {
       await axios.put(
         `http://${localIP}:3000/productos_rechazados/reasignarproductorechazado`,
         {
-          id_producto_rechazado: datos.id_producto_rechazado,
-          cantidad_producto_rechazado: datos.cantidad_producto_rechazado,
+          id_producto_rechazado: data.id_producto_rechazado,
+          cantidad_producto_rechazado: data.cantidad_producto_rechazado,
           referenciaSeleccionada: selectedReference,
         }
       );
@@ -142,10 +142,10 @@ function InventoryEditReasignedRejectedMaterialForm() {
                   Style.inventoryEditReasignedRejectedMaterialTableFormMainBody
                 }
               >
-                <tr key={datos.id_producto_rechazado}>
-                  <td>{datos.nombre_producto_rechazado}</td>
-                  <td>{datos.cantidad_producto_rechazado}</td>
-                  <td>{datos.retencion_producto_rechazado}</td>
+                <tr key={data.id_producto_rechazado}>
+                  <td>{data.nombre_producto_rechazado}</td>
+                  <td>{data.cantidad_producto_rechazado}</td>
+                  <td>{data.retencion_producto_rechazado}</td>
                 </tr>
               </tbody>
             </table>

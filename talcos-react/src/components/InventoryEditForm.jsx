@@ -14,7 +14,7 @@ function InventoryEditForm({
   title,
   nameButton,
 }) {
-  const [datos, setDatos] = useState({});
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
   const [serverError, setServerError] = useState(null);
@@ -30,7 +30,7 @@ function InventoryEditForm({
         initialData[dataId] = item[dataId] || "";
         initialData[field.name] = item[field.name] || "";
       });
-      setDatos(initialData);
+      setData(initialData);
     }
   }, [item, fields]);
 
@@ -45,8 +45,8 @@ function InventoryEditForm({
   }, [sendStatus, navigate, redirectPath]);
 
   const handleChange = (e) => {
-    setDatos({
-      ...datos,
+    setData({
+      ...data,
       [e.target.name]: e.target.value,
     });
   };
@@ -58,7 +58,7 @@ function InventoryEditForm({
     setLoading(true);
 
     try {
-      await axios.put(`http://${localIP}:3000/${endpoint}`, datos);
+      await axios.put(`http://${localIP}:3000/${endpoint}`, data);
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {

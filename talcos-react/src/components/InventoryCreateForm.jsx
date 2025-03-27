@@ -13,7 +13,7 @@ function InventoryCreateForm({
   title,
   nameButton,
 }) {
-  const [datos, setDatos] = useState({});
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
@@ -35,21 +35,21 @@ function InventoryCreateForm({
     const errors = {};
 
     fields.forEach((field) => {
-      if (field.required && !datos[field.name]) {
+      if (field.required && !data[field.name]) {
         errors[field.name] =
           field.validationMessage || "Este campo es obligatorio.";
       }
       if (
         field.type === "text" &&
-        datos[field.name] &&
-        !datos[field.name].trim()
+        data[field.name] &&
+        !data[field.name].trim()
       ) {
         errors[field.name] = "Este campo solo acepta texto.";
       }
       if (
         field.type === "number" &&
-        datos[field.name] &&
-        !/^\d+(\.\d+)?$/.test(datos[field.name])
+        data[field.name] &&
+        !/^\d+(\.\d+)?$/.test(data[field.name])
       ) {
         errors[field.name] = "Este campo solo acepta números.";
       }
@@ -62,8 +62,8 @@ function InventoryCreateForm({
   };
 
   const handleChange = (e) => {
-    setDatos({
-      ...datos,
+    setData({
+      ...data,
       [e.target.name]: e.target.value,
     });
   };
@@ -79,7 +79,7 @@ function InventoryCreateForm({
     setLoading(true);
 
     try {
-      await axios.post(`http://${localIP}:3000/${endpoint}`, datos);
+      await axios.post(`http://${localIP}:3000/${endpoint}`, data);
 
       setSendStatus(true);
     } catch (error) {
@@ -131,7 +131,7 @@ function InventoryCreateForm({
                   onChange={handleChange}
                   placeholder={field.placeholder}
                   type={field.type}
-                  value={datos[field.name] || ""}
+                  value={data[field.name] || ""}
                 />
                 {!validationError[field.name] ? (
                   <></>
