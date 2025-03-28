@@ -137,7 +137,7 @@ function GenerateReportShift() {
           <p>
             {shiftState.startReport ? (
               <i
-                className={`bi bi-check-circle-fill ${Style.generateReportShiftMainIcon}`}
+                className={`bi bi-check-circle-fill ${Style.generateReportShiftIcon}`}
               ></i>
             ) : (
               <i
@@ -155,7 +155,7 @@ function GenerateReportShift() {
           <p>
             {shiftState.endReport ? (
               <i
-                className={`bi bi-check-circle-fill ${Style.generateReportShiftMainIcon}`}
+                className={`bi bi-check-circle-fill ${Style.generateReportShiftIcon}`}
               ></i>
             ) : (
               <i

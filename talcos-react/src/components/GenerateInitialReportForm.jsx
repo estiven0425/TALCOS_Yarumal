@@ -27,6 +27,8 @@ function GenerateInitialReportForm() {
   const [bobCatInformeInicial, setBobCatInformeInicial] = useState([]);
   const [observacionInformeInicial, setObservacionInformeInicial] =
     useState("");
+  const [selectedControlCalidad, setSelectedControlCalidad] = useState("");
+  const [selectedMecanico, setSelectedMecanico] = useState("");
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
@@ -161,6 +163,15 @@ function GenerateInitialReportForm() {
       bobCat.map((bobCatItem) => bobCatItem.nombre_bob_cat)
     );
   }, [bobCat]);
+  useEffect(() => {
+    setOperadorInformeInicial(new Array(molino.length).fill(""));
+    setReferenciaInformeInicial(new Array(molino.length).fill(""));
+    setBultoInformeInicial(new Array(molino.length).fill(""));
+    setHorometroInformeInicial(new Array(molino.length).fill(""));
+  }, [molino]);
+  useEffect(() => {
+    setCargueroInformeInicial(new Array(bobCat.length).fill(""));
+  }, [bobCat]);
 
   const addQualityControl = (id_usuario, nombre_usuario) => {
     setControlCalidadInformeInicial((prev) => [
@@ -230,43 +241,67 @@ function GenerateInitialReportForm() {
   const validation = () => {
     const errors = {};
 
-    if (!controlCalidadInformeInicial) {
+    if (!controlCalidadInformeInicial.length) {
       errors.controlCalidadInformeInicial =
         "El control de calidad del informe es obligatorio.";
     }
-    if (!mecanicoInformeInicial) {
+    if (!mecanicoInformeInicial.length) {
       errors.mecanicoInformeInicial = "El mecánico del informe es obligatorio.";
     }
-    if (!operadorInformeInicial) {
-      errors.operadorInformeInicial =
-        "El operador del molino del informe es obligatorio.";
+
+    const operadorErrors = operadorInformeInicial.map((operador, index) =>
+      !operador
+        ? `El operador del ${molino[index].nombre_molino} es obligatorio.`
+        : null
+    );
+
+    if (operadorErrors.some((error) => error)) {
+      errors.operadorInformeInicial = operadorErrors;
     }
-    if (!referenciaInformeInicial) {
-      errors.referenciaInformeInicial =
-        "La referencia del molino del informe es obligatorio.";
+
+    const referenciaErrors = referenciaInformeInicial.map((referencia, index) =>
+      !referencia
+        ? `La referencia del ${molino[index].nombre_molino} es obligatoria.`
+        : null
+    );
+
+    if (referenciaErrors.some((error) => error)) {
+      errors.referenciaInformeInicial = referenciaErrors;
     }
-    if (!bultoInformeInicial) {
-      errors.bultoInformeInicial =
-        "El bulto del molino del informe es obligatorio.";
+
+    const bultoErrors = bultoInformeInicial.map((bulto, index) =>
+      !bulto
+        ? `El bulto del ${molino[index].nombre_molino} es obligatorio.`
+        : null
+    );
+
+    if (bultoErrors.some((error) => error)) {
+      errors.bultoInformeInicial = bultoErrors;
     }
-    if (!horometroInformeInicial) {
-      errors.horometroInformeInicial =
-        "El horómetro inicial del molino del informe es obligatorio.";
-    } else if (!/^[0-9.,]+$/.test(horometroInformeInicial)) {
-      errors.horometroInformeInicial =
-        "El horómetro inicial del molino del informe debe ser un número válido.";
+
+    const horometroErrors = horometroInformeInicial.map((horometro, index) =>
+      !horometro
+        ? `El horómetro del ${molino[index].nombre_molino} es obligatorio.`
+        : !/^[0-9.,]+$/.test(horometro) || parseFloat(horometro) < 0
+        ? `El horómetro del ${molino[index].nombre_molino} debe ser un número válido y mayor o igual a 0.`
+        : null
+    );
+
+    if (horometroErrors.some((error) => error)) {
+      errors.horometroInformeInicial = horometroErrors;
     }
-    if (!cargueroInformeInicial) {
-      errors.cargueroInformeInicial =
-        "El operador del minicargador del informe es obligatorio.";
-    }
-    if (!bobCatInformeInicial) {
-      errors.bobCatInformeInicial =
-        "El minicargador del informe es obligatorio.";
+
+    const cargueroErrors = cargueroInformeInicial.map((carguero, index) =>
+      !carguero
+        ? `El operador del ${bobCat[index].nombre_bob_cat} es obligatorio.`
+        : null
+    );
+
+    if (cargueroErrors.some((error) => error)) {
+      errors.cargueroInformeInicial = cargueroErrors;
     }
 
     setValidationError(errors);
-    setLoading(false);
 
     return Object.keys(errors).length === 0;
   };
@@ -274,42 +309,58 @@ function GenerateInitialReportForm() {
   const sendCreate = async (e) => {
     e.preventDefault();
 
-    // if (!validation()) {
-    //   return;
-    // }
+    if (!validation()) {
+      return;
+    }
 
     setServerError(null);
-    // setLoading(true);
+    setLoading(true);
 
     const fechaInformeInicial = new Date().toISOString().split("T")[0];
     const horaInformeInicial = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
+    const persistentData = {
+      titular_informe_inicial: titularInformeInicial,
+      fecha_informe_inicial: fechaInformeInicial,
+      hora_informe_inicial: horaInformeInicial,
+      turno_informe_inicial: currentShift.nombre_turno,
+      observacion_informe_inicial: observacionInformeInicial,
+    };
+    const controlCalidadObjects = controlCalidadInformeInicial.map(
+      (control) => ({
+        ...persistentData,
+        cdc_informe_inicial: control.id_usuario,
+      })
+    );
+    const mecanicoObjects = mecanicoInformeInicial.map((mecanico) => ({
+      ...persistentData,
+      mecanico_informe_inicial: mecanico.id_usuario,
+    }));
+    const molinoObjects = molinoInformeInicial.map((_, index) => ({
+      ...persistentData,
+      operador_informe_inicial: operadorInformeInicial[index],
+      molino_informe_inicial: molinoInformeInicial[index],
+      referencia_informe_inicial: referenciaInformeInicial[index],
+      bulto_informe_inicial: bultoInformeInicial[index],
+      horometro_informe_inicial: horometroInformeInicial[index],
+    }));
+    const bobCatObjects = bobCatInformeInicial.map((_, index) => ({
+      ...persistentData,
+      carguero_informe_inicial: cargueroInformeInicial[index],
+      bob_cat_informe_inicial: bobCatInformeInicial[index],
+    }));
     const fullReport = [
-      {
-        titular_informe_inicial: titularInformeInicial,
-        fecha_informe_inicial: fechaInformeInicial,
-        hora_informe_inicial: horaInformeInicial,
-        turno_informe_inicial: currentShift.nombre_turno,
-        cdc_informe_inicial: controlCalidadInformeInicial,
-        observacion_informe_inicial: observacionInformeInicial,
-      },
+      ...controlCalidadObjects,
+      ...mecanicoObjects,
+      ...molinoObjects,
+      ...bobCatObjects,
     ];
 
     try {
-      // await axios.post(`http://${localIP}:3000/informes_iniciales`, fullReport);
-      console.log(fullReport);
-      console.log(controlCalidadInformeInicial);
-      console.log(mecanicoInformeInicial);
-      console.log(
-        operadorInformeInicial,
-        molinoInformeInicial,
-        referenciaInformeInicial,
-        bultoInformeInicial,
-        horometroInformeInicial
-      );
-      console.log(cargueroInformeInicial, bobCatInformeInicial);
-      // setSendStatus(true);
+      await axios.post(`http://${localIP}:3000/informes_iniciales`, fullReport);
+
+      setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
@@ -350,21 +401,21 @@ function GenerateInitialReportForm() {
             <h1>Complete los datos para crear el reporte inicial</h1>
           </header>
           <main className={Style.generateInitialReportFormMain}>
-            <fieldset>
-              <label htmlFor="controlcalidad">
-                Seleccione un control de calidad
-              </label>
+            <fieldset className={Style.generateInitialReportFormMainPrimary}>
+              <label htmlFor="controlcalidad">Control de calidad</label>
               <select
                 id="controlcalidad"
+                name="controlcalidad"
+                value={selectedControlCalidad}
                 onChange={(e) => {
                   const selectedOption =
                     e.target.options[e.target.selectedIndex];
                   addQualityControl(e.target.value, selectedOption.text);
+                  setSelectedControlCalidad("");
                 }}
-                defaultValue=""
               >
                 <option value="" disabled>
-                  Seleccione un control de calidad
+                  Añade un usuario de control de calidad
                 </option>
                 {controlCalidad.map((cdc) => (
                   <option key={cdc.id_usuario} value={cdc.id_usuario}>
@@ -372,33 +423,52 @@ function GenerateInitialReportForm() {
                   </option>
                 ))}
               </select>
-            </fieldset>
-            <ul>
-              {controlCalidadInformeInicial.map((item, index) => (
-                <li key={index}>
-                  {item.nombre_usuario}{" "}
-                  <button
-                    type="button"
-                    onClick={() => removeQualityControl(index)}
+              {!validationError.controlCalidadInformeInicial ? (
+                <></>
+              ) : (
+                <motion.span
+                  className={Style.generateInitialReportFormValidation}
+                  initial={{ zoom: 0 }}
+                  animate={{ zoom: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {validationError.controlCalidadInformeInicial}
+                </motion.span>
+              )}
+              <ul>
+                {controlCalidadInformeInicial.map((item, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                   >
-                    Eliminar
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <fieldset>
-              <label htmlFor="mecanico">Seleccione un mecánico</label>
+                    {item.nombre_usuario}{" "}
+                    <button
+                      type="button"
+                      onClick={() => removeQualityControl(index)}
+                    >
+                      Eliminar
+                    </button>
+                  </motion.li>
+                ))}
+              </ul>
+            </fieldset>
+            <fieldset className={Style.generateInitialReportFormMainPrimary}>
+              <label htmlFor="mecanico">Mecánico</label>
               <select
                 id="mecanico"
+                name="mecanico"
+                value={selectedMecanico}
                 onChange={(e) => {
                   const selectedOption =
                     e.target.options[e.target.selectedIndex];
                   addMechanic(e.target.value, selectedOption.text);
+                  setSelectedMecanico("");
                 }}
-                defaultValue=""
               >
                 <option value="" disabled>
-                  Seleccione un mecánico
+                  Añade un usuario de mecánico
                 </option>
                 {mecanico.map((mecanico) => (
                   <option key={mecanico.id_usuario} value={mecanico.id_usuario}>
@@ -406,107 +476,231 @@ function GenerateInitialReportForm() {
                   </option>
                 ))}
               </select>
+              {!validationError.mecanicoInformeInicial ? (
+                <></>
+              ) : (
+                <motion.span
+                  className={Style.generateInitialReportFormValidation}
+                  initial={{ zoom: 0 }}
+                  animate={{ zoom: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {validationError.mecanicoInformeInicial}
+                </motion.span>
+              )}
+              <ul>
+                {mecanicoInformeInicial.map((item, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {item.nombre_usuario}{" "}
+                    <button type="button" onClick={() => removeMechanic(index)}>
+                      Eliminar
+                    </button>
+                  </motion.li>
+                ))}
+              </ul>
             </fieldset>
-            <ul>
-              {mecanicoInformeInicial.map((item, index) => (
-                <li key={index}>
-                  {item.nombre_usuario}{" "}
-                  <button type="button" onClick={() => removeMechanic(index)}>
-                    Eliminar
-                  </button>
-                </li>
-              ))}
-            </ul>
             {molino.map((molinoItem, index) => (
-              <fieldset key={index}>
-                <legend>{molinoItem.nombre_molino}</legend>
-
-                <label htmlFor={`operador-${index}`}>Operador</label>
-                <select
-                  id={`operador-${index}`}
-                  value={operadorInformeInicial[index] || ""}
-                  onChange={(e) => handleOperadorChange(index, e.target.value)}
-                >
-                  <option value="" disabled>
-                    Seleccione un operador
-                  </option>
-                  {operador.map((op) => (
-                    <option key={op.id_usuario} value={op.nombre_usuario}>
-                      {op.nombre_usuario}
+              <fieldset
+                className={Style.generateInitialReportFormMainSecondary}
+                key={index}
+              >
+                <div className={Style.generateInitialReportFormMainEspecial}>
+                  <h2>{molinoItem.nombre_molino}</h2>
+                </div>
+                <div className={Style.generateInitialReportFormMainEspecial}>
+                  <label htmlFor={`operador-${index}`}>
+                    Operador de molino
+                  </label>
+                  <select
+                    id={`operador-${index}`}
+                    name={`operador-${index}`}
+                    onChange={(e) =>
+                      handleOperadorChange(index, e.target.value)
+                    }
+                    value={operadorInformeInicial[index] || ""}
+                  >
+                    <option value="" disabled>
+                      Seleccione un operador de molino
                     </option>
-                  ))}
-                </select>
-
-                <label htmlFor={`referencia-${index}`}>Referencia</label>
-                <select
-                  id={`referencia-${index}`}
-                  value={referenciaInformeInicial[index] || ""}
-                  onChange={(e) =>
-                    handleReferenciaChange(index, e.target.value)
-                  }
-                >
-                  <option value="" disabled>
-                    Seleccione una referencia
-                  </option>
-                  {referencia.map((ref) => (
-                    <option
-                      key={ref.id_referencia}
-                      value={ref.nombre_referencia}
-                    >
-                      {ref.nombre_referencia}
+                    {operador.map((operador) => (
+                      <option
+                        key={operador.id_usuario}
+                        value={operador.id_usuario}
+                      >
+                        {operador.nombre_usuario}
+                      </option>
+                    ))}
+                  </select>
+                  {validationError.operadorInformeInicial &&
+                    validationError.operadorInformeInicial[index] && (
+                      <motion.span
+                        className={Style.generateInitialReportFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {validationError.operadorInformeInicial[index]}
+                      </motion.span>
+                    )}
+                </div>
+                <div>
+                  <label htmlFor={`referencia-${index}`}>Referencia</label>
+                  <select
+                    id={`referencia-${index}`}
+                    name={`referencia-${index}`}
+                    onChange={(e) =>
+                      handleReferenciaChange(index, e.target.value)
+                    }
+                    value={referenciaInformeInicial[index] || ""}
+                  >
+                    <option value="" disabled>
+                      Seleccione una referencia
                     </option>
-                  ))}
-                </select>
-
-                <label htmlFor={`bulto-${index}`}>Bulto</label>
-                <select
-                  id={`bulto-${index}`}
-                  value={bultoInformeInicial[index] || ""}
-                  onChange={(e) => handleBultoChange(index, e.target.value)}
-                >
-                  <option value="" disabled>
-                    Seleccione un bulto
-                  </option>
-                  {bulto.map((bul) => (
-                    <option key={bul.id_bulto} value={bul.nombre_bulto}>
-                      {bul.nombre_bulto}
+                    {referencia.map((referencia) => (
+                      <option
+                        key={referencia.id_referencia}
+                        value={referencia.nombre_referencia}
+                      >
+                        {referencia.nombre_referencia}
+                      </option>
+                    ))}
+                  </select>
+                  {validationError.referenciaInformeInicial &&
+                    validationError.referenciaInformeInicial[index] && (
+                      <motion.span
+                        className={Style.generateInitialReportFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {validationError.referenciaInformeInicial[index]}
+                      </motion.span>
+                    )}
+                </div>
+                <div>
+                  <label htmlFor={`bulto-${index}`}>Bulto</label>
+                  <select
+                    id={`bulto-${index}`}
+                    name={`bulto-${index}`}
+                    onChange={(e) => handleBultoChange(index, e.target.value)}
+                    value={bultoInformeInicial[index] || ""}
+                  >
+                    <option value="" disabled>
+                      Seleccione un bulto
                     </option>
-                  ))}
-                </select>
-
-                <label htmlFor={`horometro-${index}`}>Horómetro</label>
-                <input
-                  id={`horometro-${index}`}
-                  type="number"
-                  value={horometroInformeInicial[index] || ""}
-                  onChange={(e) => handleHorometroChange(index, e.target.value)}
-                />
+                    {bulto.map((bulto) => (
+                      <option key={bulto.id_bulto} value={bulto.nombre_bulto}>
+                        {bulto.nombre_bulto}
+                      </option>
+                    ))}
+                  </select>
+                  {validationError.bultoInformeInicial &&
+                    validationError.bultoInformeInicial[index] && (
+                      <motion.span
+                        className={Style.generateInitialReportFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {validationError.bultoInformeInicial[index]}
+                      </motion.span>
+                    )}
+                </div>
+                <div className={Style.generateInitialReportFormMainEspecial}>
+                  <label htmlFor={`horometro-${index}`}>Horómetro</label>
+                  <input
+                    id={`horometro-${index}`}
+                    name={`horometro-${index}`}
+                    onChange={(e) =>
+                      handleHorometroChange(index, e.target.value)
+                    }
+                    placeholder="Ingresa el horómetro del molino"
+                    type="text"
+                    value={horometroInformeInicial[index] || ""}
+                  />
+                  {validationError.horometroInformeInicial &&
+                    validationError.horometroInformeInicial[index] && (
+                      <motion.span
+                        className={Style.generateInitialReportFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {validationError.horometroInformeInicial[index]}
+                      </motion.span>
+                    )}
+                </div>
               </fieldset>
             ))}
             {bobCat.map((bobCatItem, index) => (
-              <fieldset key={index}>
-                <legend>{bobCatItem.nombre_bob_cat}</legend>
+              <fieldset
+                key={index}
+                className={Style.generateInitialReportFormMainThird}
+              >
+                <h2>{bobCatItem.nombre_bob_cat}</h2>
 
-                <label htmlFor={`carguero-${index}`}>Carguero</label>
+                <label htmlFor={`carguero-${index}`}>
+                  Operador de minicargador
+                </label>
                 <select
                   id={`carguero-${index}`}
-                  value={cargueroInformeInicial[index] || ""}
+                  name={`carguero-${index}`}
                   onChange={(e) => handleCargueroChange(index, e.target.value)}
+                  value={cargueroInformeInicial[index] || ""}
                 >
                   <option value="" disabled>
-                    Seleccione un carguero
+                    Seleccione un operador de minicargador
                   </option>
                   {carguero.map((carguero) => (
                     <option
                       key={carguero.id_usuario}
-                      value={carguero.nombre_usuario}
+                      value={carguero.id_usuario}
                     >
                       {carguero.nombre_usuario}
                     </option>
                   ))}
                 </select>
+                {validationError.cargueroInformeInicial &&
+                  validationError.cargueroInformeInicial[index] && (
+                    <motion.span
+                      className={Style.generateInitialReportFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.cargueroInformeInicial[index]}
+                    </motion.span>
+                  )}
               </fieldset>
             ))}
+            <fieldset className={Style.generateInitialReportFormMainFourth}>
+              <label htmlFor="observacion">Observación</label>
+              <input
+                id="observacion"
+                name="observacion"
+                onChange={(e) => setObservacionInformeInicial(e.target.value)}
+                placeholder="Ingresa una observación"
+                type="text"
+                value={observacionInformeInicial}
+              />
+              {!validationError.observacionInformeInicial ? (
+                <></>
+              ) : (
+                <motion.span
+                  className={Style.generateInitialReportFormValidation}
+                  initial={{ zoom: 0 }}
+                  animate={{ zoom: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {validationError.observacionInformeInicial}
+                </motion.span>
+              )}
+            </fieldset>
           </main>
           <footer className={Style.generateInitialReportFormFooter}>
             <button onClick={() => redirectGenerateReport()} type="button">

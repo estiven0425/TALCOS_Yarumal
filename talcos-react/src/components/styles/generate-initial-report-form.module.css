@@ -38,12 +38,11 @@
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: repeat(auto, 1fr);
   gap: 15px;
-  height: 100%;
 }
 
-.generateInitialReportFormMain fieldset {
+.generateInitialReportFormMainPrimary {
   align-content: stretch;
   border: none;
   box-sizing: border-box;
@@ -54,13 +53,167 @@
   padding: 0px;
 }
 
-.generateInitialReportFormMain fieldset label {
+.generateInitialReportFormMainPrimary label {
   padding-bottom: 5px;
   text-align: left;
   width: 100%;
 }
 
-.generateInitialReportFormMain fieldset input {
+.generateInitialReportFormMainPrimary select {
+  border: none;
+  border-radius: 20px;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: transparent 1px solid;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateInitialReportFormMainPrimary ul {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 5px;
+  margin: 0px;
+  padding: 10px;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateInitialReportFormMainPrimary ul li {
+  align-content: center;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  transition: all 0.5s ease-in-out;
+}
+.generateInitialReportFormMainPrimary ul li button {
+  background-color: #0037ae;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  outline: transparent 1px solid;
+  padding: 5px;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateInitialReportFormMainSecondary {
+  border: none;
+  box-sizing: border-box;
+  display: grid;
+  gap: 15px;
+  grid-column: span 2;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(auto, 1fr);
+  padding: 0px;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateInitialReportFormMainSecondary div {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  padding: 0px;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateInitialReportFormMainSecondary div h2 {
+  font-size: 1rem;
+  margin: 0px;
+  text-align: center;
+}
+
+.generateInitialReportFormMainSecondary div label {
+  padding-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.generateInitialReportFormMainSecondary div input {
+  border-color: transparent;
+  border-radius: 20px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateInitialReportFormMainSecondary div select {
+  border: none;
+  border-radius: 20px;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: transparent 1px solid;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateInitialReportFormMainThird {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column: span 2;
+  justify-content: flex-start;
+  padding: 0px;
+}
+
+.generateInitialReportFormMainThird h2 {
+  font-size: 1rem;
+  margin: 0px;
+  text-align: center;
+}
+
+.generateInitialReportFormMainThird label {
+  padding-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.generateInitialReportFormMainThird select {
+  border: none;
+  border-radius: 20px;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: transparent 1px solid;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateInitialReportFormMainFourth {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column: span 2;
+  justify-content: flex-start;
+  padding: 0px;
+}
+
+.generateInitialReportFormMainFourth label {
+  padding-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.generateInitialReportFormMainFourth input {
   border-color: transparent;
   border-radius: 20px;
   outline: transparent 1px solid;
@@ -94,15 +247,21 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateInitialReportFormFooter button:hover {
+.generateInitialReportFormFooter button:hover,
+.generateInitialReportFormMainPrimary ul li button:hover {
   background-color: #0048b6;
 }
 
-.generateInitialReportFormFooter button:focus {
+.generateInitialReportFormFooter button:focus,
+.generateInitialReportFormMainPrimary ul li button:focus {
   background-color: #0048b6;
 }
 
-.generateInitialReportFormMain fieldset input:focus {
+.generateInitialReportFormMainPrimary select:focus,
+.generateInitialReportFormMainSecondary input:focus,
+.generateInitialReportFormMainSecondary select:focus,
+.generateInitialReportFormMainThird select:focus,
+.generateInitialReportFormMainFourth input:focus {
   outline: #0095dc 1px solid;
 }
 
