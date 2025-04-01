@@ -27,7 +27,7 @@ function GenerateReportList() {
         </button>
         <button
           className={Style.generateReportListButton}
-          onClick={() => redirect("novelty")}
+          onClick={() => redirect("noveltyoption")}
           type="button"
         >
           <h2>Novedad</h2>

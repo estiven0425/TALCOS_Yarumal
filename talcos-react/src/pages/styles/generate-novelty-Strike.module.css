@@ -1,0 +1,11 @@
+﻿.generateNovelty {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  height: 100%;
+  overflow: auto;
+  width: 100%;
+}

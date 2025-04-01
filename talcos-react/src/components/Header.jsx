@@ -18,11 +18,11 @@ function Header() {
       const currentDateTime = new Date();
       const formattedDate = format(
         currentDateTime,
-        "EEEE dd 'de' MMMM 'del' yyyy",
+        "EEEE d 'de' MMMM 'del' yyyy",
         { locale: es }
       );
       const formattedTime = format(currentDateTime, "HH:mm", { locale: es });
-      setDate(formattedDate);
+      setDate(formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1));
       setTime(formattedTime);
     };
     const interval = setInterval(updateDateTime, 1000);

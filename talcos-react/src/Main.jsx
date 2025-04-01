@@ -6,6 +6,7 @@ import {
   Error,
   FastInventory,
   GenerateInitialReport,
+  GenerateNovelty,
   GenerateReport,
   GenerateReportMenu,
   Home,
@@ -101,6 +102,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="generatereport" element={<GenerateReport />}>
             <Route path="generatereportmenu" element={<GenerateReportMenu />} />
             <Route path="initialreport" element={<GenerateInitialReport />} />
+            <Route path="noveltyoption" element={<GenerateNovelty />} />
           </Route>
           <Route path="monitoring" element={<Monitoring />} />
           <Route path="inventory" element={<Inventory />}>
