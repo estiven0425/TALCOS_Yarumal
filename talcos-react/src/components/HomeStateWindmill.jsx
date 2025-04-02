@@ -102,6 +102,7 @@ function HomeStateWindmill() {
             operador: recent?.operador?.nombre_usuario || "No se registró",
             horometro:
               recent?.horometro_informe_inicial ||
+              recent?.horometro_inicio_paro_novedad ||
               recent?.horometro_fin_paro_novedad ||
               "No se registró",
             paro:

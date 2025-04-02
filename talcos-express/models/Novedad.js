@@ -34,12 +34,10 @@ const Novedad = sequelize.define(
     referencia_novedad: {
       type: DataTypes.STRING(250),
       allowNull: true,
-      defaultValue: "No se registró",
     },
     bulto_novedad: {
       type: DataTypes.STRING(250),
       allowNull: true,
-      defaultValue: "No se registró",
     },
     operador_novedad: {
       type: DataTypes.BIGINT,
@@ -52,7 +50,6 @@ const Novedad = sequelize.define(
     bob_cat_novedad: {
       type: DataTypes.STRING(250),
       allowNull: true,
-      defaultValue: "No se registró",
     },
     carguero_novedad: {
       type: DataTypes.BIGINT,

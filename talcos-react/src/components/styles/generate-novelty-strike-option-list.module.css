@@ -1,0 +1,44 @@
+﻿.generateNoveltyStrikeOptionListMainTable {
+  border-collapse: separate;
+  border-spacing: 0px 10px;
+  width: 100%;
+}
+
+.generateNoveltyStrikeOptionListMainTableHead,
+.generateNoveltyStrikeOptionListMainTableBody {
+  width: 100%;
+}
+
+.generateNoveltyStrikeOptionListMainTableHead tr,
+.generateNoveltyStrikeOptionListMainTableBody tr {
+  width: 100%;
+}
+
+.generateNoveltyStrikeOptionListMainTableHead tr th {
+  font-size: 1rem;
+  vertical-align: baseline;
+  text-align: center;
+  width: 14.28;
+}
+
+.generateNoveltyStrikeOptionListMainTableBody tr td {
+  font-size: 1rem;
+  vertical-align: baseline;
+  text-align: center;
+  width: 14.28;
+}
+
+.generateNoveltyStrikeOptionListMainAlternative {
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
+}
+
+.generateNoveltyStrikeOptionListMainAlternative h2 {
+  margin: 0px;
+  text-align: center;
+}

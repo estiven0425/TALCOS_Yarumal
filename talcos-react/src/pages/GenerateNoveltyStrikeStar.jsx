@@ -1,15 +1,15 @@
-import GenerateNoveltyStrikeOption from "./GenerateNoveltyStrikeOption";
+import GenerateNoveltyStrikeStarForm from "../components/GenerateNoveltyStrikeStarForm";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import Style from "./styles/generate-novelty-form.module.css";
 
-function GenerateNoveltyStrike() {
+function GenerateNoveltyStrikeStar() {
   return (
     <ProtectedRoute>
       <section className={Style.generateNoveltyForm}>
-        <GenerateNoveltyStrikeOption />
+        <GenerateNoveltyStrikeStarForm />
       </section>
     </ProtectedRoute>
   );
 }
 
-export default GenerateNoveltyStrike;
+export default GenerateNoveltyStrikeStar;

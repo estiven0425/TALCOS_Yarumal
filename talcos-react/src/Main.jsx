@@ -7,6 +7,12 @@ import {
   FastInventory,
   GenerateInitialReport,
   GenerateNovelty,
+  GenerateNoveltyStrike,
+  GenerateNoveltyStrikeStar,
+  GenerateNoveltyChangeReference,
+  GenerateNoveltyChangeOperator,
+  GenerateNoveltyChangeFreighter,
+  GenerateNoveltyChangeMechanic,
   GenerateReport,
   GenerateReportMenu,
   Home,
@@ -103,6 +109,27 @@ createRoot(document.getElementById("root")).render(
             <Route path="generatereportmenu" element={<GenerateReportMenu />} />
             <Route path="initialreport" element={<GenerateInitialReport />} />
             <Route path="noveltyoption" element={<GenerateNovelty />} />
+            <Route path="noveltystrike" element={<GenerateNoveltyStrike />} />
+            <Route
+              path="noveltystrikestar"
+              element={<GenerateNoveltyStrikeStar />}
+            />
+            <Route
+              path="noveltyreference"
+              element={<GenerateNoveltyChangeReference />}
+            />
+            <Route
+              path="noveltyoperator"
+              element={<GenerateNoveltyChangeOperator />}
+            />
+            <Route
+              path="noveltyfreighter"
+              element={<GenerateNoveltyChangeFreighter />}
+            />
+            <Route
+              path="noveltymechanic"
+              element={<GenerateNoveltyChangeMechanic />}
+            />
           </Route>
           <Route path="monitoring" element={<Monitoring />} />
           <Route path="inventory" element={<Inventory />}>
