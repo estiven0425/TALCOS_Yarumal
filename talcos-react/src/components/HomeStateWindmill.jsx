@@ -140,7 +140,9 @@ function HomeStateWindmill() {
             </section>
             <section className={Style.homeStateWindmillMainSecondary}>
               <p>
-                {molino.paro ? (
+                {molino.paro ||
+                molino.operador === "No se registró" ||
+                molino.horometro === "No se registró" ? (
                   <i
                     className={`bi bi-x-circle-fill ${Style.homeStateWindmillMainSecondaryIconAlternative}`}
                   ></i>

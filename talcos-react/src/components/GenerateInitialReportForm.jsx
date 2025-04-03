@@ -6,6 +6,7 @@ import Style from "./styles/generate-initial-report-form.module.css";
 
 function GenerateInitialReportForm() {
   const [currentShift, setCurrentShift] = useState(null);
+  const [currentData, setCurrentData] = useState([]);
   const [controlCalidad, setControlCalidad] = useState([]);
   const [mecanico, setMecanico] = useState([]);
   const [operador, setOperador] = useState([]);
@@ -30,6 +31,7 @@ function GenerateInitialReportForm() {
   const [selectedControlCalidad, setSelectedControlCalidad] = useState("");
   const [selectedMecanico, setSelectedMecanico] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingAlternative, setLoadingAlternative] = useState(true);
   const [sendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
   const [serverError, setServerError] = useState(null);
@@ -86,12 +88,34 @@ function GenerateInitialReportForm() {
           compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
         );
 
+        const currentDate = currentTime.toISOString().split("T")[0];
+        const {
+          nombre_turno: turno,
+          inicio_turno: inicioTurno,
+          fin_turno: finTurno,
+        } = currentShift;
+        const responseStartReport = await axios.get(
+          `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
+        const reports = responseStartReport.data;
+
         currentShift.inicio_turno = currentShift.inicio_turno.slice(0, 5);
         currentShift.fin_turno = currentShift.fin_turno.slice(0, 5);
 
+        setCurrentData(reports);
         setCurrentShift(currentShift);
       } catch (error) {
         console.error("Error al obtener el turno:", error);
+      } finally {
+        setLoadingAlternative(false);
       }
     };
 
@@ -380,16 +404,25 @@ function GenerateInitialReportForm() {
 
   return (
     <>
-      {sendStatus === true ? (
+      {loadingAlternative ? (
         <motion.div
           className={Style.generateInitialReportFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1>Reporte inicial creado con éxito</h1>
+          <div className={Style.loader}></div>
         </motion.div>
-      ) : (
+      ) : sendStatus === true ? (
+        <motion.div
+          className={Style.generateInitialReportFormAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1>Informe inicial creado con éxito</h1>
+        </motion.div>
+      ) : currentData.length === 0 ? (
         <motion.form
           className={Style.generateInitialReportForm}
           onSubmit={sendCreate}
@@ -398,7 +431,7 @@ function GenerateInitialReportForm() {
           transition={{ duration: 0.5 }}
         >
           <header className={Style.generateInitialReportFormHeader}>
-            <h1>Complete los datos para crear el reporte inicial</h1>
+            <h1>Complete los datos para crear el informe inicial</h1>
           </header>
           <main className={Style.generateInitialReportFormMain}>
             <fieldset className={Style.generateInitialReportFormMainPrimary}>
@@ -727,6 +760,15 @@ function GenerateInitialReportForm() {
             )}
           </footer>
         </motion.form>
+      ) : (
+        <motion.div
+          className={Style.generateInitialReportFormAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1>El informe inicial del turno ya ha sido creado</h1>
+        </motion.div>
       )}
     </>
   );
