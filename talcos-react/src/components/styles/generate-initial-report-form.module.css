@@ -221,6 +221,59 @@
   transition: all 0.5s ease-in-out;
 }
 
+.generateInitialReportFormMainEspecialAlternative {
+  flex-direction: row !important;
+  grid-column: span 2;
+  justify-content: space-between !important;
+}
+
+.generateInitialReportFormMainEspecialAlternative h2 {
+  font-size: 1.25rem !important;
+  text-align: left !important;
+  width: 100%;
+}
+
+.generateInitialReportFormMainEspecialAlternative div {
+  align-content: center;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  padding: 0px;
+  width: 100%;
+}
+
+.generateInitialReportFormMainEspecialAlternative div label {
+  align-content: center;
+  border: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  padding: 0px;
+  width: 25%;
+}
+
+.generateInitialReportFormMainEspecialAlternative div label input {
+  accent-color: #0061c2;
+  cursor: pointer;
+  height: 1rem;
+  outline: transparent 1px solid;
+  transition: all 0.5s ease-in-out;
+  width: 1rem;
+}
+
+.generateInitialReportFormMainEspecialAlternative div label input:checked,
+.generateInitialReportFormMainEspecialAlternative div label input:hover,
+.generateInitialReportFormMainEspecialAlternative div label input:focus {
+  accent-color: #017fd3;
+  outline: transparent 1px solid;
+}
+
 .generateInitialReportFormMainEspecial {
   grid-column: span 2;
 }

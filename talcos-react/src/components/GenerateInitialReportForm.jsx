@@ -30,6 +30,7 @@ function GenerateInitialReportForm() {
     useState("");
   const [selectedControlCalidad, setSelectedControlCalidad] = useState("");
   const [selectedMecanico, setSelectedMecanico] = useState("");
+  const [molinoEnabled, setMolinoEnabled] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingAlternative, setLoadingAlternative] = useState(true);
   const [sendStatus, setSendStatus] = useState(false);
@@ -150,7 +151,7 @@ function GenerateInitialReportForm() {
           await Promise.all([
             axios.post(
               `http://${localIP}:3000/usuarios/informeinicialusuario`,
-              { idPerfil: 3 }
+              { idPerfil: 4 }
             ),
             axios.post(
               `http://${localIP}:3000/usuarios/informeinicialusuario`,
@@ -196,6 +197,9 @@ function GenerateInitialReportForm() {
   useEffect(() => {
     setCargueroInformeInicial(new Array(bobCat.length).fill(""));
   }, [bobCat]);
+  useEffect(() => {
+    setMolinoEnabled(new Array(molino.length).fill(true));
+  }, [molino]);
 
   const addQualityControl = (id_usuario, nombre_usuario) => {
     setControlCalidadInformeInicial((prev) => [
@@ -262,6 +266,13 @@ function GenerateInitialReportForm() {
       return updated;
     });
   };
+  const handleMolinoToggle = (index) => {
+    setMolinoEnabled((prev) => {
+      const updated = [...prev];
+      updated[index] = !updated[index];
+      return updated;
+    });
+  };
   const validation = () => {
     const errors = {};
 
@@ -273,48 +284,34 @@ function GenerateInitialReportForm() {
       errors.mecanicoInformeInicial = "El mecánico del informe es obligatorio.";
     }
 
-    const operadorErrors = operadorInformeInicial.map((operador, index) =>
-      !operador
-        ? `El operador del ${molino[index].nombre_molino} es obligatorio.`
-        : null
-    );
+    const molinoErrors = molino.map((molinoItem, index) => {
+      if (!molinoEnabled[index]) return null;
 
-    if (operadorErrors.some((error) => error)) {
-      errors.operadorInformeInicial = operadorErrors;
+      const molinoError = {};
+
+      if (!operadorInformeInicial[index]?.trim()) {
+        molinoError.operador = `El operador del ${molinoItem.nombre_molino} es obligatorio.`;
+      }
+      if (!referenciaInformeInicial[index]?.trim()) {
+        molinoError.referencia = `La referencia del ${molinoItem.nombre_molino} es obligatoria.`;
+      }
+      if (!bultoInformeInicial[index]?.trim()) {
+        molinoError.bulto = `El bulto del ${molinoItem.nombre_molino} es obligatorio.`;
+      }
+      if (
+        !horometroInformeInicial[index]?.trim() ||
+        !/^[0-9.,]+$/.test(horometroInformeInicial[index]) ||
+        parseFloat(horometroInformeInicial[index]) < 0
+      ) {
+        molinoError.horometro = `El horómetro del ${molinoItem.nombre_molino} debe ser un número válido y mayor o igual a 0.`;
+      }
+
+      return Object.keys(molinoError).length > 0 ? molinoError : null;
+    });
+
+    if (molinoErrors.some((error) => error)) {
+      errors.molino = molinoErrors;
     }
-
-    const referenciaErrors = referenciaInformeInicial.map((referencia, index) =>
-      !referencia
-        ? `La referencia del ${molino[index].nombre_molino} es obligatoria.`
-        : null
-    );
-
-    if (referenciaErrors.some((error) => error)) {
-      errors.referenciaInformeInicial = referenciaErrors;
-    }
-
-    const bultoErrors = bultoInformeInicial.map((bulto, index) =>
-      !bulto
-        ? `El bulto del ${molino[index].nombre_molino} es obligatorio.`
-        : null
-    );
-
-    if (bultoErrors.some((error) => error)) {
-      errors.bultoInformeInicial = bultoErrors;
-    }
-
-    const horometroErrors = horometroInformeInicial.map((horometro, index) =>
-      !horometro
-        ? `El horómetro del ${molino[index].nombre_molino} es obligatorio.`
-        : !/^[0-9.,]+$/.test(horometro) || parseFloat(horometro) < 0
-        ? `El horómetro del ${molino[index].nombre_molino} debe ser un número válido y mayor o igual a 0.`
-        : null
-    );
-
-    if (horometroErrors.some((error) => error)) {
-      errors.horometroInformeInicial = horometroErrors;
-    }
-
     const cargueroErrors = cargueroInformeInicial.map((carguero, index) =>
       !carguero
         ? `El operador del ${bobCat[index].nombre_bob_cat} es obligatorio.`
@@ -361,14 +358,21 @@ function GenerateInitialReportForm() {
       ...persistentData,
       mecanico_informe_inicial: mecanico.id_usuario,
     }));
-    const molinoObjects = molinoInformeInicial.map((_, index) => ({
-      ...persistentData,
-      operador_informe_inicial: operadorInformeInicial[index],
-      molino_informe_inicial: molinoInformeInicial[index],
-      referencia_informe_inicial: referenciaInformeInicial[index],
-      bulto_informe_inicial: bultoInformeInicial[index],
-      horometro_informe_inicial: horometroInformeInicial[index],
-    }));
+    const molinoObjects = molinoInformeInicial
+      .map((_, index) => {
+        if (!molinoEnabled[index]) return null;
+
+        return {
+          ...persistentData,
+          operador_informe_inicial: operadorInformeInicial[index],
+          molino_informe_inicial: molinoInformeInicial[index],
+          referencia_informe_inicial: referenciaInformeInicial[index],
+          bulto_informe_inicial: bultoInformeInicial[index],
+          horometro_informe_inicial: horometroInformeInicial[index],
+        };
+      })
+      .filter((molino) => molino !== null);
+
     const bobCatObjects = bobCatInformeInicial.map((_, index) => ({
       ...persistentData,
       carguero_informe_inicial: cargueroInformeInicial[index],
@@ -542,14 +546,29 @@ function GenerateInitialReportForm() {
                 className={Style.generateInitialReportFormMainSecondary}
                 key={index}
               >
-                <div className={Style.generateInitialReportFormMainEspecial}>
+                <div
+                  className={
+                    Style.generateInitialReportFormMainEspecialAlternative
+                  }
+                >
                   <h2>{molinoItem.nombre_molino}</h2>
+                  <div>
+                    <label>
+                      Habilitar molino
+                      <input
+                        checked={molinoEnabled[index]}
+                        onChange={() => handleMolinoToggle(index)}
+                        type="checkbox"
+                      />
+                    </label>
+                  </div>
                 </div>
                 <div className={Style.generateInitialReportFormMainEspecial}>
                   <label htmlFor={`operador-${index}`}>
                     Operador de molino
                   </label>
                   <select
+                    disabled={!molinoEnabled[index]}
                     id={`operador-${index}`}
                     name={`operador-${index}`}
                     onChange={(e) =>
@@ -569,21 +588,22 @@ function GenerateInitialReportForm() {
                       </option>
                     ))}
                   </select>
-                  {validationError.operadorInformeInicial &&
-                    validationError.operadorInformeInicial[index] && (
+                  {validationError.molino &&
+                    validationError.molino[index]?.operador && (
                       <motion.span
                         className={Style.generateInitialReportFormValidation}
                         initial={{ zoom: 0 }}
                         animate={{ zoom: 1 }}
                         transition={{ duration: 0.5 }}
                       >
-                        {validationError.operadorInformeInicial[index]}
+                        {validationError.molino[index].operador}
                       </motion.span>
                     )}
                 </div>
                 <div>
                   <label htmlFor={`referencia-${index}`}>Referencia</label>
                   <select
+                    disabled={!molinoEnabled[index]}
                     id={`referencia-${index}`}
                     name={`referencia-${index}`}
                     onChange={(e) =>
@@ -603,21 +623,22 @@ function GenerateInitialReportForm() {
                       </option>
                     ))}
                   </select>
-                  {validationError.referenciaInformeInicial &&
-                    validationError.referenciaInformeInicial[index] && (
+                  {validationError.molino &&
+                    validationError.molino[index]?.referencia && (
                       <motion.span
                         className={Style.generateInitialReportFormValidation}
                         initial={{ zoom: 0 }}
                         animate={{ zoom: 1 }}
                         transition={{ duration: 0.5 }}
                       >
-                        {validationError.referenciaInformeInicial[index]}
+                        {validationError.molino[index].referencia}
                       </motion.span>
                     )}
                 </div>
                 <div>
                   <label htmlFor={`bulto-${index}`}>Bulto</label>
                   <select
+                    disabled={!molinoEnabled[index]}
                     id={`bulto-${index}`}
                     name={`bulto-${index}`}
                     onChange={(e) => handleBultoChange(index, e.target.value)}
@@ -632,21 +653,22 @@ function GenerateInitialReportForm() {
                       </option>
                     ))}
                   </select>
-                  {validationError.bultoInformeInicial &&
-                    validationError.bultoInformeInicial[index] && (
+                  {validationError.molino &&
+                    validationError.molino[index]?.bulto && (
                       <motion.span
                         className={Style.generateInitialReportFormValidation}
                         initial={{ zoom: 0 }}
                         animate={{ zoom: 1 }}
                         transition={{ duration: 0.5 }}
                       >
-                        {validationError.bultoInformeInicial[index]}
+                        {validationError.molino[index].bulto}
                       </motion.span>
                     )}
                 </div>
                 <div className={Style.generateInitialReportFormMainEspecial}>
                   <label htmlFor={`horometro-${index}`}>Horómetro</label>
                   <input
+                    disabled={!molinoEnabled[index]}
                     id={`horometro-${index}`}
                     name={`horometro-${index}`}
                     onChange={(e) =>
@@ -656,15 +678,15 @@ function GenerateInitialReportForm() {
                     type="text"
                     value={horometroInformeInicial[index] || ""}
                   />
-                  {validationError.horometroInformeInicial &&
-                    validationError.horometroInformeInicial[index] && (
+                  {validationError.molino &&
+                    validationError.molino[index]?.horometro && (
                       <motion.span
                         className={Style.generateInitialReportFormValidation}
                         initial={{ zoom: 0 }}
                         animate={{ zoom: 1 }}
                         transition={{ duration: 0.5 }}
                       >
-                        {validationError.horometroInformeInicial[index]}
+                        {validationError.molino[index].horometro}
                       </motion.span>
                     )}
                 </div>
