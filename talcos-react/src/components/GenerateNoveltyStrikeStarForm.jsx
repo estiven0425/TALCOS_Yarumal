@@ -315,7 +315,7 @@ function GenerateNoveltyStrikeStarForm() {
   };
 
   const redirectGenerateReport = () => {
-    navigate("/generatereport/generatereportmenu");
+    navigate("/generatereport/noveltystrike");
   };
 
   return (

@@ -9,7 +9,7 @@ function GenerateNoveltyStrikeOption() {
     navigate("/generatereport/noveltystrikestar");
   };
   const redirectFinish = () => {
-    navigate("/generatereport/noveltystrikefinish");
+    navigate("/generatereport/noveltystrikestop");
   };
 
   return (

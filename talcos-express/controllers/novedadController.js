@@ -130,6 +130,57 @@ exports.listaNovedad = async (req, res) => {
   }
 };
 
+exports.listaParoNovedad = async (req, res) => {
+  const { fecha, turno, inicioTurno, finTurno } = req.query;
+
+  let fechaConsulta = new Date(fecha);
+
+  const [horaInicio, minutoInicio] = inicioTurno.split(":").map(Number);
+  const [horaFin, minutoFin] = finTurno.split(":").map(Number);
+
+  if (horaFin < horaInicio) {
+    fechaConsulta.setDate(fechaConsulta.getDate() - 1);
+  }
+
+  const fechaFormateada = fechaConsulta.toISOString().split("T")[0];
+
+  try {
+    const novedades = await Novedad.findAll({
+      include: [
+        {
+          model: Usuarios,
+          attributes: ["nombre_usuario"],
+          as: "operador",
+        },
+        {
+          model: Usuarios,
+          attributes: ["nombre_usuario"],
+          as: "carguero",
+        },
+        {
+          model: Usuarios,
+          attributes: ["nombre_usuario"],
+          as: "mecanico",
+        },
+      ],
+      where: {
+        [Op.and]: [
+          { fecha_novedad: fechaFormateada },
+          { turno_novedad: turno },
+          { tipo_novedad: "Paro" },
+          { fin_paro_novedad: null },
+          { actividad_novedad: true },
+        ],
+      },
+      order: [["hora_novedad", "DESC"]],
+    });
+
+    res.json(novedades);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener novedades" });
+  }
+};
+
 exports.crearNovedad = async (req, res) => {
   const novedad = req.body;
 
@@ -180,5 +231,26 @@ exports.actualizarNovedad = async (req, res) => {
     res.json(resultados);
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar las novedades" });
+  }
+};
+
+exports.finParoNovedad = async (req, res) => {
+  const { id_novedad, fin_paro_novedad, horometro_fin_paro_novedad } = req.body;
+
+  try {
+    const novedad = await Novedad.findByPk(id_novedad);
+
+    if (novedad) {
+      await novedad.update({
+        fin_paro_novedad,
+        horometro_fin_paro_novedad,
+      });
+
+      res.json(novedad);
+    } else {
+      res.status(404).json({ error: "Paro no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al finalizar el paro" });
   }
 };

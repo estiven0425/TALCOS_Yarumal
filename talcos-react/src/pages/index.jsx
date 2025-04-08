@@ -4,6 +4,8 @@ export { default as GenerateInitialReport } from "./GenerateInitialReport";
 export { default as GenerateNovelty } from "./GenerateNovelty";
 export { default as GenerateNoveltyStrike } from "./GenerateNoveltyStrike";
 export { default as GenerateNoveltyStrikeStar } from "./GenerateNoveltyStrikeStar";
+export { default as GenerateNoveltyStrikeStop } from "./GenerateNoveltyStrikeStop";
+export { default as GenerateNoveltyStrikeStopFinish } from "./GenerateNoveltyStrikeStopFinish";
 export { default as GenerateNoveltyChangeReference } from "./GenerateNoveltyChangeReference";
 export { default as GenerateNoveltyChangeOperator } from "./GenerateNoveltyChangeOperator";
 export { default as GenerateNoveltyChangeFreighter } from "./GenerateNoveltyChangeFreighter";

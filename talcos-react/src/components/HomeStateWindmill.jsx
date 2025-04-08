@@ -95,16 +95,20 @@ function HomeStateWindmill() {
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
+          const horometro =
+            [
+              recent?.horometro_informe_inicial,
+              recent?.horometro_inicio_paro_novedad,
+              recent?.horometro_fin_paro_novedad,
+            ]
+              .filter((value) => value !== undefined && value !== null)
+              .sort((a, b) => b - a)[0] || "No se registró";
 
           return {
             id_molino: molino.id_molino,
             nombre_molino: molino.nombre_molino,
             operador: recent?.operador?.nombre_usuario || "No se registró",
-            horometro:
-              recent?.horometro_informe_inicial ||
-              recent?.horometro_inicio_paro_novedad ||
-              recent?.horometro_fin_paro_novedad ||
-              "No se registró",
+            horometro,
             paro:
               novelty?.inicio_paro_novedad && !novelty?.fin_paro_novedad
                 ? novelty?.inicio_paro_novedad
