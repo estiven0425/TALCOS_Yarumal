@@ -6,7 +6,7 @@ function GenerateNoveltyStrikeOption() {
   const navigate = useNavigate();
 
   const redirectStar = () => {
-    navigate("/generatereport/noveltystrikestar");
+    navigate("/generatereport/noveltystrikestart");
   };
   const redirectFinish = () => {
     navigate("/generatereport/noveltystrikestop");

@@ -8,7 +8,7 @@ import {
   GenerateInitialReport,
   GenerateNovelty,
   GenerateNoveltyStrike,
-  GenerateNoveltyStrikeStar,
+  GenerateNoveltyStrikeStart,
   GenerateNoveltyStrikeStop,
   GenerateNoveltyStrikeStopFinish,
   GenerateNoveltyChangeReference,
@@ -113,8 +113,8 @@ createRoot(document.getElementById("root")).render(
             <Route path="noveltyoption" element={<GenerateNovelty />} />
             <Route path="noveltystrike" element={<GenerateNoveltyStrike />} />
             <Route
-              path="noveltystrikestar"
-              element={<GenerateNoveltyStrikeStar />}
+              path="noveltystrikestart"
+              element={<GenerateNoveltyStrikeStart />}
             />
             <Route
               path="noveltystrikestop"

@@ -86,7 +86,6 @@ const Novedad = sequelize.define(
     motivo_paro_novedad: {
       type: DataTypes.STRING(250),
       allowNull: true,
-      defaultValue: "No se registró",
     },
     observacion_novedad: {
       type: DataTypes.STRING(1000),

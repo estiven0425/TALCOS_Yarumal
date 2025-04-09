@@ -2,19 +2,17 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/generate-novelty-strike-star-form.module.css";
+import Style from "./styles/generate-novelty-reference-form.module.css";
 
-function GenerateNoveltyStrikeStarForm() {
+function GenerateNoveltyReferenceForm() {
   const [currentShift, setCurrentShift] = useState(null);
+  const [referencia, setReferencia] = useState([]);
+  const [bulto, setBulto] = useState([]);
   const [currentData, setCurrentData] = useState(null);
   const [molino, setMolino] = useState([]);
   const [molinoNovedad, setMolinoNovedad] = useState("");
-  const [inicioParoNovedad, setInicioParoNovedad] = useState("");
-  const [finParoNovedad, setFinParoNovedad] = useState("");
-  const [horometroInicioParoNovedad, setHorometroInicioParoNovedad] =
-    useState("");
-  const [horometroFinParoNovedad, setHorometroFinParoNovedad] = useState("");
-  const [motivoParoNovedad, setMotivoParoNovedad] = useState("");
+  const [referenciaNovedad, setReferenciaNovedad] = useState("");
+  const [bultoNovedad, setBultoNovedad] = useState("");
   const [observacionNovedad, setObservacionNovedad] = useState("");
   const [loading, setLoading] = useState(false);
   const [sendStatus, setSendStatus] = useState(false);
@@ -26,7 +24,7 @@ function GenerateNoveltyStrikeStarForm() {
   useEffect(() => {
     if (sendStatus) {
       const timer = setTimeout(() => {
-        navigate("/generatereport/generatereportmenu");
+        navigate("/generatereport/noveltyoption");
       }, 3000);
 
       return () => clearTimeout(timer);
@@ -123,21 +121,20 @@ function GenerateNoveltyStrikeStarForm() {
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
+          const isInParo =
+            novelty?.tipo_novedad === "Paro" &&
+            novelty?.inicio_paro_novedad &&
+            novelty?.horometro_inicio_paro_novedad &&
+            !novelty?.fin_paro_novedad &&
+            !novelty?.horometro_fin_paro_novedad;
 
           return {
             name: molino.nombre_molino,
-            reference:
-              recent?.referencia_informe_inicial ||
-              recent?.referencia_novedad ||
-              "No se registró",
-            bulk:
-              recent?.bulto_informe_inicial ||
-              recent?.bulto_novedad ||
-              "No se registró",
             operator:
               recent?.operador_informe_inicial ||
               recent?.operador_novedad ||
               "",
+            isInParo,
           };
         });
 
@@ -150,65 +147,35 @@ function GenerateNoveltyStrikeStarForm() {
 
     getData();
   }, [localIP]);
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+        const [referenciaRes, bultoRes] = await Promise.all([
+          axios.get(`http://${localIP}:3000/referencias`),
+          axios.get(`http://${localIP}:3000/bultos`),
+        ]);
+
+        setReferencia(referenciaRes.data);
+        setBulto(bultoRes.data);
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+      }
+    };
+
+    getItems();
+  }, [localIP]);
 
   const validation = () => {
     const errors = {};
+
     if (!molinoNovedad.trim()) {
       errors.molinoNovedad = "El molino es obligatorio.";
     }
-    if (!inicioParoNovedad.trim()) {
-      errors.inicioParoNovedad = "El inicio de paro es obligatorio.";
-    } else {
-      const [inicioTurnoHour, inicioTurnoMinute] = currentShift.inicio_turno
-        .split(":")
-        .map(Number);
-      const [finTurnoHour, finTurnoMinute] = currentShift.fin_turno
-        .split(":")
-        .map(Number);
-      const [inicioParoHour, inicioParoMinute] = inicioParoNovedad
-        .split(":")
-        .map(Number);
-      const inicioTurnoMs = (inicioTurnoHour * 60 + inicioTurnoMinute) * 60000;
-      const finTurnoMs = (finTurnoHour * 60 + finTurnoMinute) * 60000;
-      const inicioParoMs = (inicioParoHour * 60 + inicioParoMinute) * 60000;
-
-      if (!(inicioParoMs >= inicioTurnoMs && inicioParoMs < finTurnoMs)) {
-        errors.inicioParoNovedad =
-          "La hora de inicio debe estar dentro del turno.";
-      }
+    if (!referenciaNovedad.trim()) {
+      errors.referenciaNovedad = "La referencia es obligatorio.";
     }
-    if (finParoNovedad.trim()) {
-      const [inicioTurnoHour, inicioTurnoMinute] = currentShift.inicio_turno
-        .split(":")
-        .map(Number);
-      const [finTurnoHour, finTurnoMinute] = currentShift.fin_turno
-        .split(":")
-        .map(Number);
-      const [finParoHour, finParoMinute] = finParoNovedad
-        .split(":")
-        .map(Number);
-      const inicioTurnoMs = (inicioTurnoHour * 60 + inicioTurnoMinute) * 60000;
-      const finTurnoMs = (finTurnoHour * 60 + finTurnoMinute) * 60000;
-      const finParoMs = (finParoHour * 60 + finParoMinute) * 60000;
-
-      if (!(finParoMs >= inicioTurnoMs && finParoMs < finTurnoMs)) {
-        errors.finParoNovedad = "La hora de fin debe estar dentro del turno.";
-      }
-    }
-    if (!horometroInicioParoNovedad.trim()) {
-      errors.horometroInicioParoNovedad =
-        "El horómetro de inicio de paro es obligatorio.";
-    }
-    if (horometroInicioParoNovedad && isNaN(horometroInicioParoNovedad)) {
-      errors.horometroInicioParoNovedad =
-        "El horómetro de inicio debe ser un número.";
-    }
-    if (horometroFinParoNovedad && isNaN(horometroFinParoNovedad)) {
-      errors.horometroFinParoNovedad =
-        "El horómetro de fin debe ser un número.";
-    }
-    if (!motivoParoNovedad.trim()) {
-      errors.motivoParoNovedad = "El motivo del paro es obligatorio.";
+    if (!bultoNovedad.trim()) {
+      errors.bultoNovedad = "El bulto es obligatorio.";
     }
 
     setValidationError(errors);
@@ -266,32 +233,16 @@ function GenerateNoveltyStrikeStarForm() {
     const matchingWindmill = molino?.find(
       (item) => item.name === molinoNovedad
     );
-    const referenceNovelety = matchingWindmill?.reference || "";
-    const bulkNovelty = matchingWindmill?.bulk || "";
     const operatorNovelty = matchingWindmill?.operator || "";
-    const inicioParoConSegundos = inicioParoNovedad.includes(":")
-      ? `${inicioParoNovedad}:00`
-      : inicioParoNovedad;
-    const finParoConSegundos = finParoNovedad.trim()
-      ? `${finParoNovedad}:00`
-      : null;
-    const horometroFinParo = horometroFinParoNovedad.trim()
-      ? parseFloat(horometroFinParoNovedad)
-      : null;
     const novedad = [
       {
         fecha_novedad: fechaNovedad,
         hora_novedad: horaNovedad,
         turno_novedad: shiftNovelty,
-        tipo_novedad: "Paro",
+        tipo_novedad: "Cambio de referencia",
         molino_novedad: molinoNovedad,
-        referencia_novedad: referenceNovelety,
-        bulto_novedad: bulkNovelty,
-        inicio_paro_novedad: inicioParoConSegundos,
-        fin_paro_novedad: finParoConSegundos,
-        horometro_inicio_paro_novedad: horometroInicioParoNovedad,
-        horometro_fin_paro_novedad: horometroFinParo,
-        motivo_paro_novedad: motivoParoNovedad,
+        referencia_novedad: referenciaNovedad,
+        bulto_novedad: bultoNovedad,
         operador_novedad: operatorNovelty,
         observacion_novedad: observacionNovedad,
       },
@@ -307,7 +258,7 @@ function GenerateNoveltyStrikeStarForm() {
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear la novedad. Por favor, inténtelo de nuevo.`
+          `Error al crear el cambio de referencia. Por favor, inténtelo de nuevo.`
         );
         setLoading(false);
       }
@@ -315,33 +266,35 @@ function GenerateNoveltyStrikeStarForm() {
   };
 
   const redirectGenerateReport = () => {
-    navigate("/generatereport/noveltystrike");
+    navigate("/generatereport/noveltyoption");
   };
 
   return (
     <>
       {sendStatus === true ? (
         <motion.div
-          className={Style.generateNoveltyStrikeFormAlternative}
+          className={Style.generateNoveltyStrikeStartFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1>Novedad creada con éxito</h1>
+          <h1>Referencia cambiada con éxito</h1>
         </motion.div>
       ) : (
         <motion.form
-          className={Style.generateNoveltyStrikeForm}
+          className={Style.generateNoveltyStrikeStartForm}
           onSubmit={sendCreate}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <header className={Style.generateNoveltyStrikeFormHeader}>
-            <h1>Complete los datos para crear la novedad</h1>
+          <header className={Style.generateNoveltyStrikeStartFormHeader}>
+            <h1>Complete los datos para cambiar la referencia</h1>
           </header>
-          <main className={Style.generateNoveltyStrikeFormMain}>
-            <fieldset className={Style.generateNoveltyStrikeFormMainEspecial}>
+          <main className={Style.generateNoveltyStrikeStartFormMain}>
+            <fieldset
+              className={Style.generateNoveltyStrikeStartFormMainEspecial}
+            >
               <label htmlFor="molinoNovedad">Seleccione un molino</label>
               <select
                 id="molinoNovedad"
@@ -352,24 +305,19 @@ function GenerateNoveltyStrikeStarForm() {
                 <option value="" disabled>
                   Seleccione un molino
                 </option>
-                {currentData &&
-                  currentData
-                    .filter(
-                      (item) =>
-                        item.molino_informe_inicial &&
-                        item.molino_informe_inicial.trim() !== ""
-                    )
-                    .map((item, index) => (
-                      <option key={index} value={item.molino_informe_inicial}>
-                        {item.molino_informe_inicial}
-                      </option>
-                    ))}
+                {molino
+                  .filter((item) => !item.isInParo)
+                  .map((item, index) => (
+                    <option key={index} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
               </select>
               {!validationError.molinoNovedad ? (
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyStrikeFormValidation}
+                  className={Style.generateNoveltyStrikeStartFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -379,138 +327,71 @@ function GenerateNoveltyStrikeStarForm() {
               )}
             </fieldset>
             <fieldset>
-              <label htmlFor="inicioParoNovedad">Inicio de paro</label>
-              <input
-                id="inicioParoNovedad"
-                name="inicioParoNovedad"
-                type="time"
-                value={inicioParoNovedad}
-                onChange={(e) => setInicioParoNovedad(e.target.value)}
-              />
-              {!validationError.inicioParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.inicioParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset>
-              <label htmlFor="finParoNovedad">Fin de paro</label>
-              <input
-                id="finParoNovedad"
-                name="finParoNovedad"
-                type="time"
-                value={finParoNovedad}
-                onChange={(e) => setFinParoNovedad(e.target.value)}
-              />
-              {!validationError.finParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.finParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset>
-              <label htmlFor="horometroInicioParoNovedad">
-                Horómetro inicio de Paro
-              </label>
-              <input
-                id="horometroInicioParoNovedad"
-                name="horometroInicioParoNovedad"
-                type="text"
-                value={horometroInicioParoNovedad}
-                onChange={(e) => setHorometroInicioParoNovedad(e.target.value)}
-                placeholder="Ingrese el horómetro de inicio de paro"
-              />
-              {!validationError.horometroInicioParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.horometroInicioParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset>
-              <label htmlFor="horometroFinParoNovedad">
-                Horómetro fin de paro
-              </label>
-              <input
-                id="horometroFinParoNovedad"
-                name="horometroFinParoNovedad"
-                type="text"
-                value={horometroFinParoNovedad}
-                onChange={(e) => setHorometroFinParoNovedad(e.target.value)}
-                placeholder="Ingrese el horómetro de fin de paro"
-              />
-              {!validationError.horometroFinParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.horometroFinParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset className={Style.generateNoveltyStrikeFormMainEspecial}>
-              <label htmlFor="motivoParoNovedad">Motivo del paro</label>
+              <label htmlFor="referenciaNovedad">Referencia</label>
               <select
-                id="motivoParoNovedad"
-                name="motivoParoNovedad"
-                value={motivoParoNovedad}
-                onChange={(e) => setMotivoParoNovedad(e.target.value)}
+                id="referenciaNovedad"
+                name="referenciaNovedad"
+                onChange={(e) => setReferenciaNovedad(e.target.value)}
+                value={referenciaNovedad}
               >
                 <option value="" disabled>
-                  Seleccione un motivo
+                  Seleccione una referencia
                 </option>
-                <option value="Sostenimiento general">
-                  Sostenimiento general
-                </option>
-                <option value="Mecánico">Mecánico</option>
-                <option value="Eléctrico">Eléctrico</option>
-                <option value="Corte de energía">Corte de energía</option>
-                <option value="Materia prima">Materia prima</option>
-                <option value="Empaque">Empaque</option>
-                <option value="Guijos">Guijos</option>
-                <option value="Personal">Personal</option>
-                <option value="Programado">Programado</option>
-                <option value="Bodega">Bodega</option>
-                <option value="Otro">Otro</option>
+                {referencia.map((referencia) => (
+                  <option
+                    key={referencia.id_referencia}
+                    value={referencia.nombre_referencia}
+                  >
+                    {referencia.nombre_referencia}
+                  </option>
+                ))}
               </select>
-              {!validationError.motivoParoNovedad ? (
+              {!validationError.referenciaNovedad ? (
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyStrikeFormValidation}
+                  className={Style.generateNoveltyStrikeStartFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  {validationError.motivoParoNovedad}
+                  {validationError.referenciaNovedad}
                 </motion.span>
               )}
             </fieldset>
-            <fieldset className={Style.generateNoveltyStrikeFormMainEspecial}>
+            <fieldset>
+              <label htmlFor="bultoNovedad">Bulto</label>
+              <select
+                id="bultoNovedad"
+                name="bultoNovedad"
+                onChange={(e) => setBultoNovedad(e.target.value)}
+                value={bultoNovedad}
+              >
+                <option value="" disabled>
+                  Seleccione un bulto
+                </option>
+                {bulto.map((bulto) => (
+                  <option key={bulto.id_bulto} value={bulto.nombre_bulto}>
+                    {bulto.nombre_bulto}
+                  </option>
+                ))}
+              </select>
+              {!validationError.bultoNovedad ? (
+                <></>
+              ) : (
+                <motion.span
+                  className={Style.generateNoveltyStrikeStartFormValidation}
+                  initial={{ zoom: 0 }}
+                  animate={{ zoom: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {validationError.bultoNovedad}
+                </motion.span>
+              )}
+            </fieldset>
+            <fieldset
+              className={Style.generateNoveltyStrikeStartFormMainEspecial}
+            >
               <label htmlFor="observacionNovedad">Observación</label>
               <input
                 id="observacionNovedad"
@@ -524,7 +405,7 @@ function GenerateNoveltyStrikeStarForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyStrikeFormValidation}
+                  className={Style.generateNoveltyStrikeStartFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -534,18 +415,22 @@ function GenerateNoveltyStrikeStarForm() {
               )}
             </fieldset>
           </main>
-          <footer className={Style.generateNoveltyStrikeFormFooter}>
+          <footer className={Style.generateNoveltyStrikeStartFormFooter}>
             <button onClick={() => redirectGenerateReport()} type="button">
               Cancelar
             </button>
             <button type="submit">
-              {loading ? <div className={Style.loader}></div> : "Crear novedad"}
+              {loading ? (
+                <div className={Style.loader}></div>
+              ) : (
+                "Cambiar referencia"
+              )}
             </button>
             {!serverError ? (
               <></>
             ) : (
               <motion.span
-                className={Style.generateNoveltyStrikeFormValidationServer}
+                className={Style.generateNoveltyStrikeStartFormValidationServer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -560,4 +445,4 @@ function GenerateNoveltyStrikeStarForm() {
   );
 }
 
-export default GenerateNoveltyStrikeStarForm;
+export default GenerateNoveltyReferenceForm;

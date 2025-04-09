@@ -69,7 +69,9 @@ function HomeStateWindmill() {
         );
 
         const reports = responseReport.data;
-        const news = responseNews.data;
+        const news = responseNews.data.filter(
+          (novelty) => novelty.tipo_novedad === "Paro"
+        );
         const combinedData = mills.map((molino) => {
           const report = reports
             .filter(

@@ -1,4 +1,4 @@
-.generateNoveltyStrikeFormAlternative {
+.generateNoveltyStrikeStartFormAlternative {
   align-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.generateNoveltyStrikeForm {
+.generateNoveltyStrikeStartForm {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -22,19 +22,19 @@
   width: 100%;
 }
 
-.generateNoveltyStrikeFormHeader {
+.generateNoveltyStrikeStartFormHeader {
   box-sizing: border-box;
   width: 100%;
 }
 
-.generateNoveltyStrikeFormHeader h1,
-.generateNoveltyStrikeFormAlternative h1 {
+.generateNoveltyStrikeStartFormHeader h1,
+.generateNoveltyStrikeStartFormAlternative h1 {
   font-size: 1.5rem;
   margin: 0px;
   text-align: center;
 }
 
-.generateNoveltyStrikeFormMain {
+.generateNoveltyStrikeStartFormMain {
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -43,7 +43,7 @@
   height: 100%;
 }
 
-.generateNoveltyStrikeFormMain fieldset {
+.generateNoveltyStrikeStartFormMain fieldset {
   align-content: stretch;
   border: none;
   box-sizing: border-box;
@@ -54,13 +54,13 @@
   padding: 0px;
 }
 
-.generateNoveltyStrikeFormMain fieldset label {
+.generateNoveltyStrikeStartFormMain fieldset label {
   padding-bottom: 5px;
   text-align: left;
   width: 100%;
 }
 
-.generateNoveltyStrikeFormMain fieldset select {
+.generateNoveltyStrikeStartFormMain fieldset select {
   border: none;
   border-radius: 20px;
   box-sizing: border-box;
@@ -71,7 +71,7 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyStrikeFormMain fieldset input {
+.generateNoveltyStrikeStartFormMain fieldset input {
   border-color: transparent;
   border-radius: 20px;
   outline: transparent 1px solid;
@@ -79,11 +79,11 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyStrikeFormMainEspecial {
+.generateNoveltyStrikeStartFormMainEspecial {
   grid-column: span 2;
 }
 
-.generateNoveltyStrikeFormFooter {
+.generateNoveltyStrikeStartFormFooter {
   align-content: stretch;
   box-sizing: border-box;
   display: flex;
@@ -93,7 +93,7 @@
   gap: 10px;
 }
 
-.generateNoveltyStrikeFormFooter button {
+.generateNoveltyStrikeStartFormFooter button {
   background-color: #0037ae;
   border-color: transparent;
   border-radius: 20px;
@@ -105,30 +105,30 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyStrikeFormFooter button:hover,
-.generateNoveltyStrikeFormMainPrimary ul li button:hover {
+.generateNoveltyStrikeStartFormFooter button:hover,
+.generateNoveltyStrikeStartFormMainPrimary ul li button:hover {
   background-color: #0048b6;
 }
 
-.generateNoveltyStrikeFormFooter button:focus,
-.generateNoveltyStrikeFormMainPrimary ul li button:focus {
+.generateNoveltyStrikeStartFormFooter button:focus,
+.generateNoveltyStrikeStartFormMainPrimary ul li button:focus {
   background-color: #0048b6;
 }
 
-.generateNoveltyStrikeFormMainPrimary select:focus,
-.generateNoveltyStrikeFormMainSecondary input:focus,
-.generateNoveltyStrikeFormMainSecondary select:focus,
-.generateNoveltyStrikeFormMainThird select:focus,
-.generateNoveltyStrikeFormMainFourth input:focus {
+.generateNoveltyStrikeStartFormMainPrimary select:focus,
+.generateNoveltyStrikeStartFormMainSecondary input:focus,
+.generateNoveltyStrikeStartFormMainSecondary select:focus,
+.generateNoveltyStrikeStartFormMainThird select:focus,
+.generateNoveltyStrikeStartFormMainFourth input:focus {
   outline: #0095dc 1px solid;
 }
 
-.generateNoveltyStrikeFormValidation {
+.generateNoveltyStrikeStartFormValidation {
   text-align: left;
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyStrikeFormValidationServer {
+.generateNoveltyStrikeStartFormValidationServer {
   text-align: center;
   transition: all 0.5s ease-in-out;
 }

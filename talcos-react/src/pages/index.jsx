@@ -3,7 +3,7 @@ export { default as FastInventory } from "./FastInventory";
 export { default as GenerateInitialReport } from "./GenerateInitialReport";
 export { default as GenerateNovelty } from "./GenerateNovelty";
 export { default as GenerateNoveltyStrike } from "./GenerateNoveltyStrike";
-export { default as GenerateNoveltyStrikeStar } from "./GenerateNoveltyStrikeStar";
+export { default as GenerateNoveltyStrikeStart } from "./GenerateNoveltyStrikeStart";
 export { default as GenerateNoveltyStrikeStop } from "./GenerateNoveltyStrikeStop";
 export { default as GenerateNoveltyStrikeStopFinish } from "./GenerateNoveltyStrikeStopFinish";
 export { default as GenerateNoveltyChangeReference } from "./GenerateNoveltyChangeReference";
