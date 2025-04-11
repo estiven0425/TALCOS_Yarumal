@@ -2,16 +2,14 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/generate-novelty-reference-form.module.css";
+import Style from "./styles/generate-novelty-operator-form.module.css";
 
-function GenerateNoveltyReferenceForm() {
-  const [referencia, setReferencia] = useState([]);
-  const [bulto, setBulto] = useState([]);
+function GenerateNoveltyOperatorForm() {
+  const [operador, setOperador] = useState([]);
   const [currentData, setCurrentData] = useState(null);
   const [molino, setMolino] = useState([]);
   const [molinoNovedad, setMolinoNovedad] = useState("");
-  const [referenciaNovedad, setReferenciaNovedad] = useState("");
-  const [bultoNovedad, setBultoNovedad] = useState("");
+  const [operadorNovedad, setOperadorNovedad] = useState("");
   const [observacionNovedad, setObservacionNovedad] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingAlternative, setLoadingAlternative] = useState(true);
@@ -129,10 +127,11 @@ function GenerateNoveltyReferenceForm() {
 
           return {
             name: molino.nombre_molino,
-            operator:
-              recent?.operador_informe_inicial ||
-              recent?.operador_novedad ||
+            referencia:
+              recent?.referencia_informe_inicial ||
+              recent?.referencia_novedad ||
               "",
+            bulto: recent?.bulto_informe_inicial || recent?.bulto_novedad || "",
             isInParo,
           };
         });
@@ -149,21 +148,19 @@ function GenerateNoveltyReferenceForm() {
     getData();
   }, [localIP]);
   useEffect(() => {
-    const getItems = async () => {
+    const getUser = async () => {
       try {
-        const [referenciaRes, bultoRes] = await Promise.all([
-          axios.get(`http://${localIP}:3000/referencias`),
-          axios.get(`http://${localIP}:3000/bultos`),
-        ]);
-
-        setReferencia(referenciaRes.data);
-        setBulto(bultoRes.data);
+        const response = await axios.post(
+          `http://${localIP}:3000/usuarios/informeinicialusuario`,
+          { idPerfil: 6 }
+        );
+        setOperador(response.data);
       } catch (error) {
-        console.error("Error al obtener datos:", error);
+        console.error("Error al obtener los usuarios: ", error);
       }
     };
 
-    getItems();
+    getUser();
   }, [localIP]);
 
   const validation = () => {
@@ -172,11 +169,8 @@ function GenerateNoveltyReferenceForm() {
     if (!molinoNovedad.trim()) {
       errors.molinoNovedad = "El molino es obligatorio.";
     }
-    if (!referenciaNovedad.trim()) {
-      errors.referenciaNovedad = "La referencia es obligatorio.";
-    }
-    if (!bultoNovedad.trim()) {
-      errors.bultoNovedad = "El bulto es obligatorio.";
+    if (!operadorNovedad.trim()) {
+      errors.operadorNovedad = "El operador del molino es obligatorio.";
     }
 
     setValidationError(errors);
@@ -234,17 +228,18 @@ function GenerateNoveltyReferenceForm() {
     const matchingWindmill = molino?.find(
       (item) => item.name === molinoNovedad
     );
-    const operatorNovelty = matchingWindmill?.operator || "";
+    const referencenovelty = matchingWindmill?.referencia || "";
+    const bulknovelty = matchingWindmill?.bulto || "";
     const novedad = [
       {
         fecha_novedad: fechaNovedad,
         hora_novedad: horaNovedad,
         turno_novedad: shiftNovelty,
-        tipo_novedad: "Cambio de referencia",
+        tipo_novedad: "Cambio de operador de molino",
         molino_novedad: molinoNovedad,
-        referencia_novedad: referenciaNovedad,
-        bulto_novedad: bultoNovedad,
-        operador_novedad: operatorNovelty,
+        referencia_novedad: referencenovelty,
+        bulto_novedad: bulknovelty,
+        operador_novedad: operadorNovedad,
         observacion_novedad: observacionNovedad,
       },
     ];
@@ -274,7 +269,7 @@ function GenerateNoveltyReferenceForm() {
     <>
       {loadingAlternative ? (
         <motion.div
-          className={Style.generateNoveltyReferenceFormAlternative}
+          className={Style.generateNoveltyOperatorFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -283,25 +278,25 @@ function GenerateNoveltyReferenceForm() {
         </motion.div>
       ) : sendStatus === true ? (
         <motion.div
-          className={Style.generateNoveltyReferenceFormAlternative}
+          className={Style.generateNoveltyOperatorFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1>Referencia cambiada con éxito</h1>
+          <h1>Operador de molino cambiadd con éxito</h1>
         </motion.div>
       ) : currentData.length > 0 ? (
         <motion.form
-          className={Style.generateNoveltyReferenceForm}
+          className={Style.generateNoveltyOperatorForm}
           onSubmit={sendCreate}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <header className={Style.generateNoveltyReferenceFormHeader}>
-            <h1>Complete los datos para cambiar la referencia</h1>
+          <header className={Style.generateNoveltyOperatorFormHeader}>
+            <h1>Complete los datos para cambiar el operador del molino</h1>
           </header>
-          <main className={Style.generateNoveltyReferenceFormMain}>
+          <main className={Style.generateNoveltyOperatorFormMain}>
             <fieldset>
               <label htmlFor="molinoNovedad">Seleccione un molino</label>
               <select
@@ -325,7 +320,7 @@ function GenerateNoveltyReferenceForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyReferenceFormValidation}
+                  className={Style.generateNoveltyOperatorFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -334,67 +329,37 @@ function GenerateNoveltyReferenceForm() {
                 </motion.span>
               )}
             </fieldset>
-            <div className={Style.generateNoveltyReferenceFormMainAlternative}>
+            <div className={Style.generateNoveltyOperatorFormMainAlternative}>
               <fieldset>
-                <label htmlFor="referenciaNovedad">Referencia</label>
+                <label htmlFor="operadorNovedad">Operador de molino</label>
                 <select
-                  id="referenciaNovedad"
-                  name="referenciaNovedad"
-                  onChange={(e) => setReferenciaNovedad(e.target.value)}
-                  value={referenciaNovedad}
+                  id="operadorNovedad"
+                  name="operadorNovedad"
+                  onChange={(e) => setOperadorNovedad(e.target.value)}
+                  value={operadorNovedad}
                 >
                   <option value="" disabled>
-                    Seleccione una referencia
+                    Seleccione un operador de molino
                   </option>
-                  {referencia.map((referencia) => (
+                  {operador.map((operador) => (
                     <option
-                      key={referencia.id_referencia}
-                      value={referencia.nombre_referencia}
+                      key={operador.id_usuario}
+                      value={operador.id_usuario}
                     >
-                      {referencia.nombre_referencia}
+                      {operador.nombre_usuario}
                     </option>
                   ))}
                 </select>
-                {!validationError.referenciaNovedad ? (
+                {!validationError.operadorNovedad ? (
                   <></>
                 ) : (
                   <motion.span
-                    className={Style.generateNoveltyReferenceFormValidation}
+                    className={Style.generateNoveltyOperatorFormValidation}
                     initial={{ zoom: 0 }}
                     animate={{ zoom: 1 }}
                     transition={{ duration: 0.5 }}
                   >
-                    {validationError.referenciaNovedad}
-                  </motion.span>
-                )}
-              </fieldset>
-              <fieldset>
-                <label htmlFor="bultoNovedad">Bulto</label>
-                <select
-                  id="bultoNovedad"
-                  name="bultoNovedad"
-                  onChange={(e) => setBultoNovedad(e.target.value)}
-                  value={bultoNovedad}
-                >
-                  <option value="" disabled>
-                    Seleccione un bulto
-                  </option>
-                  {bulto.map((bulto) => (
-                    <option key={bulto.id_bulto} value={bulto.nombre_bulto}>
-                      {bulto.nombre_bulto}
-                    </option>
-                  ))}
-                </select>
-                {!validationError.bultoNovedad ? (
-                  <></>
-                ) : (
-                  <motion.span
-                    className={Style.generateNoveltyReferenceFormValidation}
-                    initial={{ zoom: 0 }}
-                    animate={{ zoom: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {validationError.bultoNovedad}
+                    {validationError.operadorNovedad}
                   </motion.span>
                 )}
               </fieldset>
@@ -413,7 +378,7 @@ function GenerateNoveltyReferenceForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyReferenceFormValidation}
+                  className={Style.generateNoveltyOperatorFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -423,7 +388,7 @@ function GenerateNoveltyReferenceForm() {
               )}
             </fieldset>
           </main>
-          <footer className={Style.generateNoveltyReferenceFormFooter}>
+          <footer className={Style.generateNoveltyOperatorFormFooter}>
             <button onClick={() => redirectGenerateReport()} type="button">
               Cancelar
             </button>
@@ -431,14 +396,14 @@ function GenerateNoveltyReferenceForm() {
               {loading ? (
                 <div className={Style.loader}></div>
               ) : (
-                "Cambiar referencia"
+                "Cambiar operador de molino"
               )}
             </button>
             {!serverError ? (
               <></>
             ) : (
               <motion.span
-                className={Style.generateNoveltyReferenceFormValidationServer}
+                className={Style.generateNoveltyOperatorFormValidationServer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -450,7 +415,7 @@ function GenerateNoveltyReferenceForm() {
         </motion.form>
       ) : (
         <motion.div
-          className={Style.generateNoveltyReferenceFormAlternative}
+          className={Style.generateNoveltyOperatorFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -462,4 +427,4 @@ function GenerateNoveltyReferenceForm() {
   );
 }
 
-export default GenerateNoveltyReferenceForm;
+export default GenerateNoveltyOperatorForm;

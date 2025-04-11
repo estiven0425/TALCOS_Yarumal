@@ -1,6 +1,6 @@
 ﻿import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Style from "./styles/generate-novelty-strike-start-form.module.css";
 
@@ -17,6 +17,7 @@ function GenerateNoveltyStrikeStartForm() {
   const [motivoParoNovedad, setMotivoParoNovedad] = useState("");
   const [observacionNovedad, setObservacionNovedad] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingAlternative, setLoadingAlternative] = useState(true);
   const [sendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
   const [serverError, setServerError] = useState(null);
@@ -152,6 +153,8 @@ function GenerateNoveltyStrikeStartForm() {
         setMolino(combinedData);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
+      } finally {
+        setLoadingAlternative(false);
       }
     };
 
@@ -340,7 +343,16 @@ function GenerateNoveltyStrikeStartForm() {
 
   return (
     <>
-      {sendStatus === true ? (
+      {loadingAlternative ? (
+        <motion.div
+          className={Style.generateNoveltyStrikeStartFormAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className={Style.loader}></div>
+        </motion.div>
+      ) : sendStatus === true ? (
         <motion.div
           className={Style.generateNoveltyStrikeStartFormAlternative}
           initial={{ opacity: 0 }}
@@ -349,7 +361,7 @@ function GenerateNoveltyStrikeStartForm() {
         >
           <h1>Paro creado con éxito</h1>
         </motion.div>
-      ) : (
+      ) : currentData.length > 0 ? (
         <motion.form
           className={Style.generateNoveltyStrikeStartForm}
           onSubmit={sendCreate}
@@ -576,6 +588,15 @@ function GenerateNoveltyStrikeStartForm() {
             )}
           </footer>
         </motion.form>
+      ) : (
+        <motion.div
+          className={Style.generateNoveltyStrikeStartFormAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1>El informe inicial del turno no ha sido creado</h1>
+        </motion.div>
       )}
     </>
   );

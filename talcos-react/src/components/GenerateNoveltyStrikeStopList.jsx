@@ -5,7 +5,9 @@ import axios from "axios";
 import Style from "./styles/generate-novelty-strike-stop-list.module.css";
 
 function GenerateNoveltyStrikeStopList() {
+  const [currentData, setCurrentData] = useState(null);
   const [novelty, setNovelty] = useState({});
+  const [loadingAlternative, setLoadingAlternative] = useState(true);
   const navigate = useNavigate();
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
@@ -45,6 +47,17 @@ function GenerateNoveltyStrikeStopList() {
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+        const responseStartReport = await axios.get(
+          `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/listaparonovedad`,
           {
@@ -56,12 +69,15 @@ function GenerateNoveltyStrikeStopList() {
             },
           }
         );
-
+        const reports = responseStartReport.data;
         const news = responseNews.data;
 
+        setCurrentData(reports);
         setNovelty(news);
       } catch (error) {
         console.error("Error al obtener las novedades: ", error);
+      } finally {
+        setLoadingAlternative(false);
       }
     };
 
@@ -77,75 +93,101 @@ function GenerateNoveltyStrikeStopList() {
 
   return (
     <>
-      <header className={Style.generateNoveltyStrikeStopListHeader}>
-        <h1>Seleccione un paro para finalizar</h1>
-      </header>
-      <main className={Style.generateNoveltyStrikeStopListMain}>
-        {novelty.length > 0 ? (
-          <motion.table
-            className={Style.generateNoveltyStrikeStopListMainTable}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <thead className={Style.generateNoveltyStrikeStopListMainTableHead}>
-              <tr>
-                <th>Molino</th>
-                <th>Operador de molino</th>
-                <th>Inicio de paro</th>
-                <th>Fin de paro</th>
-                <th>Horómetro de inicio de paro</th>
-                <th>Horómetro de fin de paro</th>
-                <th>Motivo paro</th>
-              </tr>
-            </thead>
-            <tbody className={Style.generateNoveltyStrikeStopListMainTableBody}>
-              {novelty.map((novedad) => (
-                <tr
-                  key={novedad.id_novedad}
-                  onClick={() => redirectEditNovelty(novedad.id_novedad)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      redirectEditNovelty(novedad.id_novedad);
-                    }
-                  }}
-                  tabIndex="0"
+      {loadingAlternative ? (
+        <motion.div
+          className={Style.generateNoveltyStrikeStopListAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className={Style.loader}></div>
+        </motion.div>
+      ) : currentData.length > 0 ? (
+        <>
+          <header className={Style.generateNoveltyStrikeStopListHeader}>
+            <h1>Seleccione un paro para finalizar</h1>
+          </header>
+          <main className={Style.generateNoveltyStrikeStopListMain}>
+            {novelty.length > 0 ? (
+              <motion.table
+                className={Style.generateNoveltyStrikeStopListMainTable}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <thead
+                  className={Style.generateNoveltyStrikeStopListMainTableHead}
                 >
-                  <td>{novedad.molino_novedad}</td>
-                  <td>{novedad.operador?.nombre_usuario}</td>
-                  <td>{novedad.inicio_paro_novedad}</td>
-                  <td>
-                    {novedad.fin_paro_novedad !== null
-                      ? novedad.fin_paro_novedad
-                      : "No registrado"}
-                  </td>
-                  <td>{novedad.horometro_inicio_paro_novedad}</td>
-                  <td>
-                    {novedad.horometro_fin_paro_novedad !== null
-                      ? novedad.horometro_fin_paro_novedad
-                      : "No registrado"}
-                  </td>
-                  <td>{novedad.motivo_paro_novedad}</td>
-                </tr>
-              ))}
-            </tbody>
-          </motion.table>
-        ) : (
-          <motion.div
-            className={Style.generateNoveltyStrikeStopListMainAlternative}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2>No existen paros</h2>
-          </motion.div>
-        )}
-      </main>
-      <footer className={Style.generateNoveltyStrikeStopListFooter}>
-        <button type="button" onClick={() => redirectNovelty()}>
-          Volver
-        </button>
-      </footer>
+                  <tr>
+                    <th>Molino</th>
+                    <th>Operador de molino</th>
+                    <th>Inicio de paro</th>
+                    <th>Fin de paro</th>
+                    <th>Horómetro de inicio de paro</th>
+                    <th>Horómetro de fin de paro</th>
+                    <th>Motivo paro</th>
+                  </tr>
+                </thead>
+                <tbody
+                  className={Style.generateNoveltyStrikeStopListMainTableBody}
+                >
+                  {novelty.map((novedad) => (
+                    <tr
+                      key={novedad.id_novedad}
+                      onClick={() => redirectEditNovelty(novedad.id_novedad)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          redirectEditNovelty(novedad.id_novedad);
+                        }
+                      }}
+                      tabIndex="0"
+                    >
+                      <td>{novedad.molino_novedad}</td>
+                      <td>{novedad.operador?.nombre_usuario}</td>
+                      <td>{novedad.inicio_paro_novedad}</td>
+                      <td>
+                        {novedad.fin_paro_novedad !== null
+                          ? novedad.fin_paro_novedad
+                          : "No registrado"}
+                      </td>
+                      <td>{novedad.horometro_inicio_paro_novedad}</td>
+                      <td>
+                        {novedad.horometro_fin_paro_novedad !== null
+                          ? novedad.horometro_fin_paro_novedad
+                          : "No registrado"}
+                      </td>
+                      <td>{novedad.motivo_paro_novedad}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </motion.table>
+            ) : (
+              <motion.div
+                className={Style.generateNoveltyStrikeStopListMainAlternative}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <h2>No existen paros</h2>
+              </motion.div>
+            )}
+          </main>
+          <footer className={Style.generateNoveltyStrikeStopListFooter}>
+            <button type="button" onClick={() => redirectNovelty()}>
+              Volver
+            </button>
+          </footer>
+        </>
+      ) : (
+        <motion.div
+          className={Style.generateNoveltyStrikeStopListAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1>El informe inicial del turno no ha sido creado</h1>
+        </motion.div>
+      )}
     </>
   );
 }

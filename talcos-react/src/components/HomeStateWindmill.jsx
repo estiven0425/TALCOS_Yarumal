@@ -69,6 +69,9 @@ function HomeStateWindmill() {
         );
 
         const reports = responseReport.data;
+        const operatorsChange = responseNews.data.filter(
+          (novelty) => novelty.tipo_novedad === "Cambio de operador de molino"
+        );
         const news = responseNews.data.filter(
           (novelty) => novelty.tipo_novedad === "Paro"
         );
@@ -83,9 +86,12 @@ function HomeStateWindmill() {
                 new Date(a.hora_informe_inicial)
             )[0];
           const novelty = news
-            .filter(
-              (novelty) => novelty.molino_novedad === molino.nombre_molino
-            )
+            .filter((n) => n.molino_novedad === molino.nombre_molino)
+            .sort(
+              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+            )[0];
+          const operatorChange = operatorsChange
+            .filter((n) => n.molino_novedad === molino.nombre_molino)
             .sort(
               (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
             )[0];
@@ -109,7 +115,10 @@ function HomeStateWindmill() {
           return {
             id_molino: molino.id_molino,
             nombre_molino: molino.nombre_molino,
-            operador: recent?.operador?.nombre_usuario || "No se registró",
+            operador:
+              operatorChange?.operador?.nombre_usuario ||
+              recent?.operador?.nombre_usuario ||
+              "No se registró",
             horometro,
             paro:
               novelty?.inicio_paro_novedad && !novelty?.fin_paro_novedad
