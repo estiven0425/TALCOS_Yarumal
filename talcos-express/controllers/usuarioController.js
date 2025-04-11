@@ -108,7 +108,7 @@ exports.registroTransportador = async (req, res) => {
         },
       ],
       where: {
-        perfil_usuario: 10,
+        perfil_usuario: 9,
         actividad_usuario: true,
       },
     });

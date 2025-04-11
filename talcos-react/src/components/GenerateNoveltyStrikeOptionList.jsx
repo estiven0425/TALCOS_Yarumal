@@ -4,7 +4,9 @@ import axios from "axios";
 import Style from "./styles/generate-novelty-strike-option-list.module.css";
 
 function GenerateNoveltyStrikeOptionList() {
+  const [currentData, setCurrentData] = useState(null);
   const [novelty, setNovelty] = useState({});
+  const [loadingAlternative, setLoadingAlternative] = useState(true);
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
@@ -43,6 +45,17 @@ function GenerateNoveltyStrikeOptionList() {
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+        const responseStartReport = await axios.get(
+          `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/listanovedad`,
           {
@@ -54,12 +67,15 @@ function GenerateNoveltyStrikeOptionList() {
             },
           }
         );
-
+        const reports = responseStartReport.data;
         const news = responseNews.data;
 
+        setCurrentData(reports);
         setNovelty(news);
       } catch (error) {
         console.error("Error al obtener las novedades: ", error);
+      } finally {
+        setLoadingAlternative(false);
       }
     };
 
@@ -68,7 +84,16 @@ function GenerateNoveltyStrikeOptionList() {
 
   return (
     <>
-      {novelty.length > 0 ? (
+      {loadingAlternative ? (
+        <motion.div
+          className={Style.generateNoveltyStrikeOptionListAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className={Style.loader}></div>
+        </motion.div>
+      ) : novelty.length > 0 ? (
         <motion.table
           className={Style.generateNoveltyStrikeOptionListMainTable}
           initial={{ opacity: 0 }}
@@ -115,7 +140,11 @@ function GenerateNoveltyStrikeOptionList() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h2>No existen paros</h2>
+          <h2>
+            {currentData.length === 0
+              ? "El informe inicial del turno no ha sido creado"
+              : "No existen paros"}
+          </h2>
         </motion.div>
       )}
     </>

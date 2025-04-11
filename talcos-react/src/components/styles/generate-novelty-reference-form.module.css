@@ -1,4 +1,4 @@
-.generateNoveltyStrikeStartFormAlternative {
+.generateNoveltyReferenceFormAlternative {
   align-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.generateNoveltyStrikeStartForm {
+.generateNoveltyReferenceForm {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -22,45 +22,48 @@
   width: 100%;
 }
 
-.generateNoveltyStrikeStartFormHeader {
+.generateNoveltyReferenceFormHeader {
   box-sizing: border-box;
   width: 100%;
 }
 
-.generateNoveltyStrikeStartFormHeader h1,
-.generateNoveltyStrikeStartFormAlternative h1 {
+.generateNoveltyReferenceFormHeader h1,
+.generateNoveltyReferenceFormAlternative h1 {
   font-size: 1.5rem;
   margin: 0px;
   text-align: center;
 }
 
-.generateNoveltyStrikeStartFormMain {
+.generateNoveltyReferenceFormMain {
+  align-content: flex-start;
   box-sizing: border-box;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(auto, 1fr);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   gap: 15px;
+  justify-content: flex-start;
   height: 100%;
+  width: 100%;
 }
 
-.generateNoveltyStrikeStartFormMain fieldset {
+.generateNoveltyReferenceFormMain fieldset {
   align-content: stretch;
   border: none;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 0px;
 }
 
-.generateNoveltyStrikeStartFormMain fieldset label {
+.generateNoveltyReferenceFormMain fieldset label {
   padding-bottom: 5px;
   text-align: left;
   width: 100%;
 }
 
-.generateNoveltyStrikeStartFormMain fieldset select {
+.generateNoveltyReferenceFormMain fieldset select {
   border: none;
   border-radius: 20px;
   box-sizing: border-box;
@@ -71,7 +74,7 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyStrikeStartFormMain fieldset input {
+.generateNoveltyReferenceFormMain fieldset input {
   border-color: transparent;
   border-radius: 20px;
   outline: transparent 1px solid;
@@ -79,11 +82,47 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyStrikeStartFormMainEspecial {
-  grid-column: span 2;
+.generateNoveltyReferenceFormMainAlternative {
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 15px;
+  justify-content: flex-start;
+  width: 100%;
 }
 
-.generateNoveltyStrikeStartFormFooter {
+.generateNoveltyReferenceFormMainAlternative fieldset {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding: 0px;
+  width: 100%;
+}
+
+.generateNoveltyReferenceFormMainAlternative fieldset label {
+  padding-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.generateNoveltyReferenceFormMainAlternative fieldset select {
+  border: none;
+  border-radius: 20px;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: transparent 1px solid;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateNoveltyReferenceFormFooter {
   align-content: stretch;
   box-sizing: border-box;
   display: flex;
@@ -93,7 +132,7 @@
   gap: 10px;
 }
 
-.generateNoveltyStrikeStartFormFooter button {
+.generateNoveltyReferenceFormFooter button {
   background-color: #0037ae;
   border-color: transparent;
   border-radius: 20px;
@@ -105,30 +144,30 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyStrikeStartFormFooter button:hover,
-.generateNoveltyStrikeStartFormMainPrimary ul li button:hover {
+.generateNoveltyReferenceFormFooter button:hover,
+.generateNoveltyReferenceFormMainPrimary ul li button:hover {
   background-color: #0048b6;
 }
 
-.generateNoveltyStrikeStartFormFooter button:focus,
-.generateNoveltyStrikeStartFormMainPrimary ul li button:focus {
+.generateNoveltyReferenceFormFooter button:focus,
+.generateNoveltyReferenceFormMainPrimary ul li button:focus {
   background-color: #0048b6;
 }
 
-.generateNoveltyStrikeStartFormMainPrimary select:focus,
-.generateNoveltyStrikeStartFormMainSecondary input:focus,
-.generateNoveltyStrikeStartFormMainSecondary select:focus,
-.generateNoveltyStrikeStartFormMainThird select:focus,
-.generateNoveltyStrikeStartFormMainFourth input:focus {
+.generateNoveltyReferenceFormMainPrimary select:focus,
+.generateNoveltyReferenceFormMainSecondary input:focus,
+.generateNoveltyReferenceFormMainSecondary select:focus,
+.generateNoveltyReferenceFormMainThird select:focus,
+.generateNoveltyReferenceFormMainFourth input:focus {
   outline: #0095dc 1px solid;
 }
 
-.generateNoveltyStrikeStartFormValidation {
+.generateNoveltyReferenceFormValidation {
   text-align: left;
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyStrikeStartFormValidationServer {
+.generateNoveltyReferenceFormValidationServer {
   text-align: center;
   transition: all 0.5s ease-in-out;
 }

@@ -5,7 +5,6 @@ import axios from "axios";
 import Style from "./styles/generate-novelty-reference-form.module.css";
 
 function GenerateNoveltyReferenceForm() {
-  const [currentShift, setCurrentShift] = useState(null);
   const [referencia, setReferencia] = useState([]);
   const [bulto, setBulto] = useState([]);
   const [currentData, setCurrentData] = useState(null);
@@ -15,6 +14,7 @@ function GenerateNoveltyReferenceForm() {
   const [bultoNovedad, setBultoNovedad] = useState("");
   const [observacionNovedad, setObservacionNovedad] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingAlternative, setLoadingAlternative] = useState(true);
   const [sendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
   const [serverError, setServerError] = useState(null);
@@ -57,12 +57,11 @@ function GenerateNoveltyReferenceForm() {
         const currentShift = shifts.find((shift) =>
           compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
         );
+
         if (!currentShift) {
           console.error("No se pudo determinar el turno actual.");
           return;
         }
-
-        setCurrentShift(currentShift);
 
         const currentDate = currentTime.toISOString().split("T")[0];
         const {
@@ -142,6 +141,8 @@ function GenerateNoveltyReferenceForm() {
         setMolino(combinedData);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
+      } finally {
+        setLoadingAlternative(false);
       }
     };
 
@@ -271,30 +272,37 @@ function GenerateNoveltyReferenceForm() {
 
   return (
     <>
-      {sendStatus === true ? (
+      {loadingAlternative ? (
         <motion.div
-          className={Style.generateNoveltyStrikeStartFormAlternative}
+          className={Style.generateNoveltyReferenceFormAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className={Style.loader}></div>
+        </motion.div>
+      ) : sendStatus === true ? (
+        <motion.div
+          className={Style.generateNoveltyReferenceFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
           <h1>Referencia cambiada con éxito</h1>
         </motion.div>
-      ) : (
+      ) : currentData.length > 0 ? (
         <motion.form
-          className={Style.generateNoveltyStrikeStartForm}
+          className={Style.generateNoveltyReferenceForm}
           onSubmit={sendCreate}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <header className={Style.generateNoveltyStrikeStartFormHeader}>
+          <header className={Style.generateNoveltyReferenceFormHeader}>
             <h1>Complete los datos para cambiar la referencia</h1>
           </header>
-          <main className={Style.generateNoveltyStrikeStartFormMain}>
-            <fieldset
-              className={Style.generateNoveltyStrikeStartFormMainEspecial}
-            >
+          <main className={Style.generateNoveltyReferenceFormMain}>
+            <fieldset>
               <label htmlFor="molinoNovedad">Seleccione un molino</label>
               <select
                 id="molinoNovedad"
@@ -317,7 +325,7 @@ function GenerateNoveltyReferenceForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
+                  className={Style.generateNoveltyReferenceFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -326,72 +334,72 @@ function GenerateNoveltyReferenceForm() {
                 </motion.span>
               )}
             </fieldset>
-            <fieldset>
-              <label htmlFor="referenciaNovedad">Referencia</label>
-              <select
-                id="referenciaNovedad"
-                name="referenciaNovedad"
-                onChange={(e) => setReferenciaNovedad(e.target.value)}
-                value={referenciaNovedad}
-              >
-                <option value="" disabled>
-                  Seleccione una referencia
-                </option>
-                {referencia.map((referencia) => (
-                  <option
-                    key={referencia.id_referencia}
-                    value={referencia.nombre_referencia}
+            <div className={Style.generateNoveltyReferenceFormMainAlternative}>
+              <fieldset>
+                <label htmlFor="referenciaNovedad">Referencia</label>
+                <select
+                  id="referenciaNovedad"
+                  name="referenciaNovedad"
+                  onChange={(e) => setReferenciaNovedad(e.target.value)}
+                  value={referenciaNovedad}
+                >
+                  <option value="" disabled>
+                    Seleccione una referencia
+                  </option>
+                  {referencia.map((referencia) => (
+                    <option
+                      key={referencia.id_referencia}
+                      value={referencia.nombre_referencia}
+                    >
+                      {referencia.nombre_referencia}
+                    </option>
+                  ))}
+                </select>
+                {!validationError.referenciaNovedad ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={Style.generateNoveltyReferenceFormValidation}
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
                   >
-                    {referencia.nombre_referencia}
-                  </option>
-                ))}
-              </select>
-              {!validationError.referenciaNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
+                    {validationError.referenciaNovedad}
+                  </motion.span>
+                )}
+              </fieldset>
+              <fieldset>
+                <label htmlFor="bultoNovedad">Bulto</label>
+                <select
+                  id="bultoNovedad"
+                  name="bultoNovedad"
+                  onChange={(e) => setBultoNovedad(e.target.value)}
+                  value={bultoNovedad}
                 >
-                  {validationError.referenciaNovedad}
-                </motion.span>
-              )}
-            </fieldset>
+                  <option value="" disabled>
+                    Seleccione un bulto
+                  </option>
+                  {bulto.map((bulto) => (
+                    <option key={bulto.id_bulto} value={bulto.nombre_bulto}>
+                      {bulto.nombre_bulto}
+                    </option>
+                  ))}
+                </select>
+                {!validationError.bultoNovedad ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={Style.generateNoveltyReferenceFormValidation}
+                    initial={{ zoom: 0 }}
+                    animate={{ zoom: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {validationError.bultoNovedad}
+                  </motion.span>
+                )}
+              </fieldset>
+            </div>
             <fieldset>
-              <label htmlFor="bultoNovedad">Bulto</label>
-              <select
-                id="bultoNovedad"
-                name="bultoNovedad"
-                onChange={(e) => setBultoNovedad(e.target.value)}
-                value={bultoNovedad}
-              >
-                <option value="" disabled>
-                  Seleccione un bulto
-                </option>
-                {bulto.map((bulto) => (
-                  <option key={bulto.id_bulto} value={bulto.nombre_bulto}>
-                    {bulto.nombre_bulto}
-                  </option>
-                ))}
-              </select>
-              {!validationError.bultoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.bultoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset
-              className={Style.generateNoveltyStrikeStartFormMainEspecial}
-            >
               <label htmlFor="observacionNovedad">Observación</label>
               <input
                 id="observacionNovedad"
@@ -405,7 +413,7 @@ function GenerateNoveltyReferenceForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
+                  className={Style.generateNoveltyReferenceFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -415,7 +423,7 @@ function GenerateNoveltyReferenceForm() {
               )}
             </fieldset>
           </main>
-          <footer className={Style.generateNoveltyStrikeStartFormFooter}>
+          <footer className={Style.generateNoveltyReferenceFormFooter}>
             <button onClick={() => redirectGenerateReport()} type="button">
               Cancelar
             </button>
@@ -430,7 +438,7 @@ function GenerateNoveltyReferenceForm() {
               <></>
             ) : (
               <motion.span
-                className={Style.generateNoveltyStrikeStartFormValidationServer}
+                className={Style.generateNoveltyReferenceFormValidationServer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -440,6 +448,15 @@ function GenerateNoveltyReferenceForm() {
             )}
           </footer>
         </motion.form>
+      ) : (
+        <motion.div
+          className={Style.generateNoveltyReferenceFormAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1>El informe inicial del turno no ha sido creado</h1>
+        </motion.div>
       )}
     </>
   );

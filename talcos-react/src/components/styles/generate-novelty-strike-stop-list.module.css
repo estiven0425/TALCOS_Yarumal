@@ -1,4 +1,16 @@
-﻿.generateNoveltyStrikeStopListHeader {
+﻿.generateNoveltyStrikeStopListAlternative {
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.generateNoveltyStrikeStopListHeader {
   box-sizing: border-box;
   width: 100%;
 }

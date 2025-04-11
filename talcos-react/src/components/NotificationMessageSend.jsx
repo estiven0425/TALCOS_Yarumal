@@ -26,6 +26,8 @@ function NotificationMessageSend() {
   }, []);
 
   useEffect(() => {
+    if (!idUsuario) return;
+
     const getUser = async () => {
       try {
         const response = await axios.get(

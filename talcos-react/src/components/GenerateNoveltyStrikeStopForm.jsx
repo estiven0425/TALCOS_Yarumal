@@ -6,10 +6,12 @@ import Style from "./styles/generate-novelty-strike-stop-form.module.css";
 
 function GenerateNoveltyStrikeStopForm() {
   const [currentShift, setCurrentShift] = useState(null);
+  const [currentData, setCurrentData] = useState(null);
   const [idNovedad, setIdNovedad] = useState("");
   const [finParoNovedad, setFinParoNovedad] = useState("");
   const [horometroFinParoNovedad, setHorometroFinParoNovedad] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingAlternative, setLoadingAlternative] = useState(true);
   const [SendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
   const [serverError, setServerError] = useState(null);
@@ -52,8 +54,31 @@ function GenerateNoveltyStrikeStopForm() {
         }
 
         setCurrentShift(currentShift);
+
+        const currentDate = currentTime.toISOString().split("T")[0];
+        const {
+          nombre_turno: turno,
+          inicio_turno: inicioTurno,
+          fin_turno: finTurno,
+        } = currentShift;
+        const responseStartReport = await axios.get(
+          `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
+        const reports = responseStartReport.data;
+
+        setCurrentData(reports);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
+      } finally {
+        setLoadingAlternative(false);
       }
     };
 
@@ -140,7 +165,16 @@ function GenerateNoveltyStrikeStopForm() {
 
   return (
     <>
-      {SendStatus === true ? (
+      {loadingAlternative ? (
+        <motion.div
+          className={Style.generateNoveltyStrikeStopFormAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className={Style.loader}></div>
+        </motion.div>
+      ) : SendStatus === true ? (
         <motion.div
           className={Style.generateNoveltyStrikeStopFormAlternative}
           initial={{ opacity: 0 }}
@@ -149,7 +183,7 @@ function GenerateNoveltyStrikeStopForm() {
         >
           <h1>Paro finalizado con éxito</h1>
         </motion.div>
-      ) : (
+      ) : currentData.length > 0 ? (
         <motion.form
           className={Style.generateNoveltyStrikeStopForm}
           onSubmit={sendEditNovelty}
@@ -238,6 +272,15 @@ function GenerateNoveltyStrikeStopForm() {
             )}
           </footer>
         </motion.form>
+      ) : (
+        <motion.div
+          className={Style.generateNoveltyStrikeStopFormAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1>El informe inicial del turno no ha sido creado</h1>
+        </motion.div>
       )}
     </>
   );
