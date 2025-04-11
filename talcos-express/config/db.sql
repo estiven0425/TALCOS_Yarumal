@@ -200,3 +200,19 @@ CREATE TABLE `registros` (
 	CONSTRAINT PRIMARY KEY(`id_registro`),
 	CONSTRAINT FOREIGN KEY(`titular_registro`) REFERENCES `usuarios`(`id_usuario`)
 );
+
+DELIMITER //
+
+CREATE PROCEDURE obtener_usuarios_de_perfil()
+BEGIN
+  SELECT 
+    p.id_perfil,
+    p.nombre_perfil,
+    COUNT(u.id_usuario) AS cantidad_usuarios
+  FROM perfiles p
+  LEFT JOIN usuarios u ON p.id_perfil = u.perfil_usuario AND u.actividad_usuario = 1
+  WHERE p.actividad_perfil = 1
+  GROUP BY p.id_perfil, p.nombre_perfil;
+END //
+
+DELIMITER ;

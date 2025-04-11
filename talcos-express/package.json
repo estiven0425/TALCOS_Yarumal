@@ -20,12 +20,12 @@
     "jstransformer": "^1.0.0",
     "morgan": "~1.9.1",
     "mysql2": "^3.12.0",
-    "pm2": "^5.4.3",
     "pug": "^3.0.3",
     "puppeteer": "^24.4.0",
     "sequelize": "^6.37.5"
   },
   "devDependencies": {
-    "eslint": "^9.17.0"
+    "eslint": "^9.17.0",
+    "pm2": "^6.0.5"
   }
 }
