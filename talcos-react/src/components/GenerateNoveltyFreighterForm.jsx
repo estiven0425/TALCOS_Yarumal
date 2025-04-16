@@ -2,14 +2,14 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/generate-novelty-operator-form.module.css";
+import Style from "./styles/generate-novelty-freighter-form.module.css";
 
-function GenerateNoveltyOperatorForm() {
-  const [operador, setOperador] = useState([]);
+function GenerateNoveltyFreighterForm() {
+  const [carguero, setCarguero] = useState([]);
   const [currentData, setCurrentData] = useState(null);
-  const [molino, setMolino] = useState([]);
-  const [molinoNovedad, setMolinoNovedad] = useState("");
-  const [operadorNovedad, setOperadorNovedad] = useState("");
+  const [bobCat, setBotCat] = useState([]);
+  const [bobCatNovedad, setBobCatNovedad] = useState("");
+  const [cargueroNovedad, setCargueroNovedad] = useState("");
   const [observacionNovedad, setObservacionNovedad] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingAlternative, setLoadingAlternative] = useState(true);
@@ -31,8 +31,10 @@ function GenerateNoveltyOperatorForm() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
-        const mills = responseMills.data;
+        const responseBobCat = await axios.get(
+          `http://${localIP}:3000/bob_cats`
+        );
+        const bobCats = responseBobCat.data;
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
         const currentTime = new Date();
@@ -93,10 +95,11 @@ function GenerateNoveltyOperatorForm() {
         const reports = responseStartReport.data;
         const news = responseNews.data;
 
-        const combinedData = mills.map((molino) => {
+        const combinedData = bobCats.map((bobCat) => {
           const report = reports
             .filter(
-              (report) => report.molino_informe_inicial === molino.nombre_molino
+              (report) =>
+                report.bob_cat_informe_inicial === bobCat.nombre_bob_cat
             )
             .sort(
               (a, b) =>
@@ -105,7 +108,7 @@ function GenerateNoveltyOperatorForm() {
             )[0];
           const novelty = news
             .filter(
-              (novelty) => novelty.molino_novedad === molino.nombre_molino
+              (novelty) => novelty.bob_cat_novedad === bobCat.nombre_bob_cat
             )
             .sort(
               (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
@@ -118,26 +121,18 @@ function GenerateNoveltyOperatorForm() {
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
-          const isInParo =
-            novelty?.tipo_novedad === "Paro" &&
-            novelty?.inicio_paro_novedad &&
-            novelty?.horometro_inicio_paro_novedad &&
-            !novelty?.fin_paro_novedad &&
-            !novelty?.horometro_fin_paro_novedad;
 
           return {
-            name: molino.nombre_molino,
-            referencia:
-              recent?.referencia_informe_inicial ||
-              recent?.referencia_novedad ||
+            name: bobCat.nombre_bob_cat,
+            carguero:
+              recent?.carguero_informe_inicial ||
+              recent?.carguero_novedad ||
               "",
-            bulto: recent?.bulto_informe_inicial || recent?.bulto_novedad || "",
-            isInParo,
           };
         });
 
         setCurrentData(reports);
-        setMolino(combinedData);
+        setBotCat(combinedData);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       } finally {
@@ -152,9 +147,9 @@ function GenerateNoveltyOperatorForm() {
       try {
         const response = await axios.post(
           `http://${localIP}:3000/usuarios/informeinicialusuario`,
-          { idPerfil: 6 }
+          { idPerfil: 8 }
         );
-        setOperador(response.data);
+        setCarguero(response.data);
       } catch (error) {
         console.error("Error al obtener los usuarios: ", error);
       }
@@ -166,11 +161,11 @@ function GenerateNoveltyOperatorForm() {
   const validation = () => {
     const errors = {};
 
-    if (!molinoNovedad.trim()) {
-      errors.molinoNovedad = "El molino es obligatorio.";
+    if (!bobCatNovedad.trim()) {
+      errors.bobCatNovedad = "El bob - cat es obligatorio.";
     }
-    if (!operadorNovedad.trim()) {
-      errors.operadorNovedad = "El operador del molino es obligatorio.";
+    if (!cargueroNovedad.trim()) {
+      errors.cargueroNovedad = "El operador del minicargador es obligatorio.";
     }
 
     setValidationError(errors);
@@ -225,21 +220,14 @@ function GenerateNoveltyOperatorForm() {
     });
     const fechaNovedad = determinateDate(currentData);
     const shiftNovelty = determinateShift(currentData);
-    const matchingWindmill = molino?.find(
-      (item) => item.name === molinoNovedad
-    );
-    const referencenovelty = matchingWindmill?.referencia || "";
-    const bulknovelty = matchingWindmill?.bulto || "";
     const novedad = [
       {
         fecha_novedad: fechaNovedad,
         hora_novedad: horaNovedad,
         turno_novedad: shiftNovelty,
-        tipo_novedad: "Cambio de operador de molino",
-        molino_novedad: molinoNovedad,
-        referencia_novedad: referencenovelty,
-        bulto_novedad: bulknovelty,
-        operador_novedad: operadorNovedad,
+        tipo_novedad: "Cambio de operador de minicargador",
+        bob_cat_novedad: bobCatNovedad,
+        carguero_novedad: cargueroNovedad,
         observacion_novedad: observacionNovedad,
       },
     ];
@@ -254,7 +242,7 @@ function GenerateNoveltyOperatorForm() {
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear el cambio de operador de molino. Por favor, inténtelo de nuevo.`
+          `Error al crear el cambio de operador de minicargador. Por favor, inténtelo de nuevo.`
         );
         setLoading(false);
       }
@@ -269,7 +257,7 @@ function GenerateNoveltyOperatorForm() {
     <>
       {loadingAlternative ? (
         <motion.div
-          className={Style.generateNoveltyOperatorFormAlternative}
+          className={Style.generateNoveltyFreighterFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -278,88 +266,90 @@ function GenerateNoveltyOperatorForm() {
         </motion.div>
       ) : sendStatus === true ? (
         <motion.div
-          className={Style.generateNoveltyOperatorFormAlternative}
+          className={Style.generateNoveltyFreighterFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1>Operador de molino cambiado con éxito</h1>
+          <h1>Operador de minicargador cambiado con éxito</h1>
         </motion.div>
       ) : currentData.length > 0 ? (
         <motion.form
-          className={Style.generateNoveltyOperatorForm}
+          className={Style.generateNoveltyFreighterForm}
           onSubmit={sendCreate}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <header className={Style.generateNoveltyOperatorFormHeader}>
-            <h1>Complete los datos para cambiar el operador del molino</h1>
+          <header className={Style.generateNoveltyFreighterFormHeader}>
+            <h1>
+              Complete los datos para cambiar el operador del minicargador
+            </h1>
           </header>
-          <main className={Style.generateNoveltyOperatorFormMain}>
+          <main className={Style.generateNoveltyFreighterFormMain}>
             <fieldset>
-              <label htmlFor="molinoNovedad">Seleccione un molino</label>
+              <label htmlFor="bobCatNovedad">Seleccione un bob - cat</label>
               <select
-                id="molinoNovedad"
-                name="molinoNovedad"
-                value={molinoNovedad}
-                onChange={(e) => setMolinoNovedad(e.target.value)}
+                id="bobCatNovedad"
+                name="bobCatNovedad"
+                value={bobCatNovedad}
+                onChange={(e) => setBobCatNovedad(e.target.value)}
               >
                 <option value="" disabled>
-                  Seleccione un molino
+                  Seleccione un bob - cat
                 </option>
-                {molino
-                  .filter((item) => !item.isInParo)
-                  .map((item, index) => (
-                    <option key={index} value={item.name}>
-                      {item.name}
-                    </option>
-                  ))}
+                {bobCat.map((item, index) => (
+                  <option key={index} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
               </select>
-              {!validationError.molinoNovedad ? (
+              {!validationError.bobCatNovedad ? (
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyOperatorFormValidation}
+                  className={Style.generateNoveltyFreighterFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  {validationError.molinoNovedad}
+                  {validationError.bobCatNovedad}
                 </motion.span>
               )}
             </fieldset>
-            <div className={Style.generateNoveltyOperatorFormMainAlternative}>
+            <div className={Style.generateNoveltyFreighterFormMainAlternative}>
               <fieldset>
-                <label htmlFor="operadorNovedad">Operador de molino</label>
+                <label htmlFor="cargueroNovedad">
+                  Operador de minicargador
+                </label>
                 <select
-                  id="operadorNovedad"
-                  name="operadorNovedad"
-                  onChange={(e) => setOperadorNovedad(e.target.value)}
-                  value={operadorNovedad}
+                  id="cargueroNovedad"
+                  name="cargueroNovedad"
+                  onChange={(e) => setCargueroNovedad(e.target.value)}
+                  value={cargueroNovedad}
                 >
                   <option value="" disabled>
-                    Seleccione un operador de molino
+                    Seleccione un operador de minicargador
                   </option>
-                  {operador.map((operador) => (
+                  {carguero.map((carguero) => (
                     <option
-                      key={operador.id_usuario}
-                      value={operador.id_usuario}
+                      key={carguero.id_usuario}
+                      value={carguero.id_usuario}
                     >
-                      {operador.nombre_usuario}
+                      {carguero.nombre_usuario}
                     </option>
                   ))}
                 </select>
-                {!validationError.operadorNovedad ? (
+                {!validationError.cargueroNovedad ? (
                   <></>
                 ) : (
                   <motion.span
-                    className={Style.generateNoveltyOperatorFormValidation}
+                    className={Style.generateNoveltyFreighterFormValidation}
                     initial={{ zoom: 0 }}
                     animate={{ zoom: 1 }}
                     transition={{ duration: 0.5 }}
                   >
-                    {validationError.operadorNovedad}
+                    {validationError.cargueroNovedad}
                   </motion.span>
                 )}
               </fieldset>
@@ -378,7 +368,7 @@ function GenerateNoveltyOperatorForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyOperatorFormValidation}
+                  className={Style.generateNoveltyFreighterFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -388,7 +378,7 @@ function GenerateNoveltyOperatorForm() {
               )}
             </fieldset>
           </main>
-          <footer className={Style.generateNoveltyOperatorFormFooter}>
+          <footer className={Style.generateNoveltyFreighterFormFooter}>
             <button onClick={() => redirectGenerateReport()} type="button">
               Cancelar
             </button>
@@ -396,14 +386,14 @@ function GenerateNoveltyOperatorForm() {
               {loading ? (
                 <div className={Style.loader}></div>
               ) : (
-                "Cambiar operador de molino"
+                "Cambiar operador de minicargador"
               )}
             </button>
             {!serverError ? (
               <></>
             ) : (
               <motion.span
-                className={Style.generateNoveltyOperatorFormValidationServer}
+                className={Style.generateNoveltyFreighterFormValidationServer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -415,7 +405,7 @@ function GenerateNoveltyOperatorForm() {
         </motion.form>
       ) : (
         <motion.div
-          className={Style.generateNoveltyOperatorFormAlternative}
+          className={Style.generateNoveltyFreighterFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -427,4 +417,4 @@ function GenerateNoveltyOperatorForm() {
   );
 }
 
-export default GenerateNoveltyOperatorForm;
+export default GenerateNoveltyFreighterForm;
