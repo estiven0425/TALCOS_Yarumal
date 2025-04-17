@@ -138,7 +138,7 @@ function GenerateNoveltyOption() {
               onClick={() => redirect("generatereport/noveltymechanic")}
               type="button"
             >
-              <h2>Cambio de mecánico</h2>
+              <h2>Añadir mecánico</h2>
               <img alt="Icono" src="/change_mechanic.svg"></img>
             </button>
             <button

@@ -1,0 +1,193 @@
+.generateNoveltyMechanicFormAlternative {
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.generateNoveltyMechanicForm {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 15px;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+}
+
+.generateNoveltyMechanicFormHeader {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.generateNoveltyMechanicFormHeader h1,
+.generateNoveltyMechanicFormAlternative h1 {
+  font-size: 1.5rem;
+  margin: 0px;
+  text-align: center;
+}
+
+.generateNoveltyMechanicFormMain {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 15px;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+}
+
+.generateNoveltyMechanicFormMain fieldset {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding: 0px;
+}
+
+.generateNoveltyMechanicFormMain fieldset label {
+  padding-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.generateNoveltyMechanicFormMain fieldset select {
+  border: none;
+  border-radius: 20px;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: transparent 1px solid;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateNoveltyMechanicFormMain fieldset input {
+  border-color: transparent;
+  border-radius: 20px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateNoveltyMechanicFormMainAlternative {
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 15px;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.generateNoveltyMechanicFormMainAlternative fieldset {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding: 0px;
+  width: 100%;
+}
+
+.generateNoveltyMechanicFormMainAlternative fieldset label {
+  padding-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.generateNoveltyMechanicFormMainAlternative fieldset select {
+  border: none;
+  border-radius: 20px;
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: transparent 1px solid;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateNoveltyMechanicFormFooter {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.generateNoveltyMechanicFormFooter button {
+  background-color: #0037ae;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  max-height: 49px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateNoveltyMechanicFormFooter button:hover,
+.generateNoveltyMechanicFormMainPrimary ul li button:hover {
+  background-color: #0048b6;
+}
+
+.generateNoveltyMechanicFormFooter button:focus,
+.generateNoveltyMechanicFormMainPrimary ul li button:focus {
+  background-color: #0048b6;
+}
+
+.generateNoveltyMechanicFormMainPrimary select:focus,
+.generateNoveltyMechanicFormMainSecondary input:focus,
+.generateNoveltyMechanicFormMainSecondary select:focus,
+.generateNoveltyMechanicFormMainThird select:focus,
+.generateNoveltyMechanicFormMainFourth input:focus {
+  outline: #0095dc 1px solid;
+}
+
+.generateNoveltyMechanicFormValidation {
+  text-align: left;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateNoveltyMechanicFormValidationServer {
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+  border: 5px solid #0048b6;
+  border-radius: 50%;
+  border-top: 5px solid transparent;
+  height: 20px;
+  margin: -7.5px auto 0px;
+  width: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
