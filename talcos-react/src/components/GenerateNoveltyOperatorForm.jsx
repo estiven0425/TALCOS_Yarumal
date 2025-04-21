@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/generate-novelty-operator-form.module.css";
+import Style from "./styles/generate-novelty-component-form.module.css";
 
 function GenerateNoveltyOperatorForm() {
   const [operador, setOperador] = useState([]);
@@ -269,7 +269,7 @@ function GenerateNoveltyOperatorForm() {
     <>
       {loadingAlternative ? (
         <motion.div
-          className={Style.generateNoveltyOperatorFormAlternative}
+          className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -278,7 +278,7 @@ function GenerateNoveltyOperatorForm() {
         </motion.div>
       ) : sendStatus === true ? (
         <motion.div
-          className={Style.generateNoveltyOperatorFormAlternative}
+          className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -287,16 +287,16 @@ function GenerateNoveltyOperatorForm() {
         </motion.div>
       ) : currentData.length > 0 ? (
         <motion.form
-          className={Style.generateNoveltyOperatorForm}
+          className={Style.generateNoveltyComponentForm}
           onSubmit={sendCreate}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <header className={Style.generateNoveltyOperatorFormHeader}>
+          <header className={Style.generateNoveltyComponentFormHeader}>
             <h1>Complete los datos para cambiar el operador del molino</h1>
           </header>
-          <main className={Style.generateNoveltyOperatorFormMain}>
+          <main className={Style.generateNoveltyComponentFormMain}>
             <fieldset>
               <label htmlFor="molinoNovedad">Seleccione un molino</label>
               <select
@@ -320,7 +320,7 @@ function GenerateNoveltyOperatorForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyOperatorFormValidation}
+                  className={Style.generateNoveltyComponentFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -329,7 +329,7 @@ function GenerateNoveltyOperatorForm() {
                 </motion.span>
               )}
             </fieldset>
-            <div className={Style.generateNoveltyOperatorFormMainAlternative}>
+            <div className={Style.generateNoveltyComponentFormMainAlternative}>
               <fieldset>
                 <label htmlFor="operadorNovedad">Operador de molino</label>
                 <select
@@ -354,7 +354,7 @@ function GenerateNoveltyOperatorForm() {
                   <></>
                 ) : (
                   <motion.span
-                    className={Style.generateNoveltyOperatorFormValidation}
+                    className={Style.generateNoveltyComponentFormValidation}
                     initial={{ zoom: 0 }}
                     animate={{ zoom: 1 }}
                     transition={{ duration: 0.5 }}
@@ -378,7 +378,7 @@ function GenerateNoveltyOperatorForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyOperatorFormValidation}
+                  className={Style.generateNoveltyComponentFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -388,7 +388,7 @@ function GenerateNoveltyOperatorForm() {
               )}
             </fieldset>
           </main>
-          <footer className={Style.generateNoveltyOperatorFormFooter}>
+          <footer className={Style.generateNoveltyComponentFormFooter}>
             <button onClick={() => redirectGenerateReport()} type="button">
               Cancelar
             </button>
@@ -403,7 +403,7 @@ function GenerateNoveltyOperatorForm() {
               <></>
             ) : (
               <motion.span
-                className={Style.generateNoveltyOperatorFormValidationServer}
+                className={Style.generateNoveltyComponentFormValidationServer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -415,7 +415,7 @@ function GenerateNoveltyOperatorForm() {
         </motion.form>
       ) : (
         <motion.div
-          className={Style.generateNoveltyOperatorFormAlternative}
+          className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}

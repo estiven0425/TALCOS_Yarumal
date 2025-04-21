@@ -217,6 +217,7 @@ exports.actualizarNovedad = async (req, res) => {
           fin_paro_novedad: novedad.fin_paro_novedad,
           horometro_inicio_paro_novedad: novedad.horometro_inicio_paro_novedad,
           horometro_fin_paro_novedad: novedad.horometro_fin_paro_novedad,
+          horometro_novedad: novedad.horometro_novedad,
           motivo_paro_novedad: novedad.motivo_paro_novedad,
           observacion_novedad: novedad.observacion_novedad,
           actividad_novedad: novedad.actividad_novedad,

@@ -83,6 +83,10 @@ const Novedad = sequelize.define(
       type: DataTypes.BIGINT,
       allowNull: true,
     },
+    horometro_novedad: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+    },
     motivo_paro_novedad: {
       type: DataTypes.STRING(250),
       allowNull: true,

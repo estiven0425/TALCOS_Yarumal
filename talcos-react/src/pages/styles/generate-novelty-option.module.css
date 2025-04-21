@@ -1,4 +1,4 @@
-﻿.generateNoveltyStrikeOption {
+﻿.generateNoveltyOption {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -9,7 +9,7 @@
   height: 100%;
 }
 
-.generateNoveltyStrikeOptionMain {
+.generateNoveltyOptionMain {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;

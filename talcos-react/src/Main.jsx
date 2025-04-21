@@ -7,14 +7,15 @@ import {
   FastInventory,
   GenerateInitialReport,
   GenerateNovelty,
+  GenerateNoveltyChangeMechanic,
+  GenerateNoveltyChangeFreighter,
+  GenerateNoveltyChangeOperator,
+  GenerateNoveltyChangeReference,
   GenerateNoveltyStrike,
   GenerateNoveltyStrikeStart,
   GenerateNoveltyStrikeStop,
   GenerateNoveltyStrikeStopFinish,
-  GenerateNoveltyChangeReference,
-  GenerateNoveltyChangeOperator,
-  GenerateNoveltyChangeFreighter,
-  GenerateNoveltyChangeMechanic,
+  GenerateNoveltyWindmill,
   GenerateReport,
   GenerateReportMenu,
   Home,
@@ -139,6 +140,10 @@ createRoot(document.getElementById("root")).render(
             <Route
               path="noveltymechanic"
               element={<GenerateNoveltyChangeMechanic />}
+            />
+            <Route
+              path="noveltywindmill"
+              element={<GenerateNoveltyWindmill />}
             />
           </Route>
           <Route path="monitoring" element={<Monitoring />} />

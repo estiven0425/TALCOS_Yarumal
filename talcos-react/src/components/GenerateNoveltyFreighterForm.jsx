@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/generate-novelty-freighter-form.module.css";
+import Style from "./styles/generate-novelty-component-form.module.css";
 
 function GenerateNoveltyFreighterForm() {
   const [carguero, setCarguero] = useState([]);
@@ -257,7 +257,7 @@ function GenerateNoveltyFreighterForm() {
     <>
       {loadingAlternative ? (
         <motion.div
-          className={Style.generateNoveltyFreighterFormAlternative}
+          className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -266,7 +266,7 @@ function GenerateNoveltyFreighterForm() {
         </motion.div>
       ) : sendStatus === true ? (
         <motion.div
-          className={Style.generateNoveltyFreighterFormAlternative}
+          className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -275,18 +275,18 @@ function GenerateNoveltyFreighterForm() {
         </motion.div>
       ) : currentData.length > 0 ? (
         <motion.form
-          className={Style.generateNoveltyFreighterForm}
+          className={Style.generateNoveltyComponentForm}
           onSubmit={sendCreate}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <header className={Style.generateNoveltyFreighterFormHeader}>
+          <header className={Style.generateNoveltyComponentFormHeader}>
             <h1>
               Complete los datos para cambiar el operador del minicargador
             </h1>
           </header>
-          <main className={Style.generateNoveltyFreighterFormMain}>
+          <main className={Style.generateNoveltyComponentFormMain}>
             <fieldset>
               <label htmlFor="bobCatNovedad">Seleccione un bob - cat</label>
               <select
@@ -308,7 +308,7 @@ function GenerateNoveltyFreighterForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyFreighterFormValidation}
+                  className={Style.generateNoveltyComponentFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -317,7 +317,7 @@ function GenerateNoveltyFreighterForm() {
                 </motion.span>
               )}
             </fieldset>
-            <div className={Style.generateNoveltyFreighterFormMainAlternative}>
+            <div className={Style.generateNoveltyComponentFormMainAlternative}>
               <fieldset>
                 <label htmlFor="cargueroNovedad">
                   Operador de minicargador
@@ -344,7 +344,7 @@ function GenerateNoveltyFreighterForm() {
                   <></>
                 ) : (
                   <motion.span
-                    className={Style.generateNoveltyFreighterFormValidation}
+                    className={Style.generateNoveltyComponentFormValidation}
                     initial={{ zoom: 0 }}
                     animate={{ zoom: 1 }}
                     transition={{ duration: 0.5 }}
@@ -368,7 +368,7 @@ function GenerateNoveltyFreighterForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyFreighterFormValidation}
+                  className={Style.generateNoveltyComponentFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -378,7 +378,7 @@ function GenerateNoveltyFreighterForm() {
               )}
             </fieldset>
           </main>
-          <footer className={Style.generateNoveltyFreighterFormFooter}>
+          <footer className={Style.generateNoveltyComponentFormFooter}>
             <button onClick={() => redirectGenerateReport()} type="button">
               Cancelar
             </button>
@@ -393,7 +393,7 @@ function GenerateNoveltyFreighterForm() {
               <></>
             ) : (
               <motion.span
-                className={Style.generateNoveltyFreighterFormValidationServer}
+                className={Style.generateNoveltyComponentFormValidationServer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -405,7 +405,7 @@ function GenerateNoveltyFreighterForm() {
         </motion.form>
       ) : (
         <motion.div
-          className={Style.generateNoveltyFreighterFormAlternative}
+          className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}

@@ -1,13 +1,13 @@
-﻿import GenerateNoveltyStrikeOptionButton from "../components/GenerateNoveltyStrikeOptionButton";
+﻿import GenerateNoveltyWindmillOptionButton from "../components/GenerateNoveltyWindmillOptionButton";
 import GenerateNoveltyStrikeOptionList from "../components/GenerateNoveltyStrikeOptionList";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import Style from "./styles/generate-novelty-option.module.css";
 
-function GenerateNoveltyStrikeOption() {
+function GenerateNoveltyWindmillOption() {
   return (
     <ProtectedRoute>
       <section className={Style.generateNoveltyOption}>
-        <GenerateNoveltyStrikeOptionButton />
+        <GenerateNoveltyWindmillOptionButton />
         <main className={Style.generateNoveltyOptionMain}>
           <GenerateNoveltyStrikeOptionList />
         </main>
@@ -16,4 +16,4 @@ function GenerateNoveltyStrikeOption() {
   );
 }
 
-export default GenerateNoveltyStrikeOption;
+export default GenerateNoveltyWindmillOption;

@@ -124,6 +124,7 @@ CREATE TABLE `novedad` (
 	`fin_paro_novedad` TIME NULL,
 	`horometro_inicio_paro_novedad` BIGINT(100) NULL,
 	`horometro_fin_paro_novedad` BIGINT(100) NULL,
+	`horometro_novedad` BIGINT(100) NULL,
 	`motivo_paro_novedad` VARCHAR(250) NULL DEFAULT('No se registró'),
 	`observacion_novedad` VARCHAR(1000) NULL DEFAULT('No se registró'),
 	`actividad_novedad` BIT NOT NULL DEFAULT(1),

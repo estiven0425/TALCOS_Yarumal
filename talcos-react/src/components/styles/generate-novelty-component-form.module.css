@@ -1,4 +1,4 @@
-.generateNoveltyFreighterFormAlternative {
+.generateNoveltyComponentFormAlternative {
   align-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.generateNoveltyFreighterForm {
+.generateNoveltyComponentForm {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -22,19 +22,19 @@
   width: 100%;
 }
 
-.generateNoveltyFreighterFormHeader {
+.generateNoveltyComponentFormHeader {
   box-sizing: border-box;
   width: 100%;
 }
 
-.generateNoveltyFreighterFormHeader h1,
-.generateNoveltyFreighterFormAlternative h1 {
+.generateNoveltyComponentFormHeader h1,
+.generateNoveltyComponentFormAlternative h1 {
   font-size: 1.5rem;
   margin: 0px;
   text-align: center;
 }
 
-.generateNoveltyFreighterFormMain {
+.generateNoveltyComponentFormMain {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -46,7 +46,7 @@
   width: 100%;
 }
 
-.generateNoveltyFreighterFormMain fieldset {
+.generateNoveltyComponentFormMain fieldset {
   align-content: stretch;
   border: none;
   box-sizing: border-box;
@@ -57,13 +57,13 @@
   padding: 0px;
 }
 
-.generateNoveltyFreighterFormMain fieldset label {
+.generateNoveltyComponentFormMain fieldset label {
   padding-bottom: 5px;
   text-align: left;
   width: 100%;
 }
 
-.generateNoveltyFreighterFormMain fieldset select {
+.generateNoveltyComponentFormMain fieldset select {
   border: none;
   border-radius: 20px;
   box-sizing: border-box;
@@ -74,7 +74,7 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyFreighterFormMain fieldset input {
+.generateNoveltyComponentFormMain fieldset input {
   border-color: transparent;
   border-radius: 20px;
   outline: transparent 1px solid;
@@ -82,7 +82,7 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyFreighterFormMainAlternative {
+.generateNoveltyComponentFormMainAlternative {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -93,7 +93,7 @@
   width: 100%;
 }
 
-.generateNoveltyFreighterFormMainAlternative fieldset {
+.generateNoveltyComponentFormMainAlternative fieldset {
   align-content: stretch;
   border: none;
   box-sizing: border-box;
@@ -105,13 +105,13 @@
   width: 100%;
 }
 
-.generateNoveltyFreighterFormMainAlternative fieldset label {
+.generateNoveltyComponentFormMainAlternative fieldset label {
   padding-bottom: 5px;
   text-align: left;
   width: 100%;
 }
 
-.generateNoveltyFreighterFormMainAlternative fieldset select {
+.generateNoveltyComponentFormMainAlternative fieldset select {
   border: none;
   border-radius: 20px;
   box-sizing: border-box;
@@ -122,7 +122,7 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyFreighterFormFooter {
+.generateNoveltyComponentFormFooter {
   align-content: stretch;
   box-sizing: border-box;
   display: flex;
@@ -132,7 +132,7 @@
   gap: 10px;
 }
 
-.generateNoveltyFreighterFormFooter button {
+.generateNoveltyComponentFormFooter button {
   background-color: #0037ae;
   border-color: transparent;
   border-radius: 20px;
@@ -144,30 +144,30 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyFreighterFormFooter button:hover,
-.generateNoveltyFreighterFormMainPrimary ul li button:hover {
+.generateNoveltyComponentFormFooter button:hover,
+.generateNoveltyComponentFormMainPrimary ul li button:hover {
   background-color: #0048b6;
 }
 
-.generateNoveltyFreighterFormFooter button:focus,
-.generateNoveltyFreighterFormMainPrimary ul li button:focus {
+.generateNoveltyComponentFormFooter button:focus,
+.generateNoveltyComponentFormMainPrimary ul li button:focus {
   background-color: #0048b6;
 }
 
-.generateNoveltyFreighterFormMainPrimary select:focus,
-.generateNoveltyFreighterFormMainSecondary input:focus,
-.generateNoveltyFreighterFormMainSecondary select:focus,
-.generateNoveltyFreighterFormMainThird select:focus,
-.generateNoveltyFreighterFormMainFourth input:focus {
+.generateNoveltyComponentFormMainPrimary select:focus,
+.generateNoveltyComponentFormMainSecondary input:focus,
+.generateNoveltyComponentFormMainSecondary select:focus,
+.generateNoveltyComponentFormMainThird select:focus,
+.generateNoveltyComponentFormMainFourth input:focus {
   outline: #0095dc 1px solid;
 }
 
-.generateNoveltyFreighterFormValidation {
+.generateNoveltyComponentFormValidation {
   text-align: left;
   transition: all 0.5s ease-in-out;
 }
 
-.generateNoveltyFreighterFormValidationServer {
+.generateNoveltyComponentFormValidationServer {
   text-align: center;
   transition: all 0.5s ease-in-out;
 }

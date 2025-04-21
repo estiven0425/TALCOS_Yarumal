@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/generate-novelty-mechanic-form.module.css";
+import Style from "./styles/generate-novelty-component-form.module.css";
 
 function GenerateNoveltyMechanicForm() {
   const [currentData, setCurrentData] = useState(null);
@@ -212,7 +212,7 @@ function GenerateNoveltyMechanicForm() {
     <>
       {loadingAlternative ? (
         <motion.div
-          className={Style.generateNoveltyMechanicFormAlternative}
+          className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -221,7 +221,7 @@ function GenerateNoveltyMechanicForm() {
         </motion.div>
       ) : sendStatus === true ? (
         <motion.div
-          className={Style.generateNoveltyMechanicFormAlternative}
+          className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -230,16 +230,16 @@ function GenerateNoveltyMechanicForm() {
         </motion.div>
       ) : currentData.length > 0 ? (
         <motion.form
-          className={Style.generateNoveltyMechanicForm}
+          className={Style.generateNoveltyComponentForm}
           onSubmit={sendCreate}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <header className={Style.generateNoveltyMechanicFormHeader}>
+          <header className={Style.generateNoveltyComponentFormHeader}>
             <h1>Complete los datos para cambiar el mecánico</h1>
           </header>
-          <main className={Style.generateNoveltyMechanicFormMain}>
+          <main className={Style.generateNoveltyComponentFormMain}>
             <fieldset>
               <label htmlFor="mecanicoNovedad">Nuevo mecánico</label>
               <select
@@ -259,7 +259,7 @@ function GenerateNoveltyMechanicForm() {
               </select>
               {validationError.mecanicoNovedad && (
                 <motion.span
-                  className={Style.generateNoveltyMechanicFormValidation}
+                  className={Style.generateNoveltyComponentFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -283,7 +283,7 @@ function GenerateNoveltyMechanicForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyMechanicFormValidation}
+                  className={Style.generateNoveltyComponentFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -293,7 +293,7 @@ function GenerateNoveltyMechanicForm() {
               )}
             </fieldset>
           </main>
-          <footer className={Style.generateNoveltyMechanicFormFooter}>
+          <footer className={Style.generateNoveltyComponentFormFooter}>
             <button onClick={() => redirectGenerateReport()} type="button">
               Cancelar
             </button>
@@ -308,7 +308,7 @@ function GenerateNoveltyMechanicForm() {
               <></>
             ) : (
               <motion.span
-                className={Style.generateNoveltyMechanicFormValidationServer}
+                className={Style.generateNoveltyComponentFormValidationServer}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -320,7 +320,7 @@ function GenerateNoveltyMechanicForm() {
         </motion.form>
       ) : (
         <motion.div
-          className={Style.generateNoveltyMechanicFormAlternative}
+          className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
