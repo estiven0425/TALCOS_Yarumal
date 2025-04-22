@@ -1,5 +1,5 @@
 ﻿import GenerateNoveltyWindmillOptionButton from "../components/GenerateNoveltyWindmillOptionButton";
-import GenerateNoveltyStrikeOptionList from "../components/GenerateNoveltyStrikeOptionList";
+import GenerateNoveltyWindmillOptionList from "../components/GenerateNoveltyWindmillOptionList";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import Style from "./styles/generate-novelty-option.module.css";
 
@@ -9,7 +9,7 @@ function GenerateNoveltyWindmillOption() {
       <section className={Style.generateNoveltyOption}>
         <GenerateNoveltyWindmillOptionButton />
         <main className={Style.generateNoveltyOptionMain}>
-          <GenerateNoveltyStrikeOptionList />
+          <GenerateNoveltyWindmillOptionList />
         </main>
       </section>
     </ProtectedRoute>

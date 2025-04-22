@@ -103,22 +103,39 @@ function HomeStateWindmill() {
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
-          const horometro =
-            [
-              recent?.horometro_informe_inicial,
-              recent?.horometro_inicio_paro_novedad,
-              recent?.horometro_fin_paro_novedad,
-            ]
-              .filter((value) => value !== undefined && value !== null)
-              .sort((a, b) => b - a)[0] || "No se registró";
+          let horometro = "No se registró";
 
+          const horometrosDisponibles = [
+            recent?.horometro_informe_inicial,
+            recent?.horometro_inicio_paro_novedad,
+            recent?.horometro_fin_paro_novedad,
+          ].filter((value) => value !== undefined && value !== null);
+
+          if (horometrosDisponibles.length > 0) {
+            horometro = horometrosDisponibles.sort((a, b) => b - a)[0];
+          } else if (
+            recent?.tipo_novedad === "Paro" &&
+            recent?.motivo_paro_novedad === "Apagado"
+          ) {
+            horometro = "Apagado";
+          }
+
+          let operador = "No se registró";
+
+          if (operatorChange?.operador?.nombre_usuario) {
+            operador = operatorChange.operador.nombre_usuario;
+          } else if (recent?.operador?.nombre_usuario) {
+            operador = recent.operador.nombre_usuario;
+          } else if (
+            recent?.tipo_novedad === "Paro" &&
+            recent?.motivo_paro_novedad === "Apagado"
+          ) {
+            operador = "Apagado";
+          }
           return {
             id_molino: molino.id_molino,
             nombre_molino: molino.nombre_molino,
-            operador:
-              operatorChange?.operador?.nombre_usuario ||
-              recent?.operador?.nombre_usuario ||
-              "No se registró",
+            operador,
             horometro,
             paro:
               novelty?.inicio_paro_novedad && !novelty?.fin_paro_novedad
@@ -157,7 +174,9 @@ function HomeStateWindmill() {
               <p>
                 {molino.paro ||
                 molino.operador === "No se registró" ||
-                molino.horometro === "No se registró" ? (
+                molino.operador === "Apagado" ||
+                molino.horometro === "No se registró" ||
+                molino.horometro === "Apagado" ? (
                   <i
                     className={`bi bi-x-circle-fill ${Style.homeStateWindmillMainSecondaryIconAlternative}`}
                   ></i>

@@ -121,11 +121,12 @@ function GenerateNoveltyReferenceForm() {
               ? report
               : novelty;
           const isInParo =
-            novelty?.tipo_novedad === "Paro" &&
-            novelty?.inicio_paro_novedad &&
-            novelty?.horometro_inicio_paro_novedad &&
-            !novelty?.fin_paro_novedad &&
-            !novelty?.horometro_fin_paro_novedad;
+            !report?.molino_informe_inicial ||
+            (novelty?.tipo_novedad === "Paro" &&
+              novelty?.inicio_paro_novedad &&
+              novelty?.horometro_inicio_paro_novedad &&
+              !novelty?.fin_paro_novedad &&
+              !novelty?.horometro_fin_paro_novedad);
 
           return {
             name: molino.nombre_molino,

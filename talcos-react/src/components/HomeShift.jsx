@@ -92,7 +92,9 @@ function HomeShift() {
 
         const novelty = newResponse.data;
         const paroCount = novelty.filter(
-          (novedad) => novedad.tipo_novedad === "Paro"
+          (novedad) =>
+            novedad.tipo_novedad === "Paro" &&
+            novedad.motivo_paro_novedad !== "Apagado"
         );
         const totalParoDuration = paroCount.reduce((total, novedad) => {
           const inicioParo = novedad.inicio_paro_novedad;

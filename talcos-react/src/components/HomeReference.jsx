@@ -100,13 +100,20 @@ function HomeReference() {
             id_molino: molino.id_molino,
             nombre_molino: molino.nombre_molino,
             referencia:
-              recent?.referencia_informe_inicial ||
-              recent?.referencia_novedad ||
-              "No se registró",
+              recent?.referencia_informe_inicial ??
+              recent?.referencia_novedad ??
+              (recent?.tipo_novedad === "Paro" &&
+              recent?.motivo_paro_novedad === "Apagado"
+                ? "Apagado"
+                : "No se registró"),
+
             bulto:
-              recent?.bulto_informe_inicial ||
-              recent?.bulto_novedad ||
-              "No se registró",
+              recent?.bulto_informe_inicial ??
+              recent?.bulto_novedad ??
+              (recent?.tipo_novedad === "Paro" &&
+              recent?.motivo_paro_novedad === "Apagado"
+                ? "Apagado"
+                : "No se registró"),
           };
         });
 

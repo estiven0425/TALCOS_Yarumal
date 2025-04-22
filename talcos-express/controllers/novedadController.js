@@ -118,6 +118,7 @@ exports.listaNovedad = async (req, res) => {
           { fecha_novedad: fechaFormateada },
           { turno_novedad: turno },
           { tipo_novedad: "Paro" },
+          { motivo_paro_novedad: { [Op.ne]: "Apagado" } },
           { actividad_novedad: true },
         ],
       },
@@ -169,7 +170,60 @@ exports.listaParoNovedad = async (req, res) => {
           { turno_novedad: turno },
           { tipo_novedad: "Paro" },
           { fin_paro_novedad: null },
+          { motivo_paro_novedad: { [Op.ne]: "Apagado" } },
           { actividad_novedad: true },
+        ],
+      },
+      order: [["hora_novedad", "DESC"]],
+    });
+
+    res.json(novedades);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener novedades" });
+  }
+};
+
+exports.listaApagadoNovedad = async (req, res) => {
+  const { fecha, turno, inicioTurno, finTurno } = req.query;
+
+  let fechaConsulta = new Date(fecha);
+
+  const [horaInicio, minutoInicio] = inicioTurno.split(":").map(Number);
+  const [horaFin, minutoFin] = finTurno.split(":").map(Number);
+
+  if (horaFin < horaInicio) {
+    fechaConsulta.setDate(fechaConsulta.getDate() - 1);
+  }
+
+  const fechaFormateada = fechaConsulta.toISOString().split("T")[0];
+
+  try {
+    const novedades = await Novedad.findAll({
+      include: [
+        {
+          model: Usuarios,
+          attributes: ["nombre_usuario"],
+          as: "operador",
+        },
+        {
+          model: Usuarios,
+          attributes: ["nombre_usuario"],
+          as: "carguero",
+        },
+        {
+          model: Usuarios,
+          attributes: ["nombre_usuario"],
+          as: "mecanico",
+        },
+      ],
+      where: {
+        [Op.and]: [
+          { fecha_novedad: fechaFormateada },
+          { turno_novedad: turno },
+          { tipo_novedad: "Paro" },
+          { fin_paro_novedad: null },
+          { actividad_novedad: true },
+          { motivo_paro_novedad: "Apagado" },
         ],
       },
       order: [["hora_novedad", "DESC"]],

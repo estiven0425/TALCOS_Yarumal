@@ -6,6 +6,7 @@ router.get("/", novedadController.leerNovedad);
 router.get("/turnonovedad", novedadController.turnoNovedad);
 router.get("/listanovedad", novedadController.listaNovedad);
 router.get("/listaparonovedad", novedadController.listaParoNovedad);
+router.get("/listaapagadonovedad", novedadController.listaApagadoNovedad);
 router.post("/", novedadController.crearNovedad);
 router.put("/", novedadController.actualizarNovedad);
 router.put("/finparonovedad", novedadController.finParoNovedad);

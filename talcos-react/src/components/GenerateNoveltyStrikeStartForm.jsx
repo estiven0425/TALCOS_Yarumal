@@ -125,11 +125,12 @@ function GenerateNoveltyStrikeStartForm() {
               ? report
               : novelty;
           const isInParo =
-            novelty?.tipo_novedad === "Paro" &&
-            novelty?.inicio_paro_novedad &&
-            novelty?.horometro_inicio_paro_novedad &&
-            !novelty?.fin_paro_novedad &&
-            !novelty?.horometro_fin_paro_novedad;
+            !report?.molino_informe_inicial ||
+            (novelty?.tipo_novedad === "Paro" &&
+              novelty?.inicio_paro_novedad &&
+              novelty?.horometro_inicio_paro_novedad &&
+              !novelty?.fin_paro_novedad &&
+              !novelty?.horometro_fin_paro_novedad);
 
           return {
             name: molino.nombre_molino,
@@ -161,6 +162,23 @@ function GenerateNoveltyStrikeStartForm() {
     getData();
   }, [localIP]);
 
+  const isTimeWithinShift = (hourString) => {
+    const [hour, minute] = hourString.split(":").map(Number);
+    const timeMs = (hour * 60 + minute) * 60000;
+
+    const [startHour, startMinute] = currentShift.inicio_turno
+      .split(":")
+      .map(Number);
+    const [endHour, endMinute] = currentShift.fin_turno.split(":").map(Number);
+    const startMs = (startHour * 60 + startMinute) * 60000;
+    const endMs = (endHour * 60 + endMinute) * 60000;
+
+    if (endMs > startMs) {
+      return timeMs >= startMs && timeMs < endMs;
+    } else {
+      return timeMs >= startMs || timeMs < endMs;
+    }
+  };
   const validation = () => {
     const errors = {};
     if (!molinoNovedad.trim()) {
@@ -168,42 +186,12 @@ function GenerateNoveltyStrikeStartForm() {
     }
     if (!inicioParoNovedad.trim()) {
       errors.inicioParoNovedad = "El inicio de paro es obligatorio.";
-    } else {
-      const [inicioTurnoHour, inicioTurnoMinute] = currentShift.inicio_turno
-        .split(":")
-        .map(Number);
-      const [finTurnoHour, finTurnoMinute] = currentShift.fin_turno
-        .split(":")
-        .map(Number);
-      const [inicioParoHour, inicioParoMinute] = inicioParoNovedad
-        .split(":")
-        .map(Number);
-      const inicioTurnoMs = (inicioTurnoHour * 60 + inicioTurnoMinute) * 60000;
-      const finTurnoMs = (finTurnoHour * 60 + finTurnoMinute) * 60000;
-      const inicioParoMs = (inicioParoHour * 60 + inicioParoMinute) * 60000;
-
-      if (!(inicioParoMs >= inicioTurnoMs && inicioParoMs < finTurnoMs)) {
-        errors.inicioParoNovedad =
-          "La hora de inicio debe estar dentro del turno.";
-      }
+    } else if (!isTimeWithinShift(inicioParoNovedad)) {
+      errors.inicioParoNovedad =
+        "La hora de inicio debe estar dentro del turno.";
     }
-    if (finParoNovedad.trim()) {
-      const [inicioTurnoHour, inicioTurnoMinute] = currentShift.inicio_turno
-        .split(":")
-        .map(Number);
-      const [finTurnoHour, finTurnoMinute] = currentShift.fin_turno
-        .split(":")
-        .map(Number);
-      const [finParoHour, finParoMinute] = finParoNovedad
-        .split(":")
-        .map(Number);
-      const inicioTurnoMs = (inicioTurnoHour * 60 + inicioTurnoMinute) * 60000;
-      const finTurnoMs = (finTurnoHour * 60 + finTurnoMinute) * 60000;
-      const finParoMs = (finParoHour * 60 + finParoMinute) * 60000;
-
-      if (!(finParoMs >= inicioTurnoMs && finParoMs < finTurnoMs)) {
-        errors.finParoNovedad = "La hora de fin debe estar dentro del turno.";
-      }
+    if (finParoNovedad.trim() && !isTimeWithinShift(finParoNovedad)) {
+      errors.finParoNovedad = "La hora de fin debe estar dentro del turno.";
     }
     if (!horometroInicioParoNovedad.trim()) {
       errors.horometroInicioParoNovedad =
