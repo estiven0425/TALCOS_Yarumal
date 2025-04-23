@@ -146,7 +146,7 @@ function GenerateNoveltyOption() {
               onClick={() => redirect("generatereport/noveltywindmill")}
               type="button"
             >
-              <h2>Encender/Apagar molino</h2>
+              <h2>Encender molino</h2>
               <img alt="Icono" src="/windmill.svg"></img>
             </button>
           </motion.main>

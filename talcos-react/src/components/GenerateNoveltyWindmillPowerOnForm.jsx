@@ -2,19 +2,21 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Style from "./styles/generate-novelty-strike-start-form.module.css";
+import Style from "./styles/generate-novelty-windmill-power-on-form.module.css";
 
-function GenerateNoveltyStrikeStartForm() {
-  const [currentShift, setCurrentShift] = useState(null);
+function GenerateNoveltyWindmillPowerOnForm() {
   const [currentData, setCurrentData] = useState(null);
+  const [operador, setOperador] = useState([]);
   const [molino, setMolino] = useState([]);
+  const [referencia, setReferencia] = useState([]);
+  const [bulto, setBulto] = useState([]);
+  const [operadorNovedad, setOperadorNovedad] = useState("");
   const [molinoNovedad, setMolinoNovedad] = useState("");
-  const [inicioParoNovedad, setInicioParoNovedad] = useState("");
-  const [finParoNovedad, setFinParoNovedad] = useState("");
+  const [referenciaNovedad, setReferenciaNovedad] = useState("");
+  const [bultoNovedad, setBultoNovedad] = useState("");
   const [horometroInicioParoNovedad, setHorometroInicioParoNovedad] =
     useState("");
   const [horometroFinParoNovedad, setHorometroFinParoNovedad] = useState("");
-  const [motivoParoNovedad, setMotivoParoNovedad] = useState("");
   const [observacionNovedad, setObservacionNovedad] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingAlternative, setLoadingAlternative] = useState(true);
@@ -65,8 +67,6 @@ function GenerateNoveltyStrikeStartForm() {
           return;
         }
 
-        setCurrentShift(currentShift);
-
         const currentDate = currentTime.toISOString().split("T")[0];
         const {
           nombre_turno: turno,
@@ -84,20 +84,8 @@ function GenerateNoveltyStrikeStartForm() {
             },
           }
         );
-        const responseNews = await axios.get(
-          `http://${localIP}:3000/novedades/turnonovedad`,
-          {
-            params: {
-              fecha: currentDate,
-              turno,
-              inicioTurno,
-              finTurno,
-            },
-          }
-        );
 
         const reports = responseStartReport.data;
-        const news = responseNews.data;
 
         const combinedData = mills.map((molino) => {
           const report = reports
@@ -109,43 +97,10 @@ function GenerateNoveltyStrikeStartForm() {
                 new Date(b.hora_informe_inicial) -
                 new Date(a.hora_informe_inicial)
             )[0];
-          const novelty = news
-            .filter(
-              (novelty) => novelty.molino_novedad === molino.nombre_molino
-            )
-            .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
-            )[0];
-          const recent =
-            report &&
-            (!novelty ||
-              new Date(
-                report.fecha_informe_inicial + " " + report.hora_informe_inicial
-              ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
-              ? report
-              : novelty;
-          const isInParo =
-            !report?.molino_informe_inicial ||
-            (novelty?.tipo_novedad === "Paro" &&
-              novelty?.inicio_paro_novedad &&
-              novelty?.horometro_inicio_paro_novedad &&
-              !novelty?.fin_paro_novedad &&
-              !novelty?.horometro_fin_paro_novedad);
+          const isInParo = report?.molino_informe_inicial;
 
           return {
             name: molino.nombre_molino,
-            reference:
-              recent?.referencia_informe_inicial ||
-              recent?.referencia_novedad ||
-              "No se registró",
-            bulk:
-              recent?.bulto_informe_inicial ||
-              recent?.bulto_novedad ||
-              "No se registró",
-            operator:
-              recent?.operador_informe_inicial ||
-              recent?.operador_novedad ||
-              "",
             isInParo,
           };
         });
@@ -161,65 +116,60 @@ function GenerateNoveltyStrikeStartForm() {
 
     getData();
   }, [localIP]);
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+        const [referenciaRes, bultoRes] = await Promise.all([
+          axios.get(`http://${localIP}:3000/referencias`),
+          axios.get(`http://${localIP}:3000/bultos`),
+        ]);
 
-  const isTimeWithinShift = (hourString) => {
-    const [hour, minute] = hourString.split(":").map(Number);
-    const timeMs = (hour * 60 + minute) * 60000;
+        setReferencia(referenciaRes.data);
+        setBulto(bultoRes.data);
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+      }
+    };
 
-    const [startHour, startMinute] = currentShift.inicio_turno
-      .split(":")
-      .map(Number);
-    const [endHour, endMinute] = currentShift.fin_turno.split(":").map(Number);
-    const startMs = (startHour * 60 + startMinute) * 60000;
-    const endMs = (endHour * 60 + endMinute) * 60000;
+    getItems();
+  }, [localIP]);
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await axios.post(
+          `http://${localIP}:3000/usuarios/informeinicialusuario`,
+          { idPerfil: 6 }
+        );
 
-    if (endMs > startMs) {
-      return timeMs >= startMs && timeMs < endMs;
-    } else {
-      return timeMs >= startMs || timeMs < endMs;
-    }
-  };
+        setOperador(response.data);
+      } catch (error) {
+        console.error("Error al obtener los usuarios: ", error);
+      }
+    };
+    getUser();
+  }, [localIP]);
+
   const validation = () => {
     const errors = {};
-    if (!molinoNovedad.trim()) {
+    if (!molinoNovedad) {
       errors.molinoNovedad = "El molino es obligatorio.";
     }
-    if (!inicioParoNovedad.trim()) {
-      errors.inicioParoNovedad = "El inicio de paro es obligatorio.";
-    } else if (!isTimeWithinShift(inicioParoNovedad)) {
-      errors.inicioParoNovedad =
-        "La hora de inicio debe estar dentro del turno.";
+    if (!operadorNovedad) {
+      errors.operadorNovedad = "El operador del molino es obligatorio.";
     }
-    if (finParoNovedad.trim() && !isTimeWithinShift(finParoNovedad)) {
-      errors.finParoNovedad = "La hora de fin debe estar dentro del turno.";
+    if (!referenciaNovedad) {
+      errors.referenciaNovedad = "La referencia del molino es obligatoria.";
     }
-    if (!horometroInicioParoNovedad.trim()) {
-      errors.horometroInicioParoNovedad =
-        "El horómetro de inicio de paro es obligatorio.";
+    if (!bultoNovedad) {
+      errors.bultoNovedad = "El bulto del molino es obligatorio.";
     }
-    if (horometroInicioParoNovedad && isNaN(horometroInicioParoNovedad)) {
-      errors.horometroInicioParoNovedad =
-        "El horómetro de inicio debe ser un número.";
+    if (!horometroFinParoNovedad.trim()) {
+      errors.horometroFinParoNovedad =
+        "El horómetro del molino es obligatorio.";
     }
     if (horometroFinParoNovedad && isNaN(horometroFinParoNovedad)) {
       errors.horometroFinParoNovedad =
-        "El horómetro de fin debe ser un número.";
-    }
-    if (
-      (finParoNovedad.trim() && !horometroFinParoNovedad.trim()) ||
-      (!finParoNovedad.trim() && horometroFinParoNovedad.trim())
-    ) {
-      if (!finParoNovedad.trim()) {
-        errors.finParoNovedad =
-          "Si se ingresa el horómetro de fin, la hora de fin también es obligatoria.";
-      }
-      if (!horometroFinParoNovedad.trim()) {
-        errors.horometroFinParoNovedad =
-          "Si se ingresa la hora de fin, el horómetro de fin también es obligatorio.";
-      }
-    }
-    if (!motivoParoNovedad.trim()) {
-      errors.motivoParoNovedad = "El motivo del paro es obligatorio.";
+        "El horómetro del molino debe ser un número.";
     }
 
     setValidationError(errors);
@@ -274,36 +224,18 @@ function GenerateNoveltyStrikeStartForm() {
     });
     const fechaNovedad = determinateDate(currentData);
     const shiftNovelty = determinateShift(currentData);
-    const matchingWindmill = molino?.find(
-      (item) => item.name === molinoNovedad
-    );
-    const referenceNovelety = matchingWindmill?.reference || "";
-    const bulkNovelty = matchingWindmill?.bulk || "";
-    const operatorNovelty = matchingWindmill?.operator || "";
-    const inicioParoConSegundos = inicioParoNovedad.includes(":")
-      ? `${inicioParoNovedad}:00`
-      : inicioParoNovedad;
-    const finParoConSegundos = finParoNovedad.trim()
-      ? `${finParoNovedad}:00`
-      : null;
-    const horometroFinParo = horometroFinParoNovedad.trim()
-      ? parseFloat(horometroFinParoNovedad)
-      : null;
     const novedad = [
       {
         fecha_novedad: fechaNovedad,
         hora_novedad: horaNovedad,
         turno_novedad: shiftNovelty,
-        tipo_novedad: "Paro",
+        tipo_novedad: "Encendido de molino",
         molino_novedad: molinoNovedad,
-        referencia_novedad: referenceNovelety,
-        bulto_novedad: bulkNovelty,
-        inicio_paro_novedad: inicioParoConSegundos,
-        fin_paro_novedad: finParoConSegundos,
+        referencia_novedad: referenciaNovedad,
+        bulto_novedad: bultoNovedad,
         horometro_inicio_paro_novedad: horometroInicioParoNovedad,
-        horometro_fin_paro_novedad: horometroFinParo,
-        motivo_paro_novedad: motivoParoNovedad,
-        operador_novedad: operatorNovelty,
+        horometro_fin_paro_novedad: horometroFinParoNovedad,
+        operador_novedad: operadorNovedad,
         observacion_novedad: observacionNovedad,
       },
     ];
@@ -318,7 +250,7 @@ function GenerateNoveltyStrikeStartForm() {
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear el paro. Por favor, inténtelo de nuevo.`
+          `Error al encender el molino. Por favor, inténtelo de nuevo.`
         );
         setLoading(false);
       }
@@ -326,14 +258,14 @@ function GenerateNoveltyStrikeStartForm() {
   };
 
   const redirectGenerateReport = () => {
-    navigate("/generatereport/noveltystrike");
+    navigate("/generatereport/noveltyoption");
   };
 
   return (
     <>
       {loadingAlternative ? (
         <motion.div
-          className={Style.generateNoveltyStrikeStartFormAlternative}
+          className={Style.generateNoveltyWindmillPowerOnFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -342,27 +274,27 @@ function GenerateNoveltyStrikeStartForm() {
         </motion.div>
       ) : sendStatus === true ? (
         <motion.div
-          className={Style.generateNoveltyStrikeStartFormAlternative}
+          className={Style.generateNoveltyWindmillPowerOnFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1>Paro creado con éxito</h1>
+          <h1>Molino encendido con éxito</h1>
         </motion.div>
       ) : currentData.length > 0 ? (
         <motion.form
-          className={Style.generateNoveltyStrikeStartForm}
+          className={Style.generateNoveltyWindmillPowerOnForm}
           onSubmit={sendCreate}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <header className={Style.generateNoveltyStrikeStartFormHeader}>
-            <h1>Complete los datos para crear el paro</h1>
+          <header className={Style.generateNoveltyWindmillPowerOnFormHeader}>
+            <h1>Complete los datos para encender el molino</h1>
           </header>
-          <main className={Style.generateNoveltyStrikeStartFormMain}>
+          <main className={Style.generateNoveltyWindmillPowerOnFormMain}>
             <fieldset
-              className={Style.generateNoveltyStrikeStartFormMainEspecial}
+              className={Style.generateNoveltyWindmillPowerOnFormMainEspecial}
             >
               <label htmlFor="molinoNovedad">Seleccione un molino</label>
               <select
@@ -386,7 +318,7 @@ function GenerateNoveltyStrikeStartForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
+                  className={Style.generateNoveltyWindmillPowerOnFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -395,86 +327,116 @@ function GenerateNoveltyStrikeStartForm() {
                 </motion.span>
               )}
             </fieldset>
-            <fieldset>
-              <label htmlFor="inicioParoNovedad">Inicio de paro</label>
-              <input
-                id="inicioParoNovedad"
-                name="inicioParoNovedad"
-                type="time"
-                value={inicioParoNovedad}
-                onChange={(e) => setInicioParoNovedad(e.target.value)}
-              />
-              {!validationError.inicioParoNovedad ? (
+            <fieldset
+              className={Style.generateNoveltyWindmillPowerOnFormMainEspecial}
+            >
+              <label htmlFor="operadorNovedad">Operador de molino</label>
+              <select
+                id="operadorNovedad"
+                name="operadorNovedad"
+                value={operadorNovedad}
+                onChange={(e) => setOperadorNovedad(e.target.value)}
+              >
+                <option value="" disabled>
+                  Seleccione un operador de molino
+                </option>
+                {operador.map((operador) => (
+                  <option key={operador.id_usuario} value={operador.id_usuario}>
+                    {operador.nombre_usuario}
+                  </option>
+                ))}
+              </select>
+              {!validationError.operadorNovedad ? (
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
+                  className={Style.generateNoveltyWindmillPowerOnFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  {validationError.inicioParoNovedad}
+                  {validationError.operadorNovedad}
                 </motion.span>
               )}
             </fieldset>
             <fieldset>
-              <label htmlFor="finParoNovedad">Fin de paro</label>
-              <input
-                id="finParoNovedad"
-                name="finParoNovedad"
-                type="time"
-                value={finParoNovedad}
-                onChange={(e) => setFinParoNovedad(e.target.value)}
-              />
-              {!validationError.finParoNovedad ? (
+              <label htmlFor="referenciaNovedad">Referencia</label>
+              <select
+                id="referenciaNovedad"
+                name="referenciaNovedad"
+                value={referenciaNovedad}
+                onChange={(e) => setReferenciaNovedad(e.target.value)}
+              >
+                <option value="" disabled>
+                  Seleccione una referencia
+                </option>
+                {referencia.map((referencia) => (
+                  <option
+                    key={referencia.id_referencia}
+                    value={referencia.nombre_referencia}
+                  >
+                    {referencia.nombre_referencia}
+                  </option>
+                ))}
+              </select>
+              {!validationError.referenciaNovedad ? (
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
+                  className={Style.generateNoveltyWindmillPowerOnFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  {validationError.finParoNovedad}
+                  {validationError.referenciaNovedad}
                 </motion.span>
               )}
             </fieldset>
             <fieldset>
-              <label htmlFor="horometroInicioParoNovedad">
-                Horómetro inicio de Paro
-              </label>
-              <input
-                id="horometroInicioParoNovedad"
-                name="horometroInicioParoNovedad"
-                type="text"
-                value={horometroInicioParoNovedad}
-                onChange={(e) => setHorometroInicioParoNovedad(e.target.value)}
-                placeholder="Ingrese el horómetro de inicio de paro"
-              />
-              {!validationError.horometroInicioParoNovedad ? (
+              <label htmlFor="bultoNovedad">Bulto</label>
+              <select
+                id="bultoNovedad"
+                name="bultoNovedad"
+                value={bultoNovedad}
+                onChange={(e) => setBultoNovedad(e.target.value)}
+              >
+                <option value="" disabled>
+                  Seleccione un bulto
+                </option>
+                {bulto.map((bulto) => (
+                  <option key={bulto.id_bulto} value={bulto.nombre_bulto}>
+                    {bulto.nombre_bulto}
+                  </option>
+                ))}
+              </select>
+              {!validationError.bultoNovedad ? (
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
+                  className={Style.generateNoveltyWindmillPowerOnFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  {validationError.horometroInicioParoNovedad}
+                  {validationError.bultoNovedad}
                 </motion.span>
               )}
             </fieldset>
-            <fieldset>
-              <label htmlFor="horometroFinParoNovedad">
-                Horómetro fin de paro
-              </label>
+            <fieldset
+              className={Style.generateNoveltyWindmillPowerOnFormMainEspecial}
+            >
+              <label htmlFor="horometroFinParoNovedad">Horómetro</label>
               <input
                 id="horometroFinParoNovedad"
                 name="horometroFinParoNovedad"
                 type="text"
                 value={horometroFinParoNovedad}
-                onChange={(e) => setHorometroFinParoNovedad(e.target.value)}
-                placeholder="Ingrese el horómetro de fin de paro"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setHorometroInicioParoNovedad(value);
+                  setHorometroFinParoNovedad(value);
+                }}
+                placeholder="Ingrese el horómetro del molino"
               />
               {!validationError.horometroFinParoNovedad ? (
                 <></>
@@ -490,48 +452,7 @@ function GenerateNoveltyStrikeStartForm() {
               )}
             </fieldset>
             <fieldset
-              className={Style.generateNoveltyStrikeStartFormMainEspecial}
-            >
-              <label htmlFor="motivoParoNovedad">Motivo del paro</label>
-              <select
-                id="motivoParoNovedad"
-                name="motivoParoNovedad"
-                value={motivoParoNovedad}
-                onChange={(e) => setMotivoParoNovedad(e.target.value)}
-              >
-                <option value="" disabled>
-                  Seleccione un motivo
-                </option>
-                <option value="Sostenimiento general">
-                  Sostenimiento general
-                </option>
-                <option value="Mecánico">Mecánico</option>
-                <option value="Eléctrico">Eléctrico</option>
-                <option value="Corte de energía">Corte de energía</option>
-                <option value="Materia prima">Materia prima</option>
-                <option value="Empaque">Empaque</option>
-                <option value="Guijos">Guijos</option>
-                <option value="Personal">Personal</option>
-                <option value="Programado">Programado</option>
-                <option value="Bodega">Bodega</option>
-                <option value="Apagado">Apagado</option>
-                <option value="Otro">Otro</option>
-              </select>
-              {!validationError.motivoParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.motivoParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset
-              className={Style.generateNoveltyStrikeStartFormMainEspecial}
+              className={Style.generateNoveltyWindmillPowerOnFormMainEspecial}
             >
               <label htmlFor="observacionNovedad">Observación</label>
               <input
@@ -546,7 +467,7 @@ function GenerateNoveltyStrikeStartForm() {
                 <></>
               ) : (
                 <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
+                  className={Style.generateNoveltyWindmillPowerOnFormValidation}
                   initial={{ zoom: 0 }}
                   animate={{ zoom: 1 }}
                   transition={{ duration: 0.5 }}
@@ -556,18 +477,24 @@ function GenerateNoveltyStrikeStartForm() {
               )}
             </fieldset>
           </main>
-          <footer className={Style.generateNoveltyStrikeStartFormFooter}>
+          <footer className={Style.generateNoveltyWindmillPowerOnFormFooter}>
             <button onClick={() => redirectGenerateReport()} type="button">
               Cancelar
             </button>
             <button type="submit">
-              {loading ? <div className={Style.loader}></div> : "Crear paro"}
+              {loading ? (
+                <div className={Style.loader}></div>
+              ) : (
+                "Encender molino"
+              )}
             </button>
             {!serverError ? (
               <></>
             ) : (
               <motion.span
-                className={Style.generateNoveltyStrikeStartFormValidationServer}
+                className={
+                  Style.generateNoveltyWindmillPowerOnFormValidationServer
+                }
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -579,7 +506,7 @@ function GenerateNoveltyStrikeStartForm() {
         </motion.form>
       ) : (
         <motion.div
-          className={Style.generateNoveltyStrikeStartFormAlternative}
+          className={Style.generateNoveltyWindmillPowerOnFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -591,4 +518,4 @@ function GenerateNoveltyStrikeStartForm() {
   );
 }
 
-export default GenerateNoveltyStrikeStartForm;
+export default GenerateNoveltyWindmillPowerOnForm;

@@ -70,10 +70,14 @@ function HomeStateWindmill() {
 
         const reports = responseReport.data;
         const operatorsChange = responseNews.data.filter(
-          (novelty) => novelty.tipo_novedad === "Cambio de operador de molino"
+          (novelty) =>
+            novelty.tipo_novedad === "Cambio de operador de molino" ||
+            novelty.tipo_novedad == "Encendido de molino"
         );
         const news = responseNews.data.filter(
-          (novelty) => novelty.tipo_novedad === "Paro"
+          (novelty) =>
+            novelty.tipo_novedad === "Paro" ||
+            novelty.tipo_novedad == "Encendido de molino"
         );
         const combinedData = mills.map((molino) => {
           const report = reports
@@ -103,39 +107,22 @@ function HomeStateWindmill() {
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
-          let horometro = "No se registró";
+          const horometro =
+            [
+              recent?.horometro_informe_inicial,
+              recent?.horometro_inicio_paro_novedad,
+              recent?.horometro_fin_paro_novedad,
+            ]
+              .filter((value) => value !== undefined && value !== null)
+              .sort((a, b) => b - a)[0] || "No se registró";
 
-          const horometrosDisponibles = [
-            recent?.horometro_informe_inicial,
-            recent?.horometro_inicio_paro_novedad,
-            recent?.horometro_fin_paro_novedad,
-          ].filter((value) => value !== undefined && value !== null);
-
-          if (horometrosDisponibles.length > 0) {
-            horometro = horometrosDisponibles.sort((a, b) => b - a)[0];
-          } else if (
-            recent?.tipo_novedad === "Paro" &&
-            recent?.motivo_paro_novedad === "Apagado"
-          ) {
-            horometro = "Apagado";
-          }
-
-          let operador = "No se registró";
-
-          if (operatorChange?.operador?.nombre_usuario) {
-            operador = operatorChange.operador.nombre_usuario;
-          } else if (recent?.operador?.nombre_usuario) {
-            operador = recent.operador.nombre_usuario;
-          } else if (
-            recent?.tipo_novedad === "Paro" &&
-            recent?.motivo_paro_novedad === "Apagado"
-          ) {
-            operador = "Apagado";
-          }
           return {
             id_molino: molino.id_molino,
             nombre_molino: molino.nombre_molino,
-            operador,
+            operador:
+              operatorChange?.operador?.nombre_usuario ||
+              recent?.operador?.nombre_usuario ||
+              "No se registró",
             horometro,
             paro:
               novelty?.inicio_paro_novedad && !novelty?.fin_paro_novedad
@@ -174,9 +161,7 @@ function HomeStateWindmill() {
               <p>
                 {molino.paro ||
                 molino.operador === "No se registró" ||
-                molino.operador === "Apagado" ||
-                molino.horometro === "No se registró" ||
-                molino.horometro === "Apagado" ? (
+                molino.horometro === "No se registró" ? (
                   <i
                     className={`bi bi-x-circle-fill ${Style.homeStateWindmillMainSecondaryIconAlternative}`}
                   ></i>
@@ -186,7 +171,11 @@ function HomeStateWindmill() {
                   ></i>
                 )}
               </p>
-              <p>{molino.horometro} Hrs</p>
+              <p>
+                {molino.horometro === "No se registró"
+                  ? molino.horometro
+                  : molino.horometro + " Hrs"}
+              </p>
             </section>
           </div>
         ))}

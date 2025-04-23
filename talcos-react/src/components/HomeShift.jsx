@@ -92,12 +92,11 @@ function HomeShift() {
 
         const novelty = newResponse.data;
         const paroCount = novelty.filter(
-          (novedad) =>
-            novedad.tipo_novedad === "Paro" &&
-            novedad.motivo_paro_novedad !== "Apagado"
+          (novedad) => novedad.tipo_novedad === "Paro"
         );
         const totalParoDuration = paroCount.reduce((total, novedad) => {
           const inicioParo = novedad.inicio_paro_novedad;
+
           let finParo = novedad.fin_paro_novedad;
 
           if (!finParo) {
@@ -106,13 +105,23 @@ function HomeShift() {
 
           return total + calculateDuration(inicioParo, finParo);
         }, 0);
-
+        const encendidos = novelty.filter(
+          (novedad) => novedad.tipo_novedad === "Encendido de molino"
+        );
+        const encendidoDuration = encendidos.reduce((total, novedad) => {
+          const horaEncendido = novedad.hora_novedad;
+          return (
+            total + calculateDuration(currentShift.inicio_turno, horaEncendido)
+          );
+        }, 0);
+        const totalParoWithEncendido = totalParoDuration + encendidoDuration;
         const shiftDuration = calculateDuration(
           currentShift.inicio_turno,
           currentShift.fin_turno
         );
         const totalShiftHours = shiftDuration * mills.length;
-        const efficiency = 100 - (totalParoDuration / totalShiftHours) * 100;
+        const efficiency =
+          100 - (totalParoWithEncendido / totalShiftHours) * 100;
 
         setTotalStrike(paroCount.length);
         setOverallEfficiency(efficiency.toFixed(2));
