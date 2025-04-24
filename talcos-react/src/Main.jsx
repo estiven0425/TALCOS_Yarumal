@@ -16,6 +16,7 @@ import {
   GenerateNoveltyStrikeStop,
   GenerateNoveltyStrikeStopFinish,
   GenerateNoveltyWindmill,
+  GenerateQualityControl,
   GenerateReport,
   GenerateReportMenu,
   Home,
@@ -145,6 +146,7 @@ createRoot(document.getElementById("root")).render(
               path="noveltywindmill"
               element={<GenerateNoveltyWindmill />}
             />
+            <Route path="qualitycontrol" element={<GenerateQualityControl />} />
           </Route>
           <Route path="monitoring" element={<Monitoring />} />
           <Route path="inventory" element={<Inventory />}>

@@ -69,6 +69,7 @@ function GenerateNoveltyReferenceForm() {
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -80,6 +81,7 @@ function GenerateNoveltyReferenceForm() {
             },
           }
         );
+
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -94,6 +96,57 @@ function GenerateNoveltyReferenceForm() {
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
+        const evaluateIsInParo = (report, allNovelties) => {
+          if (!report?.molino_informe_inicial) {
+            const turnOnNovelty = allNovelties.find(
+              (nov) => nov.tipo_novedad === "Encendido de molino"
+            );
+
+            if (turnOnNovelty) {
+              const pauses = allNovelties
+                .filter((nov) => nov.tipo_novedad === "Paro")
+                .sort(
+                  (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+                );
+
+              if (pauses.length > 0) {
+                const latestPause = pauses[0];
+
+                if (
+                  latestPause.inicio_paro_novedad &&
+                  latestPause.horometro_inicio_paro_novedad &&
+                  !latestPause.fin_paro_novedad &&
+                  !latestPause.horometro_fin_paro_novedad
+                ) {
+                  return true;
+                }
+                return false;
+              }
+              return false;
+            }
+            return true;
+          }
+
+          const pauses = allNovelties
+            .filter((nov) => nov.tipo_novedad === "Paro")
+            .sort(
+              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+            );
+
+          if (pauses.length > 0) {
+            const latestPause = pauses[0];
+
+            if (
+              latestPause.inicio_paro_novedad &&
+              latestPause.horometro_inicio_paro_novedad &&
+              !latestPause.fin_paro_novedad &&
+              !latestPause.horometro_fin_paro_novedad
+            ) {
+              return true;
+            }
+          }
+          return false;
+        };
 
         const combinedData = mills.map((molino) => {
           const report = reports
@@ -105,13 +158,12 @@ function GenerateNoveltyReferenceForm() {
                 new Date(b.hora_informe_inicial) -
                 new Date(a.hora_informe_inicial)
             )[0];
-          const novelty = news
-            .filter(
-              (novelty) => novelty.molino_novedad === molino.nombre_molino
-            )
-            .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
-            )[0];
+          const millNovelties = news.filter(
+            (novelty) => novelty.molino_novedad === molino.nombre_molino
+          );
+          const novelty = millNovelties.sort(
+            (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+          )[0];
           const recent =
             report &&
             (!novelty ||
@@ -120,13 +172,7 @@ function GenerateNoveltyReferenceForm() {
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
-          const isInParo =
-            !report?.molino_informe_inicial ||
-            (novelty?.tipo_novedad === "Paro" &&
-              novelty?.inicio_paro_novedad &&
-              novelty?.horometro_inicio_paro_novedad &&
-              !novelty?.fin_paro_novedad &&
-              !novelty?.horometro_fin_paro_novedad);
+          const isInParo = evaluateIsInParo(report, millNovelties);
 
           return {
             name: molino.nombre_molino,

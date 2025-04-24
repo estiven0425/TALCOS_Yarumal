@@ -85,23 +85,48 @@ function GenerateNoveltyWindmillPowerOnForm() {
           }
         );
 
+        const responseNews = await axios.get(
+          `http://${localIP}:3000/novedades/turnonovedad`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
+
         const reports = responseStartReport.data;
+        const news = responseNews.data;
+        const isAvailable = (report, allNovelties) => {
+          if (!report?.molino_informe_inicial) {
+            const turnOnNovelty = allNovelties.find(
+              (nov) => nov.tipo_novedad === "Encendido de molino"
+            );
+
+            if (!turnOnNovelty) {
+              return true;
+            }
+            if (turnOnNovelty) {
+              return false;
+            }
+          }
+          return false;
+        };
 
         const combinedData = mills.map((molino) => {
-          const report = reports
-            .filter(
-              (report) => report.molino_informe_inicial === molino.nombre_molino
-            )
-            .sort(
-              (a, b) =>
-                new Date(b.hora_informe_inicial) -
-                new Date(a.hora_informe_inicial)
-            )[0];
-          const isInParo = report?.molino_informe_inicial;
+          const report = reports.find(
+            (report) => report.molino_informe_inicial === molino.nombre_molino
+          );
+          const millNovelties = news.filter(
+            (novelty) => novelty.molino_novedad === molino.nombre_molino
+          );
+          const available = isAvailable(report, millNovelties);
 
           return {
             name: molino.nombre_molino,
-            isInParo,
+            available,
           };
         });
 
@@ -307,7 +332,7 @@ function GenerateNoveltyWindmillPowerOnForm() {
                   Seleccione un molino
                 </option>
                 {molino
-                  .filter((item) => !item.isInParo)
+                  .filter((item) => item.available)
                   .map((item, index) => (
                     <option key={index} value={item.name}>
                       {item.name}

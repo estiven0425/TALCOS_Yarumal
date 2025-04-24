@@ -12,6 +12,7 @@ export { default as GenerateNoveltyStrikeStart } from "./GenerateNoveltyStrikeSt
 export { default as GenerateNoveltyStrikeStop } from "./GenerateNoveltyStrikeStop";
 export { default as GenerateNoveltyStrikeStopFinish } from "./GenerateNoveltyStrikeStopFinish";
 export { default as GenerateNoveltyWindmill } from "./GenerateNoveltyWindmill";
+export { default as GenerateQualityControl } from "./GenerateQualityControl";
 export { default as GenerateReportMenu } from "./GenerateReportMenu";
 export { default as Home } from "./Home";
 export { default as Inventory } from "./Inventory";

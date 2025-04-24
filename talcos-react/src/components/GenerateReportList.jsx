@@ -35,19 +35,19 @@ function GenerateReportList() {
         </button>
         <button
           className={Style.generateReportListButton}
-          onClick={() => redirect("finalreport")}
-          type="button"
-        >
-          <h2>Informe final</h2>
-          <img alt="Icono" src="/informe_final.svg"></img>
-        </button>
-        <button
-          className={Style.generateReportListButton}
           onClick={() => redirect("qualitycontrol")}
           type="button"
         >
           <h2>Control de calidad</h2>
           <img alt="Icono" src="/control_calidad.svg"></img>
+        </button>
+        <button
+          className={Style.generateReportListButton}
+          onClick={() => redirect("finalreport")}
+          type="button"
+        >
+          <h2>Informe final</h2>
+          <img alt="Icono" src="/informe_final.svg"></img>
         </button>
       </motion.section>
     </>

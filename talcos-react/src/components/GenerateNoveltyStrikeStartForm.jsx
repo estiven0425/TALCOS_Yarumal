@@ -98,6 +98,63 @@ function GenerateNoveltyStrikeStartForm() {
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
+        const evaluateIsInParo = (report, allNovelties) => {
+          if (!report?.molino_informe_inicial) {
+            const turnOnNovelty = allNovelties.find(
+              (nov) => nov.tipo_novedad === "Encendido de molino"
+            );
+            if (
+              turnOnNovelty ||
+              allNovelties.some(
+                (nov) =>
+                  nov.tipo_novedad === "Cambio de referencia" ||
+                  nov.tipo_novedad === "Cambio de operador de molino"
+              )
+            ) {
+              const pauses = allNovelties
+                .filter((nov) => nov.tipo_novedad === "Paro")
+                .sort(
+                  (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+                );
+
+              if (pauses.length > 0) {
+                const latestPause = pauses[0];
+
+                if (
+                  latestPause.inicio_paro_novedad &&
+                  latestPause.horometro_inicio_paro_novedad &&
+                  !latestPause.fin_paro_novedad &&
+                  !latestPause.horometro_fin_paro_novedad
+                ) {
+                  return true;
+                }
+                return false;
+              }
+              return false;
+            }
+            return true;
+          }
+
+          const pauses = allNovelties
+            .filter((nov) => nov.tipo_novedad === "Paro")
+            .sort(
+              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+            );
+
+          if (pauses.length > 0) {
+            const latestPause = pauses[0];
+
+            if (
+              latestPause.inicio_paro_novedad &&
+              latestPause.horometro_inicio_paro_novedad &&
+              !latestPause.fin_paro_novedad &&
+              !latestPause.horometro_fin_paro_novedad
+            ) {
+              return true;
+            }
+          }
+          return false;
+        };
 
         const combinedData = mills.map((molino) => {
           const report = reports
@@ -109,13 +166,12 @@ function GenerateNoveltyStrikeStartForm() {
                 new Date(b.hora_informe_inicial) -
                 new Date(a.hora_informe_inicial)
             )[0];
-          const novelty = news
-            .filter(
-              (novelty) => novelty.molino_novedad === molino.nombre_molino
-            )
-            .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
-            )[0];
+          const millNovelties = news.filter(
+            (novelty) => novelty.molino_novedad === molino.nombre_molino
+          );
+          const novelty = millNovelties.sort(
+            (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+          )[0];
           const recent =
             report &&
             (!novelty ||
@@ -124,13 +180,7 @@ function GenerateNoveltyStrikeStartForm() {
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
-          const isInParo =
-            !report?.molino_informe_inicial ||
-            (novelty?.tipo_novedad === "Paro" &&
-              novelty?.inicio_paro_novedad &&
-              novelty?.horometro_inicio_paro_novedad &&
-              !novelty?.fin_paro_novedad &&
-              !novelty?.horometro_fin_paro_novedad);
+          const isInParo = evaluateIsInParo(report, millNovelties);
 
           return {
             name: molino.nombre_molino,
