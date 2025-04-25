@@ -17,10 +17,7 @@ function HomeShift() {
       try {
         const response = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = response.data;
-        const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
-        const mills = responseMills.data;
         const currentTime = new Date();
-
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
@@ -28,22 +25,29 @@ function HomeShift() {
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
-
           if (endTimeMs > startTimeMs) {
             return currentTimeMs >= startTimeMs && currentTimeMs < endTimeMs;
           } else {
             return currentTimeMs >= startTimeMs || currentTimeMs < endTimeMs;
           }
         };
-
         const calculateDuration = (start, end) => {
           const [startHour, startMinute] = start.split(":").map(Number);
           const [endHour, endMinute] = end.split(":").map(Number);
-          const startMs = (startHour * 60 + startMinute) * 60000;
-          const endMs = (endHour * 60 + endMinute) * 60000;
-          return (endMs - startMs) / 3600000;
-        };
 
+          let startMs = (startHour * 60 + startMinute) * 60000;
+          let endMs = (endHour * 60 + endMinute) * 60000;
+
+          if (endMs < startMs) {
+            endMs += 24 * 60 * 60000;
+          }
+
+          const totalMinutes = Math.round((endMs - startMs) / 60000);
+          const hours = Math.floor(totalMinutes / 60);
+          const minutes = totalMinutes % 60;
+
+          return hours + minutes / 60;
+        };
         const currentShift = shifts.find((shift) =>
           compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
         );
@@ -72,8 +76,14 @@ function HomeShift() {
             },
           }
         );
-
-        const lastReport = reportResponse.data[0];
+        const reportData = reportResponse.data;
+        const lastReport = reportData[0];
+        const molinosEnInforme = reportData.filter(
+          (report) =>
+            report.molino_informe_inicial !== null &&
+            report.molino_informe_inicial !== undefined
+        );
+        const cantidadMolinosEnInforme = molinosEnInforme.length;
 
         setSupervisor(lastReport?.titular?.nombre_usuario || "No disponible");
         setControlCalidad(lastReport?.cdc?.nombre_usuario || "No disponible");
@@ -91,39 +101,78 @@ function HomeShift() {
         );
 
         const novelty = newResponse.data;
+        const shiftDuration = calculateDuration(
+          currentShift.inicio_turno,
+          currentShift.fin_turno
+        );
+        const totalPossibleHoursInitial =
+          shiftDuration * cantidadMolinosEnInforme;
+
+        let totalPossibleHours = totalPossibleHoursInitial;
+
         const paroCount = novelty.filter(
           (novedad) => novedad.tipo_novedad === "Paro"
         );
+
+        setTotalStrike(paroCount.length);
+
         const totalParoDuration = paroCount.reduce((total, novedad) => {
           const inicioParo = novedad.inicio_paro_novedad;
 
           let finParo = novedad.fin_paro_novedad;
 
-          if (!finParo) {
-            finParo = currentShift.fin_turno;
-          }
+          if (!finParo) finParo = currentShift.fin_turno;
 
           return total + calculateDuration(inicioParo, finParo);
         }, 0);
         const encendidos = novelty.filter(
           (novedad) => novedad.tipo_novedad === "Encendido de molino"
         );
-        const encendidoDuration = encendidos.reduce((total, novedad) => {
-          const horaEncendido = novedad.hora_novedad;
-          return (
-            total + calculateDuration(currentShift.inicio_turno, horaEncendido)
-          );
-        }, 0);
-        const totalParoWithEncendido = totalParoDuration + encendidoDuration;
-        const shiftDuration = calculateDuration(
-          currentShift.inicio_turno,
-          currentShift.fin_turno
-        );
-        const totalShiftHours = shiftDuration * mills.length;
-        const efficiency =
-          100 - (totalParoWithEncendido / totalShiftHours) * 100;
 
-        setTotalStrike(paroCount.length);
+        let totalEncendidoDelay = 0;
+
+        const encendidosPorMolino = {};
+
+        encendidos.forEach((novedad) => {
+          const idMolino = novedad.id_molino;
+
+          if (
+            !encendidosPorMolino[idMolino] ||
+            novedad.hora_novedad < encendidosPorMolino[idMolino].hora_novedad
+          ) {
+            encendidosPorMolino[idMolino] = novedad;
+          }
+        });
+
+        Object.values(encendidosPorMolino).forEach((novedad) => {
+          const horaEncendido = novedad.hora_novedad;
+          const tiempoPerdidoEncendido = calculateDuration(
+            currentShift.inicio_turno,
+            horaEncendido
+          );
+
+          totalEncendidoDelay += tiempoPerdidoEncendido;
+
+          const tiempoPosibleEncendido = calculateDuration(
+            horaEncendido,
+            currentShift.fin_turno
+          );
+
+          totalPossibleHours += tiempoPosibleEncendido;
+        });
+
+        const initialReportTime =
+          lastReport?.hora_informe_inicial?.slice(0, 5) ||
+          currentShift.inicio_turno;
+
+        const initialReportDelay =
+          calculateDuration(currentShift.inicio_turno, initialReportTime) *
+          cantidadMolinosEnInforme;
+        const totalLostHours =
+          totalParoDuration + totalEncendidoDelay + initialReportDelay;
+        const productiveHours = totalPossibleHours - totalLostHours;
+        const efficiency = (productiveHours / totalPossibleHours) * 100;
+
         setOverallEfficiency(efficiency.toFixed(2));
       } catch (error) {
         console.error("Error al obtener turnos o informe inicial:", error);
