@@ -116,6 +116,43 @@ function HomeStateWindmill() {
               .filter((value) => value !== undefined && value !== null)
               .sort((a, b) => b - a)[0] || "No se registró";
 
+          let paroActivo = null;
+
+          if (novelty?.inicio_paro_novedad) {
+            if (novelty.fin_paro_novedad) {
+              const [inicioHour, inicioMinute] = novelty.inicio_paro_novedad
+                .split(":")
+                .map(Number);
+              const [finHour, finMinute] = novelty.fin_paro_novedad
+                .split(":")
+                .map(Number);
+              const now = new Date();
+              const inicioParo = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate(),
+                inicioHour,
+                inicioMinute
+              );
+
+              let finParo = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate(),
+                finHour,
+                finMinute
+              );
+
+              if (finParo <= inicioParo) {
+                finParo.setDate(finParo.getDate() + 1);
+              }
+
+              paroActivo = now < finParo ? novelty.inicio_paro_novedad : null;
+            } else {
+              paroActivo = novelty.inicio_paro_novedad;
+            }
+          }
+
           return {
             id_molino: molino.id_molino,
             nombre_molino: molino.nombre_molino,
@@ -124,10 +161,7 @@ function HomeStateWindmill() {
               recent?.operador?.nombre_usuario ||
               "No se registró",
             horometro,
-            paro:
-              novelty?.inicio_paro_novedad && !novelty?.fin_paro_novedad
-                ? novelty?.inicio_paro_novedad
-                : null,
+            paro: paroActivo,
           };
         });
 

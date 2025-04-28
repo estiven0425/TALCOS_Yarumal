@@ -112,11 +112,42 @@ function GenerateNoveltyOperatorForm() {
 
                 if (
                   latestPause.inicio_paro_novedad &&
-                  latestPause.horometro_inicio_paro_novedad &&
-                  !latestPause.fin_paro_novedad &&
-                  !latestPause.horometro_fin_paro_novedad
+                  latestPause.horometro_inicio_paro_novedad
                 ) {
-                  return true;
+                  if (
+                    !latestPause.fin_paro_novedad &&
+                    !latestPause.horometro_fin_paro_novedad
+                  ) {
+                    return true;
+                  } else if (latestPause.fin_paro_novedad) {
+                    const now = new Date();
+                    const [inicioHour, inicioMinute] =
+                      latestPause.inicio_paro_novedad.split(":").map(Number);
+                    const [finHour, finMinute] = latestPause.fin_paro_novedad
+                      .split(":")
+                      .map(Number);
+                    const inicioParo = new Date(
+                      now.getFullYear(),
+                      now.getMonth(),
+                      now.getDate(),
+                      inicioHour,
+                      inicioMinute
+                    );
+
+                    let finParo = new Date(
+                      now.getFullYear(),
+                      now.getMonth(),
+                      now.getDate(),
+                      finHour,
+                      finMinute
+                    );
+
+                    if (finParo <= inicioParo) {
+                      finParo.setDate(finParo.getDate() + 1);
+                    }
+                    return now < finParo;
+                  }
+                  return false;
                 }
                 return false;
               }
@@ -136,16 +167,45 @@ function GenerateNoveltyOperatorForm() {
 
             if (
               latestPause.inicio_paro_novedad &&
-              latestPause.horometro_inicio_paro_novedad &&
-              !latestPause.fin_paro_novedad &&
-              !latestPause.horometro_fin_paro_novedad
+              latestPause.horometro_inicio_paro_novedad
             ) {
-              return true;
+              if (
+                !latestPause.fin_paro_novedad &&
+                !latestPause.horometro_fin_paro_novedad
+              ) {
+                return true;
+              } else if (latestPause.fin_paro_novedad) {
+                const now = new Date();
+                const [inicioHour, inicioMinute] =
+                  latestPause.inicio_paro_novedad.split(":").map(Number);
+                const [finHour, finMinute] = latestPause.fin_paro_novedad
+                  .split(":")
+                  .map(Number);
+                const inicioParo = new Date(
+                  now.getFullYear(),
+                  now.getMonth(),
+                  now.getDate(),
+                  inicioHour,
+                  inicioMinute
+                );
+
+                let finParo = new Date(
+                  now.getFullYear(),
+                  now.getMonth(),
+                  now.getDate(),
+                  finHour,
+                  finMinute
+                );
+
+                if (finParo <= inicioParo) {
+                  finParo.setDate(finParo.getDate() + 1);
+                }
+                return now < finParo;
+              }
             }
           }
           return false;
         };
-
         const combinedData = mills.map((molino) => {
           const report = reports
             .filter(

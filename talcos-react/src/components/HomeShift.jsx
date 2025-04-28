@@ -173,7 +173,11 @@ function HomeShift() {
         const productiveHours = totalPossibleHours - totalLostHours;
         const efficiency = (productiveHours / totalPossibleHours) * 100;
 
-        setOverallEfficiency(efficiency.toFixed(2));
+        if (!isFinite(efficiency)) {
+          setOverallEfficiency("No disponible");
+        } else {
+          setOverallEfficiency(efficiency.toFixed(2));
+        }
       } catch (error) {
         console.error("Error al obtener turnos o informe inicial:", error);
       }
@@ -201,7 +205,11 @@ function HomeShift() {
         <div>
           <h2>Eficiencia total:</h2>
           {overallEfficiency ? (
-            <p>{overallEfficiency}%</p>
+            <p>
+              {overallEfficiency === "No disponible"
+                ? "No disponible"
+                : overallEfficiency + "%"}
+            </p>
           ) : (
             <p>Obteniendo datos...</p>
           )}
