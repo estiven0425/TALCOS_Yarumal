@@ -35,7 +35,7 @@
 }
 
 .generateQualityControlFormMain {
-  align-content: flex-start;
+  align-content: stretch;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -43,7 +43,41 @@
   gap: 15px;
   justify-content: flex-start;
   height: 100%;
+}
+
+.inventoryEditReasignedRejectedMaterialTableFormMain {
+  border-collapse: separate;
+  border-spacing: 0px 10px;
   width: 100%;
+}
+
+.inventoryEditReasignedRejectedMaterialTableFormMainHead,
+.inventoryEditReasignedRejectedMaterialTableFormMainBody {
+  width: 100%;
+}
+
+.inventoryEditReasignedRejectedMaterialTableFormMainHead tr,
+.inventoryEditReasignedRejectedMaterialTableFormMainBody tr {
+  width: 100%;
+}
+
+.inventoryEditReasignedRejectedMaterialTableFormMainHead tr th {
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: baseline;
+  width: 50%;
+}
+
+.inventoryEditReasignedRejectedMaterialTableFormMainBody tr {
+  outline: transparent 1px solid;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryEditReasignedRejectedMaterialTableFormMainBody tr td {
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: baseline;
+  width: 50%;
 }
 
 .generateQualityControlFormMain fieldset {
@@ -53,7 +87,7 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0px;
 }
 
@@ -111,14 +145,20 @@
   width: 100%;
 }
 
-.generateQualityControlFormMainAlternative fieldset select {
-  border: none;
+.generateQualityControlFormMainAlternative fieldset input {
+  border-color: transparent;
   border-radius: 20px;
-  box-sizing: border-box;
-  cursor: pointer;
   outline: transparent 1px solid;
   padding: 15px;
-  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.generateQualityControlFormMain fieldset select::-webkit-scrollbar {
+  width: 10px;
+}
+
+.generateQualityControlFormValidation {
+  text-align: left;
   transition: all 0.5s ease-in-out;
 }
 
@@ -144,27 +184,44 @@
   transition: all 0.5s ease-in-out;
 }
 
-.generateQualityControlFormFooter button:hover,
-.generateQualityControlFormMainPrimary ul li button:hover {
+.generateQualityControlFormFooter button:hover {
   background-color: #0048b6;
 }
 
-.generateQualityControlFormFooter button:focus,
-.generateQualityControlFormMainPrimary ul li button:focus {
-  background-color: #0048b6;
-}
-
-.generateQualityControlFormMainPrimary select:focus,
-.generateQualityControlFormMainSecondary input:focus,
-.generateQualityControlFormMainSecondary select:focus,
-.generateQualityControlFormMainThird select:focus,
-.generateQualityControlFormMainFourth input:focus {
+.generateQualityControlFormMain
+  fieldset
+  select:hover
+  .generateQualityControlFormMainAlternative
+  fieldset
+  input:hover {
   outline: #0095dc 1px solid;
 }
 
-.generateQualityControlFormValidation {
-  text-align: left;
-  transition: all 0.5s ease-in-out;
+.generateQualityControlFormMain fieldset select::-webkit-scrollbar {
+  width: 10px;
+}
+
+.generateQualityControlFormMain fieldset select::-webkit-scrollbar-track {
+  background: #0037ae;
+  border-radius: 10px;
+}
+
+.generateQualityControlFormMain fieldset select::-webkit-scrollbar-thumb {
+  background: #017fd3;
+  border-radius: 10px;
+}
+
+.generateQualityControlFormFooter button:focus {
+  background-color: #0048b6;
+}
+
+.generateQualityControlFormMain
+  fieldset
+  select:focus
+  .generateQualityControlFormMainAlternative
+  fieldset
+  input:focus {
+  outline: #0095dc 1px solid;
 }
 
 .generateQualityControlFormValidationServer {
