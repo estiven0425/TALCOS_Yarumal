@@ -21,15 +21,40 @@ exports.crearProductoRechazado = async (req, res) => {
   } = req.body;
 
   try {
-    const nuevoProductoRechazado = await ProductosRechazados.create({
-      nombre_producto_rechazado,
-      cantidad_producto_rechazado,
-      retencion_producto_rechazado,
+    const productoExistente = await ProductosRechazados.findOne({
+      where: {
+        nombre_producto_rechazado,
+        retencion_producto_rechazado,
+        actividad_producto_rechazado: true,
+      },
     });
+
+    let nuevoProductoRechazado;
+
+    if (productoExistente) {
+      const cantidadActual =
+        parseFloat(productoExistente.cantidad_producto_rechazado) || 0;
+      const cantidadNueva = parseFloat(cantidad_producto_rechazado) || 0;
+
+      productoExistente.cantidad_producto_rechazado =
+        cantidadActual + cantidadNueva;
+
+      await productoExistente.save();
+
+      nuevoProductoRechazado = productoExistente;
+    } else {
+      nuevoProductoRechazado = await ProductosRechazados.create({
+        nombre_producto_rechazado,
+        cantidad_producto_rechazado,
+        retencion_producto_rechazado,
+      });
+    }
 
     res.status(201).json(nuevoProductoRechazado);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el producto rechazado" });
+    res
+      .status(500)
+      .json({ error: "Error al crear o actualizar el producto rechazado" });
   }
 };
 
