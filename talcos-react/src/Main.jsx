@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import {
   Error,
   FastInventory,
+  GenerateFinalReport,
   GenerateInitialReport,
   GenerateNovelty,
   GenerateNoveltyChangeMechanic,
@@ -147,6 +148,7 @@ createRoot(document.getElementById("root")).render(
               element={<GenerateNoveltyWindmill />}
             />
             <Route path="qualitycontrol" element={<GenerateQualityControl />} />
+            <Route path="finalreport" element={<GenerateFinalReport />} />
           </Route>
           <Route path="monitoring" element={<Monitoring />} />
           <Route path="inventory" element={<Inventory />}>

@@ -37,8 +37,8 @@ const ProtectedRoute = ({ children }) => {
             "/generatereport/noveltyfreighter",
             "/generatereport/noveltywindmill",
             "/generatereport/noveltymechanic",
-            "/generatereport/finalreport",
             "/generatereport/qualitycontrol",
+            "/generatereport/finalreport",
             "/fastinventory",
           ],
           2: [
@@ -62,8 +62,8 @@ const ProtectedRoute = ({ children }) => {
             "/generatereport/noveltyfreighter",
             "/generatereport/noveltymechanic",
             "/generatereport/noveltywindmill",
-            "/generatereport/finalreport",
             "/generatereport/qualitycontrol",
+            "/generatereport/finalreport",
             "/fastinventory",
           ],
           3: [
