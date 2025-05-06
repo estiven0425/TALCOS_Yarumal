@@ -377,7 +377,7 @@ function GenerateQualityControlForm() {
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear el cambio de referencia. Por favor, inténtelo de nuevo.`
+          `Error al crear el control de calidad. Por favor, inténtelo de nuevo.`
         );
         setLoading(false);
       }
@@ -410,7 +410,7 @@ function GenerateQualityControlForm() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <h1>Producto rechazado creado con éxito</h1>
+              <h1>Control de calidad creado con éxito</h1>
             </motion.div>
           ) : (
             <motion.form

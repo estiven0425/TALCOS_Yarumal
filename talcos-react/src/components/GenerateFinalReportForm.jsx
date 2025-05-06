@@ -7,10 +7,8 @@ import Style from "./styles/generate-final-report-form.module.css";
 function GenerateFinalReportForm() {
   const [currentData, setCurrentData] = useState(null);
   const [molino, setMolino] = useState([]);
-  const [molinoControlCalidad, setMolinoControlCalidad] = useState("");
-  const [bultoControlCalidad, setBultoControlCalidad] = useState("");
-  const [observacionControlCalidad, setObservacionControlCalidad] =
-    useState("");
+  const [molinoInformeFinal, setMolinoInformeFinal] = useState({});
+  const [observacionInformeFinal, setObservacionInformeFinal] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingAlternative, setLoadingAlternative] = useState(true);
   const [sendStatus, setSendStatus] = useState(false);
@@ -28,7 +26,23 @@ function GenerateFinalReportForm() {
       return () => clearTimeout(timer);
     }
   }, [sendStatus, navigate]);
+  useEffect(() => {
+    const initialMolinoData = {};
 
+    molino.forEach((item) => {
+      initialMolinoData[item.name] = {
+        horometro_informe_final: "",
+      };
+
+      item.referenceHistory.forEach((history) => {
+        initialMolinoData[item.name][history.reference] = {
+          cantidad_informe_final: "",
+        };
+      });
+    });
+
+    setMolinoInformeFinal(initialMolinoData);
+  }, [molino]);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -97,161 +111,69 @@ function GenerateFinalReportForm() {
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
-        const evaluateIsInParo = (report, allNovelties) => {
-          if (!report?.molino_informe_inicial) {
-            const turnOnNovelty = allNovelties.find(
-              (nov) => nov.tipo_novedad === "Encendido de molino"
-            );
+        const combinedData = mills
+          .map((molino) => {
+            const initialRecord =
+              reports.find(
+                (report) =>
+                  report.molino_informe_inicial === molino.nombre_molino
+              ) ||
+              news.find(
+                (novelty) =>
+                  novelty.molino_novedad === molino.nombre_molino &&
+                  novelty.tipo_novedad === "Encendido de molino"
+              );
 
-            if (turnOnNovelty) {
-              const pauses = allNovelties
-                .filter((nov) => nov.tipo_novedad === "Paro")
-                .sort(
-                  (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
-                );
+            if (!initialRecord) return null;
 
-              if (pauses.length > 0) {
-                const latestPause = pauses[0];
+            const referenceChanges = news
+              .filter(
+                (novelty) =>
+                  novelty.molino_novedad === molino.nombre_molino &&
+                  novelty.tipo_novedad === "Cambio de referencia"
+              )
+              .map((novelty) => ({
+                reference: novelty.referencia_novedad,
+                bulk: novelty.bulto_novedad,
+                capacity:
+                  bulks.find((b) => b.nombre_bulto === novelty.bulto_novedad)
+                    ?.capacidad_bulto || "No disponible",
+                timestamp: new Date(
+                  novelty.fecha_novedad + " " + novelty.hora_novedad
+                ),
+              }));
+            const referenceHistory = [
+              {
+                reference:
+                  initialRecord.referencia_informe_inicial ||
+                  initialRecord.referencia_novedad ||
+                  "No disponible",
+                bulk:
+                  initialRecord.bulto_informe_inicial ||
+                  initialRecord.bulto_novedad ||
+                  "No disponible",
+                capacity:
+                  bulks.find(
+                    (b) =>
+                      b.nombre_bulto ===
+                      (initialRecord.bulto_informe_inicial ||
+                        initialRecord.bulto_novedad)
+                  )?.capacidad_bulto || "No disponible",
+                timestamp: new Date(
+                  initialRecord.fecha_informe_inicial +
+                    " " +
+                    initialRecord.hora_informe_inicial
+                ),
+              },
+              ...referenceChanges.sort((a, b) => a.timestamp - b.timestamp),
+            ];
 
-                if (
-                  latestPause.inicio_paro_novedad &&
-                  latestPause.horometro_inicio_paro_novedad
-                ) {
-                  if (
-                    !latestPause.fin_paro_novedad &&
-                    !latestPause.horometro_fin_paro_novedad
-                  ) {
-                    return true;
-                  } else if (latestPause.fin_paro_novedad) {
-                    const now = new Date();
-                    const [inicioHour, inicioMinute] =
-                      latestPause.inicio_paro_novedad.split(":").map(Number);
-                    const [finHour, finMinute] = latestPause.fin_paro_novedad
-                      .split(":")
-                      .map(Number);
-                    const inicioParo = new Date(
-                      now.getFullYear(),
-                      now.getMonth(),
-                      now.getDate(),
-                      inicioHour,
-                      inicioMinute
-                    );
-
-                    let finParo = new Date(
-                      now.getFullYear(),
-                      now.getMonth(),
-                      now.getDate(),
-                      finHour,
-                      finMinute
-                    );
-
-                    if (finParo <= inicioParo) {
-                      finParo.setDate(finParo.getDate() + 1);
-                    }
-                    return now < finParo;
-                  }
-                  return false;
-                }
-                return false;
-              }
-              return false;
-            }
-            return true;
-          }
-
-          const pauses = allNovelties
-            .filter((nov) => nov.tipo_novedad === "Paro")
-            .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
-            );
-
-          if (pauses.length > 0) {
-            const latestPause = pauses[0];
-
-            if (
-              latestPause.inicio_paro_novedad &&
-              latestPause.horometro_inicio_paro_novedad
-            ) {
-              if (
-                !latestPause.fin_paro_novedad &&
-                !latestPause.horometro_fin_paro_novedad
-              ) {
-                return true;
-              } else if (latestPause.fin_paro_novedad) {
-                const now = new Date();
-                const [inicioHour, inicioMinute] =
-                  latestPause.inicio_paro_novedad.split(":").map(Number);
-                const [finHour, finMinute] = latestPause.fin_paro_novedad
-                  .split(":")
-                  .map(Number);
-                const inicioParo = new Date(
-                  now.getFullYear(),
-                  now.getMonth(),
-                  now.getDate(),
-                  inicioHour,
-                  inicioMinute
-                );
-
-                let finParo = new Date(
-                  now.getFullYear(),
-                  now.getMonth(),
-                  now.getDate(),
-                  finHour,
-                  finMinute
-                );
-
-                if (finParo <= inicioParo) {
-                  finParo.setDate(finParo.getDate() + 1);
-                }
-                return now < finParo;
-              }
-            }
-          }
-          return false;
-        };
-
-        const combinedData = mills.map((molino) => {
-          const report = reports
-            .filter(
-              (report) => report.molino_informe_inicial === molino.nombre_molino
-            )
-            .sort(
-              (a, b) =>
-                new Date(b.hora_informe_inicial) -
-                new Date(a.hora_informe_inicial)
-            )[0];
-          const millNovelties = news.filter(
-            (novelty) => novelty.molino_novedad === molino.nombre_molino
-          );
-          const novelty = millNovelties.sort(
-            (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
-          )[0];
-          const recent =
-            report &&
-            (!novelty ||
-              new Date(
-                report.fecha_informe_inicial + " " + report.hora_informe_inicial
-              ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
-              ? report
-              : novelty;
-          const isInParo = evaluateIsInParo(report, millNovelties);
-          const bulkInUse = bulks.find(
-            (bulto) =>
-              bulto.nombre_bulto ===
-              (recent?.bulto_informe_inicial || recent?.bulto_novedad || "")
-          );
-
-          return {
-            name: molino.nombre_molino,
-            reference:
-              recent?.referencia_informe_inicial ||
-              recent?.referencia_novedad ||
-              "No se registró",
-            bulk: bulkInUse?.nombre_bulto || "No se registró",
-            capacity: bulkInUse?.capacidad_bulto || "No se registró",
-            isInParo,
-          };
-        });
+            return {
+              name: molino.nombre_molino,
+              referenceHistory,
+            };
+          })
+          .filter(Boolean);
 
         setCurrentData(reports);
         setMolino(combinedData);
@@ -264,23 +186,67 @@ function GenerateFinalReportForm() {
 
     getData();
   }, [localIP]);
+  const handleChange = (molino, reference, field, value) => {
+    setMolinoInformeFinal((prevData) => {
+      const updatedMolinoData = { ...prevData[molino] };
+      if (reference === "" && field === "horometro_informe_final") {
+        updatedMolinoData[field] = value;
+      } else {
+        updatedMolinoData[reference] = {
+          ...updatedMolinoData[reference],
+          [field]: value,
+        };
+      }
+      return {
+        ...prevData,
+        [molino]: updatedMolinoData,
+      };
+    });
+  };
+  const handleChangeHorometro = (molinoName, value) => {
+    setMolinoInformeFinal((prevData) => ({
+      ...prevData,
+      [molinoName]: {
+        ...prevData[molinoName],
+        horometro_informe_final: value,
+      },
+    }));
+  };
   const validation = () => {
     const errors = {};
 
-    if (!molinoControlCalidad.trim()) {
-      errors.molinoControlCalidad = "El molino es obligatorio.";
-    }
-    if (!bultoControlCalidad.trim()) {
-      errors.bultoControlCalidad =
-        "La cantidad de bultos producidos es obligatoria.";
-    }
-    if (bultoControlCalidad && isNaN(bultoControlCalidad)) {
-      errors.bultoControlCalidad =
-        "La cantidad de bultos producidos debe ser un número.";
-    }
+    Object.entries(molinoInformeFinal).forEach(([molino, references]) => {
+      if (
+        !references.horometro_informe_final ||
+        references.horometro_informe_final.trim() === ""
+      ) {
+        errors[
+          `${molino}-horometro`
+        ] = `El horómetro del ${molino} es obligatorio.`;
+      } else if (isNaN(references.horometro_informe_final)) {
+        errors[
+          `${molino}-horometro`
+        ] = `El horómetro del ${molino} debe ser un número válido.`;
+      }
+      Object.entries(references).forEach(([reference, data]) => {
+        if (reference !== "horometro_informe_final") {
+          if (
+            !data.cantidad_informe_final ||
+            data.cantidad_informe_final.trim() === ""
+          ) {
+            errors[
+              `${molino}-${reference}-cantidad`
+            ] = `La cantidad de ${reference} producido por el ${molino} es obligatorio.`;
+          } else if (isNaN(data.cantidad_informe_final)) {
+            errors[
+              `${molino}-${reference}-cantidad`
+            ] = `La cantidad de ${reference} producido por el ${molino} debe ser un número válido.`;
+          }
+        }
+      });
+    });
 
     setValidationError(errors);
-
     return Object.keys(errors).length === 0;
   };
   const determinateShift = (data) => {
@@ -324,61 +290,79 @@ function GenerateFinalReportForm() {
     }
 
     setServerError(null);
-    setLoading(true);
+    // setLoading(true);
 
-    const horaControlCalidad = new Date().toLocaleTimeString("en-GB", {
+    const horaInformeFinal = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
-    const fechaControlCalidad = determinateDate(currentData);
-    const shiftQualityControl = determinateShift(currentData);
-    const matchingWindmill = molino?.find(
-      (item) => item.name === molinoControlCalidad
-    );
-    const referenceQualityControl = matchingWindmill?.reference || "";
-    const bulkQualityControl = matchingWindmill?.bulk || "";
-    const cantidadProductoRechazado =
-      (matchingWindmill?.capacity * parseInt(bultoControlCalidad)) / 1000;
+    const fechaInformeFinal = determinateDate(currentData);
+    const turnoInformeFinal = determinateShift(currentData);
 
-    const control_calidad = [
-      {
-        fecha_control_calidad: fechaControlCalidad,
-        hora_control_calidad: horaControlCalidad,
-        turno_control_calidad: shiftQualityControl,
-        molino_control_calidad: molinoControlCalidad,
-        referencia_control_calidad: referenceQualityControl,
-        bulto_control_calidad: bulkQualityControl,
-        rechazado_control_calidad: bultoControlCalidad,
-        retencion_control_calidad: retencionControlCalidad,
-        observacion_control_calidad: observacionControlCalidad,
-      },
-    ];
-    try {
-      await axios.post(
-        `http://${localIP}:3000/controles_calidad`,
-        control_calidad
-      );
-      await axios.post(`http://${localIP}:3000/productos_rechazados`, {
-        nombre_producto_rechazado: referenceQualityControl,
-        cantidad_producto_rechazado: cantidadProductoRechazado,
-        retencion_producto_rechazado: retencionControlCalidad,
+    const informeFinalArray = [];
+
+    Object.entries(molinoInformeFinal).forEach(([molinoName, references]) => {
+      const horometro = references.horometro_informe_final;
+
+      Object.entries(references).forEach(([reference, data]) => {
+        if (reference !== "horometro_informe_final") {
+          const matchingWindmill = molino.find(
+            (item) => item.name === molinoName
+          );
+          const cantidadProducido =
+            (matchingWindmill?.referenceHistory.find(
+              (hist) => hist.reference === reference
+            )?.capacity *
+              parseInt(data.cantidad_informe_final)) /
+            1000;
+          const nombreBulto = matchingWindmill?.referenceHistory.find(
+            (hist) => hist.reference === reference
+          )?.bulk;
+
+          informeFinalArray.push({
+            fecha_informe_final: fechaInformeFinal,
+            hora_informe_final: horaInformeFinal,
+            turno_informe_final: turnoInformeFinal,
+            molino_informe_final: molinoName,
+            referencia_informe_final: reference,
+            bulto_informe_final: nombreBulto,
+            cantidad_informe_final: cantidadProducido,
+            horometro_informe_final: horometro,
+            observacion_informe_final: observacionInformeFinal,
+          });
+        }
       });
+    });
 
-      setSendStatus(true);
+    try {
+      // await axios.post(
+      //   `http://${localIP}:3000/informes_finales`,
+      //   informeFinalArray
+      // );
+
+      // await Promise.all(
+      //   informeFinalArray.map(async (informe) => {
+      //     await axios.put(`http://${localIP}:3000/molinos`, {
+      //       id_molino: informe.molino_informe_final,
+      //       horometro_molino: informe.horometro_informe_final,
+      //     });
+
+      //     await axios.put(`http://${localIP}:3000/referencias`, {
+      //       id_referencia: informe.referencia_informe_final,
+      //       cantidad_referencia: informe.cantidad_informe_final,
+      //     });
+      //   })
+      // );
+      console.log(informeFinalArray);
+      // setSendStatus(true);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
+      if (error.response?.data?.error) {
         setServerError(error.response.data.error);
-        setLoading(false);
       } else {
-        setServerError(
-          `Error al crear el cambio de referencia. Por favor, inténtelo de nuevo.`
-        );
-        setLoading(false);
+        setServerError("Error al enviar el informe final. Inténtelo de nuevo.");
       }
+      setLoading(false);
     }
   };
-  const molinoSeleccionado = molino.find(
-    (item) => item.name === molinoControlCalidad
-  );
   const redirectReport = () => {
     navigate("/generatereport/generatereportmenu");
   };
@@ -403,7 +387,7 @@ function GenerateFinalReportForm() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <h1>Producto rechazado creado con éxito</h1>
+              <h1>Informe final creado con éxito</h1>
             </motion.div>
           ) : (
             <motion.form
@@ -428,67 +412,141 @@ function GenerateFinalReportForm() {
                     </tr>
                   </thead>
                   <tbody className={Style.generateFinalReportFormMainTableBody}>
-                    {molino
-                      .filter((item) => !item.isInParo)
-                      .map((item, index) => (
-                        <tr key={index}>
-                          <td>{item?.name || "No disponible"}</td>
-                          <td>{item?.reference || "No disponible"}</td>
-                          <td>{item?.bulk || "No disponible"}</td>
+                    {molino.map((item, index) =>
+                      item.referenceHistory.map((history, subIndex) => (
+                        <tr key={`${index}-${subIndex}`}>
+                          {subIndex === 0 && (
+                            <td rowSpan={item.referenceHistory.length}>
+                              {item.name}
+                            </td>
+                          )}
+                          <td>{history.reference || "No disponible"}</td>
+                          <td>{history.bulk || "No disponible"}</td>
                         </tr>
-                      ))}
+                      ))
+                    )}
                   </tbody>
                 </table>
-                {molino
-                  .filter((item) => !item.isInParo)
-                  .map((item, index) => (
+                {molino.map((item, index) => {
+                  const referencesCount = item.referenceHistory.length;
+
+                  return (
                     <fieldset key={index}>
-                      <h2>{item.name}</h2>
-                      <input
-                        id="bultoControlCalidad"
-                        name="bultoControlCalidad"
-                        placeholder="Ingrese la cantidad de bultos producidos"
-                        type="text"
-                        value={bultoControlCalidad}
-                        onChange={(e) => setBultoControlCalidad(e.target.value)}
-                      />
-                      {validationError.bultoControlCalidad && (
-                        <motion.span
-                          className={Style.generateFinalReportFormValidation}
-                          initial={{ zoom: 0 }}
-                          animate={{ zoom: 1 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          {validationError.bultoControlCalidad}
-                        </motion.span>
-                      )}
+                      <h2
+                        className={
+                          Style.generateFinalReportFormMainEspecialAlternative
+                        }
+                      >
+                        {item.name}
+                      </h2>
+
+                      {item.referenceHistory.map((history, subIndex) => (
+                        <div key={`${index}-${subIndex}`}>
+                          <label
+                            htmlFor={`cantidad_informe_final-${item.name}-${history.reference}`}
+                          >
+                            Cantidad ({history.reference})
+                          </label>
+                          <input
+                            id={`cantidad_informe_final-${item.name}-${history.reference}`}
+                            type="text"
+                            value={
+                              molinoInformeFinal[item.name]?.[history.reference]
+                                ?.cantidad_informe_final || ""
+                            }
+                            onChange={(e) =>
+                              handleChange(
+                                item.name,
+                                history.reference,
+                                "cantidad_informe_final",
+                                e.target.value
+                              )
+                            }
+                            placeholder="Ingrese la cantidad de bultos producidos"
+                          />
+                          {validationError[
+                            `${item.name}-${history.reference}-cantidad`
+                          ] && (
+                            <motion.span
+                              className={
+                                Style.generateFinalReportFormValidation
+                              }
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.5 }}
+                            >
+                              {
+                                validationError[
+                                  `${item.name}-${history.reference}-cantidad`
+                                ]
+                              }
+                            </motion.span>
+                          )}
+                        </div>
+                      ))}
+                      <div
+                        className={
+                          referencesCount % 2 === 0
+                            ? Style.generateFinalReportFormMainEspecialAlternative
+                            : ""
+                        }
+                      >
+                        <label htmlFor={`horometro_informe_final-${item.name}`}>
+                          Horómetro
+                        </label>
+                        <input
+                          id={`horometro_informe_final-${item.name}`}
+                          type="text"
+                          value={
+                            molinoInformeFinal[item.name]
+                              ?.horometro_informe_final || ""
+                          }
+                          onChange={(e) =>
+                            handleChangeHorometro(item.name, e.target.value)
+                          }
+                          placeholder="Ingrese el horómetro"
+                        />
+                        {validationError[`${item.name}-horometro`] && (
+                          <motion.span
+                            className={Style.generateFinalReportFormValidation}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {validationError[`${item.name}-horometro`]}
+                          </motion.span>
+                        )}
+                      </div>
                     </fieldset>
-                  ))}
-                <fieldset>
-                  <label htmlFor="observacionControlCalidad">Observación</label>
-                  <input
-                    id="observacionControlCalidad"
-                    name="observacionControlCalidad"
-                    type="text"
-                    placeholder="Ingresa una observación"
-                    value={observacionControlCalidad}
-                    onChange={(e) =>
-                      setObservacionControlCalidad(e.target.value)
-                    }
-                  />
-                  {!validationError.observacionControlCalidad ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={Style.generateNoveltyStrikeStartFormValidation}
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError.observacionControlCalidad}
-                    </motion.span>
-                  )}
-                </fieldset>
+                  );
+                })}
+                <div className={Style.generateFinalReportFormMainAlternative}>
+                  <fieldset>
+                    <label htmlFor="observacionInformeFinal">Observación</label>
+                    <input
+                      id="observacionInformeFinal"
+                      name="observacionInformeFinal"
+                      type="text"
+                      placeholder="Ingresa una observación"
+                      value={observacionInformeFinal}
+                      onChange={(e) =>
+                        setObservacionInformeFinal(e.target.value)
+                      }
+                    />
+                    {!validationError.observacionInformeFinal ? (
+                      <></>
+                    ) : (
+                      <motion.span
+                        className={Style.generateFinalReportFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {validationError.observacionInformeFinal}
+                      </motion.span>
+                    )}
+                  </fieldset>
+                </div>
               </main>
               <footer className={Style.generateFinalReportFormFooter}>
                 <button onClick={redirectReport} type="button">

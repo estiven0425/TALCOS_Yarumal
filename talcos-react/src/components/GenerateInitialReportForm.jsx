@@ -303,7 +303,7 @@ function GenerateInitialReportForm() {
         !/^[0-9.,]+$/.test(horometroInformeInicial[index]) ||
         parseFloat(horometroInformeInicial[index]) < 0
       ) {
-        molinoError.horometro = `El horómetro del ${molinoItem.nombre_molino} debe ser un número válido y mayor o igual a 0.`;
+        molinoError.horometro = `El horómetro del ${molinoItem.nombre_molino} debe ser un número.`;
       }
 
       return Object.keys(molinoError).length > 0 ? molinoError : null;
