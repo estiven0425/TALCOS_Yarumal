@@ -7,6 +7,7 @@ import Style from "./styles/generate-final-report-form.module.css";
 function GenerateFinalReportForm() {
   const [currentData, setCurrentData] = useState(null);
   const [molino, setMolino] = useState([]);
+  const [referencia, setReferencia] = useState([]);
   const [molinoInformeFinal, setMolinoInformeFinal] = useState({});
   const [observacionInformeFinal, setObservacionInformeFinal] = useState("");
   const [loading, setLoading] = useState(false);
@@ -50,6 +51,10 @@ function GenerateFinalReportForm() {
         const mills = responseMills.data;
         const responseBulks = await axios.get(`http://${localIP}:3000/bultos`);
         const bulks = responseBulks.data;
+        const responseReferences = await axios.get(
+          `http://${localIP}:3000/referencias`
+        );
+        const references = responseReferences.data;
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
         const currentTime = new Date();
@@ -169,6 +174,7 @@ function GenerateFinalReportForm() {
             ];
 
             return {
+              id: molino.id_molino,
               name: molino.nombre_molino,
               referenceHistory,
             };
@@ -177,6 +183,7 @@ function GenerateFinalReportForm() {
 
         setCurrentData(reports);
         setMolino(combinedData);
+        setReferencia(references);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       } finally {
@@ -290,7 +297,7 @@ function GenerateFinalReportForm() {
     }
 
     setServerError(null);
-    // setLoading(true);
+    setLoading(true);
 
     const horaInformeFinal = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
@@ -298,13 +305,71 @@ function GenerateFinalReportForm() {
     const fechaInformeFinal = determinateDate(currentData);
     const turnoInformeFinal = determinateShift(currentData);
 
+    const horometrosMolinos = [];
+
+    Object.entries(molinoInformeFinal).forEach(([molinoName, data]) => {
+      if (
+        data.horometro_informe_final &&
+        data.horometro_informe_final.trim() !== ""
+      ) {
+        const matchingWindmill = molino.find(
+          (item) => item.name === molinoName
+        );
+        if (matchingWindmill) {
+          horometrosMolinos.push({
+            id_molino: matchingWindmill.id,
+            horometro_molino: parseInt(data.horometro_informe_final),
+          });
+        }
+      }
+    });
+
+    const cantidadesReferencias = [];
+
+    Object.entries(molinoInformeFinal).forEach(
+      ([molinoName, referencesData]) => {
+        Object.entries(referencesData).forEach(([referenceName, data]) => {
+          if (
+            referenceName !== "horometro_informe_final" &&
+            data.cantidad_informe_final &&
+            data.cantidad_informe_final.trim() !== ""
+          ) {
+            const matchingWindmill = molino.find(
+              (item) => item.name === molinoName
+            );
+            const matchingReference = referencia.find(
+              (ref) => ref.nombre_referencia === referenceName
+            );
+
+            if (matchingWindmill && matchingReference) {
+              const cantidadProducido =
+                (matchingWindmill.referenceHistory.find(
+                  (hist) => hist.reference === referenceName
+                )?.capacity *
+                  parseInt(data.cantidad_informe_final)) /
+                1000;
+
+              cantidadesReferencias.push({
+                id_referencia: matchingReference.id_referencia,
+                cantidad_referencia: cantidadProducido,
+              });
+            }
+          }
+        });
+      }
+    );
+
     const informeFinalArray = [];
 
     Object.entries(molinoInformeFinal).forEach(([molinoName, references]) => {
       const horometro = references.horometro_informe_final;
 
       Object.entries(references).forEach(([reference, data]) => {
-        if (reference !== "horometro_informe_final") {
+        if (
+          reference !== "horometro_informe_final" &&
+          data.cantidad_informe_final &&
+          data.cantidad_informe_final.trim() !== ""
+        ) {
           const matchingWindmill = molino.find(
             (item) => item.name === molinoName
           );
@@ -334,26 +399,20 @@ function GenerateFinalReportForm() {
     });
 
     try {
-      // await axios.post(
-      //   `http://${localIP}:3000/informes_finales`,
-      //   informeFinalArray
-      // );
+      await axios.put(
+        `http://${localIP}:3000/molinos/actualizarhorometro`,
+        horometrosMolinos
+      );
+      await axios.put(
+        `http://${localIP}:3000/referencias/actualizarcantidad`,
+        cantidadesReferencias
+      );
+      await axios.post(
+        `http://${localIP}:3000/informes_finales`,
+        informeFinalArray
+      );
 
-      // await Promise.all(
-      //   informeFinalArray.map(async (informe) => {
-      //     await axios.put(`http://${localIP}:3000/molinos`, {
-      //       id_molino: informe.molino_informe_final,
-      //       horometro_molino: informe.horometro_informe_final,
-      //     });
-
-      //     await axios.put(`http://${localIP}:3000/referencias`, {
-      //       id_referencia: informe.referencia_informe_final,
-      //       cantidad_referencia: informe.cantidad_informe_final,
-      //     });
-      //   })
-      // );
-      console.log(informeFinalArray);
-      // setSendStatus(true);
+      setSendStatus(true);
     } catch (error) {
       if (error.response?.data?.error) {
         setServerError(error.response.data.error);
