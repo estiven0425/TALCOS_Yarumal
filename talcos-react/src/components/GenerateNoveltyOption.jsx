@@ -6,6 +6,7 @@ import Style from "./styles/generate-novelty-option.module.css";
 
 function GenerateNoveltyOption() {
   const [currentData, setCurrentData] = useState(null);
+  const [finalData, setFinalData] = useState([]);
   const [loadingAlternative, setLoadingAlternative] = useState(true);
   const navigate = useNavigate();
   const localIP = import.meta.env.VITE_LOCAL_IP;
@@ -57,9 +58,22 @@ function GenerateNoveltyOption() {
             },
           }
         );
+        const responseEndReport = await axios.get(
+          `http://${localIP}:3000/informes_finales/turnoinformefinal`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
         const reports = responseStartReport.data;
+        const endReports = responseEndReport.data;
 
         setCurrentData(reports);
+        setFinalData(endReports);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       } finally {
@@ -76,90 +90,103 @@ function GenerateNoveltyOption() {
 
   return (
     <>
-      {loadingAlternative ? (
+      {finalData.length > 0 ? (
         <motion.div
           className={Style.generateNoveltyOptionAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={Style.loader}></div>
+          <h1>El informe del turno ya ha finalizado</h1>
         </motion.div>
-      ) : currentData.length > 0 ? (
-        <>
-          <motion.header
-            className={Style.generateNoveltyOptionHeader}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1>Seleccione el tipo de novedad que desea ingresar</h1>
-          </motion.header>
-          <motion.main
-            className={Style.generateNoveltyOptionMain}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <button
-              className={Style.generateNoveltyOptionMainButton}
-              onClick={() => redirect("generatereport/noveltystrike")}
-              type="button"
-            >
-              <h2>Paro</h2>
-              <img alt="Icono" src="/strike.svg"></img>
-            </button>
-            <button
-              className={Style.generateNoveltyOptionMainButton}
-              onClick={() => redirect("generatereport/noveltyreference")}
-              type="button"
-            >
-              <h2>Cambio de referencia</h2>
-              <img alt="Icono" src="/change_reference.svg"></img>
-            </button>
-            <button
-              className={Style.generateNoveltyOptionMainButton}
-              onClick={() => redirect("generatereport/noveltyoperator")}
-              type="button"
-            >
-              <h2>Cambio de operador de molino</h2>
-              <img alt="Icono" src="/change_operator.svg"></img>
-            </button>
-            <button
-              className={Style.generateNoveltyOptionMainButton}
-              onClick={() => redirect("generatereport/noveltyfreighter")}
-              type="button"
-            >
-              <h2>Cambio de operador de minicargador</h2>
-              <img alt="Icono" src="/change_freighter.svg"></img>
-            </button>
-            <button
-              className={Style.generateNoveltyOptionMainButton}
-              onClick={() => redirect("generatereport/noveltymechanic")}
-              type="button"
-            >
-              <h2>Añadir mecánico</h2>
-              <img alt="Icono" src="/change_mechanic.svg"></img>
-            </button>
-            <button
-              className={Style.generateNoveltyOptionMainButton}
-              onClick={() => redirect("generatereport/noveltywindmill")}
-              type="button"
-            >
-              <h2>Encender molino</h2>
-              <img alt="Icono" src="/windmill.svg"></img>
-            </button>
-          </motion.main>
-        </>
       ) : (
-        <motion.div
-          className={Style.generateNoveltyOptionAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>El informe inicial del turno no ha sido creado</h1>
-        </motion.div>
+        <>
+          {loadingAlternative ? (
+            <motion.div
+              className={Style.generateNoveltyOptionAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className={Style.loader}></div>
+            </motion.div>
+          ) : currentData.length > 0 ? (
+            <>
+              <motion.header
+                className={Style.generateNoveltyOptionHeader}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <h1>Seleccione el tipo de novedad que desea ingresar</h1>
+              </motion.header>
+              <motion.main
+                className={Style.generateNoveltyOptionMain}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <button
+                  className={Style.generateNoveltyOptionMainButton}
+                  onClick={() => redirect("generatereport/noveltystrike")}
+                  type="button"
+                >
+                  <h2>Paro</h2>
+                  <img alt="Icono" src="/strike.svg"></img>
+                </button>
+                <button
+                  className={Style.generateNoveltyOptionMainButton}
+                  onClick={() => redirect("generatereport/noveltyreference")}
+                  type="button"
+                >
+                  <h2>Cambio de referencia</h2>
+                  <img alt="Icono" src="/change_reference.svg"></img>
+                </button>
+                <button
+                  className={Style.generateNoveltyOptionMainButton}
+                  onClick={() => redirect("generatereport/noveltyoperator")}
+                  type="button"
+                >
+                  <h2>Cambio de operador de molino</h2>
+                  <img alt="Icono" src="/change_operator.svg"></img>
+                </button>
+                <button
+                  className={Style.generateNoveltyOptionMainButton}
+                  onClick={() => redirect("generatereport/noveltyfreighter")}
+                  type="button"
+                >
+                  <h2>Cambio de operador de minicargador</h2>
+                  <img alt="Icono" src="/change_freighter.svg"></img>
+                </button>
+                <button
+                  className={Style.generateNoveltyOptionMainButton}
+                  onClick={() => redirect("generatereport/noveltymechanic")}
+                  type="button"
+                >
+                  <h2>Añadir mecánico</h2>
+                  <img alt="Icono" src="/change_mechanic.svg"></img>
+                </button>
+                <button
+                  className={Style.generateNoveltyOptionMainButton}
+                  onClick={() => redirect("generatereport/noveltywindmill")}
+                  type="button"
+                >
+                  <h2>Encender molino</h2>
+                  <img alt="Icono" src="/windmill.svg"></img>
+                </button>
+              </motion.main>
+            </>
+          ) : (
+            <motion.div
+              className={Style.generateNoveltyOptionAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>El informe inicial del turno no ha sido creado</h1>
+            </motion.div>
+          )}
+        </>
       )}
     </>
   );

@@ -8,6 +8,7 @@ function GenerateNoveltyReferenceForm() {
   const [referencia, setReferencia] = useState([]);
   const [bulto, setBulto] = useState([]);
   const [currentData, setCurrentData] = useState(null);
+  const [finalData, setFinalData] = useState([]);
   const [molino, setMolino] = useState([]);
   const [molinoNovedad, setMolinoNovedad] = useState("");
   const [referenciaNovedad, setReferenciaNovedad] = useState("");
@@ -93,9 +94,21 @@ function GenerateNoveltyReferenceForm() {
             },
           }
         );
+        const responseEndReport = await axios.get(
+          `http://${localIP}:3000/informes_finales/turnoinformefinal`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
+        const endReports = responseEndReport.data;
         const evaluateIsInParo = (report, allNovelties) => {
           if (!report?.molino_informe_inicial) {
             const turnOnNovelty = allNovelties.find(
@@ -246,6 +259,7 @@ function GenerateNoveltyReferenceForm() {
         });
 
         setCurrentData(reports);
+        setFinalData(endReports);
         setMolino(combinedData);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
@@ -380,191 +394,208 @@ function GenerateNoveltyReferenceForm() {
 
   return (
     <>
-      {loadingAlternative ? (
+      {finalData.length > 0 ? (
         <motion.div
           className={Style.generateNoveltyReferenceFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={Style.loader}></div>
+          <h1>El informe del turno ya ha finalizado</h1>
         </motion.div>
-      ) : sendStatus === true ? (
-        <motion.div
-          className={Style.generateNoveltyReferenceFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>Referencia cambiada con éxito</h1>
-        </motion.div>
-      ) : currentData.length > 0 ? (
-        <motion.form
-          className={Style.generateNoveltyReferenceForm}
-          onSubmit={sendCreate}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <header className={Style.generateNoveltyReferenceFormHeader}>
-            <h1>Complete los datos para cambiar la referencia</h1>
-          </header>
-          <main className={Style.generateNoveltyReferenceFormMain}>
-            <fieldset>
-              <label htmlFor="molinoNovedad">Seleccione un molino</label>
-              <select
-                id="molinoNovedad"
-                name="molinoNovedad"
-                value={molinoNovedad}
-                onChange={(e) => setMolinoNovedad(e.target.value)}
-              >
-                <option value="" disabled>
-                  Seleccione un molino
-                </option>
-                {molino
-                  .filter((item) => !item.isInParo)
-                  .map((item, index) => (
-                    <option key={index} value={item.name}>
-                      {item.name}
-                    </option>
-                  ))}
-              </select>
-              {!validationError.molinoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyReferenceFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.molinoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <div className={Style.generateNoveltyReferenceFormMainAlternative}>
-              <fieldset>
-                <label htmlFor="referenciaNovedad">Referencia</label>
-                <select
-                  id="referenciaNovedad"
-                  name="referenciaNovedad"
-                  onChange={(e) => setReferenciaNovedad(e.target.value)}
-                  value={referenciaNovedad}
-                >
-                  <option value="" disabled>
-                    Seleccione una referencia
-                  </option>
-                  {referencia.map((referencia) => (
-                    <option
-                      key={referencia.id_referencia}
-                      value={referencia.nombre_referencia}
-                    >
-                      {referencia.nombre_referencia}
-                    </option>
-                  ))}
-                </select>
-                {!validationError.referenciaNovedad ? (
-                  <></>
-                ) : (
-                  <motion.span
-                    className={Style.generateNoveltyReferenceFormValidation}
-                    initial={{ zoom: 0 }}
-                    animate={{ zoom: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {validationError.referenciaNovedad}
-                  </motion.span>
-                )}
-              </fieldset>
-              <fieldset>
-                <label htmlFor="bultoNovedad">Bulto</label>
-                <select
-                  id="bultoNovedad"
-                  name="bultoNovedad"
-                  onChange={(e) => setBultoNovedad(e.target.value)}
-                  value={bultoNovedad}
-                >
-                  <option value="" disabled>
-                    Seleccione un bulto
-                  </option>
-                  {bulto.map((bulto) => (
-                    <option key={bulto.id_bulto} value={bulto.nombre_bulto}>
-                      {bulto.nombre_bulto}
-                    </option>
-                  ))}
-                </select>
-                {!validationError.bultoNovedad ? (
-                  <></>
-                ) : (
-                  <motion.span
-                    className={Style.generateNoveltyReferenceFormValidation}
-                    initial={{ zoom: 0 }}
-                    animate={{ zoom: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {validationError.bultoNovedad}
-                  </motion.span>
-                )}
-              </fieldset>
-            </div>
-            <fieldset>
-              <label htmlFor="observacionNovedad">Observación</label>
-              <input
-                id="observacionNovedad"
-                name="observacionNovedad"
-                type="text"
-                value={observacionNovedad}
-                onChange={(e) => setObservacionNovedad(e.target.value)}
-                placeholder="Ingresa una observación"
-              />
-              {!validationError.observacionNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyReferenceFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.observacionNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-          </main>
-          <footer className={Style.generateNoveltyReferenceFormFooter}>
-            <button onClick={() => redirectGenerateReport()} type="button">
-              Cancelar
-            </button>
-            <button type="submit">
-              {loading ? (
-                <div className={Style.loader}></div>
-              ) : (
-                "Cambiar referencia"
-              )}
-            </button>
-            {!serverError ? (
-              <></>
-            ) : (
-              <motion.span
-                className={Style.generateNoveltyReferenceFormValidationServer}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                {serverError}
-              </motion.span>
-            )}
-          </footer>
-        </motion.form>
       ) : (
-        <motion.div
-          className={Style.generateNoveltyReferenceFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>El informe inicial del turno no ha sido creado</h1>
-        </motion.div>
+        <>
+          {loadingAlternative ? (
+            <motion.div
+              className={Style.generateNoveltyReferenceFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className={Style.loader}></div>
+            </motion.div>
+          ) : sendStatus === true ? (
+            <motion.div
+              className={Style.generateNoveltyReferenceFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>Referencia cambiada con éxito</h1>
+            </motion.div>
+          ) : currentData.length > 0 ? (
+            <motion.form
+              className={Style.generateNoveltyReferenceForm}
+              onSubmit={sendCreate}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <header className={Style.generateNoveltyReferenceFormHeader}>
+                <h1>Complete los datos para cambiar la referencia</h1>
+              </header>
+              <main className={Style.generateNoveltyReferenceFormMain}>
+                <fieldset>
+                  <label htmlFor="molinoNovedad">Seleccione un molino</label>
+                  <select
+                    id="molinoNovedad"
+                    name="molinoNovedad"
+                    value={molinoNovedad}
+                    onChange={(e) => setMolinoNovedad(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Seleccione un molino
+                    </option>
+                    {molino
+                      .filter((item) => !item.isInParo)
+                      .map((item, index) => (
+                        <option key={index} value={item.name}>
+                          {item.name}
+                        </option>
+                      ))}
+                  </select>
+                  {!validationError.molinoNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyReferenceFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.molinoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <div
+                  className={Style.generateNoveltyReferenceFormMainAlternative}
+                >
+                  <fieldset>
+                    <label htmlFor="referenciaNovedad">Referencia</label>
+                    <select
+                      id="referenciaNovedad"
+                      name="referenciaNovedad"
+                      onChange={(e) => setReferenciaNovedad(e.target.value)}
+                      value={referenciaNovedad}
+                    >
+                      <option value="" disabled>
+                        Seleccione una referencia
+                      </option>
+                      {referencia.map((referencia) => (
+                        <option
+                          key={referencia.id_referencia}
+                          value={referencia.nombre_referencia}
+                        >
+                          {referencia.nombre_referencia}
+                        </option>
+                      ))}
+                    </select>
+                    {!validationError.referenciaNovedad ? (
+                      <></>
+                    ) : (
+                      <motion.span
+                        className={Style.generateNoveltyReferenceFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {validationError.referenciaNovedad}
+                      </motion.span>
+                    )}
+                  </fieldset>
+                  <fieldset>
+                    <label htmlFor="bultoNovedad">Bulto</label>
+                    <select
+                      id="bultoNovedad"
+                      name="bultoNovedad"
+                      onChange={(e) => setBultoNovedad(e.target.value)}
+                      value={bultoNovedad}
+                    >
+                      <option value="" disabled>
+                        Seleccione un bulto
+                      </option>
+                      {bulto.map((bulto) => (
+                        <option key={bulto.id_bulto} value={bulto.nombre_bulto}>
+                          {bulto.nombre_bulto}
+                        </option>
+                      ))}
+                    </select>
+                    {!validationError.bultoNovedad ? (
+                      <></>
+                    ) : (
+                      <motion.span
+                        className={Style.generateNoveltyReferenceFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {validationError.bultoNovedad}
+                      </motion.span>
+                    )}
+                  </fieldset>
+                </div>
+                <fieldset>
+                  <label htmlFor="observacionNovedad">Observación</label>
+                  <input
+                    id="observacionNovedad"
+                    name="observacionNovedad"
+                    type="text"
+                    value={observacionNovedad}
+                    onChange={(e) => setObservacionNovedad(e.target.value)}
+                    placeholder="Ingresa una observación"
+                  />
+                  {!validationError.observacionNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyReferenceFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.observacionNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+              </main>
+              <footer className={Style.generateNoveltyReferenceFormFooter}>
+                <button onClick={() => redirectGenerateReport()} type="button">
+                  Cancelar
+                </button>
+                <button type="submit">
+                  {loading ? (
+                    <div className={Style.loader}></div>
+                  ) : (
+                    "Cambiar referencia"
+                  )}
+                </button>
+                {!serverError ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.generateNoveltyReferenceFormValidationServer
+                    }
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {serverError}
+                  </motion.span>
+                )}
+              </footer>
+            </motion.form>
+          ) : (
+            <motion.div
+              className={Style.generateNoveltyReferenceFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>El informe inicial del turno no ha sido creado</h1>
+            </motion.div>
+          )}
+        </>
       )}
     </>
   );

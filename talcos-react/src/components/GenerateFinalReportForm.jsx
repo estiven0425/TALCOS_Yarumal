@@ -6,6 +6,7 @@ import Style from "./styles/generate-final-report-form.module.css";
 
 function GenerateFinalReportForm() {
   const [currentData, setCurrentData] = useState(null);
+  const [finalData, setFinalData] = useState([]);
   const [molino, setMolino] = useState([]);
   const [referencia, setReferencia] = useState([]);
   const [molinoInformeFinal, setMolinoInformeFinal] = useState({});
@@ -113,9 +114,21 @@ function GenerateFinalReportForm() {
             },
           }
         );
+        const responseEndReport = await axios.get(
+          `http://${localIP}:3000/informes_finales/turnoinformefinal`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
+        const endReports = responseEndReport.data;
         const combinedData = mills
           .map((molino) => {
             const initialRecord =
@@ -182,6 +195,7 @@ function GenerateFinalReportForm() {
           .filter(Boolean);
 
         setCurrentData(reports);
+        setFinalData(endReports);
         setMolino(combinedData);
         setReferencia(references);
       } catch (error) {
@@ -428,221 +442,249 @@ function GenerateFinalReportForm() {
 
   return (
     <>
-      {loadingAlternative ? (
+      {finalData.length > 0 ? (
         <motion.div
           className={Style.generateFinalReportFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={Style.loader}></div>
+          <h1>El informe del turno ya ha finalizado</h1>
         </motion.div>
-      ) : currentData.length > 0 ? (
+      ) : (
         <>
-          {sendStatus === true ? (
+          {loadingAlternative ? (
             <motion.div
               className={Style.generateFinalReportFormAlternative}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <h1>Informe final creado con éxito</h1>
+              <div className={Style.loader}></div>
             </motion.div>
+          ) : currentData.length > 0 ? (
+            <>
+              {sendStatus === true ? (
+                <motion.div
+                  className={Style.generateFinalReportFormAlternative}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <h1>Informe final creado con éxito</h1>
+                </motion.div>
+              ) : (
+                <motion.form
+                  className={Style.generateFinalReportForm}
+                  onSubmit={sendCreate}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <header className={Style.generateFinalReportFormHeader}>
+                    <h1>
+                      Ingrese la cantidad de bultos producidos por cada molino
+                    </h1>
+                  </header>
+                  <main className={Style.generateFinalReportFormMain}>
+                    <table className={Style.generateFinalReportFormMainTable}>
+                      <thead
+                        className={Style.generateFinalReportFormMainTableHead}
+                      >
+                        <tr>
+                          <th>Molino</th>
+                          <th>Referencia</th>
+                          <th>Bulto</th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        className={Style.generateFinalReportFormMainTableBody}
+                      >
+                        {molino.map((item, index) =>
+                          item.referenceHistory.map((history, subIndex) => (
+                            <tr key={`${index}-${subIndex}`}>
+                              {subIndex === 0 && (
+                                <td rowSpan={item.referenceHistory.length}>
+                                  {item.name}
+                                </td>
+                              )}
+                              <td>{history.reference || "No disponible"}</td>
+                              <td>{history.bulk || "No disponible"}</td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                    {molino.map((item, index) => {
+                      const referencesCount = item.referenceHistory.length;
+
+                      return (
+                        <fieldset key={index}>
+                          <h2
+                            className={
+                              Style.generateFinalReportFormMainEspecialAlternative
+                            }
+                          >
+                            {item.name}
+                          </h2>
+
+                          {item.referenceHistory.map((history, subIndex) => (
+                            <div key={`${index}-${subIndex}`}>
+                              <label
+                                htmlFor={`cantidad_informe_final-${item.name}-${history.reference}`}
+                              >
+                                Cantidad ({history.reference})
+                              </label>
+                              <input
+                                id={`cantidad_informe_final-${item.name}-${history.reference}`}
+                                type="text"
+                                value={
+                                  molinoInformeFinal[item.name]?.[
+                                    history.reference
+                                  ]?.cantidad_informe_final || ""
+                                }
+                                onChange={(e) =>
+                                  handleChange(
+                                    item.name,
+                                    history.reference,
+                                    "cantidad_informe_final",
+                                    e.target.value
+                                  )
+                                }
+                                placeholder="Ingrese la cantidad de bultos producidos"
+                              />
+                              {validationError[
+                                `${item.name}-${history.reference}-cantidad`
+                              ] && (
+                                <motion.span
+                                  className={
+                                    Style.generateFinalReportFormValidation
+                                  }
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  transition={{ duration: 0.5 }}
+                                >
+                                  {
+                                    validationError[
+                                      `${item.name}-${history.reference}-cantidad`
+                                    ]
+                                  }
+                                </motion.span>
+                              )}
+                            </div>
+                          ))}
+                          <div
+                            className={
+                              referencesCount % 2 === 0
+                                ? Style.generateFinalReportFormMainEspecialAlternative
+                                : ""
+                            }
+                          >
+                            <label
+                              htmlFor={`horometro_informe_final-${item.name}`}
+                            >
+                              Horómetro
+                            </label>
+                            <input
+                              id={`horometro_informe_final-${item.name}`}
+                              type="text"
+                              value={
+                                molinoInformeFinal[item.name]
+                                  ?.horometro_informe_final || ""
+                              }
+                              onChange={(e) =>
+                                handleChangeHorometro(item.name, e.target.value)
+                              }
+                              placeholder="Ingrese el horómetro"
+                            />
+                            {validationError[`${item.name}-horometro`] && (
+                              <motion.span
+                                className={
+                                  Style.generateFinalReportFormValidation
+                                }
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.5 }}
+                              >
+                                {validationError[`${item.name}-horometro`]}
+                              </motion.span>
+                            )}
+                          </div>
+                        </fieldset>
+                      );
+                    })}
+                    <div
+                      className={Style.generateFinalReportFormMainAlternative}
+                    >
+                      <fieldset>
+                        <label htmlFor="observacionInformeFinal">
+                          Observación
+                        </label>
+                        <input
+                          id="observacionInformeFinal"
+                          name="observacionInformeFinal"
+                          type="text"
+                          placeholder="Ingresa una observación"
+                          value={observacionInformeFinal}
+                          onChange={(e) =>
+                            setObservacionInformeFinal(e.target.value)
+                          }
+                        />
+                        {!validationError.observacionInformeFinal ? (
+                          <></>
+                        ) : (
+                          <motion.span
+                            className={Style.generateFinalReportFormValidation}
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {validationError.observacionInformeFinal}
+                          </motion.span>
+                        )}
+                      </fieldset>
+                    </div>
+                  </main>
+                  <footer className={Style.generateFinalReportFormFooter}>
+                    <button onClick={redirectReport} type="button">
+                      Cancelar
+                    </button>
+                    <button type="submit">
+                      {loading ? (
+                        <div className={Style.loader}></div>
+                      ) : (
+                        "Crear informe final"
+                      )}
+                    </button>
+                    {!serverError ? (
+                      <></>
+                    ) : (
+                      <motion.span
+                        className={
+                          Style.generateFinalReportFormValidationServer
+                        }
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {serverError}
+                      </motion.span>
+                    )}
+                  </footer>
+                </motion.form>
+              )}
+            </>
           ) : (
-            <motion.form
-              className={Style.generateFinalReportForm}
-              onSubmit={sendCreate}
+            <motion.div
+              className={Style.generateFinalReportFormAlternative}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <header className={Style.generateFinalReportFormHeader}>
-                <h1>
-                  Ingrese la cantidad de bultos producidos por cada molino
-                </h1>
-              </header>
-              <main className={Style.generateFinalReportFormMain}>
-                <table className={Style.generateFinalReportFormMainTable}>
-                  <thead className={Style.generateFinalReportFormMainTableHead}>
-                    <tr>
-                      <th>Molino</th>
-                      <th>Referencia</th>
-                      <th>Bulto</th>
-                    </tr>
-                  </thead>
-                  <tbody className={Style.generateFinalReportFormMainTableBody}>
-                    {molino.map((item, index) =>
-                      item.referenceHistory.map((history, subIndex) => (
-                        <tr key={`${index}-${subIndex}`}>
-                          {subIndex === 0 && (
-                            <td rowSpan={item.referenceHistory.length}>
-                              {item.name}
-                            </td>
-                          )}
-                          <td>{history.reference || "No disponible"}</td>
-                          <td>{history.bulk || "No disponible"}</td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-                {molino.map((item, index) => {
-                  const referencesCount = item.referenceHistory.length;
-
-                  return (
-                    <fieldset key={index}>
-                      <h2
-                        className={
-                          Style.generateFinalReportFormMainEspecialAlternative
-                        }
-                      >
-                        {item.name}
-                      </h2>
-
-                      {item.referenceHistory.map((history, subIndex) => (
-                        <div key={`${index}-${subIndex}`}>
-                          <label
-                            htmlFor={`cantidad_informe_final-${item.name}-${history.reference}`}
-                          >
-                            Cantidad ({history.reference})
-                          </label>
-                          <input
-                            id={`cantidad_informe_final-${item.name}-${history.reference}`}
-                            type="text"
-                            value={
-                              molinoInformeFinal[item.name]?.[history.reference]
-                                ?.cantidad_informe_final || ""
-                            }
-                            onChange={(e) =>
-                              handleChange(
-                                item.name,
-                                history.reference,
-                                "cantidad_informe_final",
-                                e.target.value
-                              )
-                            }
-                            placeholder="Ingrese la cantidad de bultos producidos"
-                          />
-                          {validationError[
-                            `${item.name}-${history.reference}-cantidad`
-                          ] && (
-                            <motion.span
-                              className={
-                                Style.generateFinalReportFormValidation
-                              }
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              transition={{ duration: 0.5 }}
-                            >
-                              {
-                                validationError[
-                                  `${item.name}-${history.reference}-cantidad`
-                                ]
-                              }
-                            </motion.span>
-                          )}
-                        </div>
-                      ))}
-                      <div
-                        className={
-                          referencesCount % 2 === 0
-                            ? Style.generateFinalReportFormMainEspecialAlternative
-                            : ""
-                        }
-                      >
-                        <label htmlFor={`horometro_informe_final-${item.name}`}>
-                          Horómetro
-                        </label>
-                        <input
-                          id={`horometro_informe_final-${item.name}`}
-                          type="text"
-                          value={
-                            molinoInformeFinal[item.name]
-                              ?.horometro_informe_final || ""
-                          }
-                          onChange={(e) =>
-                            handleChangeHorometro(item.name, e.target.value)
-                          }
-                          placeholder="Ingrese el horómetro"
-                        />
-                        {validationError[`${item.name}-horometro`] && (
-                          <motion.span
-                            className={Style.generateFinalReportFormValidation}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5 }}
-                          >
-                            {validationError[`${item.name}-horometro`]}
-                          </motion.span>
-                        )}
-                      </div>
-                    </fieldset>
-                  );
-                })}
-                <div className={Style.generateFinalReportFormMainAlternative}>
-                  <fieldset>
-                    <label htmlFor="observacionInformeFinal">Observación</label>
-                    <input
-                      id="observacionInformeFinal"
-                      name="observacionInformeFinal"
-                      type="text"
-                      placeholder="Ingresa una observación"
-                      value={observacionInformeFinal}
-                      onChange={(e) =>
-                        setObservacionInformeFinal(e.target.value)
-                      }
-                    />
-                    {!validationError.observacionInformeFinal ? (
-                      <></>
-                    ) : (
-                      <motion.span
-                        className={Style.generateFinalReportFormValidation}
-                        initial={{ zoom: 0 }}
-                        animate={{ zoom: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {validationError.observacionInformeFinal}
-                      </motion.span>
-                    )}
-                  </fieldset>
-                </div>
-              </main>
-              <footer className={Style.generateFinalReportFormFooter}>
-                <button onClick={redirectReport} type="button">
-                  Cancelar
-                </button>
-                <button type="submit">
-                  {loading ? (
-                    <div className={Style.loader}></div>
-                  ) : (
-                    "Crear informe final"
-                  )}
-                </button>
-                {!serverError ? (
-                  <></>
-                ) : (
-                  <motion.span
-                    className={Style.generateFinalReportFormValidationServer}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {serverError}
-                  </motion.span>
-                )}
-              </footer>
-            </motion.form>
+              <h1>El informe inicial del turno no ha sido creado</h1>
+            </motion.div>
           )}
         </>
-      ) : (
-        <motion.div
-          className={Style.generateFinalReportFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>El informe inicial del turno no ha sido creado</h1>
-        </motion.div>
       )}
     </>
   );

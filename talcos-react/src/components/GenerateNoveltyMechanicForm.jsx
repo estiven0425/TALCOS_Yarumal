@@ -6,6 +6,7 @@ import Style from "./styles/generate-novelty-component-form.module.css";
 
 function GenerateNoveltyMechanicForm() {
   const [currentData, setCurrentData] = useState(null);
+  const [finalData, setFinalData] = useState([]);
   const [currentMechanic, setCurrentMechanic] = useState([]);
   const [mecanicoNovedad, setMecanicoNovedad] = useState("");
   const [observacionNovedad, setObservacionNovedad] = useState("");
@@ -90,9 +91,21 @@ function GenerateNoveltyMechanicForm() {
             },
           }
         );
+        const responseEndReport = await axios.get(
+          `http://${localIP}:3000/informes_finales/turnoinformefinal`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
+        const endReports = responseEndReport.data;
         const usedMechanicIds = new Set([
           ...reports
             .filter((reports) => reports.mecanico_informe_inicial !== null)
@@ -106,6 +119,7 @@ function GenerateNoveltyMechanicForm() {
         );
 
         setCurrentData(reports);
+        setFinalData(endReports);
         setCurrentMechanic(availableMechanics);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
@@ -210,123 +224,138 @@ function GenerateNoveltyMechanicForm() {
 
   return (
     <>
-      {loadingAlternative ? (
+      {finalData.length > 0 ? (
         <motion.div
           className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={Style.loader}></div>
+          <h1>El informe del turno ya ha finalizado</h1>
         </motion.div>
-      ) : sendStatus === true ? (
-        <motion.div
-          className={Style.generateNoveltyComponentFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>Mecánico añadido con éxito</h1>
-        </motion.div>
-      ) : currentData.length > 0 ? (
-        <motion.form
-          className={Style.generateNoveltyComponentForm}
-          onSubmit={sendCreate}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <header className={Style.generateNoveltyComponentFormHeader}>
-            <h1>Complete los datos para cambiar el mecánico</h1>
-          </header>
-          <main className={Style.generateNoveltyComponentFormMain}>
-            <fieldset>
-              <label htmlFor="mecanicoNovedad">Nuevo mecánico</label>
-              <select
-                id="mecanicoNovedad"
-                name="mecanicoNovedad"
-                value={mecanicoNovedad}
-                onChange={(e) => setMecanicoNovedad(e.target.value)}
-              >
-                <option value="" disabled>
-                  Seleccione un nuevo mecánico
-                </option>
-                {currentMechanic.map((item) => (
-                  <option key={item.id_usuario} value={item.id_usuario}>
-                    {item.nombre_usuario}
-                  </option>
-                ))}
-              </select>
-              {validationError.mecanicoNovedad && (
-                <motion.span
-                  className={Style.generateNoveltyComponentFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.mecanicoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-
-            <fieldset>
-              <label htmlFor="observacionNovedad">Observación</label>
-              <input
-                id="observacionNovedad"
-                name="observacionNovedad"
-                type="text"
-                value={observacionNovedad}
-                onChange={(e) => setObservacionNovedad(e.target.value)}
-                placeholder="Ingresa una observación"
-              />
-              {!validationError.observacionNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyComponentFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.observacionNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-          </main>
-          <footer className={Style.generateNoveltyComponentFormFooter}>
-            <button onClick={() => redirectGenerateReport()} type="button">
-              Cancelar
-            </button>
-            <button type="submit">
-              {loading ? (
-                <div className={Style.loader}></div>
-              ) : (
-                "Añadir mecánico"
-              )}
-            </button>
-            {!serverError ? (
-              <></>
-            ) : (
-              <motion.span
-                className={Style.generateNoveltyComponentFormValidationServer}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                {serverError}
-              </motion.span>
-            )}
-          </footer>
-        </motion.form>
       ) : (
-        <motion.div
-          className={Style.generateNoveltyComponentFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>El informe inicial del turno no ha sido creado</h1>
-        </motion.div>
+        <>
+          {loadingAlternative ? (
+            <motion.div
+              className={Style.generateNoveltyComponentFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className={Style.loader}></div>
+            </motion.div>
+          ) : sendStatus === true ? (
+            <motion.div
+              className={Style.generateNoveltyComponentFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>Mecánico añadido con éxito</h1>
+            </motion.div>
+          ) : currentData.length > 0 ? (
+            <motion.form
+              className={Style.generateNoveltyComponentForm}
+              onSubmit={sendCreate}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <header className={Style.generateNoveltyComponentFormHeader}>
+                <h1>Complete los datos para cambiar el mecánico</h1>
+              </header>
+              <main className={Style.generateNoveltyComponentFormMain}>
+                <fieldset>
+                  <label htmlFor="mecanicoNovedad">Nuevo mecánico</label>
+                  <select
+                    id="mecanicoNovedad"
+                    name="mecanicoNovedad"
+                    value={mecanicoNovedad}
+                    onChange={(e) => setMecanicoNovedad(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Seleccione un nuevo mecánico
+                    </option>
+                    {currentMechanic.map((item) => (
+                      <option key={item.id_usuario} value={item.id_usuario}>
+                        {item.nombre_usuario}
+                      </option>
+                    ))}
+                  </select>
+                  {validationError.mecanicoNovedad && (
+                    <motion.span
+                      className={Style.generateNoveltyComponentFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.mecanicoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+
+                <fieldset>
+                  <label htmlFor="observacionNovedad">Observación</label>
+                  <input
+                    id="observacionNovedad"
+                    name="observacionNovedad"
+                    type="text"
+                    value={observacionNovedad}
+                    onChange={(e) => setObservacionNovedad(e.target.value)}
+                    placeholder="Ingresa una observación"
+                  />
+                  {!validationError.observacionNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyComponentFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.observacionNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+              </main>
+              <footer className={Style.generateNoveltyComponentFormFooter}>
+                <button onClick={() => redirectGenerateReport()} type="button">
+                  Cancelar
+                </button>
+                <button type="submit">
+                  {loading ? (
+                    <div className={Style.loader}></div>
+                  ) : (
+                    "Añadir mecánico"
+                  )}
+                </button>
+                {!serverError ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.generateNoveltyComponentFormValidationServer
+                    }
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {serverError}
+                  </motion.span>
+                )}
+              </footer>
+            </motion.form>
+          ) : (
+            <motion.div
+              className={Style.generateNoveltyComponentFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>El informe inicial del turno no ha sido creado</h1>
+            </motion.div>
+          )}
+        </>
       )}
     </>
   );

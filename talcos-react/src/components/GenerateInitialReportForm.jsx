@@ -7,6 +7,7 @@ import Style from "./styles/generate-initial-report-form.module.css";
 function GenerateInitialReportForm() {
   const [currentShift, setCurrentShift] = useState(null);
   const [currentData, setCurrentData] = useState([]);
+  const [finalData, setFinalData] = useState([]);
   const [controlCalidad, setControlCalidad] = useState([]);
   const [mecanico, setMecanico] = useState([]);
   const [operador, setOperador] = useState([]);
@@ -106,13 +107,26 @@ function GenerateInitialReportForm() {
             },
           }
         );
+        const responseEndReport = await axios.get(
+          `http://${localIP}:3000/informes_finales/turnoinformefinal`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
         const reports = responseStartReport.data;
+        const endReports = responseEndReport.data;
 
         currentShift.inicio_turno = currentShift.inicio_turno.slice(0, 5);
         currentShift.fin_turno = currentShift.fin_turno.slice(0, 5);
 
         setCurrentData(reports);
         setCurrentShift(currentShift);
+        setFinalData(endReports);
       } catch (error) {
         console.error("Error al obtener el turno:", error);
       } finally {
@@ -408,389 +422,433 @@ function GenerateInitialReportForm() {
 
   return (
     <>
-      {loadingAlternative ? (
+      {finalData.length > 0 ? (
         <motion.div
           className={Style.generateInitialReportFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={Style.loader}></div>
+          <h1>El informe del turno ya ha finalizado</h1>
         </motion.div>
-      ) : sendStatus === true ? (
-        <motion.div
-          className={Style.generateInitialReportFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>Informe inicial creado con éxito</h1>
-        </motion.div>
-      ) : currentData.length === 0 ? (
-        <motion.form
-          className={Style.generateInitialReportForm}
-          onSubmit={sendCreate}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <header className={Style.generateInitialReportFormHeader}>
-            <h1>Complete los datos para crear el informe inicial</h1>
-          </header>
-          <main className={Style.generateInitialReportFormMain}>
-            <fieldset className={Style.generateInitialReportFormMainPrimary}>
-              <label htmlFor="controlcalidad">Control de calidad</label>
-              <select
-                id="controlcalidad"
-                name="controlcalidad"
-                value={selectedControlCalidad}
-                onChange={(e) => {
-                  const selectedOption =
-                    e.target.options[e.target.selectedIndex];
-                  addQualityControl(e.target.value, selectedOption.text);
-                  setSelectedControlCalidad("");
-                }}
-              >
-                <option value="" disabled>
-                  Añade un usuario de control de calidad
-                </option>
-                {controlCalidad.map((cdc) => (
-                  <option key={cdc.id_usuario} value={cdc.id_usuario}>
-                    {cdc.nombre_usuario}
-                  </option>
-                ))}
-              </select>
-              {!validationError.controlCalidadInformeInicial ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateInitialReportFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
+      ) : (
+        <>
+          {loadingAlternative ? (
+            <motion.div
+              className={Style.generateInitialReportFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className={Style.loader}></div>
+            </motion.div>
+          ) : sendStatus === true ? (
+            <motion.div
+              className={Style.generateInitialReportFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>Informe inicial creado con éxito</h1>
+            </motion.div>
+          ) : currentData.length === 0 ? (
+            <motion.form
+              className={Style.generateInitialReportForm}
+              onSubmit={sendCreate}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <header className={Style.generateInitialReportFormHeader}>
+                <h1>Complete los datos para crear el informe inicial</h1>
+              </header>
+              <main className={Style.generateInitialReportFormMain}>
+                <fieldset
+                  className={Style.generateInitialReportFormMainPrimary}
                 >
-                  {validationError.controlCalidadInformeInicial}
-                </motion.span>
-              )}
-              <ul>
-                {controlCalidadInformeInicial.map((item, index) => (
-                  <motion.li
-                    key={index}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {item.nombre_usuario}{" "}
-                    <button
-                      type="button"
-                      onClick={() => removeQualityControl(index)}
-                    >
-                      Eliminar
-                    </button>
-                  </motion.li>
-                ))}
-              </ul>
-            </fieldset>
-            <fieldset className={Style.generateInitialReportFormMainPrimary}>
-              <label htmlFor="mecanico">Mecánico</label>
-              <select
-                id="mecanico"
-                name="mecanico"
-                value={selectedMecanico}
-                onChange={(e) => {
-                  const selectedOption =
-                    e.target.options[e.target.selectedIndex];
-                  addMechanic(e.target.value, selectedOption.text);
-                  setSelectedMecanico("");
-                }}
-              >
-                <option value="" disabled>
-                  Añade un usuario de mecánico
-                </option>
-                {mecanico.map((mecanico) => (
-                  <option key={mecanico.id_usuario} value={mecanico.id_usuario}>
-                    {mecanico.nombre_usuario}
-                  </option>
-                ))}
-              </select>
-              {!validationError.mecanicoInformeInicial ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateInitialReportFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.mecanicoInformeInicial}
-                </motion.span>
-              )}
-              <ul>
-                {mecanicoInformeInicial.map((item, index) => (
-                  <motion.li
-                    key={index}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {item.nombre_usuario}{" "}
-                    <button type="button" onClick={() => removeMechanic(index)}>
-                      Eliminar
-                    </button>
-                  </motion.li>
-                ))}
-              </ul>
-            </fieldset>
-            {molino.map((molinoItem, index) => (
-              <fieldset
-                className={Style.generateInitialReportFormMainSecondary}
-                key={index}
-              >
-                <div
-                  className={
-                    Style.generateInitialReportFormMainEspecialAlternative
-                  }
-                >
-                  <h2>{molinoItem.nombre_molino}</h2>
-                  <div>
-                    <label>
-                      Habilitar molino
-                      <input
-                        checked={molinoEnabled[index]}
-                        onChange={() => handleMolinoToggle(index)}
-                        type="checkbox"
-                      />
-                    </label>
-                  </div>
-                </div>
-                <div className={Style.generateInitialReportFormMainEspecial}>
-                  <label htmlFor={`operador-${index}`}>
-                    Operador de molino
-                  </label>
+                  <label htmlFor="controlcalidad">Control de calidad</label>
                   <select
-                    disabled={!molinoEnabled[index]}
-                    id={`operador-${index}`}
-                    name={`operador-${index}`}
-                    onChange={(e) =>
-                      handleOperadorChange(index, e.target.value)
-                    }
-                    value={operadorInformeInicial[index] || ""}
+                    id="controlcalidad"
+                    name="controlcalidad"
+                    value={selectedControlCalidad}
+                    onChange={(e) => {
+                      const selectedOption =
+                        e.target.options[e.target.selectedIndex];
+                      addQualityControl(e.target.value, selectedOption.text);
+                      setSelectedControlCalidad("");
+                    }}
                   >
                     <option value="" disabled>
-                      Seleccione un operador de molino
+                      Añade un usuario de control de calidad
                     </option>
-                    {operador.map((operador) => (
-                      <option
-                        key={operador.id_usuario}
-                        value={operador.id_usuario}
-                      >
-                        {operador.nombre_usuario}
+                    {controlCalidad.map((cdc) => (
+                      <option key={cdc.id_usuario} value={cdc.id_usuario}>
+                        {cdc.nombre_usuario}
                       </option>
                     ))}
                   </select>
-                  {validationError.molino &&
-                    validationError.molino[index]?.operador && (
-                      <motion.span
-                        className={Style.generateInitialReportFormValidation}
-                        initial={{ zoom: 0 }}
-                        animate={{ zoom: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {validationError.molino[index].operador}
-                      </motion.span>
-                    )}
-                </div>
-                <div>
-                  <label htmlFor={`referencia-${index}`}>Referencia</label>
-                  <select
-                    disabled={!molinoEnabled[index]}
-                    id={`referencia-${index}`}
-                    name={`referencia-${index}`}
-                    onChange={(e) =>
-                      handleReferenciaChange(index, e.target.value)
-                    }
-                    value={referenciaInformeInicial[index] || ""}
-                  >
-                    <option value="" disabled>
-                      Seleccione una referencia
-                    </option>
-                    {referencia.map((referencia) => (
-                      <option
-                        key={referencia.id_referencia}
-                        value={referencia.nombre_referencia}
-                      >
-                        {referencia.nombre_referencia}
-                      </option>
-                    ))}
-                  </select>
-                  {validationError.molino &&
-                    validationError.molino[index]?.referencia && (
-                      <motion.span
-                        className={Style.generateInitialReportFormValidation}
-                        initial={{ zoom: 0 }}
-                        animate={{ zoom: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {validationError.molino[index].referencia}
-                      </motion.span>
-                    )}
-                </div>
-                <div>
-                  <label htmlFor={`bulto-${index}`}>Bulto</label>
-                  <select
-                    disabled={!molinoEnabled[index]}
-                    id={`bulto-${index}`}
-                    name={`bulto-${index}`}
-                    onChange={(e) => handleBultoChange(index, e.target.value)}
-                    value={bultoInformeInicial[index] || ""}
-                  >
-                    <option value="" disabled>
-                      Seleccione un bulto
-                    </option>
-                    {bulto.map((bulto) => (
-                      <option key={bulto.id_bulto} value={bulto.nombre_bulto}>
-                        {bulto.nombre_bulto}
-                      </option>
-                    ))}
-                  </select>
-                  {validationError.molino &&
-                    validationError.molino[index]?.bulto && (
-                      <motion.span
-                        className={Style.generateInitialReportFormValidation}
-                        initial={{ zoom: 0 }}
-                        animate={{ zoom: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {validationError.molino[index].bulto}
-                      </motion.span>
-                    )}
-                </div>
-                <div className={Style.generateInitialReportFormMainEspecial}>
-                  <label htmlFor={`horometro-${index}`}>Horómetro</label>
-                  <input
-                    disabled={!molinoEnabled[index]}
-                    id={`horometro-${index}`}
-                    name={`horometro-${index}`}
-                    onChange={(e) =>
-                      handleHorometroChange(index, e.target.value)
-                    }
-                    placeholder="Ingresa el horómetro del molino"
-                    type="text"
-                    value={horometroInformeInicial[index] || ""}
-                  />
-                  {validationError.molino &&
-                    validationError.molino[index]?.horometro && (
-                      <motion.span
-                        className={Style.generateInitialReportFormValidation}
-                        initial={{ zoom: 0 }}
-                        animate={{ zoom: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {validationError.molino[index].horometro}
-                      </motion.span>
-                    )}
-                </div>
-              </fieldset>
-            ))}
-            {bobCat.map((bobCatItem, index) => (
-              <fieldset
-                key={index}
-                className={Style.generateInitialReportFormMainThird}
-              >
-                <h2>{bobCatItem.nombre_bob_cat}</h2>
-
-                <label htmlFor={`carguero-${index}`}>
-                  Operador de minicargador
-                </label>
-                <select
-                  id={`carguero-${index}`}
-                  name={`carguero-${index}`}
-                  onChange={(e) => handleCargueroChange(index, e.target.value)}
-                  value={cargueroInformeInicial[index] || ""}
-                >
-                  <option value="" disabled>
-                    Seleccione un operador de minicargador
-                  </option>
-                  {carguero.map((carguero) => (
-                    <option
-                      key={carguero.id_usuario}
-                      value={carguero.id_usuario}
-                    >
-                      {carguero.nombre_usuario}
-                    </option>
-                  ))}
-                </select>
-                {validationError.cargueroInformeInicial &&
-                  validationError.cargueroInformeInicial[index] && (
+                  {!validationError.controlCalidadInformeInicial ? (
+                    <></>
+                  ) : (
                     <motion.span
                       className={Style.generateInitialReportFormValidation}
                       initial={{ zoom: 0 }}
                       animate={{ zoom: 1 }}
                       transition={{ duration: 0.5 }}
                     >
-                      {validationError.cargueroInformeInicial[index]}
+                      {validationError.controlCalidadInformeInicial}
                     </motion.span>
                   )}
-              </fieldset>
-            ))}
-            <fieldset className={Style.generateInitialReportFormMainFourth}>
-              <label htmlFor="observacion">Observación</label>
-              <input
-                id="observacion"
-                name="observacion"
-                onChange={(e) => setObservacionInformeInicial(e.target.value)}
-                placeholder="Ingresa una observación"
-                type="text"
-                value={observacionInformeInicial}
-              />
-              {!validationError.observacionInformeInicial ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateInitialReportFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
+                  <ul>
+                    {controlCalidadInformeInicial.map((item, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {item.nombre_usuario}{" "}
+                        <button
+                          type="button"
+                          onClick={() => removeQualityControl(index)}
+                        >
+                          Eliminar
+                        </button>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </fieldset>
+                <fieldset
+                  className={Style.generateInitialReportFormMainPrimary}
                 >
-                  {validationError.observacionInformeInicial}
-                </motion.span>
-              )}
-            </fieldset>
-          </main>
-          <footer className={Style.generateInitialReportFormFooter}>
-            <button onClick={() => redirectGenerateReport()} type="button">
-              Cancelar
-            </button>
-            <button type="submit">
-              {loading ? (
-                <div className={Style.loader}></div>
-              ) : (
-                "Crear Informe inicial"
-              )}
-            </button>
-            {!serverError ? (
-              <></>
-            ) : (
-              <motion.span
-                className={Style.generateInitialReportFormValidationServer}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                {serverError}
-              </motion.span>
-            )}
-          </footer>
-        </motion.form>
-      ) : (
-        <motion.div
-          className={Style.generateInitialReportFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>El informe inicial del turno ya ha sido creado</h1>
-        </motion.div>
+                  <label htmlFor="mecanico">Mecánico</label>
+                  <select
+                    id="mecanico"
+                    name="mecanico"
+                    value={selectedMecanico}
+                    onChange={(e) => {
+                      const selectedOption =
+                        e.target.options[e.target.selectedIndex];
+                      addMechanic(e.target.value, selectedOption.text);
+                      setSelectedMecanico("");
+                    }}
+                  >
+                    <option value="" disabled>
+                      Añade un usuario de mecánico
+                    </option>
+                    {mecanico.map((mecanico) => (
+                      <option
+                        key={mecanico.id_usuario}
+                        value={mecanico.id_usuario}
+                      >
+                        {mecanico.nombre_usuario}
+                      </option>
+                    ))}
+                  </select>
+                  {!validationError.mecanicoInformeInicial ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateInitialReportFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.mecanicoInformeInicial}
+                    </motion.span>
+                  )}
+                  <ul>
+                    {mecanicoInformeInicial.map((item, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {item.nombre_usuario}{" "}
+                        <button
+                          type="button"
+                          onClick={() => removeMechanic(index)}
+                        >
+                          Eliminar
+                        </button>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </fieldset>
+                {molino.map((molinoItem, index) => (
+                  <fieldset
+                    className={Style.generateInitialReportFormMainSecondary}
+                    key={index}
+                  >
+                    <div
+                      className={
+                        Style.generateInitialReportFormMainEspecialAlternative
+                      }
+                    >
+                      <h2>{molinoItem.nombre_molino}</h2>
+                      <div>
+                        <label>
+                          Habilitar molino
+                          <input
+                            checked={molinoEnabled[index]}
+                            onChange={() => handleMolinoToggle(index)}
+                            type="checkbox"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      className={Style.generateInitialReportFormMainEspecial}
+                    >
+                      <label htmlFor={`operador-${index}`}>
+                        Operador de molino
+                      </label>
+                      <select
+                        disabled={!molinoEnabled[index]}
+                        id={`operador-${index}`}
+                        name={`operador-${index}`}
+                        onChange={(e) =>
+                          handleOperadorChange(index, e.target.value)
+                        }
+                        value={operadorInformeInicial[index] || ""}
+                      >
+                        <option value="" disabled>
+                          Seleccione un operador de molino
+                        </option>
+                        {operador.map((operador) => (
+                          <option
+                            key={operador.id_usuario}
+                            value={operador.id_usuario}
+                          >
+                            {operador.nombre_usuario}
+                          </option>
+                        ))}
+                      </select>
+                      {validationError.molino &&
+                        validationError.molino[index]?.operador && (
+                          <motion.span
+                            className={
+                              Style.generateInitialReportFormValidation
+                            }
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {validationError.molino[index].operador}
+                          </motion.span>
+                        )}
+                    </div>
+                    <div>
+                      <label htmlFor={`referencia-${index}`}>Referencia</label>
+                      <select
+                        disabled={!molinoEnabled[index]}
+                        id={`referencia-${index}`}
+                        name={`referencia-${index}`}
+                        onChange={(e) =>
+                          handleReferenciaChange(index, e.target.value)
+                        }
+                        value={referenciaInformeInicial[index] || ""}
+                      >
+                        <option value="" disabled>
+                          Seleccione una referencia
+                        </option>
+                        {referencia.map((referencia) => (
+                          <option
+                            key={referencia.id_referencia}
+                            value={referencia.nombre_referencia}
+                          >
+                            {referencia.nombre_referencia}
+                          </option>
+                        ))}
+                      </select>
+                      {validationError.molino &&
+                        validationError.molino[index]?.referencia && (
+                          <motion.span
+                            className={
+                              Style.generateInitialReportFormValidation
+                            }
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {validationError.molino[index].referencia}
+                          </motion.span>
+                        )}
+                    </div>
+                    <div>
+                      <label htmlFor={`bulto-${index}`}>Bulto</label>
+                      <select
+                        disabled={!molinoEnabled[index]}
+                        id={`bulto-${index}`}
+                        name={`bulto-${index}`}
+                        onChange={(e) =>
+                          handleBultoChange(index, e.target.value)
+                        }
+                        value={bultoInformeInicial[index] || ""}
+                      >
+                        <option value="" disabled>
+                          Seleccione un bulto
+                        </option>
+                        {bulto.map((bulto) => (
+                          <option
+                            key={bulto.id_bulto}
+                            value={bulto.nombre_bulto}
+                          >
+                            {bulto.nombre_bulto}
+                          </option>
+                        ))}
+                      </select>
+                      {validationError.molino &&
+                        validationError.molino[index]?.bulto && (
+                          <motion.span
+                            className={
+                              Style.generateInitialReportFormValidation
+                            }
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {validationError.molino[index].bulto}
+                          </motion.span>
+                        )}
+                    </div>
+                    <div
+                      className={Style.generateInitialReportFormMainEspecial}
+                    >
+                      <label htmlFor={`horometro-${index}`}>Horómetro</label>
+                      <input
+                        disabled={!molinoEnabled[index]}
+                        id={`horometro-${index}`}
+                        name={`horometro-${index}`}
+                        onChange={(e) =>
+                          handleHorometroChange(index, e.target.value)
+                        }
+                        placeholder="Ingresa el horómetro del molino"
+                        type="text"
+                        value={horometroInformeInicial[index] || ""}
+                      />
+                      {validationError.molino &&
+                        validationError.molino[index]?.horometro && (
+                          <motion.span
+                            className={
+                              Style.generateInitialReportFormValidation
+                            }
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {validationError.molino[index].horometro}
+                          </motion.span>
+                        )}
+                    </div>
+                  </fieldset>
+                ))}
+                {bobCat.map((bobCatItem, index) => (
+                  <fieldset
+                    key={index}
+                    className={Style.generateInitialReportFormMainThird}
+                  >
+                    <h2>{bobCatItem.nombre_bob_cat}</h2>
+
+                    <label htmlFor={`carguero-${index}`}>
+                      Operador de minicargador
+                    </label>
+                    <select
+                      id={`carguero-${index}`}
+                      name={`carguero-${index}`}
+                      onChange={(e) =>
+                        handleCargueroChange(index, e.target.value)
+                      }
+                      value={cargueroInformeInicial[index] || ""}
+                    >
+                      <option value="" disabled>
+                        Seleccione un operador de minicargador
+                      </option>
+                      {carguero.map((carguero) => (
+                        <option
+                          key={carguero.id_usuario}
+                          value={carguero.id_usuario}
+                        >
+                          {carguero.nombre_usuario}
+                        </option>
+                      ))}
+                    </select>
+                    {validationError.cargueroInformeInicial &&
+                      validationError.cargueroInformeInicial[index] && (
+                        <motion.span
+                          className={Style.generateInitialReportFormValidation}
+                          initial={{ zoom: 0 }}
+                          animate={{ zoom: 1 }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          {validationError.cargueroInformeInicial[index]}
+                        </motion.span>
+                      )}
+                  </fieldset>
+                ))}
+                <fieldset className={Style.generateInitialReportFormMainFourth}>
+                  <label htmlFor="observacion">Observación</label>
+                  <input
+                    id="observacion"
+                    name="observacion"
+                    onChange={(e) =>
+                      setObservacionInformeInicial(e.target.value)
+                    }
+                    placeholder="Ingresa una observación"
+                    type="text"
+                    value={observacionInformeInicial}
+                  />
+                  {!validationError.observacionInformeInicial ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateInitialReportFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.observacionInformeInicial}
+                    </motion.span>
+                  )}
+                </fieldset>
+              </main>
+              <footer className={Style.generateInitialReportFormFooter}>
+                <button onClick={() => redirectGenerateReport()} type="button">
+                  Cancelar
+                </button>
+                <button type="submit">
+                  {loading ? (
+                    <div className={Style.loader}></div>
+                  ) : (
+                    "Crear Informe inicial"
+                  )}
+                </button>
+                {!serverError ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={Style.generateInitialReportFormValidationServer}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {serverError}
+                  </motion.span>
+                )}
+              </footer>
+            </motion.form>
+          ) : (
+            <motion.div
+              className={Style.generateInitialReportFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>El informe inicial del turno ya ha sido creado</h1>
+            </motion.div>
+          )}
+        </>
       )}
     </>
   );

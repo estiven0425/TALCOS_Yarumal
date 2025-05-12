@@ -7,6 +7,7 @@ import Style from "./styles/generate-novelty-strike-stop-form.module.css";
 function GenerateNoveltyStrikeStopForm() {
   const [currentShift, setCurrentShift] = useState(null);
   const [currentData, setCurrentData] = useState(null);
+  const [finalData, setFinalData] = useState([]);
   const [idNovedad, setIdNovedad] = useState("");
   const [finParoNovedad, setFinParoNovedad] = useState("");
   const [horometroFinParoNovedad, setHorometroFinParoNovedad] = useState("");
@@ -72,9 +73,22 @@ function GenerateNoveltyStrikeStopForm() {
             },
           }
         );
+        const responseEndReport = await axios.get(
+          `http://${localIP}:3000/informes_finales/turnoinformefinal`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
         const reports = responseStartReport.data;
+        const endReports = responseEndReport.data;
 
         setCurrentData(reports);
+        setFinalData(endReports);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       } finally {
@@ -165,122 +179,137 @@ function GenerateNoveltyStrikeStopForm() {
 
   return (
     <>
-      {loadingAlternative ? (
+      {finalData.length > 0 ? (
         <motion.div
           className={Style.generateNoveltyStrikeStopFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={Style.loader}></div>
+          <h1>El informe del turno ya ha finalizado</h1>
         </motion.div>
-      ) : SendStatus === true ? (
-        <motion.div
-          className={Style.generateNoveltyStrikeStopFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>Paro finalizado con éxito</h1>
-        </motion.div>
-      ) : currentData.length > 0 ? (
-        <motion.form
-          className={Style.generateNoveltyStrikeStopForm}
-          onSubmit={sendEditNovelty}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <header className={Style.generateNoveltyStrikeStopFormHeader}>
-            <h1>Complete los datos para finalizar el paro</h1>
-          </header>
-          <main className={Style.generateNoveltyStrikeStopFormMain}>
-            <fieldset
-              className={Style.generateNoveltyStrikeStopFormMainEspecial}
-            >
-              <label htmlFor="finParoNovedad">Fin de paro</label>
-              <input
-                id="finParoNovedad"
-                name="finParoNovedad"
-                type="time"
-                value={finParoNovedad}
-                onChange={(e) => setFinParoNovedad(e.target.value)}
-              />
-              {!validationError.finParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStopFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.finParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset
-              className={Style.generateNoveltyStrikeStopFormMainEspecial}
-            >
-              <label htmlFor="horometroFinParoNovedad">
-                Horómetro fin de paro
-              </label>
-              <input
-                id="horometroFinParoNovedad"
-                name="horometroFinParoNovedad"
-                type="text"
-                value={horometroFinParoNovedad}
-                onChange={(e) => setHorometroFinParoNovedad(e.target.value)}
-                placeholder="Ingrese el horómetro de fin de paro"
-              />
-              {!validationError.horometroFinParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStopFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.horometroFinParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-          </main>
-          <footer className={Style.generateNoveltyStrikeStopFormFooter}>
-            <button onClick={() => redirectNovelty()} type="button">
-              Cancelar
-            </button>
-            <button type="submit">
-              {loading ? (
-                <div className={Style.loader}></div>
-              ) : (
-                "Finalizar paro"
-              )}
-            </button>
-            {!serverError ? (
-              <></>
-            ) : (
-              <motion.span
-                className={Style.generateNoveltyStrikeStopFormValidationServer}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                {serverError}
-              </motion.span>
-            )}
-          </footer>
-        </motion.form>
       ) : (
-        <motion.div
-          className={Style.generateNoveltyStrikeStopFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>El informe inicial del turno no ha sido creado</h1>
-        </motion.div>
+        <>
+          {loadingAlternative ? (
+            <motion.div
+              className={Style.generateNoveltyStrikeStopFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className={Style.loader}></div>
+            </motion.div>
+          ) : SendStatus === true ? (
+            <motion.div
+              className={Style.generateNoveltyStrikeStopFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>Paro finalizado con éxito</h1>
+            </motion.div>
+          ) : currentData.length > 0 ? (
+            <motion.form
+              className={Style.generateNoveltyStrikeStopForm}
+              onSubmit={sendEditNovelty}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <header className={Style.generateNoveltyStrikeStopFormHeader}>
+                <h1>Complete los datos para finalizar el paro</h1>
+              </header>
+              <main className={Style.generateNoveltyStrikeStopFormMain}>
+                <fieldset
+                  className={Style.generateNoveltyStrikeStopFormMainEspecial}
+                >
+                  <label htmlFor="finParoNovedad">Fin de paro</label>
+                  <input
+                    id="finParoNovedad"
+                    name="finParoNovedad"
+                    type="time"
+                    value={finParoNovedad}
+                    onChange={(e) => setFinParoNovedad(e.target.value)}
+                  />
+                  {!validationError.finParoNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyStrikeStopFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.finParoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <fieldset
+                  className={Style.generateNoveltyStrikeStopFormMainEspecial}
+                >
+                  <label htmlFor="horometroFinParoNovedad">
+                    Horómetro fin de paro
+                  </label>
+                  <input
+                    id="horometroFinParoNovedad"
+                    name="horometroFinParoNovedad"
+                    type="text"
+                    value={horometroFinParoNovedad}
+                    onChange={(e) => setHorometroFinParoNovedad(e.target.value)}
+                    placeholder="Ingrese el horómetro de fin de paro"
+                  />
+                  {!validationError.horometroFinParoNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyStrikeStopFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.horometroFinParoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+              </main>
+              <footer className={Style.generateNoveltyStrikeStopFormFooter}>
+                <button onClick={() => redirectNovelty()} type="button">
+                  Cancelar
+                </button>
+                <button type="submit">
+                  {loading ? (
+                    <div className={Style.loader}></div>
+                  ) : (
+                    "Finalizar paro"
+                  )}
+                </button>
+                {!serverError ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.generateNoveltyStrikeStopFormValidationServer
+                    }
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {serverError}
+                  </motion.span>
+                )}
+              </footer>
+            </motion.form>
+          ) : (
+            <motion.div
+              className={Style.generateNoveltyStrikeStopFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>El informe inicial del turno no ha sido creado</h1>
+            </motion.div>
+          )}
+        </>
       )}
     </>
   );

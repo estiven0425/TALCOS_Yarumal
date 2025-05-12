@@ -7,6 +7,7 @@ import Style from "./styles/generate-novelty-component-form.module.css";
 function GenerateNoveltyFreighterForm() {
   const [carguero, setCarguero] = useState([]);
   const [currentData, setCurrentData] = useState(null);
+  const [finalData, setFinalData] = useState([]);
   const [bobCat, setBotCat] = useState([]);
   const [bobCatNovedad, setBobCatNovedad] = useState("");
   const [cargueroNovedad, setCargueroNovedad] = useState("");
@@ -91,9 +92,21 @@ function GenerateNoveltyFreighterForm() {
             },
           }
         );
+        const responseEndReport = await axios.get(
+          `http://${localIP}:3000/informes_finales/turnoinformefinal`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
+        const endReports = responseEndReport.data;
 
         const combinedData = bobCats.map((bobCat) => {
           const report = reports
@@ -132,6 +145,7 @@ function GenerateNoveltyFreighterForm() {
         });
 
         setCurrentData(reports);
+        setFinalData(endReports);
         setBotCat(combinedData);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
@@ -255,163 +269,180 @@ function GenerateNoveltyFreighterForm() {
 
   return (
     <>
-      {loadingAlternative ? (
+      {finalData.length > 0 ? (
         <motion.div
           className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={Style.loader}></div>
+          <h1>El informe del turno ya ha finalizado</h1>
         </motion.div>
-      ) : sendStatus === true ? (
-        <motion.div
-          className={Style.generateNoveltyComponentFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>Operador de minicargador cambiado con éxito</h1>
-        </motion.div>
-      ) : currentData.length > 0 ? (
-        <motion.form
-          className={Style.generateNoveltyComponentForm}
-          onSubmit={sendCreate}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <header className={Style.generateNoveltyComponentFormHeader}>
-            <h1>
-              Complete los datos para cambiar el operador del minicargador
-            </h1>
-          </header>
-          <main className={Style.generateNoveltyComponentFormMain}>
-            <fieldset>
-              <label htmlFor="bobCatNovedad">Seleccione un bob - cat</label>
-              <select
-                id="bobCatNovedad"
-                name="bobCatNovedad"
-                value={bobCatNovedad}
-                onChange={(e) => setBobCatNovedad(e.target.value)}
-              >
-                <option value="" disabled>
-                  Seleccione un bob - cat
-                </option>
-                {bobCat.map((item, index) => (
-                  <option key={index} value={item.name}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-              {!validationError.bobCatNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyComponentFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.bobCatNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <div className={Style.generateNoveltyComponentFormMainAlternative}>
-              <fieldset>
-                <label htmlFor="cargueroNovedad">
-                  Operador de minicargador
-                </label>
-                <select
-                  id="cargueroNovedad"
-                  name="cargueroNovedad"
-                  onChange={(e) => setCargueroNovedad(e.target.value)}
-                  value={cargueroNovedad}
-                >
-                  <option value="" disabled>
-                    Seleccione un operador de minicargador
-                  </option>
-                  {carguero.map((carguero) => (
-                    <option
-                      key={carguero.id_usuario}
-                      value={carguero.id_usuario}
-                    >
-                      {carguero.nombre_usuario}
+      ) : (
+        <>
+          {loadingAlternative ? (
+            <motion.div
+              className={Style.generateNoveltyComponentFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className={Style.loader}></div>
+            </motion.div>
+          ) : sendStatus === true ? (
+            <motion.div
+              className={Style.generateNoveltyComponentFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>Operador de minicargador cambiado con éxito</h1>
+            </motion.div>
+          ) : currentData.length > 0 ? (
+            <motion.form
+              className={Style.generateNoveltyComponentForm}
+              onSubmit={sendCreate}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <header className={Style.generateNoveltyComponentFormHeader}>
+                <h1>
+                  Complete los datos para cambiar el operador del minicargador
+                </h1>
+              </header>
+              <main className={Style.generateNoveltyComponentFormMain}>
+                <fieldset>
+                  <label htmlFor="bobCatNovedad">Seleccione un bob - cat</label>
+                  <select
+                    id="bobCatNovedad"
+                    name="bobCatNovedad"
+                    value={bobCatNovedad}
+                    onChange={(e) => setBobCatNovedad(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Seleccione un bob - cat
                     </option>
-                  ))}
-                </select>
-                {!validationError.cargueroNovedad ? (
+                    {bobCat.map((item, index) => (
+                      <option key={index} value={item.name}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                  {!validationError.bobCatNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyComponentFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.bobCatNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <div
+                  className={Style.generateNoveltyComponentFormMainAlternative}
+                >
+                  <fieldset>
+                    <label htmlFor="cargueroNovedad">
+                      Operador de minicargador
+                    </label>
+                    <select
+                      id="cargueroNovedad"
+                      name="cargueroNovedad"
+                      onChange={(e) => setCargueroNovedad(e.target.value)}
+                      value={cargueroNovedad}
+                    >
+                      <option value="" disabled>
+                        Seleccione un operador de minicargador
+                      </option>
+                      {carguero.map((carguero) => (
+                        <option
+                          key={carguero.id_usuario}
+                          value={carguero.id_usuario}
+                        >
+                          {carguero.nombre_usuario}
+                        </option>
+                      ))}
+                    </select>
+                    {!validationError.cargueroNovedad ? (
+                      <></>
+                    ) : (
+                      <motion.span
+                        className={Style.generateNoveltyComponentFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {validationError.cargueroNovedad}
+                      </motion.span>
+                    )}
+                  </fieldset>
+                </div>
+                <fieldset>
+                  <label htmlFor="observacionNovedad">Observación</label>
+                  <input
+                    id="observacionNovedad"
+                    name="observacionNovedad"
+                    type="text"
+                    value={observacionNovedad}
+                    onChange={(e) => setObservacionNovedad(e.target.value)}
+                    placeholder="Ingresa una observación"
+                  />
+                  {!validationError.observacionNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyComponentFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.observacionNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+              </main>
+              <footer className={Style.generateNoveltyComponentFormFooter}>
+                <button onClick={() => redirectGenerateReport()} type="button">
+                  Cancelar
+                </button>
+                <button type="submit">
+                  {loading ? (
+                    <div className={Style.loader}></div>
+                  ) : (
+                    "Cambiar operador de minicargador"
+                  )}
+                </button>
+                {!serverError ? (
                   <></>
                 ) : (
                   <motion.span
-                    className={Style.generateNoveltyComponentFormValidation}
-                    initial={{ zoom: 0 }}
-                    animate={{ zoom: 1 }}
+                    className={
+                      Style.generateNoveltyComponentFormValidationServer
+                    }
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
                   >
-                    {validationError.cargueroNovedad}
+                    {serverError}
                   </motion.span>
                 )}
-              </fieldset>
-            </div>
-            <fieldset>
-              <label htmlFor="observacionNovedad">Observación</label>
-              <input
-                id="observacionNovedad"
-                name="observacionNovedad"
-                type="text"
-                value={observacionNovedad}
-                onChange={(e) => setObservacionNovedad(e.target.value)}
-                placeholder="Ingresa una observación"
-              />
-              {!validationError.observacionNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyComponentFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.observacionNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-          </main>
-          <footer className={Style.generateNoveltyComponentFormFooter}>
-            <button onClick={() => redirectGenerateReport()} type="button">
-              Cancelar
-            </button>
-            <button type="submit">
-              {loading ? (
-                <div className={Style.loader}></div>
-              ) : (
-                "Cambiar operador de minicargador"
-              )}
-            </button>
-            {!serverError ? (
-              <></>
-            ) : (
-              <motion.span
-                className={Style.generateNoveltyComponentFormValidationServer}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                {serverError}
-              </motion.span>
-            )}
-          </footer>
-        </motion.form>
-      ) : (
-        <motion.div
-          className={Style.generateNoveltyComponentFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>El informe inicial del turno no ha sido creado</h1>
-        </motion.div>
+              </footer>
+            </motion.form>
+          ) : (
+            <motion.div
+              className={Style.generateNoveltyComponentFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>El informe inicial del turno no ha sido creado</h1>
+            </motion.div>
+          )}
+        </>
       )}
     </>
   );

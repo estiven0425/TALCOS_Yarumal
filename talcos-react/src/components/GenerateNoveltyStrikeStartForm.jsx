@@ -7,6 +7,7 @@ import Style from "./styles/generate-novelty-strike-start-form.module.css";
 function GenerateNoveltyStrikeStartForm() {
   const [currentShift, setCurrentShift] = useState(null);
   const [currentData, setCurrentData] = useState(null);
+  const [finalData, setFinalData] = useState([]);
   const [molino, setMolino] = useState([]);
   const [molinoNovedad, setMolinoNovedad] = useState("");
   const [inicioParoNovedad, setInicioParoNovedad] = useState("");
@@ -95,9 +96,21 @@ function GenerateNoveltyStrikeStartForm() {
             },
           }
         );
+        const responseEndReport = await axios.get(
+          `http://${localIP}:3000/informes_finales/turnoinformefinal`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
+        const endReports = responseEndReport.data;
         const evaluateIsInParo = (report, allNovelties) => {
           if (!report?.molino_informe_inicial) {
             const turnOnNovelty = allNovelties.find(
@@ -256,6 +269,7 @@ function GenerateNoveltyStrikeStartForm() {
         });
 
         setCurrentData(reports);
+        setFinalData(endReports);
         setMolino(combinedData);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
@@ -436,261 +450,282 @@ function GenerateNoveltyStrikeStartForm() {
 
   return (
     <>
-      {loadingAlternative ? (
+      {finalData.length > 0 ? (
         <motion.div
           className={Style.generateNoveltyStrikeStartFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={Style.loader}></div>
+          <h1>El informe del turno ya ha finalizado</h1>
         </motion.div>
-      ) : sendStatus === true ? (
-        <motion.div
-          className={Style.generateNoveltyStrikeStartFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>Paro creado con éxito</h1>
-        </motion.div>
-      ) : currentData.length > 0 ? (
-        <motion.form
-          className={Style.generateNoveltyStrikeStartForm}
-          onSubmit={sendCreate}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <header className={Style.generateNoveltyStrikeStartFormHeader}>
-            <h1>Complete los datos para crear el paro</h1>
-          </header>
-          <main className={Style.generateNoveltyStrikeStartFormMain}>
-            <fieldset
-              className={Style.generateNoveltyStrikeStartFormMainEspecial}
-            >
-              <label htmlFor="molinoNovedad">Seleccione un molino</label>
-              <select
-                id="molinoNovedad"
-                name="molinoNovedad"
-                value={molinoNovedad}
-                onChange={(e) => setMolinoNovedad(e.target.value)}
-              >
-                <option value="" disabled>
-                  Seleccione un molino
-                </option>
-                {molino
-                  .filter((item) => !item.isInParo)
-                  .map((item, index) => (
-                    <option key={index} value={item.name}>
-                      {item.name}
-                    </option>
-                  ))}
-              </select>
-              {!validationError.molinoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.molinoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset>
-              <label htmlFor="inicioParoNovedad">Inicio de paro</label>
-              <input
-                id="inicioParoNovedad"
-                name="inicioParoNovedad"
-                type="time"
-                value={inicioParoNovedad}
-                onChange={(e) => setInicioParoNovedad(e.target.value)}
-              />
-              {!validationError.inicioParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.inicioParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset>
-              <label htmlFor="finParoNovedad">Fin de paro</label>
-              <input
-                id="finParoNovedad"
-                name="finParoNovedad"
-                type="time"
-                value={finParoNovedad}
-                onChange={(e) => setFinParoNovedad(e.target.value)}
-              />
-              {!validationError.finParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.finParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset>
-              <label htmlFor="horometroInicioParoNovedad">
-                Horómetro inicio de Paro
-              </label>
-              <input
-                id="horometroInicioParoNovedad"
-                name="horometroInicioParoNovedad"
-                type="text"
-                value={horometroInicioParoNovedad}
-                onChange={(e) => setHorometroInicioParoNovedad(e.target.value)}
-                placeholder="Ingrese el horómetro de inicio de paro"
-              />
-              {!validationError.horometroInicioParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.horometroInicioParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset>
-              <label htmlFor="horometroFinParoNovedad">
-                Horómetro fin de paro
-              </label>
-              <input
-                id="horometroFinParoNovedad"
-                name="horometroFinParoNovedad"
-                type="text"
-                value={horometroFinParoNovedad}
-                onChange={(e) => setHorometroFinParoNovedad(e.target.value)}
-                placeholder="Ingrese el horómetro de fin de paro"
-              />
-              {!validationError.horometroFinParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.horometroFinParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset
-              className={Style.generateNoveltyStrikeStartFormMainEspecial}
-            >
-              <label htmlFor="motivoParoNovedad">Motivo del paro</label>
-              <select
-                id="motivoParoNovedad"
-                name="motivoParoNovedad"
-                value={motivoParoNovedad}
-                onChange={(e) => setMotivoParoNovedad(e.target.value)}
-              >
-                <option value="" disabled>
-                  Seleccione un motivo
-                </option>
-                <option value="Sostenimiento general">
-                  Sostenimiento general
-                </option>
-                <option value="Mecánico">Mecánico</option>
-                <option value="Eléctrico">Eléctrico</option>
-                <option value="Corte de energía">Corte de energía</option>
-                <option value="Materia prima">Materia prima</option>
-                <option value="Empaque">Empaque</option>
-                <option value="Guijos">Guijos</option>
-                <option value="Personal">Personal</option>
-                <option value="Programado">Programado</option>
-                <option value="Bodega">Bodega</option>
-                <option value="Apagado">Apagado</option>
-                <option value="Otro">Otro</option>
-              </select>
-              {!validationError.motivoParoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.motivoParoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <fieldset
-              className={Style.generateNoveltyStrikeStartFormMainEspecial}
-            >
-              <label htmlFor="observacionNovedad">Observación</label>
-              <input
-                id="observacionNovedad"
-                name="observacionNovedad"
-                type="text"
-                value={observacionNovedad}
-                onChange={(e) => setObservacionNovedad(e.target.value)}
-                placeholder="Ingresa una observación"
-              />
-              {!validationError.observacionNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyStrikeStartFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.observacionNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-          </main>
-          <footer className={Style.generateNoveltyStrikeStartFormFooter}>
-            <button onClick={() => redirectGenerateReport()} type="button">
-              Cancelar
-            </button>
-            <button type="submit">
-              {loading ? <div className={Style.loader}></div> : "Crear paro"}
-            </button>
-            {!serverError ? (
-              <></>
-            ) : (
-              <motion.span
-                className={Style.generateNoveltyStrikeStartFormValidationServer}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                {serverError}
-              </motion.span>
-            )}
-          </footer>
-        </motion.form>
       ) : (
-        <motion.div
-          className={Style.generateNoveltyStrikeStartFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>El informe inicial del turno no ha sido creado</h1>
-        </motion.div>
+        <>
+          {loadingAlternative ? (
+            <motion.div
+              className={Style.generateNoveltyStrikeStartFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className={Style.loader}></div>
+            </motion.div>
+          ) : sendStatus === true ? (
+            <motion.div
+              className={Style.generateNoveltyStrikeStartFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>Paro creado con éxito</h1>
+            </motion.div>
+          ) : currentData.length > 0 ? (
+            <motion.form
+              className={Style.generateNoveltyStrikeStartForm}
+              onSubmit={sendCreate}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <header className={Style.generateNoveltyStrikeStartFormHeader}>
+                <h1>Complete los datos para crear el paro</h1>
+              </header>
+              <main className={Style.generateNoveltyStrikeStartFormMain}>
+                <fieldset
+                  className={Style.generateNoveltyStrikeStartFormMainEspecial}
+                >
+                  <label htmlFor="molinoNovedad">Seleccione un molino</label>
+                  <select
+                    id="molinoNovedad"
+                    name="molinoNovedad"
+                    value={molinoNovedad}
+                    onChange={(e) => setMolinoNovedad(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Seleccione un molino
+                    </option>
+                    {molino
+                      .filter((item) => !item.isInParo)
+                      .map((item, index) => (
+                        <option key={index} value={item.name}>
+                          {item.name}
+                        </option>
+                      ))}
+                  </select>
+                  {!validationError.molinoNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyStrikeStartFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.molinoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <fieldset>
+                  <label htmlFor="inicioParoNovedad">Inicio de paro</label>
+                  <input
+                    id="inicioParoNovedad"
+                    name="inicioParoNovedad"
+                    type="time"
+                    value={inicioParoNovedad}
+                    onChange={(e) => setInicioParoNovedad(e.target.value)}
+                  />
+                  {!validationError.inicioParoNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyStrikeStartFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.inicioParoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <fieldset>
+                  <label htmlFor="finParoNovedad">Fin de paro</label>
+                  <input
+                    id="finParoNovedad"
+                    name="finParoNovedad"
+                    type="time"
+                    value={finParoNovedad}
+                    onChange={(e) => setFinParoNovedad(e.target.value)}
+                  />
+                  {!validationError.finParoNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyStrikeStartFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.finParoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <fieldset>
+                  <label htmlFor="horometroInicioParoNovedad">
+                    Horómetro inicio de Paro
+                  </label>
+                  <input
+                    id="horometroInicioParoNovedad"
+                    name="horometroInicioParoNovedad"
+                    type="text"
+                    value={horometroInicioParoNovedad}
+                    onChange={(e) =>
+                      setHorometroInicioParoNovedad(e.target.value)
+                    }
+                    placeholder="Ingrese el horómetro de inicio de paro"
+                  />
+                  {!validationError.horometroInicioParoNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyStrikeStartFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.horometroInicioParoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <fieldset>
+                  <label htmlFor="horometroFinParoNovedad">
+                    Horómetro fin de paro
+                  </label>
+                  <input
+                    id="horometroFinParoNovedad"
+                    name="horometroFinParoNovedad"
+                    type="text"
+                    value={horometroFinParoNovedad}
+                    onChange={(e) => setHorometroFinParoNovedad(e.target.value)}
+                    placeholder="Ingrese el horómetro de fin de paro"
+                  />
+                  {!validationError.horometroFinParoNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyStrikeStartFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.horometroFinParoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <fieldset
+                  className={Style.generateNoveltyStrikeStartFormMainEspecial}
+                >
+                  <label htmlFor="motivoParoNovedad">Motivo del paro</label>
+                  <select
+                    id="motivoParoNovedad"
+                    name="motivoParoNovedad"
+                    value={motivoParoNovedad}
+                    onChange={(e) => setMotivoParoNovedad(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Seleccione un motivo
+                    </option>
+                    <option value="Sostenimiento general">
+                      Sostenimiento general
+                    </option>
+                    <option value="Mecánico">Mecánico</option>
+                    <option value="Eléctrico">Eléctrico</option>
+                    <option value="Corte de energía">Corte de energía</option>
+                    <option value="Materia prima">Materia prima</option>
+                    <option value="Empaque">Empaque</option>
+                    <option value="Guijos">Guijos</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Programado">Programado</option>
+                    <option value="Bodega">Bodega</option>
+                    <option value="Apagado">Apagado</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                  {!validationError.motivoParoNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyStrikeStartFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.motivoParoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <fieldset
+                  className={Style.generateNoveltyStrikeStartFormMainEspecial}
+                >
+                  <label htmlFor="observacionNovedad">Observación</label>
+                  <input
+                    id="observacionNovedad"
+                    name="observacionNovedad"
+                    type="text"
+                    value={observacionNovedad}
+                    onChange={(e) => setObservacionNovedad(e.target.value)}
+                    placeholder="Ingresa una observación"
+                  />
+                  {!validationError.observacionNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyStrikeStartFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.observacionNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+              </main>
+              <footer className={Style.generateNoveltyStrikeStartFormFooter}>
+                <button onClick={() => redirectGenerateReport()} type="button">
+                  Cancelar
+                </button>
+                <button type="submit">
+                  {loading ? (
+                    <div className={Style.loader}></div>
+                  ) : (
+                    "Crear paro"
+                  )}
+                </button>
+                {!serverError ? (
+                  <></>
+                ) : (
+                  <motion.span
+                    className={
+                      Style.generateNoveltyStrikeStartFormValidationServer
+                    }
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {serverError}
+                  </motion.span>
+                )}
+              </footer>
+            </motion.form>
+          ) : (
+            <motion.div
+              className={Style.generateNoveltyStrikeStartFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>El informe inicial del turno no ha sido creado</h1>
+            </motion.div>
+          )}
+        </>
       )}
     </>
   );

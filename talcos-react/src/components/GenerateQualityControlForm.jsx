@@ -6,6 +6,7 @@ import Style from "./styles/generate-quality-control-form.module.css";
 
 function GenerateQualityControlForm() {
   const [currentData, setCurrentData] = useState(null);
+  const [finalData, setFinalData] = useState([]);
   const [molino, setMolino] = useState([]);
   const [molinoControlCalidad, setMolinoControlCalidad] = useState("");
   const [rechazadoControlCalidad, setRechazadoControlCalidad] = useState("");
@@ -95,9 +96,21 @@ function GenerateQualityControlForm() {
             },
           }
         );
+        const responseEndReport = await axios.get(
+          `http://${localIP}:3000/informes_finales/turnoinformefinal`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
+        const endReports = responseEndReport.data;
         const evaluateIsInParo = (report, allNovelties) => {
           if (!report?.molino_informe_inicial) {
             const turnOnNovelty = allNovelties.find(
@@ -255,6 +268,7 @@ function GenerateQualityControlForm() {
         });
 
         setCurrentData(reports);
+        setFinalData(endReports);
         setMolino(combinedData);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
@@ -392,213 +406,246 @@ function GenerateQualityControlForm() {
 
   return (
     <>
-      {loadingAlternative ? (
+      {finalData.length > 0 ? (
         <motion.div
           className={Style.generateQualityControlFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={Style.loader}></div>
+          <h1>El informe del turno ya ha finalizado</h1>
         </motion.div>
-      ) : currentData.length > 0 ? (
+      ) : (
         <>
-          {sendStatus === true ? (
+          {loadingAlternative ? (
             <motion.div
               className={Style.generateQualityControlFormAlternative}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <h1>Control de calidad creado con éxito</h1>
+              <div className={Style.loader}></div>
             </motion.div>
+          ) : currentData.length > 0 ? (
+            <>
+              {sendStatus === true ? (
+                <motion.div
+                  className={Style.generateQualityControlFormAlternative}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <h1>Control de calidad creado con éxito</h1>
+                </motion.div>
+              ) : (
+                <motion.form
+                  className={Style.generateQualityControlForm}
+                  onSubmit={sendCreate}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <header className={Style.generateQualityControlFormHeader}>
+                    <h1>
+                      Selecciona el molino al que va a realizar el control de
+                      calidad y complete los datos
+                    </h1>
+                  </header>
+                  <main className={Style.generateQualityControlFormMain}>
+                    <table
+                      className={Style.generateQualityControlFormMainTable}
+                    >
+                      <thead
+                        className={
+                          Style.generateQualityControlFormMainTableHead
+                        }
+                      >
+                        <tr>
+                          <th>Referencia</th>
+                          <th>Bulto</th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        className={
+                          Style.generateQualityControlFormMainTableBody
+                        }
+                      >
+                        <tr>
+                          <td>
+                            {molinoSeleccionado?.reference || "No seleccionado"}
+                          </td>
+                          <td>
+                            {molinoSeleccionado?.bulk || "No seleccionado"}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <fieldset>
+                      <label htmlFor="molinoControlCalidad">Molino</label>
+                      <select
+                        id="molinoControlCalidad"
+                        name="molinoControlCalidad"
+                        value={molinoControlCalidad}
+                        onChange={(e) =>
+                          setMolinoControlCalidad(e.target.value)
+                        }
+                      >
+                        <option value="" disabled>
+                          Selecciona un molino
+                        </option>
+                        {molino
+                          .filter((item) => !item.isInParo)
+                          .map((item, index) => (
+                            <option key={index} value={item.name}>
+                              {item.name}
+                            </option>
+                          ))}
+                      </select>
+                      {validationError.molinoControlCalidad && (
+                        <motion.span
+                          className={Style.generateQualityControlFormValidation}
+                          initial={{ zoom: 0 }}
+                          animate={{ zoom: 1 }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          {validationError.molinoControlCalidad}
+                        </motion.span>
+                      )}
+                    </fieldset>
+                    <div
+                      className={
+                        Style.generateQualityControlFormMainAlternative
+                      }
+                    >
+                      <fieldset>
+                        <label htmlFor="rechazadoControlCalidad">
+                          Cantidad de bultos rechazados
+                        </label>
+                        <input
+                          id="rechazadoControlCalidad"
+                          name="rechazadoControlCalidad"
+                          type="text"
+                          placeholder="Ingrese la cantidad de bultos rechazados"
+                          value={rechazadoControlCalidad}
+                          onChange={(e) =>
+                            setRechazadoControlCalidad(e.target.value)
+                          }
+                        />
+                        {!validationError.rechazadoControlCalidad ? (
+                          <></>
+                        ) : (
+                          <motion.span
+                            className={
+                              Style.generateNoveltyStrikeStartFormValidation
+                            }
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {validationError.rechazadoControlCalidad}
+                          </motion.span>
+                        )}
+                      </fieldset>
+                      <fieldset>
+                        <label htmlFor="retencionControlCalidad">
+                          Retención
+                        </label>
+                        <input
+                          id="retencionControlCalidad"
+                          name="retencionControlCalidad"
+                          type="text"
+                          placeholder="Ingrese la retención obtenida"
+                          value={retencionControlCalidad}
+                          onChange={(e) =>
+                            setRetencionControlCalidad(e.target.value)
+                          }
+                        />
+                        {!validationError.retencionControlCalidad ? (
+                          <></>
+                        ) : (
+                          <motion.span
+                            className={
+                              Style.generateNoveltyStrikeStartFormValidation
+                            }
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {validationError.retencionControlCalidad}
+                          </motion.span>
+                        )}
+                      </fieldset>
+                    </div>
+                    <fieldset>
+                      <label htmlFor="observacionControlCalidad">
+                        Observación
+                      </label>
+                      <input
+                        id="observacionControlCalidad"
+                        name="observacionControlCalidad"
+                        type="text"
+                        placeholder="Ingresa una observación"
+                        value={observacionControlCalidad}
+                        onChange={(e) =>
+                          setObservacionControlCalidad(e.target.value)
+                        }
+                      />
+                      {!validationError.observacionControlCalidad ? (
+                        <></>
+                      ) : (
+                        <motion.span
+                          className={
+                            Style.generateNoveltyStrikeStartFormValidation
+                          }
+                          initial={{ zoom: 0 }}
+                          animate={{ zoom: 1 }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          {validationError.observacionControlCalidad}
+                        </motion.span>
+                      )}
+                    </fieldset>
+                  </main>
+                  <footer className={Style.generateQualityControlFormFooter}>
+                    <button onClick={redirectReport} type="button">
+                      Cancelar
+                    </button>
+                    <button type="submit">
+                      {loading ? (
+                        <div className={Style.loader}></div>
+                      ) : (
+                        "Crear control de calidad"
+                      )}
+                    </button>
+                    {!serverError ? (
+                      <></>
+                    ) : (
+                      <motion.span
+                        className={
+                          Style.generateQualityControlFormValidationServer
+                        }
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {serverError}
+                      </motion.span>
+                    )}
+                  </footer>
+                </motion.form>
+              )}
+            </>
           ) : (
-            <motion.form
-              className={Style.generateQualityControlForm}
-              onSubmit={sendCreate}
+            <motion.div
+              className={Style.generateQualityControlFormAlternative}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <header className={Style.generateQualityControlFormHeader}>
-                <h1>
-                  Selecciona el molino al que va a realizar el control de
-                  calidad y complete los datos
-                </h1>
-              </header>
-              <main className={Style.generateQualityControlFormMain}>
-                <table className={Style.generateQualityControlFormMainTable}>
-                  <thead
-                    className={Style.generateQualityControlFormMainTableHead}
-                  >
-                    <tr>
-                      <th>Referencia</th>
-                      <th>Bulto</th>
-                    </tr>
-                  </thead>
-                  <tbody
-                    className={Style.generateQualityControlFormMainTableBody}
-                  >
-                    <tr>
-                      <td>
-                        {molinoSeleccionado?.reference || "No seleccionado"}
-                      </td>
-                      <td>{molinoSeleccionado?.bulk || "No seleccionado"}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <fieldset>
-                  <label htmlFor="molinoControlCalidad">Molino</label>
-                  <select
-                    id="molinoControlCalidad"
-                    name="molinoControlCalidad"
-                    value={molinoControlCalidad}
-                    onChange={(e) => setMolinoControlCalidad(e.target.value)}
-                  >
-                    <option value="" disabled>
-                      Selecciona un molino
-                    </option>
-                    {molino
-                      .filter((item) => !item.isInParo)
-                      .map((item, index) => (
-                        <option key={index} value={item.name}>
-                          {item.name}
-                        </option>
-                      ))}
-                  </select>
-                  {validationError.molinoControlCalidad && (
-                    <motion.span
-                      className={Style.generateQualityControlFormValidation}
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError.molinoControlCalidad}
-                    </motion.span>
-                  )}
-                </fieldset>
-                <div
-                  className={Style.generateQualityControlFormMainAlternative}
-                >
-                  <fieldset>
-                    <label htmlFor="rechazadoControlCalidad">
-                      Cantidad de bultos rechazados
-                    </label>
-                    <input
-                      id="rechazadoControlCalidad"
-                      name="rechazadoControlCalidad"
-                      type="text"
-                      placeholder="Ingrese la cantidad de bultos rechazados"
-                      value={rechazadoControlCalidad}
-                      onChange={(e) =>
-                        setRechazadoControlCalidad(e.target.value)
-                      }
-                    />
-                    {!validationError.rechazadoControlCalidad ? (
-                      <></>
-                    ) : (
-                      <motion.span
-                        className={
-                          Style.generateNoveltyStrikeStartFormValidation
-                        }
-                        initial={{ zoom: 0 }}
-                        animate={{ zoom: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {validationError.rechazadoControlCalidad}
-                      </motion.span>
-                    )}
-                  </fieldset>
-                  <fieldset>
-                    <label htmlFor="retencionControlCalidad">Retención</label>
-                    <input
-                      id="retencionControlCalidad"
-                      name="retencionControlCalidad"
-                      type="text"
-                      placeholder="Ingrese la retención obtenida"
-                      value={retencionControlCalidad}
-                      onChange={(e) =>
-                        setRetencionControlCalidad(e.target.value)
-                      }
-                    />
-                    {!validationError.retencionControlCalidad ? (
-                      <></>
-                    ) : (
-                      <motion.span
-                        className={
-                          Style.generateNoveltyStrikeStartFormValidation
-                        }
-                        initial={{ zoom: 0 }}
-                        animate={{ zoom: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {validationError.retencionControlCalidad}
-                      </motion.span>
-                    )}
-                  </fieldset>
-                </div>
-                <fieldset>
-                  <label htmlFor="observacionControlCalidad">Observación</label>
-                  <input
-                    id="observacionControlCalidad"
-                    name="observacionControlCalidad"
-                    type="text"
-                    placeholder="Ingresa una observación"
-                    value={observacionControlCalidad}
-                    onChange={(e) =>
-                      setObservacionControlCalidad(e.target.value)
-                    }
-                  />
-                  {!validationError.observacionControlCalidad ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={Style.generateNoveltyStrikeStartFormValidation}
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError.observacionControlCalidad}
-                    </motion.span>
-                  )}
-                </fieldset>
-              </main>
-              <footer className={Style.generateQualityControlFormFooter}>
-                <button onClick={redirectReport} type="button">
-                  Cancelar
-                </button>
-                <button type="submit">
-                  {loading ? (
-                    <div className={Style.loader}></div>
-                  ) : (
-                    "Crear control de calidad"
-                  )}
-                </button>
-                {!serverError ? (
-                  <></>
-                ) : (
-                  <motion.span
-                    className={Style.generateQualityControlFormValidationServer}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {serverError}
-                  </motion.span>
-                )}
-              </footer>
-            </motion.form>
+              <h1>El informe inicial del turno no ha sido creado</h1>
+            </motion.div>
           )}
         </>
-      ) : (
-        <motion.div
-          className={Style.generateQualityControlFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>El informe inicial del turno no ha sido creado</h1>
-        </motion.div>
       )}
     </>
   );

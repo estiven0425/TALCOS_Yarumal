@@ -7,6 +7,7 @@ import Style from "./styles/generate-novelty-component-form.module.css";
 function GenerateNoveltyOperatorForm() {
   const [operador, setOperador] = useState([]);
   const [currentData, setCurrentData] = useState(null);
+  const [finalData, setFinalData] = useState([]);
   const [molino, setMolino] = useState([]);
   const [molinoNovedad, setMolinoNovedad] = useState("");
   const [operadorNovedad, setOperadorNovedad] = useState("");
@@ -91,9 +92,21 @@ function GenerateNoveltyOperatorForm() {
             },
           }
         );
+        const responseEndReport = await axios.get(
+          `http://${localIP}:3000/informes_finales/turnoinformefinal`,
+          {
+            params: {
+              fecha: currentDate,
+              turno,
+              inicioTurno,
+              finTurno,
+            },
+          }
+        );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
+        const endReports = responseEndReport.data;
         const evaluateIsInParo = (report, allNovelties) => {
           if (!report?.molino_informe_inicial) {
             const turnOnNovelty = allNovelties.find(
@@ -247,6 +260,7 @@ function GenerateNoveltyOperatorForm() {
         });
 
         setCurrentData(reports);
+        setFinalData(endReports);
         setMolino(combinedData);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
@@ -377,161 +391,178 @@ function GenerateNoveltyOperatorForm() {
 
   return (
     <>
-      {loadingAlternative ? (
+      {finalData.length > 0 ? (
         <motion.div
           className={Style.generateNoveltyComponentFormAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className={Style.loader}></div>
+          <h1>El informe del turno ya ha finalizado</h1>
         </motion.div>
-      ) : sendStatus === true ? (
-        <motion.div
-          className={Style.generateNoveltyComponentFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>Operador de molino cambiado con éxito</h1>
-        </motion.div>
-      ) : currentData.length > 0 ? (
-        <motion.form
-          className={Style.generateNoveltyComponentForm}
-          onSubmit={sendCreate}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <header className={Style.generateNoveltyComponentFormHeader}>
-            <h1>Complete los datos para cambiar el operador del molino</h1>
-          </header>
-          <main className={Style.generateNoveltyComponentFormMain}>
-            <fieldset>
-              <label htmlFor="molinoNovedad">Seleccione un molino</label>
-              <select
-                id="molinoNovedad"
-                name="molinoNovedad"
-                value={molinoNovedad}
-                onChange={(e) => setMolinoNovedad(e.target.value)}
-              >
-                <option value="" disabled>
-                  Seleccione un molino
-                </option>
-                {molino
-                  .filter((item) => !item.isInParo)
-                  .map((item, index) => (
-                    <option key={index} value={item.name}>
-                      {item.name}
+      ) : (
+        <>
+          {loadingAlternative ? (
+            <motion.div
+              className={Style.generateNoveltyComponentFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className={Style.loader}></div>
+            </motion.div>
+          ) : sendStatus === true ? (
+            <motion.div
+              className={Style.generateNoveltyComponentFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>Operador de molino cambiado con éxito</h1>
+            </motion.div>
+          ) : currentData.length > 0 ? (
+            <motion.form
+              className={Style.generateNoveltyComponentForm}
+              onSubmit={sendCreate}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <header className={Style.generateNoveltyComponentFormHeader}>
+                <h1>Complete los datos para cambiar el operador del molino</h1>
+              </header>
+              <main className={Style.generateNoveltyComponentFormMain}>
+                <fieldset>
+                  <label htmlFor="molinoNovedad">Seleccione un molino</label>
+                  <select
+                    id="molinoNovedad"
+                    name="molinoNovedad"
+                    value={molinoNovedad}
+                    onChange={(e) => setMolinoNovedad(e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Seleccione un molino
                     </option>
-                  ))}
-              </select>
-              {!validationError.molinoNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyComponentFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.molinoNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-            <div className={Style.generateNoveltyComponentFormMainAlternative}>
-              <fieldset>
-                <label htmlFor="operadorNovedad">Operador de molino</label>
-                <select
-                  id="operadorNovedad"
-                  name="operadorNovedad"
-                  onChange={(e) => setOperadorNovedad(e.target.value)}
-                  value={operadorNovedad}
-                >
-                  <option value="" disabled>
-                    Seleccione un operador de molino
-                  </option>
-                  {operador.map((operador) => (
-                    <option
-                      key={operador.id_usuario}
-                      value={operador.id_usuario}
+                    {molino
+                      .filter((item) => !item.isInParo)
+                      .map((item, index) => (
+                        <option key={index} value={item.name}>
+                          {item.name}
+                        </option>
+                      ))}
+                  </select>
+                  {!validationError.molinoNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyComponentFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
                     >
-                      {operador.nombre_usuario}
-                    </option>
-                  ))}
-                </select>
-                {!validationError.operadorNovedad ? (
+                      {validationError.molinoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <div
+                  className={Style.generateNoveltyComponentFormMainAlternative}
+                >
+                  <fieldset>
+                    <label htmlFor="operadorNovedad">Operador de molino</label>
+                    <select
+                      id="operadorNovedad"
+                      name="operadorNovedad"
+                      onChange={(e) => setOperadorNovedad(e.target.value)}
+                      value={operadorNovedad}
+                    >
+                      <option value="" disabled>
+                        Seleccione un operador de molino
+                      </option>
+                      {operador.map((operador) => (
+                        <option
+                          key={operador.id_usuario}
+                          value={operador.id_usuario}
+                        >
+                          {operador.nombre_usuario}
+                        </option>
+                      ))}
+                    </select>
+                    {!validationError.operadorNovedad ? (
+                      <></>
+                    ) : (
+                      <motion.span
+                        className={Style.generateNoveltyComponentFormValidation}
+                        initial={{ zoom: 0 }}
+                        animate={{ zoom: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {validationError.operadorNovedad}
+                      </motion.span>
+                    )}
+                  </fieldset>
+                </div>
+                <fieldset>
+                  <label htmlFor="observacionNovedad">Observación</label>
+                  <input
+                    id="observacionNovedad"
+                    name="observacionNovedad"
+                    type="text"
+                    value={observacionNovedad}
+                    onChange={(e) => setObservacionNovedad(e.target.value)}
+                    placeholder="Ingresa una observación"
+                  />
+                  {!validationError.observacionNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyComponentFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.observacionNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+              </main>
+              <footer className={Style.generateNoveltyComponentFormFooter}>
+                <button onClick={() => redirectGenerateReport()} type="button">
+                  Cancelar
+                </button>
+                <button type="submit">
+                  {loading ? (
+                    <div className={Style.loader}></div>
+                  ) : (
+                    "Cambiar operador de molino"
+                  )}
+                </button>
+                {!serverError ? (
                   <></>
                 ) : (
                   <motion.span
-                    className={Style.generateNoveltyComponentFormValidation}
-                    initial={{ zoom: 0 }}
-                    animate={{ zoom: 1 }}
+                    className={
+                      Style.generateNoveltyComponentFormValidationServer
+                    }
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
                   >
-                    {validationError.operadorNovedad}
+                    {serverError}
                   </motion.span>
                 )}
-              </fieldset>
-            </div>
-            <fieldset>
-              <label htmlFor="observacionNovedad">Observación</label>
-              <input
-                id="observacionNovedad"
-                name="observacionNovedad"
-                type="text"
-                value={observacionNovedad}
-                onChange={(e) => setObservacionNovedad(e.target.value)}
-                placeholder="Ingresa una observación"
-              />
-              {!validationError.observacionNovedad ? (
-                <></>
-              ) : (
-                <motion.span
-                  className={Style.generateNoveltyComponentFormValidation}
-                  initial={{ zoom: 0 }}
-                  animate={{ zoom: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {validationError.observacionNovedad}
-                </motion.span>
-              )}
-            </fieldset>
-          </main>
-          <footer className={Style.generateNoveltyComponentFormFooter}>
-            <button onClick={() => redirectGenerateReport()} type="button">
-              Cancelar
-            </button>
-            <button type="submit">
-              {loading ? (
-                <div className={Style.loader}></div>
-              ) : (
-                "Cambiar operador de molino"
-              )}
-            </button>
-            {!serverError ? (
-              <></>
-            ) : (
-              <motion.span
-                className={Style.generateNoveltyComponentFormValidationServer}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                {serverError}
-              </motion.span>
-            )}
-          </footer>
-        </motion.form>
-      ) : (
-        <motion.div
-          className={Style.generateNoveltyComponentFormAlternative}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1>El informe inicial del turno no ha sido creado</h1>
-        </motion.div>
+              </footer>
+            </motion.form>
+          ) : (
+            <motion.div
+              className={Style.generateNoveltyComponentFormAlternative}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1>El informe inicial del turno no ha sido creado</h1>
+            </motion.div>
+          )}
+        </>
       )}
     </>
   );
