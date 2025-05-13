@@ -7,6 +7,10 @@ router.get(
   "/turnoinformeinicial",
   informeInicialController.turnoInformeInicial
 );
+router.get(
+  "/validarinformefinalpendiente",
+  informeInicialController.validarInformeFinalPendiente
+);
 router.post("/", informeInicialController.crearInformeInicial);
 router.put("/", informeInicialController.actualizarInformeInicial);
 

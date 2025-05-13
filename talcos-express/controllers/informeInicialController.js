@@ -1,5 +1,7 @@
 const { Op } = require("sequelize");
 const InformeInicial = require("../models/InformeInicial");
+const InformeFinal = require("../models/InformeFinal");
+const Turnos = require("../models/Turnos");
 const Usuarios = require("../models/Usuarios");
 
 exports.leerInformeInicial = async (req, res) => {
@@ -114,6 +116,78 @@ exports.crearInformeInicial = async (req, res) => {
     res.status(201).json(nuevoInforme);
   } catch (error) {
     res.status(500).json({ error: "Error al crear el informe inicial" });
+  }
+};
+
+exports.validarInformeFinalPendiente = async (req, res) => {
+  try {
+    const ultimoInformeInicial = await InformeInicial.findOne({
+      order: [
+        ["fecha_informe_inicial", "DESC"],
+        ["hora_informe_inicial", "DESC"],
+      ],
+    });
+
+    if (!ultimoInformeInicial) {
+      return res.json({ pendiente: false });
+    }
+
+    const { fecha_informe_inicial, turno_informe_inicial } =
+      ultimoInformeInicial;
+    const ahora = new Date();
+    const fechaActual = ahora.toISOString().split("T")[0];
+
+    let turnoActual = null;
+
+    const turnos = await Turnos.findAll();
+
+    for (const turno of turnos) {
+      const [inicioHora, inicioMinuto] = turno.inicio_turno
+        .split(":")
+        .map(Number);
+      const [finHora, finMinuto] = turno.fin_turno.split(":").map(Number);
+      const inicioTurnoHoy = new Date(ahora);
+      inicioTurnoHoy.setHours(inicioHora, inicioMinuto, 0, 0);
+      const finTurnoHoy = new Date(ahora);
+      finTurnoHoy.setHours(finHora, finMinuto, 0, 0);
+
+      if (finTurnoHoy < inicioTurnoHoy) {
+        finTurnoHoy.setDate(finTurnoHoy.getDate() + 1);
+      }
+      if (ahora >= inicioTurnoHoy && ahora < finTurnoHoy) {
+        turnoActual = turno.nombre_turno;
+        break;
+      }
+    }
+
+    const informeFinalExistente = await InformeFinal.findOne({
+      where: {
+        fecha_informe_final: fecha_informe_inicial,
+        turno_informe_final: turno_informe_inicial,
+      },
+    });
+
+    if (informeFinalExistente) {
+      return res.json({ pendiente: false });
+    } else {
+      if (
+        fecha_informe_inicial === fechaActual &&
+        turno_informe_inicial === turnoActual
+      ) {
+        return res.json({ pendiente: false });
+      } else {
+        return res.json({
+          pendiente: true,
+          fecha: fecha_informe_inicial,
+          turno: turno_informe_inicial,
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Error al validar informe final pendiente:", error);
+    res.status(500).json({
+      error: "Error al validar el estado del informe final pendiente",
+    });
   }
 };
 
