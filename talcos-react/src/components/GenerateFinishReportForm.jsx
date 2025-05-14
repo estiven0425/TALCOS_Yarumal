@@ -1,12 +1,11 @@
 ﻿import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Style from "./styles/generate-final-report-form.module.css";
 
-function GenerateFinalReportForm() {
+function GenerateFinishReportForm() {
   const [currentData, setCurrentData] = useState(null);
-  const [informeInicialPendiente, setInformeInicialPendiente] = useState(null);
   const [finalData, setFinalData] = useState([]);
   const [molino, setMolino] = useState([]);
   const [referencia, setReferencia] = useState([]);
@@ -18,6 +17,8 @@ function GenerateFinalReportForm() {
   const [validationError, setValidationError] = useState({});
   const [serverError, setServerError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const oldData = location.state || null;
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
@@ -48,6 +49,13 @@ function GenerateFinalReportForm() {
   }, [molino]);
   useEffect(() => {
     const getData = async () => {
+      if (!oldData?.fecha || !oldData?.turno || !oldData?.finTurno) {
+        console.error(
+          "No se recibieron fecha, turno u hora de finalización en el estado."
+        );
+        setLoadingAlternative(false);
+        return;
+      }
       try {
         const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
         const mills = responseMills.data;
@@ -59,27 +67,16 @@ function GenerateFinalReportForm() {
         const references = responseReferences.data;
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
-        const responseInformePendiente = await axios.get(
-          `http://${localIP}:3000/informes_finales/obtenerultimoinformeinicialpendiente`
-        );
-        const informePendienteData = responseInformePendiente.data;
-
-        if (informePendienteData) {
-          setInformeInicialPendiente(informePendienteData);
-        } else {
-          setInformeInicialPendiente(null);
-        }
-
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
             params: {
-              fecha: informePendienteData?.fecha,
-              turno: informePendienteData?.turno,
+              fecha: oldData.fecha,
+              turno: oldData.turno,
               inicioTurno: shifts.find(
-                (shift) => shift.nombre_turno === informePendienteData?.turno
+                (shift) => shift.nombre_turno === oldData.turno
               )?.inicio_turno,
-              finTurno: informePendienteData?.finTurno,
+              finTurno: oldData.finTurno,
             },
           }
         );
@@ -87,12 +84,12 @@ function GenerateFinalReportForm() {
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
             params: {
-              fecha: informePendienteData?.fecha,
-              turno: informePendienteData?.turno,
+              fecha: oldData.fecha,
+              turno: oldData.turno,
               inicioTurno: shifts.find(
-                (shift) => shift.nombre_turno === informePendienteData?.turno
+                (shift) => shift.nombre_turno === oldData.turno
               )?.inicio_turno,
-              finTurno: informePendienteData?.finTurno,
+              finTurno: oldData.finTurno,
             },
           }
         );
@@ -100,12 +97,12 @@ function GenerateFinalReportForm() {
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
             params: {
-              fecha: informePendienteData?.fecha,
-              turno: informePendienteData?.turno,
+              fecha: oldData.fecha,
+              turno: oldData.turno,
               inicioTurno: shifts.find(
-                (shift) => shift.nombre_turno === informePendienteData?.turno
+                (shift) => shift.nombre_turno === oldData.turno
               )?.inicio_turno,
-              finTurno: informePendienteData?.finTurno,
+              finTurno: oldData.finTurno,
             },
           }
         );
@@ -254,13 +251,6 @@ function GenerateFinalReportForm() {
     setValidationError(errors);
     return Object.keys(errors).length === 0;
   };
-  const determinateShift = () => {
-    return informeInicialPendiente?.turno || null;
-  };
-
-  const determinateDate = () => {
-    return informeInicialPendiente?.fecha || null;
-  };
   const sendCreate = async (e) => {
     e.preventDefault();
 
@@ -270,29 +260,6 @@ function GenerateFinalReportForm() {
 
     setServerError(null);
     setLoading(true);
-
-    let horaInformeFinal = new Date().toLocaleTimeString("en-GB", {
-      hour12: false,
-    });
-    const fechaInformeFinal = determinateDate();
-    const turnoInformeFinal = determinateShift();
-    const finTurnoInformeInicial = informeInicialPendiente?.finTurno;
-
-    if (finTurnoInformeInicial) {
-      const [finHora, finMinuto] = finTurnoInformeInicial
-        .split(":")
-        .map(Number);
-      const ahora = new Date();
-      const horaActual = ahora.getHours();
-      const minutoActual = ahora.getMinutes();
-
-      if (
-        horaActual > finHora ||
-        (horaActual === finHora && minutoActual > finMinuto)
-      ) {
-        horaInformeFinal = finTurnoInformeInicial;
-      }
-    }
 
     const horometrosMolinos = [];
 
@@ -373,9 +340,9 @@ function GenerateFinalReportForm() {
           )?.bulk;
 
           informeFinalArray.push({
-            fecha_informe_final: fechaInformeFinal,
-            hora_informe_final: horaInformeFinal,
-            turno_informe_final: turnoInformeFinal,
+            fecha_informe_final: oldData.fecha,
+            hora_informe_final: oldData.finTurno,
+            turno_informe_final: oldData.turno,
             molino_informe_final: molinoName,
             referencia_informe_final: reference,
             bulto_informe_final: nombreBulto,
@@ -446,7 +413,7 @@ function GenerateFinalReportForm() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h1>Informe final creado con éxito</h1>
+                  <h1>Informe finalizado con éxito</h1>
                 </motion.div>
               ) : (
                 <motion.form
@@ -628,7 +595,7 @@ function GenerateFinalReportForm() {
                       {loading ? (
                         <div className={Style.loader}></div>
                       ) : (
-                        "Crear informe final"
+                        "Finalizar informe"
                       )}
                     </button>
                     {!serverError ? (
@@ -665,4 +632,4 @@ function GenerateFinalReportForm() {
   );
 }
 
-export default GenerateFinalReportForm;
+export default GenerateFinishReportForm;

@@ -1,5 +1,7 @@
 const { Op } = require("sequelize");
+const InformeInicial = require("../models/InformeInicial");
 const InformeFinal = require("../models/InformeFinal");
+const Turnos = require("../models/Turnos");
 
 exports.leerInformeFinal = async (req, res) => {
   try {
@@ -54,6 +56,60 @@ exports.crearInformeFinal = async (req, res) => {
     res.status(201).json(nuevoInformeFinal);
   } catch (error) {
     res.status(500).json({ error: "Error al crear el informe final" });
+  }
+};
+
+exports.obtenerUltimoInformeInicialPendiente = async (req, res) => {
+  try {
+    const ultimoInformeInicial = await InformeInicial.findOne({
+      order: [
+        ["fecha_informe_inicial", "DESC"],
+        ["hora_informe_inicial", "DESC"],
+      ],
+    });
+
+    if (!ultimoInformeInicial) {
+      return res
+        .status(404)
+        .json({ mensaje: "No se encontraron informes iniciales." });
+    }
+
+    const informeFinalExistente = await InformeFinal.findOne({
+      where: {
+        fecha_informe_final: ultimoInformeInicial.fecha_informe_inicial,
+        turno_informe_final: ultimoInformeInicial.turno_informe_inicial,
+      },
+    });
+
+    if (informeFinalExistente) {
+      return res.status(400).json({
+        mensaje: "El informe ya ha finalizado.",
+      });
+    }
+
+    const turno = await Turnos.findOne({
+      where: { nombre_turno: ultimoInformeInicial.turno_informe_inicial },
+    });
+
+    if (!turno) {
+      return res
+        .status(404)
+        .json({ mensaje: "No se encontró información del turno." });
+    }
+
+    res.json({
+      fecha: ultimoInformeInicial.fecha_informe_inicial,
+      turno: ultimoInformeInicial.turno_informe_inicial,
+      finTurno: turno.fin_turno,
+    });
+  } catch (error) {
+    console.error(
+      "Error al obtener el último informe inicial pendiente:",
+      error
+    );
+    res
+      .status(500)
+      .json({ error: "Error al obtener el informe inicial pendiente." });
   }
 };
 

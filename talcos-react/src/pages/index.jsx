@@ -1,6 +1,7 @@
 export { default as Error } from "./Error";
 export { default as FastInventory } from "./FastInventory";
 export { default as GenerateFinalReport } from "./GenerateFinalReport";
+export { default as GenerateFinishReport } from "./GenerateFinishReport";
 export { default as GenerateInitialReport } from "./GenerateInitialReport";
 export { default as GenerateNovelty } from "./GenerateNovelty";
 export { default as GenerateNoveltyChangeMechanic } from "./GenerateNoveltyChangeMechanic";

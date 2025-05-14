@@ -138,6 +138,7 @@ exports.validarInformeFinalPendiente = async (req, res) => {
     const fechaActual = ahora.toISOString().split("T")[0];
 
     let turnoActual = null;
+    let finTurnoInformeInicial = null;
 
     const turnos = await Turnos.findAll();
 
@@ -156,7 +157,9 @@ exports.validarInformeFinalPendiente = async (req, res) => {
       }
       if (ahora >= inicioTurnoHoy && ahora < finTurnoHoy) {
         turnoActual = turno.nombre_turno;
-        break;
+      }
+      if (turno.nombre_turno === turno_informe_inicial) {
+        finTurnoInformeInicial = turno.fin_turno;
       }
     }
 
@@ -180,6 +183,7 @@ exports.validarInformeFinalPendiente = async (req, res) => {
           pendiente: true,
           fecha: fecha_informe_inicial,
           turno: turno_informe_inicial,
+          finTurno: finTurnoInformeInicial,
         });
       }
     }

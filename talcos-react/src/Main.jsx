@@ -6,6 +6,7 @@ import {
   Error,
   FastInventory,
   GenerateFinalReport,
+  GenerateFinishReport,
   GenerateInitialReport,
   GenerateNovelty,
   GenerateNoveltyChangeMechanic,
@@ -149,6 +150,7 @@ createRoot(document.getElementById("root")).render(
             />
             <Route path="qualitycontrol" element={<GenerateQualityControl />} />
             <Route path="finalreport" element={<GenerateFinalReport />} />
+            <Route path="finishreport" element={<GenerateFinishReport />} />
           </Route>
           <Route path="monitoring" element={<Monitoring />} />
           <Route path="inventory" element={<Inventory />}>

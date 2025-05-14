@@ -25,6 +25,8 @@ const ProtectedRoute = ({ children }) => {
         const restrictions = {
           1: [
             "/generatereport",
+            "/generatereport/finalreport",
+            "/generatereport/finishreport",
             "/generatereport/generatereportmenu",
             "/generatereport/initialreport",
             "/generatereport/noveltyoption",
@@ -38,7 +40,6 @@ const ProtectedRoute = ({ children }) => {
             "/generatereport/noveltywindmill",
             "/generatereport/noveltymechanic",
             "/generatereport/qualitycontrol",
-            "/generatereport/finalreport",
             "/fastinventory",
           ],
           2: [
@@ -50,6 +51,8 @@ const ProtectedRoute = ({ children }) => {
             "/listdeleteuser",
             "/deleteuser",
             "/generatereport",
+            "/generatereport/finalreport",
+            "/generatereport/finishreport",
             "/generatereport/generatereportmenu",
             "/generatereport/initialreport",
             "/generatereport/noveltyoption",
@@ -63,7 +66,6 @@ const ProtectedRoute = ({ children }) => {
             "/generatereport/noveltymechanic",
             "/generatereport/noveltywindmill",
             "/generatereport/qualitycontrol",
-            "/generatereport/finalreport",
             "/fastinventory",
           ],
           3: [
