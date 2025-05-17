@@ -1,0 +1,119 @@
+﻿.inventoryRawMaterialRegisterListPrimary {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 25px;
+  height: 100%;
+  justify-content: flex-start;
+  overflow: auto;
+  padding: 10px;
+  width: 70%;
+}
+
+.inventoryRawMaterialRegisterListPrimary article {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.inventoryRawMaterialRegisterListPrimaryDate {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.inventoryRawMaterialRegisterListPrimaryDate h2 {
+  font-size: 1.5rem;
+  margin: 0px;
+  text-align: left;
+}
+
+.inventoryRawMaterialRegisterListPrimaryobject {
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.inventoryRawMaterialRegisterListPrimaryobject button {
+  align-content: center;
+  align-items: center;
+  background-color: #0037ae;
+  border: none;
+  border-radius: 20px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+  justify-content: center;
+  outline: transparent 1px solid;
+  padding: 15px 52px;
+  text-decoration: none;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryRawMaterialRegisterListPrimaryobject button:hover {
+  background-color: #0048b6;
+}
+
+.inventoryRawMaterialRegisterListPrimaryobject button:focus {
+  background-color: #0048b6;
+  outline: #0048b6 1px solid;
+}
+
+.inventoryRawMaterialRegisterListPrimaryobject button h2 {
+  font-size: 1rem;
+  margin: 0px;
+  text-align: center;
+}
+
+.inventoryRawMaterialRegisterListPrimaryobject button img {
+  height: 2rem;
+  width: 2rem;
+}
+
+.inventoryRawMaterialRegisterListPrimaryAlternative {
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
+  width: 70%;
+}
+
+.inventoryRawMaterialRegisterListPrimaryAlternative h2 {
+  margin: 0px;
+  text-align: center;
+}
+
+.inventoryRawMaterialRegisterListSecondary {
+  align-content: stretch;
+  background-color: #0037ae;
+  border-radius: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: flex-start;
+  padding: 10px;
+  width: 30%;
+}

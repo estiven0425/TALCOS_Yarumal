@@ -83,6 +83,9 @@ import {
   Monitoring,
   Notification,
   Report,
+  ReportMain,
+  ReportDetail,
+  ReportDelete,
   Setting,
   SettingChangePassword,
   Staff,
@@ -110,7 +113,11 @@ createRoot(document.getElementById("root")).render(
           <Route path="edituser" element={<StaffEditUser />} />
           <Route path="listdeleteuser" element={<StaffListDeleteUser />} />
           <Route path="deleteuser" element={<StaffDeleteUser />} />
-          <Route path="report" element={<Report />} />
+          <Route path="report" element={<Report />}>
+            <Route path="mainreport" element={<ReportMain />} />
+            <Route path="detailreport" element={<ReportDetail />} />
+            <Route path="deletereport" element={<ReportDelete />} />
+          </Route>
           <Route path="generatereport" element={<GenerateReport />}>
             <Route path="generatereportmenu" element={<GenerateReportMenu />} />
             <Route path="initialreport" element={<GenerateInitialReport />} />

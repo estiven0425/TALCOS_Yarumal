@@ -77,7 +77,7 @@ function NavBar() {
           to={
             perfilUsuario === 3 || perfilUsuario === 4
               ? "/generatereport/generatereportmenu"
-              : "/report"
+              : "/report/mainreport"
           }
         >
           <i className={`bi bi-file-earmark-text-fill ${Style.navBarIcon}`}></i>
