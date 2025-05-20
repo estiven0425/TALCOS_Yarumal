@@ -11,6 +11,10 @@ function ReportAction({ item }) {
   const navigate = useNavigate();
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
+  const startReport = item?.filter((item) => item.id_informe_inicial);
+  const news = item?.filter((item) => item.id_novedad);
+  const endReport = item?.filter((item) => item.id_informe_final);
+
   const printItem = async (e) => {
     e.preventDefault();
 
@@ -210,9 +214,9 @@ function ReportAction({ item }) {
       const response = await axios.post(
         `http://${localIP}:3000/pdf`,
         {
-          titulo: `${item.tipo_registro} de materia prima`,
+          titulo: `Informe de turno`,
           contenido: content,
-          nombre: "Registro de materia prima",
+          nombre: "informe de turno",
         },
         {
           responseType: "blob",
@@ -223,7 +227,7 @@ function ReportAction({ item }) {
       );
       const a = document.createElement("a");
       a.href = url;
-      a.download = "registro_de_materia_prima.pdf";
+      a.download = "informe_de_turno.pdf";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -233,16 +237,12 @@ function ReportAction({ item }) {
       console.log("Error al imprimir: ", error);
     }
   };
-
-  const redirectCreate = (data) => {
-    navigate("/report/createreport", { state: data });
-  };
   const redirectDetail = () => {
     navigate("/report/detailreport", { state: item });
   };
   const redirectDelete = () => {
     navigate("/report/deletereport", {
-      state: item.id_registro,
+      state: item,
     });
   };
 
@@ -251,40 +251,63 @@ function ReportAction({ item }) {
       {item ? (
         <>
           <motion.main
-            className={Style.inventoryRawMaterialRegisterActionMain}
+            className={Style.reportActionMain}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
             <div>
-              <h2>Remision</h2>
-              <p>{item.remision_registro}</p>
+              <h2>Supervisor</h2>
+              <p>{startReport[0].titular?.nombre_usuario}</p>
             </div>
             <div>
-              <h2>Proveedor</h2>
-              <p>{item.nombre_proveedor_registro}</p>
+              <h2>Control de calidad</h2>
+              {startReport.map((informe) => (
+                <p key={informe.id_informe_inicial}>
+                  {informe.cdc?.nombre_usuario}
+                </p>
+              ))}
             </div>
             <div>
-              <h2>Transportador</h2>
-              <p>{item.nombre_transportador_registro}</p>
-            </div>
-            <div>
-              <h2>Tipo de registro</h2>
-              <p>{item.tipo_registro}</p>
-            </div>
-            <div>
-              <h2>Valor de la materia prima</h2>
-              <p>{item.valor_mp_registro}</p>
-            </div>
-            <div>
-              <h2>Valor de transporte</h2>
-              <p>{item.valor_t_registro}</p>
+              <h2>Estado del turno</h2>
+              <article className={Style.reportActionMainSecondary}>
+                <div>
+                  <h2>Informe inicial</h2>
+                  <p>
+                    {startReport.length > 0 ? (
+                      <i
+                        className={`bi bi-check-circle-fill ${Style.reportActionMainIcon}`}
+                      ></i>
+                    ) : (
+                      <i
+                        className={`bi bi-x-circle-fill ${Style.reportActionMainSecondaryIconAlternative}`}
+                      ></i>
+                    )}
+                  </p>
+                </div>
+                <div>
+                  <h2>Novedades</h2>
+                  <p>{news.length}</p>
+                </div>
+                <div>
+                  <h2>Informe final</h2>
+                  <p>
+                    {endReport.length > 0 ? (
+                      <i
+                        className={`bi bi-check-circle-fill ${Style.reportActionMainIcon}`}
+                      ></i>
+                    ) : (
+                      <i
+                        className={`bi bi-x-circle-fill ${Style.reportActionMainSecondaryIconAlternative}`}
+                      ></i>
+                    )}
+                  </p>
+                </div>
+              </article>
             </div>
           </motion.main>
           <motion.footer
-            className={
-              Style.inventoryRawMaterialRegisterActionFooterAlternative
-            }
+            className={Style.reportActionFooterAlternative}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -293,54 +316,27 @@ function ReportAction({ item }) {
               {loading ? (
                 <div className={Style.loader}></div>
               ) : (
-                "Imprimir registro"
+                "Imprimir informe"
               )}
             </button>
             <button type="button" onClick={redirectDetail}>
-              Detalles registro
+              Detalles informe
             </button>
             <button type="button" onClick={redirectDelete}>
-              Eliminar registro
+              Eliminar informe
             </button>
           </motion.footer>
         </>
       ) : (
         <>
-          <motion.header
-            className={Style.inventoryRawMaterialRegisterActionHeader}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2>Selecciona un registro para ver sus detalles y funciones</h2>
-          </motion.header>
           <motion.main
-            className={Style.inventoryRawMaterialRegisterActionMainAlternative}
+            className={Style.reportActionMainAlternative}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <h2>O selecciona una de las siguiente opciones</h2>
+            <h2>Selecciona un informe para ver su estado y funciones</h2>
           </motion.main>
-          <motion.footer
-            className={Style.inventoryRawMaterialRegisterActionFooter}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <button
-              type="button"
-              onClick={() => redirectCreate("Registro manual")}
-            >
-              Registrar manualmente
-            </button>
-            <button
-              type="button"
-              onClick={() => redirectCreate("Registro importado")}
-            >
-              Importar registro
-            </button>
-          </motion.footer>
         </>
       )}
     </>

@@ -1,4 +1,4 @@
-﻿.inventoryRawMaterialRegisterListDetailPrimary {
+﻿.reportListDetailPrimary {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -12,7 +12,7 @@
   width: 70%;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryAlternative {
+.reportListDetailPrimaryAlternative {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -24,62 +24,60 @@
   width: 100%;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryTable {
+.reportListDetailPrimaryTable {
   border-collapse: separate;
   border-spacing: 0px 10px;
   width: 100%;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryTable caption {
+.reportListDetailPrimaryTable caption {
   font-size: 1rem;
   text-align: left;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryTable caption h2 {
+.reportListDetailPrimaryTable caption h2 {
   display: inline;
   font-size: 1.5rem;
   margin: 0px;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryTableHead,
-.inventoryRawMaterialRegisterListDetailPrimaryTableBody,
-.inventoryRawMaterialRegisterListDetailPrimaryTableFooter {
+.reportListDetailPrimaryTableHead,
+.reportListDetailPrimaryTableBody,
+.reportListDetailPrimaryTableFooter {
   width: 100%;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryTableHead tr,
-.inventoryRawMaterialRegisterListDetailPrimaryTableBody tr,
-.inventoryRawMaterialRegisterListDetailPrimaryTableFooter tr {
+.reportListDetailPrimaryTableHead tr,
+.reportListDetailPrimaryTableBody tr,
+.reportListDetailPrimaryTableFooter tr {
   width: 100%;
 }
-.inventoryRawMaterialRegisterListDetailPrimaryTableHead tr th {
+.reportListDetailPrimaryTableHead tr th {
   font-size: 1rem;
   text-align: center;
   vertical-align: baseline;
-  width: 14.28%;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryTableFooter tr th {
+.reportListDetailPrimaryTableFooter tr th {
   padding-top: 15px;
   vertical-align: baseline;
   text-align: center;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryTableBody tr td {
+.reportListDetailPrimaryTableBody tr td {
   font-size: 1rem;
   text-align: center;
   vertical-align: baseline;
-  width: 14.28%;
 }
 
-.inventoryRawMaterialRegisterListDetailPrimaryTableFooter tr td {
+.reportListDetailPrimaryTableFooter tr td {
   font-size: 1rem;
   text-align: left;
   vertical-align: baseline;
   width: 100%;
 }
 
-.inventoryRawMaterialRegisterListSecondary {
+.reportListSecondary {
   align-content: stretch;
   background-color: #0037ae;
   border-radius: 20px;

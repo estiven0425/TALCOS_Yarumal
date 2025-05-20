@@ -1,4 +1,4 @@
-﻿.inventoryRawMaterialRegisterListPrimary {
+﻿.reportListPrimary {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -12,7 +12,7 @@
   width: 70%;
 }
 
-.inventoryRawMaterialRegisterListPrimary article {
+.reportListPrimary article {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -22,7 +22,7 @@
   justify-content: flex-start;
 }
 
-.inventoryRawMaterialRegisterListPrimaryDate {
+.reportListPrimaryDate {
   align-content: flex-start;
   box-sizing: border-box;
   display: flex;
@@ -31,13 +31,13 @@
   justify-content: flex-start;
 }
 
-.inventoryRawMaterialRegisterListPrimaryDate h2 {
+.reportListPrimaryDate h2 {
   font-size: 1.5rem;
   margin: 0px;
   text-align: left;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject {
+.reportListPrimaryobject {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -48,7 +48,7 @@
   width: 100%;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject button {
+.reportListPrimaryobject button {
   align-content: center;
   align-items: center;
   background-color: #0037ae;
@@ -68,27 +68,27 @@
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject button:hover {
+.reportListPrimaryobject button:hover {
   background-color: #0048b6;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject button:focus {
+.reportListPrimaryobject button:focus {
   background-color: #0048b6;
   outline: #0048b6 1px solid;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject button h2 {
+.reportListPrimaryobject button h2 {
   font-size: 1rem;
   margin: 0px;
   text-align: center;
 }
 
-.inventoryRawMaterialRegisterListPrimaryobject button img {
+.reportListPrimaryobject button img {
   height: 2rem;
   width: 2rem;
 }
 
-.inventoryRawMaterialRegisterListPrimaryAlternative {
+.reportListPrimaryAlternative {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -99,12 +99,12 @@
   width: 70%;
 }
 
-.inventoryRawMaterialRegisterListPrimaryAlternative h2 {
+.reportListPrimaryAlternative h2 {
   margin: 0px;
   text-align: center;
 }
 
-.inventoryRawMaterialRegisterListSecondary {
+.reportListSecondary {
   align-content: stretch;
   background-color: #0037ae;
   border-radius: 20px;
