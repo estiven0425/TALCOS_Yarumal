@@ -85,7 +85,6 @@ import {
   Report,
   ReportMain,
   ReportDetail,
-  ReportDelete,
   Setting,
   SettingChangePassword,
   Staff,
@@ -116,7 +115,6 @@ createRoot(document.getElementById("root")).render(
           <Route path="report" element={<Report />}>
             <Route path="mainreport" element={<ReportMain />} />
             <Route path="detailreport" element={<ReportDetail />} />
-            <Route path="deletereport" element={<ReportDelete />} />
           </Route>
           <Route path="generatereport" element={<GenerateReport />}>
             <Route path="generatereportmenu" element={<GenerateReportMenu />} />

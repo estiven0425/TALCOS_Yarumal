@@ -1,4 +1,5 @@
 ﻿import { motion } from "framer-motion";
+import { addDays, parse, differenceInMinutes } from "date-fns";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReportActionDetail from "./ReportActionDetail";
@@ -38,11 +39,40 @@ function ReportListDetail() {
   }, [localIP, item]);
 
   const startReport = item?.filter((item) => item.id_informe_inicial);
-  const windmill = startReport?.filter((item) => item.molino_informe_inicial);
+  const windmill =
+    startReport?.filter((item) => item.molino_informe_inicial) || [];
   const bobCat = startReport?.filter((item) => item.bob_cat_informe_inicial);
   const news = item?.filter((item) => item.id_novedad);
+  const windmillOn =
+    news?.filter((item) => item.tipo_novedad === "Encendido de molino") || [];
+  const windmillStrikes =
+    news?.filter((item) => item.tipo_novedad === "Paro") || [];
   const qualityControl = item?.filter((item) => item.id_control_calidad);
-  const endReport = item?.filter((item) => item.id_informe_final);
+  const endReport = item?.filter((item) => item.id_informe_final) || [];
+  const windmillTotal = [];
+  const allMolinos = new Set([
+    ...windmill.map((windmill) => windmill.molino_informe_inicial),
+    ...windmillOn.map((windmill) => windmill.molino_novedad),
+    ...windmillStrikes.map((item) => item.molino_novedad),
+    ...endReport.map((windmill) => windmill.molino_informe_final),
+  ]);
+
+  allMolinos.forEach((molino) => {
+    const inicio =
+      windmill.find((windmill) => windmill.molino_informe_inicial === molino) ||
+      null;
+    const encendido =
+      windmillOn.find((windmill) => windmill.molino_novedad === molino) || null;
+    const paros = windmillStrikes.filter(
+      (item) => item.molino_novedad === molino
+    );
+    const apagado =
+      endReport.find((windmill) => windmill.molino_informe_final === molino) ||
+      null;
+
+    windmillTotal.push([inicio, encendido, paros, apagado]);
+  });
+
   const formatTime = (time) => {
     if (!time) return "";
 
@@ -335,7 +365,7 @@ function ReportListDetail() {
                     </motion.table>
                   );
                   break;
-                case "Añadición de mecánico":
+                case "Adición de mecánico":
                   return (
                     <motion.table
                       className={Style.reportListDetailPrimaryTable}
@@ -543,6 +573,205 @@ function ReportListDetail() {
             ) : (
               <></>
             )}
+            {startReport.length > 0 ? (
+              <motion.table
+                className={Style.reportListDetailPrimaryTable}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <caption>
+                  <h2>Información adicional</h2>
+                </caption>
+                <thead className={Style.reportListDetailPrimaryTableHead}>
+                  <tr>
+                    <th>Molino</th>
+                    <th>Horas trabajadas</th>
+                    <th>Horas de paro</th>
+                    <th>Kilos por hora</th>
+                    <th>Eficiencia</th>
+                  </tr>
+                </thead>
+                <tbody className={Style.reportListDetailPrimaryTableBody}>
+                  {windmillTotal.map(
+                    ([inicio, encendido, paros, apagado], index) => {
+                      const molino =
+                        inicio?.molino_informe_inicial ||
+                        encendido?.molino_novedad ||
+                        apagado?.molino_informe_final ||
+                        index + 1;
+
+                      const horaInicioStr =
+                        inicio?.hora_informe_inicial || encendido?.hora_novedad;
+                      const horaFinalStr = apagado?.hora_informe_final;
+
+                      let totalMinutosParo = 0;
+                      if (Array.isArray(paros)) {
+                        paros.forEach((paro) => {
+                          const inicioParoStr =
+                            paro?.inicio_paro_novedad || null;
+                          const finParoStr =
+                            paro?.fin_paro_novedad || shift?.fin_turno;
+
+                          if (inicioParoStr && finParoStr) {
+                            let inicioParo = parse(
+                              inicioParoStr.slice(0, 5),
+                              "HH:mm",
+                              new Date()
+                            );
+                            let finParo = parse(
+                              finParoStr.slice(0, 5),
+                              "HH:mm",
+                              new Date()
+                            );
+
+                            if (finParo < inicioParo) {
+                              finParo = addDays(finParo, 1);
+                            }
+
+                            const diff = differenceInMinutes(
+                              finParo,
+                              inicioParo
+                            );
+                            if (diff > 0) {
+                              totalMinutosParo += diff;
+                            }
+                          }
+                        });
+                      } else if (paros) {
+                        const inicioParoStr = paros.inicio_paro_novedad || null;
+                        const finParoStr =
+                          paros.fin_paro_novedad || shift?.fin_turno;
+
+                        if (inicioParoStr && finParoStr) {
+                          let inicioParo = parse(
+                            inicioParoStr.slice(0, 5),
+                            "HH:mm",
+                            new Date()
+                          );
+                          let finParo = parse(
+                            finParoStr.slice(0, 5),
+                            "HH:mm",
+                            new Date()
+                          );
+
+                          if (finParo < inicioParo) {
+                            finParo = addDays(finParo, 1);
+                          }
+
+                          const diff = differenceInMinutes(finParo, inicioParo);
+                          if (diff > 0) {
+                            totalMinutosParo += diff;
+                          }
+                        }
+                      }
+
+                      let horasParoFormatted = "0";
+                      if (totalMinutosParo > 0) {
+                        const horas = Math.floor(totalMinutosParo / 60);
+                        const mins = totalMinutosParo % 60;
+                        horasParoFormatted = `${horas}:${mins
+                          .toString()
+                          .padStart(2, "0")}`;
+                      }
+
+                      let horasTrabajadasFormatted = "0";
+                      let minutosTrabajados = 0;
+
+                      if (horaInicioStr && horaFinalStr) {
+                        let horaInicio = parse(
+                          horaInicioStr.slice(0, 5),
+                          "HH:mm",
+                          new Date()
+                        );
+                        let horaFinal = parse(
+                          horaFinalStr.slice(0, 5),
+                          "HH:mm",
+                          new Date()
+                        );
+
+                        if (horaFinal < horaInicio) {
+                          horaFinal = addDays(horaFinal, 1);
+                        }
+
+                        const totalMinutos = differenceInMinutes(
+                          horaFinal,
+                          horaInicio
+                        );
+                        minutosTrabajados = Math.max(
+                          totalMinutos - totalMinutosParo,
+                          0
+                        );
+
+                        if (minutosTrabajados > 0) {
+                          const horas = Math.floor(minutosTrabajados / 60);
+                          const mins = minutosTrabajados % 60;
+                          horasTrabajadasFormatted = `${horas}:${mins
+                            .toString()
+                            .padStart(2, "0")}`;
+                        }
+                      }
+
+                      const kilosTotales =
+                        apagado?.cantidad_informe_final * 1000 || 0;
+                      const horasTrabajadasDecimal = minutosTrabajados / 60;
+                      const kilosPorHora =
+                        horasTrabajadasDecimal > 0
+                          ? (kilosTotales / horasTrabajadasDecimal).toFixed(2)
+                          : "0";
+
+                      const inicioTurnoStr = shift?.inicio_turno;
+                      const finTurnoStr = shift?.fin_turno;
+
+                      let duracionTurnoHoras = 0;
+
+                      if (inicioTurnoStr && finTurnoStr) {
+                        let inicioTurno = parse(
+                          inicioTurnoStr.slice(0, 5),
+                          "HH:mm",
+                          new Date()
+                        );
+                        let finTurno = parse(
+                          finTurnoStr.slice(0, 5),
+                          "HH:mm",
+                          new Date()
+                        );
+
+                        if (finTurno < inicioTurno) {
+                          finTurno = addDays(finTurno, 1);
+                        }
+
+                        const minutosTurno = differenceInMinutes(
+                          finTurno,
+                          inicioTurno
+                        );
+                        duracionTurnoHoras = minutosTurno / 60;
+                      }
+
+                      const eficiencia =
+                        duracionTurnoHoras > 0
+                          ? (
+                              (horasTrabajadasDecimal / duracionTurnoHoras) *
+                              100
+                            ).toFixed(2)
+                          : "0";
+
+                      return (
+                        <tr key={index}>
+                          <td>{molino}</td>
+                          <td>{horasTrabajadasFormatted} Hrs</td>
+                          <td>{horasParoFormatted} Hrs</td>
+                          <td>{kilosPorHora} Kg/Hr</td>
+                          <td>{eficiencia} %</td>
+                        </tr>
+                      );
+                    }
+                  )}
+                </tbody>
+              </motion.table>
+            ) : (
+              <></>
+            )}
           </motion.section>
           <motion.section
             className={Style.reportListSecondary}
@@ -550,7 +779,7 @@ function ReportListDetail() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {/* <ReportActionDetail item={item} /> */}
+            <ReportActionDetail item={item} shift={shift} />
           </motion.section>
         </>
       ) : (

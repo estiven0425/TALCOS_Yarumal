@@ -80,7 +80,6 @@ export { default as Notification } from "./Notification";
 export { default as Report } from "./Report";
 export { default as ReportMain } from "./ReportMain";
 export { default as ReportDetail } from "./ReportDetail";
-export { default as ReportDelete } from "./ReportDelete";
 export { default as Setting } from "./Setting";
 export { default as SettingChangePassword } from "./SettingChangePassword";
 export { default as Staff } from "./Staff";
