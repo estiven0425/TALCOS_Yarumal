@@ -1,8 +1,12 @@
-﻿import ProtectedRoute from "../utils/ProtectedRoute";
-import Style from "./styles/monitoring.module.css";
+﻿import { Outlet } from "react-router-dom";
+import ProtectedRoute from "../utils/ProtectedRoute";
 
 function Monitoring() {
-  return <ProtectedRoute></ProtectedRoute>;
+  return (
+    <ProtectedRoute>
+      <Outlet />
+    </ProtectedRoute>
+  );
 }
 
 export default Monitoring;

@@ -1,1 +1,12 @@
-﻿
+﻿.monitoring {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 25px;
+  height: 100%;
+  justify-content: flex-start;
+  overflow: auto;
+  width: 100%;
+}

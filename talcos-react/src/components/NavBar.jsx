@@ -88,7 +88,7 @@ function NavBar() {
             className={`${Style.navBarMonitoring} ${
               currentPath.startsWith("/monitoring") ? Style.active : ""
             }`}
-            to="/monitoring"
+            to="/monitoring/mainmonitoring"
           >
             <i className={`bi bi-graph-up ${Style.navBarIcon}`}></i>
           </Link>

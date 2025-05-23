@@ -76,6 +76,7 @@ export { default as InventoryWindmill } from "./InventoryWindmill";
 export { default as Login } from "./Login";
 export { default as Logout } from "./Logout";
 export { default as Monitoring } from "./Monitoring";
+export { default as MonitoringMain } from "./MonitoringMain";
 export { default as Notification } from "./Notification";
 export { default as Report } from "./Report";
 export { default as ReportMain } from "./ReportMain";
