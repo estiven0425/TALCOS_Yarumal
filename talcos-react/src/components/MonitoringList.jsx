@@ -1,26 +1,17 @@
 ﻿import { motion } from "framer-motion";
-import MonitoringAction from "./MonitoringAction";
 import Style from "./styles/monitoring-List.module.css";
 
-function MonitoringList() {
+function MonitoringList(inicioMonitoreo, finMonitoreo) {
   return (
     <>
-      <motion.section
-        className={Style.monitoringListPrimary}
+      <motion.table
+        className={Style.monitoringTable}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <h2>Hola</h2>
-      </motion.section>
-      <motion.section
-        className={Style.monitoringListSecondary}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <MonitoringAction />
-      </motion.section>
+        <h2>Componente acá</h2>
+      </motion.table>
     </>
   );
 }
