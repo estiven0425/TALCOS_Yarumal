@@ -36,6 +36,7 @@ const mensajesRoutes = require("./routes/mensajesRoutes");
 const registrosRoutes = require("./routes/registrosRoutes");
 const login = require("./utils/login");
 const pdfRoutes = require("./routes/pdfRoutes");
+const monitoreoRoutes = require("./routes/monitoreosRoutes");
 
 // Usar middlewares
 app.use(cors);
@@ -62,6 +63,7 @@ app.use("/mensajes", mensajesRoutes);
 app.use("/registros", registrosRoutes);
 app.use("/login", login);
 app.use("/pdf", pdfRoutes);
+app.use("/monitoreo", monitoreoRoutes);
 
 // Ruta para archivos estáticos
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

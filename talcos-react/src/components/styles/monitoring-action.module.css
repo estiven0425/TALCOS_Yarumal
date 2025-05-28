@@ -108,6 +108,12 @@
   width: 100%;
 }
 
+.monitoringActionMainValidation {
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+  width: 100%;
+}
+
 .monitoringActionMainForm button {
   background-color: #0061c2;
   border-color: transparent;
