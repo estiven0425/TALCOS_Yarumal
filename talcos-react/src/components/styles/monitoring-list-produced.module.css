@@ -1,0 +1,93 @@
+﻿.monitoringListProduced {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.monitoringListProduced h2 {
+  font-size: 1.5rem;
+  margin: 0px 0px 10px;
+}
+
+.monitoringListProducedAlternative {
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: center;
+  overflow: auto;
+  width: 100%;
+}
+
+.monitoringListProducedTable {
+  border-collapse: separate;
+  border-spacing: 0px 10px;
+  width: 100%;
+}
+
+.monitoringListProducedTable caption {
+  font-size: 1rem;
+  text-align: left;
+}
+
+.monitoringListProducedTable caption h2 {
+  display: inline;
+  font-size: 1rem;
+  margin: 0px;
+}
+
+.monitoringListProducedTableHead,
+.monitoringListProducedTableBody,
+.monitoringListProducedTableFooter {
+  width: 100%;
+}
+
+.monitoringListProducedTableHead tr,
+.monitoringListProducedTableBody tr,
+.monitoringListProducedTableFooter tr {
+  width: 100%;
+}
+.monitoringListProducedTableHead tr th {
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: baseline;
+}
+
+.monitoringListProducedTableFooter tr th {
+  padding-top: 15px;
+  vertical-align: baseline;
+  text-align: center;
+}
+
+.monitoringListProducedTableBody tr td,
+.monitoringListProducedTableFooter tr td {
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: baseline;
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+  border: 5px solid #0048b6;
+  border-radius: 50%;
+  border-top: 5px solid transparent;
+  height: 20px;
+  margin: -7.5px auto 0px;
+  width: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,185 @@
+﻿import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
+import Style from "./styles/monitoring-list-produced.module.css";
+
+function MonitoringListProduced({ inicio, fin }) {
+  const [molino, setMolino] = useState([]);
+  const [referencia, setReferencia] = useState([]);
+  const [bulto, setBulto] = useState([]);
+  const [item, setItem] = useState(null);
+  const [finalReport, setFinalReport] = useState([]);
+  const localIP = import.meta.env.VITE_LOCAL_IP;
+
+  useEffect(() => {
+    if (!inicio || !fin) return;
+
+    const getData = async () => {
+      try {
+        const responseMonitoring = await axios.get(
+          `http://${localIP}:3000/monitoreo`,
+          {
+            params: { inicio, fin },
+          }
+        );
+        const responseWindmill = await axios.get(
+          `http://${localIP}:3000/molinos`
+        );
+        const responseReference = await axios.get(
+          `http://${localIP}:3000/referencias`
+        );
+        const responseBulk = await axios.get(`http://${localIP}:3000/bultos`);
+
+        setItem(responseMonitoring.data);
+        setMolino(responseWindmill.data);
+        setReferencia(responseReference.data);
+        setBulto(responseBulk.data);
+      } catch (error) {
+        console.error("Error al obtener los datos: ", error);
+      }
+    };
+
+    getData();
+  }, [localIP, inicio, fin]);
+  useEffect(() => {
+    if (!item) return;
+
+    const endReport = item.informeFinal;
+
+    setFinalReport(endReport);
+  }, [localIP, item]);
+
+  const groupedData = useMemo(() => {
+    const result = {};
+    const totalPerRow = {};
+    const totalPerColumn = {};
+
+    finalReport.forEach((entry) => {
+      const molino = entry.molino_informe_final;
+      const referencia = entry.referencia_informe_final;
+      const bulto = entry.bulto_informe_final;
+      const cantidad = Number(entry.cantidad_informe_final);
+
+      if (!result[molino]) result[molino] = {};
+      if (!result[molino][referencia]) result[molino][referencia] = {};
+      if (!result[molino][referencia][bulto])
+        result[molino][referencia][bulto] = 0;
+
+      result[molino][referencia][bulto] += cantidad;
+
+      if (!totalPerRow[molino]) totalPerRow[molino] = {};
+      if (!totalPerRow[molino][referencia]) totalPerRow[molino][referencia] = 0;
+      totalPerRow[molino][referencia] += cantidad;
+
+      if (!totalPerColumn[molino]) totalPerColumn[molino] = {};
+      if (!totalPerColumn[molino][bulto]) totalPerColumn[molino][bulto] = 0;
+      totalPerColumn[molino][bulto] += cantidad;
+    });
+
+    return { result, totalPerRow, totalPerColumn };
+  }, [finalReport]);
+
+  return (
+    <>
+      {item ? (
+        <>
+          <motion.article
+            className={Style.monitoringListProduced}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2>Toneladas producidas</h2>
+            {molino.map((molino) => (
+              <motion.table
+                className={Style.monitoringListProducedTable}
+                key={molino.id_molino}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <caption>
+                  <h2>{molino.nombre_molino}</h2>
+                </caption>
+                <thead className={Style.monitoringListProducedTableHead}>
+                  <tr>
+                    <th>referencia</th>
+                    {bulto.map((bulto) => (
+                      <th key={bulto.id_bulto}>{bulto.nombre_bulto}</th>
+                    ))}
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody className={Style.monitoringListProducedTableBody}>
+                  {referencia.map((ref) => (
+                    <tr key={ref.id_referencia}>
+                      <td>{ref.nombre_referencia}</td>
+                      {bulto.map((bul) => {
+                        const cantidad =
+                          groupedData.result[molino.nombre_molino]?.[
+                            ref.nombre_referencia
+                          ]?.[bul.nombre_bulto] ?? 0;
+                        return (
+                          <td key={bul.id_bulto}>
+                            {parseFloat(cantidad).toFixed(2)} Tons
+                          </td>
+                        );
+                      })}
+                      <td>
+                        {parseFloat(
+                          groupedData.totalPerRow[molino.nombre_molino]?.[
+                            ref.nombre_referencia
+                          ] ?? 0
+                        ).toFixed(2)}{" "}
+                        Tons
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot className={Style.monitoringListProducedTableFooter}>
+                  <tr>
+                    <th>Total</th>
+                    {bulto.map((bul) => {
+                      const total =
+                        groupedData.totalPerColumn[molino.nombre_molino]?.[
+                          bul.nombre_bulto
+                        ] ?? 0;
+                      return (
+                        <td key={bul.id_bulto}>
+                          {parseFloat(total).toFixed(2)} Tons
+                        </td>
+                      );
+                    })}
+                    <td>
+                      {(() => {
+                        const total = referencia.reduce((acc, ref) => {
+                          const t =
+                            groupedData.totalPerRow[molino.nombre_molino]?.[
+                              ref.nombre_referencia
+                            ] ?? 0;
+                          return acc + t;
+                        }, 0);
+                        return parseFloat(total).toFixed(2) + " Tons";
+                      })()}
+                    </td>
+                  </tr>
+                </tfoot>
+              </motion.table>
+            ))}
+          </motion.article>
+        </>
+      ) : (
+        <motion.div
+          className={Style.monitoringListProducedAlternative}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className={Style.loader}></div>
+        </motion.div>
+      )}
+    </>
+  );
+}
+
+export default MonitoringListProduced;

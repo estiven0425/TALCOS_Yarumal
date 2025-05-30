@@ -1,12 +1,16 @@
 ﻿import { motion } from "framer-motion";
 import Style from "./styles/monitoring-List.module.css";
+import MonitoringListProduced from "./MonitoringListProduced";
 import MonitoringListStrike from "./MonitoringListStrike";
 
 function MonitoringList({ inicioMonitoreo, finMonitoreo }) {
   return (
     <>
       {inicioMonitoreo && finMonitoreo ? (
-        <MonitoringListStrike inicio={inicioMonitoreo} fin={finMonitoreo} />
+        <>
+          <MonitoringListStrike inicio={inicioMonitoreo} fin={finMonitoreo} />
+          <MonitoringListProduced inicio={inicioMonitoreo} fin={finMonitoreo} />
+        </>
       ) : (
         <motion.div
           className={Style.monitoringList}
