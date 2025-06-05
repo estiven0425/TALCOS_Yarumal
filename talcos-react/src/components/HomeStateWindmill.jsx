@@ -34,12 +34,25 @@ function HomeStateWindmill() {
         const currentShift = shifts.find((shift) =>
           compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
         );
+
         if (!currentShift) {
           console.error("No se pudo determinar el turno actual.");
           return;
         }
 
-        const currentDate = currentTime.toISOString().split("T")[0];
+        let currentDate = new Date();
+
+        if (
+          currentShift.fin_turno < currentShift.inicio_turno &&
+          currentTime.getHours() < 6
+        ) {
+          currentDate = new Date(
+            currentTime.getFullYear(),
+            currentTime.getMonth(),
+            currentTime.getDate() - 1
+          );
+        }
+
         const {
           nombre_turno: turno,
           inicio_turno: inicioTurno,

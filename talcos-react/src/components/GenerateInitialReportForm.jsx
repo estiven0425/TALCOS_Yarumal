@@ -9,6 +9,7 @@ import Style from "./styles/generate-initial-report-form.module.css";
 function GenerateInitialReportForm() {
   const [currentShift, setCurrentShift] = useState(null);
   const [currentData, setCurrentData] = useState([]);
+  const [dateCorrected, setDateCorrected] = useState(new Date());
   const [finalData, setFinalData] = useState([]);
   const [controlCalidad, setControlCalidad] = useState([]);
   const [mecanico, setMecanico] = useState([]);
@@ -93,7 +94,23 @@ function GenerateInitialReportForm() {
           compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
         );
 
-        const currentDate = currentTime.toISOString().split("T")[0];
+        let currentDate = new Date();
+
+        if (
+          currentShift.fin_turno < currentShift.inicio_turno &&
+          currentTime.getHours() < 6
+        ) {
+          currentDate = new Date(
+            currentTime.getFullYear(),
+            currentTime.getMonth(),
+            currentTime.getDate() - 1
+          );
+          setDateCorrected(currentDate);
+        }
+        {
+          setDateCorrected(currentDate);
+        }
+
         const {
           nombre_turno: turno,
           inicio_turno: inicioTurno,
@@ -360,7 +377,7 @@ function GenerateInitialReportForm() {
     setServerError(null);
     setLoading(true);
 
-    const fechaInformeInicial = new Date().toISOString().split("T")[0];
+    const fechaInformeInicial = dateCorrected;
     const horaInformeInicial = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });

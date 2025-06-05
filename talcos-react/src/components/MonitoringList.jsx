@@ -1,8 +1,9 @@
 ﻿import { motion } from "framer-motion";
-import Style from "./styles/monitoring-List.module.css";
+import MonitoringListEfficiency from "./MonitoringListEfficiency";
 import MonitoringListHours from "./MonitoringListHours";
 import MonitoringListProduced from "./MonitoringListProduced";
 import MonitoringListStrike from "./MonitoringListStrike";
+import Style from "./styles/monitoring-List.module.css";
 
 function MonitoringList({ inicioMonitoreo, finMonitoreo }) {
   return (
@@ -12,6 +13,10 @@ function MonitoringList({ inicioMonitoreo, finMonitoreo }) {
           <MonitoringListStrike inicio={inicioMonitoreo} fin={finMonitoreo} />
           <MonitoringListProduced inicio={inicioMonitoreo} fin={finMonitoreo} />
           <MonitoringListHours inicio={inicioMonitoreo} fin={finMonitoreo} />
+          <MonitoringListEfficiency
+            inicio={inicioMonitoreo}
+            fin={finMonitoreo}
+          />
         </>
       ) : (
         <motion.div

@@ -547,15 +547,32 @@ function ReportListDetail() {
                   </tr>
                 </thead>
                 <tbody className={Style.reportListDetailPrimaryTableBody}>
-                  {endReport.map((item) => (
-                    <tr key={item.id_informe_final}>
-                      <td>{item.molino_informe_final}</td>
-                      <td>{item.referencia_informe_final}</td>
-                      <td>{item.bulto_informe_final}</td>
-                      <td>{item.cantidad_informe_final} Tons</td>
-                      <td>{item.horometro_informe_final} Hrs</td>
-                    </tr>
-                  ))}
+                  {(() => {
+                    const agrupadoPorMolino = {};
+
+                    endReport.forEach((item) => {
+                      const molino = item.molino_informe_final;
+                      if (!agrupadoPorMolino[molino]) {
+                        agrupadoPorMolino[molino] = [];
+                      }
+                      agrupadoPorMolino[molino].push(item);
+                    });
+
+                    return Object.entries(agrupadoPorMolino).flatMap(
+                      ([molino, registros]) =>
+                        registros.map((item, idx) => (
+                          <tr key={item.id_informe_final}>
+                            {idx === 0 && (
+                              <td rowSpan={registros.length}>{molino}</td>
+                            )}
+                            <td>{item.referencia_informe_final}</td>
+                            <td>{item.bulto_informe_final}</td>
+                            <td>{item.cantidad_informe_final} Tons</td>
+                            <td>{item.horometro_informe_final} Hrs</td>
+                          </tr>
+                        ))
+                    );
+                  })()}
                 </tbody>
                 <tfoot className={Style.reportListDetailPrimaryTableFooter}>
                   <tr>

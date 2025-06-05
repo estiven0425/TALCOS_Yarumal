@@ -111,6 +111,7 @@ function MonitoringAction() {
           </form>
         </motion.main>
         <motion.footer className={Style.monitoringActionFooter}>
+          <button type="button">Vista semanal</button>
           <button type="button">Imprimir monitoreo</button>
         </motion.footer>
       </motion.section>

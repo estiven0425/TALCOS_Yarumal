@@ -64,7 +64,19 @@ function HomeShift() {
         setCurrentShift(currentShift);
         setNextTurn(nextTurn);
 
-        const currentDate = currentTime.toISOString().split("T")[0];
+        let currentDate = new Date();
+
+        if (
+          currentShift.fin_turno < currentShift.inicio_turno &&
+          currentTime.getHours() < 6
+        ) {
+          currentDate = new Date(
+            currentTime.getFullYear(),
+            currentTime.getMonth(),
+            currentTime.getDate() - 1
+          );
+        }
+
         const reportResponse = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {

@@ -63,7 +63,19 @@ function GenerateNoveltyMechanicForm() {
           return;
         }
 
-        const currentDate = currentTime.toISOString().split("T")[0];
+        let currentDate = new Date();
+
+        if (
+          currentShift.fin_turno < currentShift.inicio_turno &&
+          currentTime.getHours() < 6
+        ) {
+          currentDate = new Date(
+            currentTime.getFullYear(),
+            currentTime.getMonth(),
+            currentTime.getDate() - 1
+          );
+        }
+
         const {
           nombre_turno: turno,
           inicio_turno: inicioTurno,
