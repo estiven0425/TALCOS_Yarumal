@@ -1,5 +1,6 @@
 ﻿import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { registrarTabla } from "../utils/tablaStore";
 import axios from "axios";
 import Style from "./styles/monitoring-list-strike.module.css";
 
@@ -10,6 +11,7 @@ function MonitoringListStrike({ inicio, fin }) {
   const [item, setItem] = useState(null);
   const [parosAgrupados, setParosAgrupados] = useState({});
   const [horasTotalesParo, setHorasTotalesParo] = useState(0);
+  const tablaRef = useRef(null);
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
@@ -149,12 +151,19 @@ function MonitoringListStrike({ inicio, fin }) {
     return `${horas}:${minutos.toString().padStart(2, "0")} Hrs`;
   }
 
+  useEffect(() => {
+    if (tablaRef.current) {
+      registrarTabla("paros", tablaRef.current.outerHTML);
+    }
+  }, [parosAgrupados, molino]);
+
   return (
     <>
       {item ? (
         <>
           <motion.table
-            className={Style.monitoringListStrikeTable}
+            ref={tablaRef}
+            className={`${Style.monitoringListStrikeTable} table`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -162,7 +171,9 @@ function MonitoringListStrike({ inicio, fin }) {
             <caption>
               <h2>Paros</h2>
             </caption>
-            <thead className={Style.monitoringListStrikeTableHead}>
+            <thead
+              className={`${Style.monitoringListStrikeTableHead} tableHead`}
+            >
               <tr>
                 <th>Tipo de paro</th>
                 <th>Horas de paro</th>
@@ -172,7 +183,9 @@ function MonitoringListStrike({ inicio, fin }) {
                 <th>Porcentaje</th>
               </tr>
             </thead>
-            <tbody className={Style.monitoringListStrikeTableBody}>
+            <tbody
+              className={`${Style.monitoringListStrikeTableBody} tableBody`}
+            >
               {Object.entries(parosAgrupados).map(([motivo, datos]) => (
                 <tr key={motivo}>
                   <td>{motivo}</td>
@@ -192,7 +205,9 @@ function MonitoringListStrike({ inicio, fin }) {
                 </tr>
               ))}
             </tbody>
-            <tfoot className={Style.monitoringListStrikeTableFooter}>
+            <tfoot
+              className={`${Style.monitoringListStrikeTableFooter} tableFooter`}
+            >
               <tr>
                 <th>Total</th>
                 <td>{convertirHorasDecimalAHorasMinutos(horasTotalesParo)}</td>

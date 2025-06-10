@@ -1,5 +1,6 @@
 ﻿import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { registrarTabla } from "../utils/tablaStore";
 import axios from "axios";
 import Style from "./styles/monitoring-list-efficiency.module.css";
 
@@ -9,6 +10,7 @@ function MonitoringListEfficiency({ inicio, fin }) {
   const [turno, setTurno] = useState([]);
   const [item, setItem] = useState(null);
   const [gruposPorMolino, setGruposPorMolino] = useState({});
+  const tablaRef = useRef(null);
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
@@ -302,13 +304,19 @@ function MonitoringListEfficiency({ inicio, fin }) {
 
     groupByReference();
   }, [item, turno]);
+  useEffect(() => {
+    if (tablaRef.current) {
+      registrarTabla("eficiencia", tablaRef.current.outerHTML);
+    }
+  }, [gruposPorMolino, molino]);
 
   return (
     <>
       {item ? (
         <>
           <motion.table
-            className={Style.monitoringListEfficiencyTable}
+            ref={tablaRef}
+            className={`${Style.monitoringListEfficiencyTable} table`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -316,7 +324,9 @@ function MonitoringListEfficiency({ inicio, fin }) {
             <caption>
               <h2>Eficiencia y rendimiento</h2>
             </caption>
-            <thead className={Style.monitoringListEfficiencyTableHead}>
+            <thead
+              className={`${Style.monitoringListEfficiencyTableHead} tableHead`}
+            >
               <tr>
                 <th>Referencia</th>
                 <th>Molino</th>
@@ -324,7 +334,9 @@ function MonitoringListEfficiency({ inicio, fin }) {
                 <th>Rendimiento promedio</th>
               </tr>
             </thead>
-            <tbody className={Style.monitoringListEfficiencyTableBody}>
+            <tbody
+              className={`${Style.monitoringListEfficiencyTableBody} tableBody`}
+            >
               {Object.entries(gruposPorMolino).map(
                 ([nombreReferencia, molinos]) => {
                   const molinosArray = Object.entries(molinos);

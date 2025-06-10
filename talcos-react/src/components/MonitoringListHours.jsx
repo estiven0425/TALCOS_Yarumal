@@ -1,5 +1,6 @@
 ﻿import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { registrarTabla } from "../utils/tablaStore";
 import axios from "axios";
 import Style from "./styles/monitoring-list-hours.module.css";
 
@@ -8,6 +9,7 @@ function MonitoringListHours({ inicio, fin }) {
   const [turno, setTurno] = useState([]);
   const [item, setItem] = useState(null);
   const [gruposPorMolino, setGruposPorMolino] = useState({});
+  const tablaRef = useRef(null);
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
@@ -272,6 +274,11 @@ function MonitoringListHours({ inicio, fin }) {
 
     groupData();
   }, [item, turno]);
+  useEffect(() => {
+    if (tablaRef.current) {
+      registrarTabla("horas", tablaRef.current.outerHTML);
+    }
+  }, [gruposPorMolino, molino]);
 
   function convertirHorasDecimalAHorasMinutos(horasDecimal) {
     const horas = Math.floor(horasDecimal);
@@ -284,7 +291,8 @@ function MonitoringListHours({ inicio, fin }) {
       {item ? (
         <>
           <motion.table
-            className={Style.monitoringListHoursTable}
+            ref={tablaRef}
+            className={`${Style.monitoringListHoursTable} table`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -292,7 +300,9 @@ function MonitoringListHours({ inicio, fin }) {
             <caption>
               <h2>Horas trabajadas</h2>
             </caption>
-            <thead className={Style.monitoringListHoursTableHead}>
+            <thead
+              className={`${Style.monitoringListHoursTableHead} tableHead`}
+            >
               <tr>
                 <th>Molino</th>
                 <th>Horas trabajadas</th>
@@ -300,7 +310,9 @@ function MonitoringListHours({ inicio, fin }) {
                 <th>Horas no trabajadas</th>
               </tr>
             </thead>
-            <tbody className={Style.monitoringListHoursTableBody}>
+            <tbody
+              className={`${Style.monitoringListHoursTableBody} tableBody`}
+            >
               {molino.map((molinoData) => (
                 <tr key={molinoData.id_molino}>
                   <td>{molinoData.nombre_molino}</td>

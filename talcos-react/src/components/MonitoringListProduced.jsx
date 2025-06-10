@@ -1,5 +1,6 @@
 ﻿import { motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { registrarTabla } from "../utils/tablaStore";
 import axios from "axios";
 import Style from "./styles/monitoring-list-produced.module.css";
 
@@ -9,6 +10,7 @@ function MonitoringListProduced({ inicio, fin }) {
   const [bulto, setBulto] = useState([]);
   const [item, setItem] = useState(null);
   const [finalReport, setFinalReport] = useState([]);
+  const tablaRef = useRef(null);
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
@@ -78,13 +80,19 @@ function MonitoringListProduced({ inicio, fin }) {
 
     return { result, totalPerRow, totalPerColumn };
   }, [finalReport]);
+  useEffect(() => {
+    if (tablaRef.current) {
+      registrarTabla("producidos", tablaRef.current.outerHTML);
+    }
+  }, [finalReport, molino]);
 
   return (
     <>
       {item ? (
         <>
           <motion.article
-            className={Style.monitoringListProduced}
+            ref={tablaRef}
+            className={`${Style.monitoringListProduced} article`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -92,7 +100,7 @@ function MonitoringListProduced({ inicio, fin }) {
             <h2>Toneladas producidas</h2>
             {molino.map((molino) => (
               <motion.table
-                className={Style.monitoringListProducedTable}
+                className={`${Style.monitoringListProducedTable} table`}
                 key={molino.id_molino}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -101,7 +109,9 @@ function MonitoringListProduced({ inicio, fin }) {
                 <caption>
                   <h2>{molino.nombre_molino}</h2>
                 </caption>
-                <thead className={Style.monitoringListProducedTableHead}>
+                <thead
+                  className={`${Style.monitoringListProducedTableHead} tableHead`}
+                >
                   <tr>
                     <th>referencia</th>
                     {bulto.map((bulto) => (
@@ -110,7 +120,9 @@ function MonitoringListProduced({ inicio, fin }) {
                     <th>Total</th>
                   </tr>
                 </thead>
-                <tbody className={Style.monitoringListProducedTableBody}>
+                <tbody
+                  className={`${Style.monitoringListProducedTableBody} tableBody`}
+                >
                   {referencia.map((ref) => (
                     <tr key={ref.id_referencia}>
                       <td>{ref.nombre_referencia}</td>
@@ -136,7 +148,9 @@ function MonitoringListProduced({ inicio, fin }) {
                     </tr>
                   ))}
                 </tbody>
-                <tfoot className={Style.monitoringListProducedTableFooter}>
+                <tfoot
+                  className={`${Style.monitoringListProducedTableFooter} tableFooter`}
+                >
                   <tr>
                     <th>Total</th>
                     {bulto.map((bul) => {
