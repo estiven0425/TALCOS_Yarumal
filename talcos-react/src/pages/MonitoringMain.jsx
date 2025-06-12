@@ -2,7 +2,7 @@
 import ProtectedRoute from "../utils/ProtectedRoute";
 import Style from "./styles/monitoring.module.css";
 
-function Monitoring() {
+function MonitoringMain() {
   return (
     <ProtectedRoute>
       <section className={Style.monitoring}>
@@ -12,4 +12,4 @@ function Monitoring() {
   );
 }
 
-export default Monitoring;
+export default MonitoringMain;

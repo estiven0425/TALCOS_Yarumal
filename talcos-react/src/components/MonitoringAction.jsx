@@ -1,8 +1,9 @@
 ﻿import { es } from "date-fns/locale";
 import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { obtenerTodasLasTablas } from "../utils/tablaStore";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
 import MonitoringList from "./MonitoringList";
 import Style from "./styles/monitoring-action.module.css";
@@ -14,6 +15,7 @@ function MonitoringAction() {
   const [sendStatus, setSendStatus] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validationError, setValidationError] = useState({});
+  const navigate = useNavigate();
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   const validation = () => {
@@ -246,6 +248,9 @@ function MonitoringAction() {
       console.log("Error al imprimir: ", error);
     }
   };
+  const redirectView = () => {
+    navigate("/monitoring/viewmonitoring");
+  };
 
   return (
     <>
@@ -318,7 +323,9 @@ function MonitoringAction() {
           </form>
         </motion.main>
         <motion.footer className={Style.monitoringActionFooter}>
-          <button type="button">Vista semanal</button>
+          <button onClick={() => redirectView()} type="button">
+            Vista semanal
+          </button>
           <button disabled={!sendStatus} onClick={printItem} type="button">
             {loading ? (
               <div className={Style.loader}></div>

@@ -82,6 +82,7 @@ import {
   Logout,
   Monitoring,
   MonitoringMain,
+  MonitoringView,
   Notification,
   Report,
   ReportMain,
@@ -160,6 +161,7 @@ createRoot(document.getElementById("root")).render(
           </Route>
           <Route path="monitoring" element={<Monitoring />}>
             <Route path="mainmonitoring" element={<MonitoringMain />} />
+            <Route path="viewmonitoring" element={<MonitoringView />} />
           </Route>
           <Route path="inventory" element={<Inventory />}>
             <Route path="inventorygeneral" element={<InventoryGeneral />} />
