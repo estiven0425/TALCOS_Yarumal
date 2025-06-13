@@ -1,0 +1,17 @@
+﻿.monitoringViewTableList {
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.monitoringViewTableList h1 {
+  font-size: 1.5rem;
+  margin: 0px;
+  text-align: center;
+}

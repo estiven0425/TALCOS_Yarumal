@@ -1,0 +1,191 @@
+﻿.monitoringViewTableActionPrimary {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 25px;
+  height: 100%;
+  justify-content: flex-start;
+  overflow: auto;
+  padding: 10px;
+  width: 70%;
+}
+
+.monitoringViewTableActionSecondary {
+  align-content: stretch;
+  background-color: #0037ae;
+  border-radius: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: flex-start;
+  padding: 10px;
+  width: 30%;
+}
+
+.monitoringViewTableActionHeader {
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 15%;
+  justify-content: center;
+}
+
+.monitoringViewTableActionHeader h2 {
+  font-size: 1.5rem;
+  margin: 0px;
+  text-align: center;
+}
+
+.monitoringViewTableActionMain {
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 70%;
+  justify-content: flex-end;
+}
+
+.monitoringViewTableActionMainForm {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
+  height: 100%;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.monitoringViewTableActionMainForm fieldset {
+  align-content: stretch;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  padding: 0px;
+  width: 100%;
+}
+
+.monitoringViewTableActionMainForm fieldset label {
+  padding-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.monitoringViewTableActionMainForm fieldset input {
+  background-color: #0061c2;
+  border: none;
+  border-radius: 20px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  outline: transparent 1px solid;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+  position: relative;
+  cursor: pointer;
+}
+
+.monitoringViewTableActionMainForm
+  fieldset
+  input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  opacity: 0%;
+  position: absolute;
+  width: 100%;
+}
+
+.monitoringViewTableActionMainValidation {
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+  width: 100%;
+}
+
+.monitoringViewTableActionMainForm button {
+  background-color: #0061c2;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  max-height: 47.33px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+  width: 100%;
+}
+
+.monitoringViewTableActionMainForm button:hover,
+.monitoringViewTableActionMainForm fieldset input:hover {
+  background-color: #017fd3;
+}
+
+.monitoringViewTableActionMainForm button:focus,
+.monitoringViewTableActionMainForm fieldset input:focus {
+  background-color: #017fd3;
+}
+
+.monitoringViewTableActionFooter {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+  height: 15%;
+  justify-content: flex-end;
+}
+
+.monitoringViewTableActionFooter button {
+  background-color: #0061c2;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  max-height: 47.33px;
+  outline: transparent 1px solid;
+  padding: 15px;
+  transition: all 0.5s ease-in-out;
+}
+
+.monitoringViewTableActionFooter button:hover {
+  background-color: #017fd3;
+}
+
+.monitoringViewTableActionFooter button:focus {
+  background-color: #017fd3;
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+  border: 5px solid #0048b6;
+  border-radius: 50%;
+  border-top: 5px solid transparent;
+  height: 20px;
+  margin: -7.5px auto 0px;
+  width: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
