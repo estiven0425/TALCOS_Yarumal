@@ -8,24 +8,30 @@ CREATE TABLE `perfiles` (
 	`icono_perfil` VARCHAR(1000) NOT NULL DEFAULT('uploads/icono_predeterminado.svg'),
 	`actividad_perfil` BIT NOT NULL DEFAULT(1),
 	`actualizacion_perfil` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_perfil`)
 );
+
 CREATE TABLE `molinos` (
 	`id_molino` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_molino` VARCHAR(250) NOT NULL,
 	`horometro_molino` BIGINT(100) NOT NULL,
 	`actividad_molino` BIT NOT NULL DEFAULT(1),
 	`actualizacion_molino` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_molino`)
 );
+
 CREATE TABLE `bultos` (
 	`id_bulto` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_bulto` VARCHAR(250) NOT NULL,
 	`capacidad_bulto` BIGINT(100) NOT NULL,
 	`actividad_bulto` BIT NOT NULL DEFAULT(1),
 	`actualizacion_bulto` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_bulto`)
 );
+
 CREATE TABLE `turnos` (
 	`id_turno` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_turno` VARCHAR(250) NOT NULL,
@@ -33,8 +39,10 @@ CREATE TABLE `turnos` (
 	`fin_turno` TIME NOT NULL,
 	`actividad_turno` BIT NOT NULL DEFAULT(1),
 	`actualizacion_turno` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_turno`)
 );
+
 CREATE TABLE `referencias` (
 	`id_referencia` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_referencia` VARCHAR(250) NOT NULL,
@@ -42,8 +50,10 @@ CREATE TABLE `referencias` (
 	`cliente_referencia` VARCHAR(250) NULL DEFAULT('No registrado'),
 	`actividad_referencia` BIT NOT NULL DEFAULT(1),
 	`actualizacion_referencia` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_referencia`)
 );
+
 CREATE TABLE `productos_rechazados` (
 	`id_producto_rechazado` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_producto_rechazado` VARCHAR(250) NOT NULL,
@@ -51,23 +61,29 @@ CREATE TABLE `productos_rechazados` (
 	`retencion_producto_rechazado` DECIMAL(5,2) NOT NULL,
 	`actividad_producto_rechazado` BIT NOT NULL DEFAULT(1),
 	`actualizacion_producto_rechazado` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_producto_rechazado`)
 );
+
 CREATE TABLE `materias_primas` (
 	`id_materia_prima` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_materia_prima` VARCHAR(250) NOT NULL,
 	`cantidad_materia_prima`  DECIMAL(5,2) NOT NULL,
 	`actividad_materia_prima` BIT NOT NULL DEFAULT(1),
 	`actualizacion_materia_prima` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_materia_prima`)
 );
+
 CREATE TABLE `bob_cats` (
 	`id_bob_cat` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_bob_cat` VARCHAR(250) NOT NULL,
 	`actividad_bob_cat` BIT NOT NULL DEFAULT(1),
 	`actualizacion_bob_cat` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_bob_cat`)
 );
+
 CREATE TABLE `usuarios` (
 	`id_usuario` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_usuario` VARCHAR(250) NOT NULL,
@@ -79,9 +95,11 @@ CREATE TABLE `usuarios` (
 	`contrasena_usuario` VARCHAR(500) NOT NULL,
 	`actividad_usuario` BIT NOT NULL DEFAULT(1),
 	`actualizacion_usuario` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_usuario`),
 	CONSTRAINT FOREIGN KEY(`perfil_usuario`) REFERENCES `perfiles`(`id_perfil`)
 );
+
 CREATE TABLE `informe_inicial` (
 	`id_informe_inicial` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`titular_informe_inicial` BIGINT(100) NOT NULL,
@@ -100,6 +118,7 @@ CREATE TABLE `informe_inicial` (
 	`observacion_informe_inicial` VARCHAR(1000) NULL DEFAULT('No se registró'),
 	`actividad_informe_inicial` BIT NOT NULL DEFAULT(1),
 	`actualizacion_informe_inicial` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_informe_inicial`),
 	CONSTRAINT FOREIGN KEY(`titular_informe_inicial`) REFERENCES `usuarios`(`id_usuario`),
 	CONSTRAINT FOREIGN KEY(`operador_informe_inicial`) REFERENCES `usuarios`(`id_usuario`),
@@ -107,6 +126,7 @@ CREATE TABLE `informe_inicial` (
 	CONSTRAINT FOREIGN KEY(`mecanico_informe_inicial`) REFERENCES `usuarios`(`id_usuario`),
 	CONSTRAINT FOREIGN KEY(`cdc_informe_inicial`) REFERENCES `usuarios`(`id_usuario`)
 );
+
 CREATE TABLE `novedad` (
 	`id_novedad` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`fecha_novedad` DATE NOT NULL,
@@ -128,11 +148,13 @@ CREATE TABLE `novedad` (
 	`observacion_novedad` VARCHAR(1000) NULL DEFAULT('No se registró'),
 	`actividad_novedad` BIT NOT NULL DEFAULT(1),
 	`actualizacion_novedad` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_novedad`),
 	CONSTRAINT FOREIGN KEY(`operador_novedad`) REFERENCES `usuarios`(`id_usuario`),
 	CONSTRAINT FOREIGN KEY(`carguero_novedad`) REFERENCES `usuarios`(`id_usuario`),
 	CONSTRAINT FOREIGN KEY(`mecanico_novedad`) REFERENCES `usuarios`(`id_usuario`)
 );
+
 CREATE TABLE `control_calidad` (
 	`id_control_calidad` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`fecha_control_calidad` DATE NOT NULL,
@@ -146,8 +168,10 @@ CREATE TABLE `control_calidad` (
 	`observacion_control_calidad` VARCHAR(1000) NULL DEFAULT('No se registró'),
 	`actividad_control_calidad` BIT NOT NULL DEFAULT(1),
 	`actualizacion_control_calidad` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_control_calidad`)
 );
+
 CREATE TABLE `informe_final` (
 	`id_informe_final` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`fecha_informe_final` DATE NOT NULL,
@@ -161,8 +185,10 @@ CREATE TABLE `informe_final` (
 	`observacion_informe_final` VARCHAR(1000) NULL DEFAULT('No se registró'),
 	`actividad_informe_final` BIT NOT NULL DEFAULT(1),
 	`actualizacion_informe_final` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_informe_final`)
 );
+
 CREATE TABLE `mensajes` (
 	`id_mensaje` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`fecha_mensaje` DATE NOT NULL,
@@ -171,6 +197,7 @@ CREATE TABLE `mensajes` (
 	`emisor_mensaje` BIGINT(100) NOT NULL,
 	`receptor_mensaje` BIGINT(100) NOT NULL,
 	`actualizacion_mensaje` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_mensaje`),
 	CONSTRAINT FOREIGN KEY(`emisor_mensaje`) REFERENCES `usuarios`(`id_usuario`),
 	CONSTRAINT FOREIGN KEY(`receptor_mensaje`) REFERENCES `usuarios`(`id_usuario`)
@@ -197,6 +224,7 @@ CREATE TABLE `registros` (
 	`observacion_registro` VARCHAR(1000) NULL DEFAULT('No se registró'),
 	`actividad_registro` BIT NOT NULL DEFAULT(1),
 	`actualizacion_registro` TIMESTAMP NOT NULL,
+
 	CONSTRAINT PRIMARY KEY(`id_registro`),
 	CONSTRAINT FOREIGN KEY(`titular_registro`) REFERENCES `usuarios`(`id_usuario`)
 );
@@ -210,8 +238,11 @@ BEGIN
     p.nombre_perfil,
     COUNT(u.id_usuario) AS cantidad_usuarios
   FROM perfiles p
+
   LEFT JOIN usuarios u ON p.id_perfil = u.perfil_usuario AND u.actividad_usuario = 1
+
   WHERE p.actividad_perfil = 1
+  
   GROUP BY p.id_perfil, p.nombre_perfil;
 END //
 

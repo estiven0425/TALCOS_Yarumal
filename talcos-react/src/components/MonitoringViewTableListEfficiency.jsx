@@ -59,7 +59,6 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
     if (!item || turno.length === 0 || molino.length === 0 || !inicio || !fin)
       return;
 
-    // Función de cálculo de duración del turno EXACTAMENTE IGUAL que MonitoringListEfficiency
     const calculateTurnoDuration = (inicioTurnoStr, finTurnoStr) => {
       let dummyDate = "2000-01-01";
       let inicioDateTime = new Date(`${dummyDate}T${inicioTurnoStr}`);
@@ -133,7 +132,6 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
       const weeksInPeriod = getAllWeeksInDateRange(inicio, fin);
       setAllWeeksInPeriod(weeksInPeriod);
 
-      // Inicializar estructura de datos por molino y por semana
       molino.forEach((m) => {
         const nombreMolino = m.nombre_molino;
         dataAgrupada[nombreMolino] = {};
@@ -172,10 +170,9 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
         }
       };
 
-      // Agregar informes iniciales por semana
       informeInicial.forEach((inicial) => {
         const molino = inicial.molino_informe_inicial;
-        if (!molino) return; // Validación igual que MonitoringListEfficiency
+        if (!molino) return;
         addDataToWeek(
           molino,
           inicial.fecha_informe_inicial,
@@ -184,11 +181,10 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
         );
       });
 
-      // Procesar novedades EXACTAMENTE IGUAL que MonitoringListEfficiency
       novedades.forEach((novedad) => {
         if (novedad.tipo_novedad === "Encendido de molino") {
           const { molino_novedad: molino } = novedad;
-          if (!molino) return; // Validación igual
+          if (!molino) return;
           addDataToWeek(molino, novedad.fecha_novedad, "encendidos", novedad);
         }
       });
@@ -196,7 +192,7 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
       novedades.forEach((novedad) => {
         if (novedad.tipo_novedad === "Cambio de referencia") {
           const { molino_novedad: molino } = novedad;
-          if (!molino) return; // Validación igual
+          if (!molino) return;
           addDataToWeek(
             molino,
             novedad.fecha_novedad,
@@ -206,7 +202,6 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
         }
       });
 
-      // Procesar paros EXACTAMENTE IGUAL que MonitoringListEfficiency
       const novedadesParo = novedades
         .filter((n) => n.tipo_novedad === "Paro")
         .map((paro) => {
@@ -226,18 +221,16 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
 
       novedadesParo.forEach((paro) => {
         const molino = paro.molino_novedad;
-        if (!molino) return; // Validación igual
+        if (!molino) return;
         addDataToWeek(molino, paro.fecha_novedad, "paros", paro);
       });
 
-      // Agregar informes finales por semana
       informeFinal.forEach((final) => {
         const molino = final.molino_informe_final;
-        if (!molino) return; // Validación igual
+        if (!molino) return;
         addDataToWeek(molino, final.fecha_informe_final, "finales", final);
       });
 
-      // Calcular datos por molino y semana usando LA MISMA LÓGICA que MonitoringListEfficiency
       for (const nombreMolino in dataAgrupada) {
         for (const weekNumber of weeksInPeriod) {
           const weekData = dataAgrupada[nombreMolino][weekNumber];
@@ -246,7 +239,6 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
           let horasEsperadas = 0;
           let totalToneladas = 0;
 
-          // Crear puntos de inicio EXACTAMENTE IGUAL que MonitoringListEfficiency
           const puntosInicio = [
             ...weekData.iniciales.map((r) => ({ ...r, tipo: "inicial" })),
             ...weekData.encendidos.map((r) => ({
@@ -265,7 +257,6 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
             })),
           ];
 
-          // Procesar emparejamientos EXACTAMENTE IGUAL que MonitoringListEfficiency
           puntosInicio.forEach((inicial) => {
             const finalMatch = weekData.finales.find(
               (final) =>
@@ -308,7 +299,6 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
             });
           });
 
-          // Procesar paros EXACTAMENTE IGUAL que MonitoringListEfficiency
           weekData.paros.forEach((paro) => {
             const inicioParo = new Date(
               `${paro.fecha_novedad}T${paro.inicio_paro_novedad}`
@@ -323,7 +313,6 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
             totalHoras -= duracionParo;
           });
 
-          // Calcular toneladas EXACTAMENTE IGUAL que MonitoringListEfficiency
           weekData.finales.forEach((final) => {
             const cantidad = parseFloat(final.cantidad_informe_final);
             if (!isNaN(cantidad)) {
@@ -331,7 +320,6 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
             }
           });
 
-          // Asignar valores EXACTAMENTE IGUAL que MonitoringListEfficiency
           weekData.totalHorasTrabajadas = totalHoras.toFixed(2);
           weekData.totalHorasEsperadas = horasEsperadas.toFixed(2);
           weekData.totalToneladas = totalToneladas.toFixed(2);
@@ -352,7 +340,6 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
                 ).toFixed(1)
               : "0.0";
 
-          // Agregar a totales semanales
           if (
             parseFloat(weekData.totalHorasEsperadas) > 0 ||
             parseFloat(weekData.totalHorasTrabajadas) > 0
@@ -371,7 +358,6 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
         }
       }
 
-      // Calcular promedios semanales
       const finalWeeklyAverages = {};
       for (const weekNum of weeksInPeriod) {
         const totalData = weeklyTotals[weekNum];
@@ -446,6 +432,10 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
                   </tr>
                 )
               )}
+            </tbody>
+            <tfoot
+              className={Style.monitoringViewTableListEfficiencyTableFooter}
+            >
               <tr>
                 <td>Promedio general</td>
                 {allWeeksInPeriod.map((weekNum) => (
@@ -456,7 +446,7 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
                   </td>
                 ))}
               </tr>
-            </tbody>
+            </tfoot>
           </motion.table>
           <motion.table
             className={Style.monitoringViewTableListEfficiencyTable}
@@ -496,6 +486,10 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
                   </tr>
                 )
               )}
+            </tbody>
+            <tfoot
+              className={Style.monitoringViewTableListEfficiencyTableFooter}
+            >
               <tr>
                 <td>Promedio general</td>
                 {allWeeksInPeriod.map((weekNum) => (
@@ -506,7 +500,7 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
                   </td>
                 ))}
               </tr>
-            </tbody>
+            </tfoot>
           </motion.table>
         </>
       ) : (

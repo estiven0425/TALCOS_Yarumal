@@ -1,5 +1,6 @@
 ﻿import { motion } from "framer-motion";
 import MonitoringViewTableListEfficiency from "./MonitoringViewTableListEfficiency";
+import MonitoringViewTableListProduced from "./MonitoringViewTableListProduced";
 import Style from "./styles/monitoring-view-table-List.module.css";
 
 function MonitoringViewTableList({ inicioMonitoreo, finMonitoreo }) {
@@ -8,6 +9,10 @@ function MonitoringViewTableList({ inicioMonitoreo, finMonitoreo }) {
       {inicioMonitoreo && finMonitoreo ? (
         <>
           <MonitoringViewTableListEfficiency
+            inicio={inicioMonitoreo}
+            fin={finMonitoreo}
+          />
+          <MonitoringViewTableListProduced
             inicio={inicioMonitoreo}
             fin={finMonitoreo}
           />
