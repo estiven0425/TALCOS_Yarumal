@@ -21,6 +21,7 @@ const {
 // Importar rutas
 const perfilesRoutes = require("./routes/perfilesRoutes");
 const molinosRoutes = require("./routes/molinosRoutes");
+const molinosApRoutes = require("./routes/molinosApRoutes");
 const bultosRoutes = require("./routes/bultosRoutes");
 const turnosRoutes = require("./routes/turnosRoutes");
 const referenciasRoutes = require("./routes/referenciasRoutes");
@@ -48,6 +49,7 @@ app.use(cookieParser);
 // Usar rutas
 app.use("/perfiles", perfilesRoutes);
 app.use("/molinos", molinosRoutes);
+app.use("/molinos_ap", molinosApRoutes);
 app.use("/bultos", bultosRoutes);
 app.use("/turnos", turnosRoutes);
 app.use("/referencias", referenciasRoutes);

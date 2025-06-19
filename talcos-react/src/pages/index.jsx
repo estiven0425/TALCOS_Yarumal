@@ -28,6 +28,7 @@ export { default as InventoryCreateReference } from "./InventoryCreateReference"
 export { default as InventoryCreateRejectedMaterial } from "./InventoryCreateRejectedMaterial";
 export { default as InventoryCreateShift } from "./InventoryCreateShift";
 export { default as InventoryCreateWindmill } from "./InventoryCreateWindmill";
+export { default as InventoryCreateWindmillAp } from "./InventoryCreateWindmillAp";
 export { default as InventoryDeleteBobCat } from "./InventoryDeleteBobCat";
 export { default as InventoryDeleteBulk } from "./InventoryDeleteBulk";
 export { default as InventoryDeleteProfile } from "./InventoryDeleteProfile";
@@ -37,6 +38,7 @@ export { default as InventoryDeleteReference } from "./InventoryDeleteReference"
 export { default as InventoryDeleteRejectedMaterial } from "./InventoryDeleteRejectedMaterial";
 export { default as InventoryDeleteShift } from "./InventoryDeleteShift";
 export { default as InventoryDeleteWindmill } from "./InventoryDeleteWindmill";
+export { default as InventoryDeleteWindmillAp } from "./InventoryDeleteWindmillAp";
 export { default as InventoryEditBobCat } from "./InventoryEditBobCat";
 export { default as InventoryEditBulk } from "./InventoryEditBulk";
 export { default as InventoryEditProfile } from "./InventoryEditProfile";
@@ -46,6 +48,7 @@ export { default as InventoryEditRejectedMaterial } from "./InventoryEditRejecte
 export { default as InventoryEditReasignedRejectedMaterial } from "./InventoryEditReasignedRejectedMaterial";
 export { default as InventoryEditShift } from "./InventoryEditShift";
 export { default as InventoryEditWindmill } from "./InventoryEditWindmill";
+export { default as InventoryEditWindmillAp } from "./InventoryEditWindmillAp";
 export { default as InventoryListDeleteBobCat } from "./InventoryListDeleteBobCat";
 export { default as InventoryListDeleteBulk } from "./InventoryListDeleteBulk";
 export { default as InventoryListDeleteProfile } from "./InventoryListDeleteProfile";
@@ -54,6 +57,7 @@ export { default as InventoryListDeleteReference } from "./InventoryListDeleteRe
 export { default as InventoryListDeleteRejectedMaterial } from "./InventoryListDeleteRejectedMaterial";
 export { default as InventoryListDeleteShift } from "./InventoryListDeleteShift";
 export { default as InventoryListDeleteWindmill } from "./InventoryListDeleteWindmill";
+export { default as InventoryListDeleteWindmillAp } from "./InventoryListDeleteWindmillAp";
 export { default as InventoryListEditBobCat } from "./InventoryListEditBobCat";
 export { default as InventoryListEditBulk } from "./InventoryListEditBulk";
 export { default as InventoryListEditProfile } from "./InventoryListEditProfile";
@@ -62,6 +66,7 @@ export { default as InventoryListEditReference } from "./InventoryListEditRefere
 export { default as InventoryListEditRejectedMaterial } from "./InventoryListEditRejectedMaterial";
 export { default as InventoryListEditShift } from "./InventoryListEditShift";
 export { default as InventoryListEditWindmill } from "./InventoryListEditWindmill";
+export { default as InventoryListEditWindmillAp } from "./InventoryListEditWindmillAp";
 export { default as InventoryListReasignedRejectedMaterial } from "./InventoryListReasignedRejectedMaterial";
 export { default as InventoryBobCat } from "./InventoryBobCat";
 export { default as InventoryBulk } from "./InventoryBulk";
@@ -73,6 +78,7 @@ export { default as InventoryReference } from "./InventoryReference";
 export { default as InventoryRejectedMaterial } from "./InventoryRejectedMaterial";
 export { default as InventoryShift } from "./InventoryShift";
 export { default as InventoryWindmill } from "./InventoryWindmill";
+export { default as InventoryWindmillAp } from "./InventoryWindmillAp";
 export { default as Login } from "./Login";
 export { default as Logout } from "./Logout";
 export { default as Monitoring } from "./Monitoring";

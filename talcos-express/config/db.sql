@@ -22,6 +22,16 @@ CREATE TABLE `molinos` (
 	CONSTRAINT PRIMARY KEY(`id_molino`)
 );
 
+CREATE TABLE `molinos_ap` (
+	`id_molino_ap` BIGINT(100) NOT NULL AUTO_INCREMENT,
+	`nombre_molino_ap` VARCHAR(250) NOT NULL,
+	`horometro_molino_ap` BIGINT(100) NOT NULL,
+	`actividad_molino_ap` BIT NOT NULL DEFAULT(1),
+	`actualizacion_molino_ap` TIMESTAMP NOT NULL,
+
+	CONSTRAINT PRIMARY KEY(`id_molino_ap`)
+);
+
 CREATE TABLE `bultos` (
 	`id_bulto` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_bulto` VARCHAR(250) NOT NULL,

@@ -33,6 +33,7 @@ import {
   InventoryCreateRejectedMaterial,
   InventoryCreateShift,
   InventoryCreateWindmill,
+  InventoryCreateWindmillAp,
   InventoryDeleteBobCat,
   InventoryDeleteBulk,
   InventoryDeleteProfile,
@@ -42,6 +43,7 @@ import {
   InventoryDeleteRejectedMaterial,
   InventoryDeleteShift,
   InventoryDeleteWindmill,
+  InventoryDeleteWindmillAp,
   InventoryEditBobCat,
   InventoryEditBulk,
   InventoryEditProfile,
@@ -51,6 +53,7 @@ import {
   InventoryEditRejectedMaterial,
   InventoryEditShift,
   InventoryEditWindmill,
+  InventoryEditWindmillAp,
   InventoryListDeleteBobCat,
   InventoryListDeleteBulk,
   InventoryListDeleteProfile,
@@ -59,6 +62,7 @@ import {
   InventoryListDeleteRejectedMaterial,
   InventoryListDeleteShift,
   InventoryListDeleteWindmill,
+  InventoryListDeleteWindmillAp,
   InventoryListEditBobCat,
   InventoryListEditBulk,
   InventoryListEditProfile,
@@ -67,6 +71,7 @@ import {
   InventoryListEditRejectedMaterial,
   InventoryListEditShift,
   InventoryListEditWindmill,
+  InventoryListEditWindmillAp,
   InventoryListReasignedRejectedMaterial,
   InventoryBobCat,
   InventoryBulk,
@@ -78,6 +83,7 @@ import {
   InventoryRejectedMaterial,
   InventoryShift,
   InventoryWindmill,
+  InventoryWindmillAp,
   Login,
   Logout,
   Monitoring,
@@ -191,6 +197,30 @@ createRoot(document.getElementById("root")).render(
             <Route
               path="deletewindmill"
               element={<InventoryDeleteWindmill />}
+            />
+            <Route
+              path="inventorywindmillap"
+              element={<InventoryWindmillAp />}
+            />
+            <Route
+              path="createwindmillap"
+              element={<InventoryCreateWindmillAp />}
+            />
+            <Route
+              path="listeditwindmillap"
+              element={<InventoryListEditWindmillAp />}
+            />
+            <Route
+              path="editwindmillap"
+              element={<InventoryEditWindmillAp />}
+            />
+            <Route
+              path="listdeletewindmillap"
+              element={<InventoryListDeleteWindmillAp />}
+            />
+            <Route
+              path="deletewindmillap"
+              element={<InventoryDeleteWindmillAp />}
             />
             <Route path="inventoryreference" element={<InventoryReference />} />
             <Route
@@ -321,8 +351,8 @@ createRoot(document.getElementById("root")).render(
           <Route path="setting" element={<Setting />} />
           <Route path="changepassword" element={<SettingChangePassword />} />
           <Route path="logout" element={<Logout />} />
+          <Route path="*" element={<Error />} />
         </Route>
-        <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

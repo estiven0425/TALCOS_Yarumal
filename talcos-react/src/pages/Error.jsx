@@ -1,10 +1,14 @@
-﻿import Style from "./styles/error.module.css";
+﻿import ErrorMain from "../components/ErrorMain";
+import ProtectedRoute from "../utils/ProtectedRoute";
+import Style from "./styles/error.module.css";
 
 function Error() {
   return (
-    <>
-      <h1 className={Style.titulo}>Error</h1>
-    </>
+    <ProtectedRoute>
+      <section className={Style.error}>
+        <ErrorMain />
+      </section>
+    </ProtectedRoute>
   );
 }
 
