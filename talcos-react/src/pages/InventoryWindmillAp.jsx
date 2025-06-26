@@ -1,4 +1,4 @@
-﻿import InventoryWindmillApButton from "../components/InventoryWindmillAPButton";
+﻿import InventoryButton from "../components/InventoryButton";
 import InventoryList from "../components/InventoryList";
 import ProtectedRoute from "../utils/ProtectedRoute";
 import Style from "./styles/inventory-general.module.css";
@@ -7,7 +7,7 @@ function InventoryWindmillAp() {
   return (
     <ProtectedRoute>
       <section className={Style.inventory}>
-        <InventoryWindmillApButton />
+        <InventoryButton location="windmillap" name="molino AP" />
         <main className={Style.inventoryMain}>
           <InventoryList
             location="molinos_ap"

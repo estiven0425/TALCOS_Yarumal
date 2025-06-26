@@ -101,7 +101,23 @@ function InventoryListProfile() {
         </button>
         <button
           className={Style.inventoryListProfileMainButton}
-          onClick={() => redirect("inventory/inventorybobcat")}
+          onClick={() => redirect("inventory/inventoryaggregates")}
+          type="button"
+        >
+          <h2>Agregados pétreos</h2>
+          <img alt="Icono" src="/aggregates.svg"></img>
+        </button>
+        <button
+          className={Style.inventoryListProfileMainButton}
+          onClick={() => redirect("inventory/inventorycommercialbudget")}
+          type="button"
+        >
+          <h2>Presupuesto comercial</h2>
+          <img alt="Icono" src="/commercial_budget.svg"></img>
+        </button>
+        <button
+          className={Style.inventoryListProfileMainButton}
+          onClick={() => redirect("inventory/inventorydispatche")}
           type="button"
         >
           <h2>Despachos</h2>

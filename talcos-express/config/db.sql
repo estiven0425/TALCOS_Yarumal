@@ -212,6 +212,7 @@ CREATE TABLE `mensajes` (
 	CONSTRAINT FOREIGN KEY(`emisor_mensaje`) REFERENCES `usuarios`(`id_usuario`),
 	CONSTRAINT FOREIGN KEY(`receptor_mensaje`) REFERENCES `usuarios`(`id_usuario`)
 );
+
 CREATE TABLE `registros` (
 	`id_registro` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`fecha_registro` DATE NOT NULL,
@@ -237,6 +238,66 @@ CREATE TABLE `registros` (
 
 	CONSTRAINT PRIMARY KEY(`id_registro`),
 	CONSTRAINT FOREIGN KEY(`titular_registro`) REFERENCES `usuarios`(`id_usuario`)
+);
+
+CREATE TABLE `registros_ap` (
+	`id_registro_ap` BIGINT(100) NOT NULL AUTO_INCREMENT,
+	`fecha_registro_ap` DATE NOT NULL,
+	`turno_registro_ap` VARCHAR(250) NOT NULL,
+	`mes_registro_ap` BIGINT(100) NOT NULL,
+	`titular_registro_ap` BIGINT(100) NOT NULL,
+	`operador_registro_ap` BIGINT(100) NOT NULL,
+	`ingreso_roca_registro_ap` BIGINT(100) NOT NULL,
+	`bobcat_roca_registro_ap` BIGINT(100) NOT NULL,
+	`ingreso_grueso_registro_ap` BIGINT(100) NOT NULL,
+	`bobcat_grueso_registro_ap` BIGINT(100) NOT NULL,
+	`peso_bobcat_registro_ap` BIGINT(100) NOT NULL,
+	`total_roca_registro_ap` BIGINT(100) NOT NULL,
+	`total_grueso_registro_ap` BIGINT(100) NOT NULL,
+	`molino_registro_ap` VARCHAR(250) NOT NULL,
+	`horometro_inicio_registro_ap` BIGINT(100) NOT NULL,
+	`horometro_fin_registro_ap` BIGINT(100) NOT NULL,
+	`carguero_registro_ap` BIGINT(100) NOT NULL,
+	`observacion_registro_ap` VARCHAR(1000) NULL DEFAULT('No se registró'),
+	`actividad_registro_ap` BIT NOT NULL DEFAULT(1),
+	`actualizacion_registro_ap` TIMESTAMP NOT NULL,
+
+	CONSTRAINT PRIMARY KEY(`id_registro_ap`),
+	CONSTRAINT FOREIGN KEY(`titular_registro_ap`) REFERENCES `usuarios`(`id_usuario`),
+	CONSTRAINT FOREIGN KEY(`operador_registro_ap`) REFERENCES `usuarios`(`id_usuario`),
+	CONSTRAINT FOREIGN KEY(`carguero_registro_ap`) REFERENCES `usuarios`(`id_usuario`)
+);
+
+CREATE TABLE `inventario_ap` (
+	`id_inventario_ap` BIGINT(100) NOT NULL AUTO_INCREMENT,
+	`tipo_inventario_ap` VARCHAR(250) NOT NULL,
+	`nombre_inventario_ap` VARCHAR(250) NOT NULL,
+	`porcentaje_inventario_ap` DECIMAL(5,2) NOT NULL,
+	`total_inventario_ap` DECIMAL(5,2) NOT NULL,
+	`actividad_inventario_ap` BIT NOT NULL DEFAULT(1),
+	`actualizacion_inventario_ap` TIMESTAMP NOT NULL,
+
+	CONSTRAINT PRIMARY KEY(`id_inventario_ap`)
+);
+
+CREATE TABLE `presupuesto_comercial` (
+	`id_presupuesto_comercial` BIGINT(100) NOT NULL AUTO_INCREMENT,
+	`fecha_presupuesto_comercial` DATE NOT NULL,
+	`capacidad_presupuesto_comercial` BIGINT(100) NOT NULL,
+	`actividad_presupuesto_comercial` BIT NOT NULL DEFAULT(1),
+	`actualizacion_presupuesto_comercial` TIMESTAMP NOT NULL,
+
+	CONSTRAINT PRIMARY KEY(`id_presupuesto_comercial`)
+);
+
+CREATE TABLE `despachos` (
+	`id_despachos` BIGINT(100) NOT NULL AUTO_INCREMENT,
+	`fecha_despachos` DATE NOT NULL,
+	`cantidad_despachos` BIGINT(100) NOT NULL,
+	`actividad_despachos` BIT NOT NULL DEFAULT(1),
+	`actualizacion_despachos` TIMESTAMP NOT NULL,
+
+	CONSTRAINT PRIMARY KEY(`id_despachos`)
 );
 
 DELIMITER //
