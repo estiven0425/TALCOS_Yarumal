@@ -69,7 +69,7 @@ app.use("/mensajes", mensajesRoutes);
 app.use("/registros", registrosRoutes);
 app.use("/registros_ap", registrosApRoutes);
 app.use("/inventario_ap", inventarioApRoutes);
-app.use("/presupuesto_comercial", presupuestoComercialRoutes);
+app.use("/presupuestos_comerciales", presupuestoComercialRoutes);
 app.use("/despachos", despachosRoutes);
 app.use("/login", login);
 app.use("/pdf", pdfRoutes);

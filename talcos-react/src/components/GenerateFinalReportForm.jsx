@@ -59,15 +59,30 @@ function GenerateFinalReportForm() {
         const references = responseReferences.data;
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
-        const responseInformePendiente = await axios.get(
-          `http://${localIP}:3000/informes_finales/obtenerultimoinformeinicialpendiente`
-        );
+        const responseInformePendiente = await axios
+          .get(
+            `http://${localIP}:3000/informes_finales/obtenerultimoinformeinicialpendiente`
+          )
+          .catch((error) => {
+            if (error.response && error.response.status === 404) {
+              setInformeInicialPendiente(null);
+              setLoadingAlternative(false);
+              return null;
+            } else {
+              throw error;
+            }
+          });
         const informePendienteData = responseInformePendiente.data;
 
         if (informePendienteData) {
           setInformeInicialPendiente(informePendienteData);
         } else {
           setInformeInicialPendiente(null);
+        }
+        if (!informePendienteData || informePendienteData.mensaje) {
+          setInformeInicialPendiente(null);
+          setLoadingAlternative(false);
+          return;
         }
 
         const responseStartReport = await axios.get(
@@ -278,19 +293,26 @@ function GenerateFinalReportForm() {
     const turnoInformeFinal = determinateShift();
     const finTurnoInformeInicial = informeInicialPendiente?.finTurno;
 
-    if (finTurnoInformeInicial) {
-      const [finHora, finMinuto] = finTurnoInformeInicial
-        .split(":")
-        .map(Number);
+    if (finTurnoInformeInicial && informeInicialPendiente?.fecha) {
       const ahora = new Date();
-      const horaActual = ahora.getHours();
-      const minutoActual = ahora.getMinutes();
+      const fechaActualISO = ahora.toISOString().split("T")[0];
+      const fechaInformeInicial = informeInicialPendiente.fecha;
 
-      if (
-        horaActual > finHora ||
-        (horaActual === finHora && minutoActual > finMinuto)
-      ) {
+      if (fechaActualISO !== fechaInformeInicial) {
         horaInformeFinal = finTurnoInformeInicial;
+      } else {
+        const [finHora, finMinuto] = finTurnoInformeInicial
+          .split(":")
+          .map(Number);
+        const horaActual = ahora.getHours();
+        const minutoActual = ahora.getMinutes();
+
+        if (
+          horaActual > finHora ||
+          (horaActual === finHora && minutoActual > finMinuto)
+        ) {
+          horaInformeFinal = finTurnoInformeInicial;
+        }
       }
     }
 
@@ -417,7 +439,7 @@ function GenerateFinalReportForm() {
 
   return (
     <>
-      {finalData.length > 0 ? (
+      {Array.isArray(finalData) && finalData.length > 0 ? (
         <motion.div
           className={Style.generateFinalReportFormAlternative}
           initial={{ opacity: 0 }}
@@ -437,7 +459,7 @@ function GenerateFinalReportForm() {
             >
               <div className={Style.loader}></div>
             </motion.div>
-          ) : currentData.length > 0 ? (
+          ) : Array.isArray(currentData) && currentData.length > 0 ? (
             <>
               {sendStatus === true ? (
                 <motion.div
@@ -656,7 +678,10 @@ function GenerateFinalReportForm() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <h1>El informe inicial del turno no ha sido creado</h1>
+              <h1>
+                El informe del turno ya ha finalizado o el informe inicial del
+                turno no ha sido creado
+              </h1>
             </motion.div>
           )}
         </>

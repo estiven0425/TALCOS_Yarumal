@@ -282,8 +282,8 @@ CREATE TABLE `inventario_ap` (
 
 CREATE TABLE `presupuesto_comercial` (
 	`id_presupuesto_comercial` BIGINT(100) NOT NULL AUTO_INCREMENT,
-	`fecha_presupuesto_comercial` DATE NOT NULL,
-	`capacidad_presupuesto_comercial` BIGINT(100) NOT NULL,
+	`fecha_presupuesto_comercial` BIGINT(100) NOT NULL,
+	`capacidad_presupuesto_comercial` DECIMAL(5,2) NOT NULL,
 	`actividad_presupuesto_comercial` BIT NOT NULL DEFAULT(1),
 	`actualizacion_presupuesto_comercial` TIMESTAMP NOT NULL,
 
@@ -291,13 +291,13 @@ CREATE TABLE `presupuesto_comercial` (
 );
 
 CREATE TABLE `despachos` (
-	`id_despachos` BIGINT(100) NOT NULL AUTO_INCREMENT,
-	`fecha_despachos` DATE NOT NULL,
-	`cantidad_despachos` BIGINT(100) NOT NULL,
-	`actividad_despachos` BIT NOT NULL DEFAULT(1),
-	`actualizacion_despachos` TIMESTAMP NOT NULL,
+	`id_despacho` BIGINT(100) NOT NULL AUTO_INCREMENT,
+	`fecha_despacho` DATE NOT NULL,
+	`cantidad_despacho` BIGINT(100) NOT NULL,
+	`actividad_despacho` BIT NOT NULL DEFAULT(1),
+	`actualizacion_despacho` TIMESTAMP NOT NULL,
 
-	CONSTRAINT PRIMARY KEY(`id_despachos`)
+	CONSTRAINT PRIMARY KEY(`id_despacho`)
 );
 
 DELIMITER //

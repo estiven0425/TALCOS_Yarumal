@@ -24,7 +24,9 @@
 .monitoringViewTableListProducedTable caption h2 {
   display: inline;
   font-size: 1.5rem;
+  left: 0;
   margin: 0px;
+  position: sticky;
 }
 
 .monitoringViewTableListProducedTableHead,
@@ -49,6 +51,7 @@
   font-size: 1rem;
   text-align: center;
   vertical-align: baseline;
+  min-width: 100px;
 }
 
 .loader {

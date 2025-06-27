@@ -82,7 +82,7 @@ exports.obtenerUltimoInformeInicialPendiente = async (req, res) => {
     });
 
     if (informeFinalExistente) {
-      return res.status(400).json({
+      return res.status(200).json({
         mensaje: "El informe ya ha finalizado.",
       });
     }

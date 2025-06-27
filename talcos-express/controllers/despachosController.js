@@ -3,7 +3,7 @@ const Despachos = require("../models/Despachos");
 exports.leerDespachos = async (req, res) => {
   try {
     const despachos = await Despachos.findAll({
-      where: { actividad_despachos: true },
+      where: { actividad_despacho: true },
     });
 
     res.json(despachos);
@@ -13,12 +13,12 @@ exports.leerDespachos = async (req, res) => {
 };
 
 exports.crearDespacho = async (req, res) => {
-  const { fecha_despachos, cantidad_despachos } = req.body;
+  const { fecha_despacho, cantidad_despacho } = req.body;
 
   try {
     const nuevoDespacho = await Despachos.create({
-      fecha_despachos,
-      cantidad_despachos,
+      fecha_despacho,
+      cantidad_despacho,
     });
 
     res.status(201).json(nuevoDespacho);
@@ -28,21 +28,17 @@ exports.crearDespacho = async (req, res) => {
 };
 
 exports.actualizarDespacho = async (req, res) => {
-  const {
-    id_despachos,
-    fecha_despachos,
-    cantidad_despachos,
-    actividad_despachos,
-  } = req.body;
+  const { id_despacho, fecha_despacho, cantidad_despacho, actividad_despacho } =
+    req.body;
 
   try {
-    const despacho = await Despachos.findByPk(id_despachos);
+    const despacho = await Despachos.findByPk(id_despacho);
 
     if (despacho) {
       await despacho.update({
-        fecha_despachos,
-        cantidad_despachos,
-        actividad_despachos,
+        fecha_despacho,
+        cantidad_despacho,
+        actividad_despacho,
       });
 
       res.json(despacho);
@@ -55,14 +51,14 @@ exports.actualizarDespacho = async (req, res) => {
 };
 
 exports.eliminarDespacho = async (req, res) => {
-  const { id_despachos, actividad_despachos } = req.body;
+  const { id_despacho, actividad_despacho } = req.body;
 
   try {
-    const despacho = await Despachos.findByPk(id_despachos);
+    const despacho = await Despachos.findByPk(id_despacho);
 
     if (despacho) {
       await despacho.update({
-        actividad_despachos,
+        actividad_despacho,
       });
 
       res.json(despacho);

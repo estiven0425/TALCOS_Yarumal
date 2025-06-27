@@ -466,7 +466,7 @@ function GenerateInitialReportForm() {
                   parseISO(informeFinalPendiente.fecha),
                   "EEEE d 'de' MMMM 'del' yyyy",
                   { locale: es }
-                )}{" "}
+                ).replace(/^./, (c) => c.toUpperCase())}{" "}
                 debe ser finalizado antes de continuar
               </h1>
             </motion.main>

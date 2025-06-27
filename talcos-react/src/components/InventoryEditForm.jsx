@@ -45,9 +45,10 @@ function InventoryEditForm({
   }, [sendStatus, navigate, redirectPath]);
 
   const handleChange = (e) => {
+    const { name, value, type } = e.target;
     setData({
       ...data,
-      [e.target.name]: e.target.value,
+      [name]: type === "number" ? parseFloat(value) : value,
     });
   };
 
@@ -109,6 +110,7 @@ function InventoryEditForm({
                   onChange={handleChange}
                   placeholder={item[field.name] || field.placeholder}
                   type={field.type}
+                  {...(field.type === "number" && { step: "any" })}
                 />
               </fieldset>
             ))}

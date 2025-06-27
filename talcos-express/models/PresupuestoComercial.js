@@ -11,11 +11,11 @@ const PresupuestoComercial = sequelize.define(
       allowNull: false,
     },
     fecha_presupuesto_comercial: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     capacidad_presupuesto_comercial: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(5, 2),
       allowNull: false,
     },
     actividad_presupuesto_comercial: {

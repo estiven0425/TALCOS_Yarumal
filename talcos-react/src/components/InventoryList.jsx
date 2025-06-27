@@ -1,4 +1,6 @@
-﻿import { motion } from "framer-motion";
+﻿import { es } from "date-fns/locale";
+import { format, isValid, parseISO } from "date-fns";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Style from "./styles/inventory-list.module.css";
@@ -24,6 +26,23 @@ function InventoryList({ location, head, index, body, name, optional }) {
     getItem();
   }, [localIP]);
 
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  const formatIfDate = (value) => {
+    if (typeof value === "string") {
+      const parsed = parseISO(value);
+      if (isValid(parsed)) {
+        const formatted = format(parsed, "EEEE d 'de' MMMM 'del' yyyy", {
+          locale: es,
+        });
+        return capitalizeFirstLetter(formatted);
+      }
+    }
+    return value;
+  };
+
   return (
     <>
       {item.length > 0 ? (
@@ -43,9 +62,9 @@ function InventoryList({ location, head, index, body, name, optional }) {
           <tbody className={Style.inventoryListMainTableBody}>
             {item.map((item) => (
               <tr key={item[index]}>
-                {body.map((body) => (
-                  <td key={body}>
-                    {item[body]} {optional[body] || ""}
+                {body.map((key) => (
+                  <td key={key}>
+                    {formatIfDate(item[key])} {optional[key] || ""}
                   </td>
                 ))}
               </tr>

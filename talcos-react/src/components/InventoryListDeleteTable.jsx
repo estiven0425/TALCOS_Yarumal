@@ -1,4 +1,6 @@
-﻿import { motion } from "framer-motion";
+﻿import { es } from "date-fns/locale";
+import { format, isValid, parseISO } from "date-fns";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -40,6 +42,22 @@ function InventoryListDeleteTable({
   const redirectDeleteInventory = (data) => {
     navigate(`/inventory/delete${redirectPath}`, { state: data });
   };
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  const formatIfDate = (value) => {
+    if (typeof value === "string") {
+      const parsed = parseISO(value);
+      if (isValid(parsed)) {
+        const formatted = format(parsed, "EEEE d 'de' MMMM 'del' yyyy", {
+          locale: es,
+        });
+        return capitalizeFirstLetter(formatted);
+      }
+    }
+    return value;
+  };
 
   return (
     <>
@@ -75,7 +93,7 @@ function InventoryListDeleteTable({
                 >
                   {body.map((body) => (
                     <td key={body}>
-                      {item[body]} {optional[body] || ""}
+                      {formatIfDate(item[body])} {optional[body] || ""}
                     </td>
                   ))}
                 </tr>

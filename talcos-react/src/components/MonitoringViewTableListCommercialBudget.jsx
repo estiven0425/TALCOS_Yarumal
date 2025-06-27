@@ -12,12 +12,13 @@ import {
   addDays,
 } from "date-fns";
 import { es } from "date-fns/locale";
-import Style from "./styles/monitoring-view-table-list-produced.module.css";
+import Style from "./styles/monitoring-view-table-list-commercial-budget.module.css";
 
-function MonitoringViewTableListProduced({ inicio, fin }) {
+function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
   const [molino, setMolino] = useState([]);
   const [referencia, setReferencia] = useState([]);
   const [bulto, setBulto] = useState([]);
+  const [commercialBudget, setCommercialBudget] = useState([]);
   const [item, setItem] = useState(null);
   const [finalReport, setFinalReport] = useState([]);
   const [allWeeksInPeriod, setAllWeeksInPeriod] = useState([]);
@@ -42,6 +43,9 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
         const responseWindmill = await axios.get(
           `http://${localIP}:3000/molinos`
         );
+        const responseCommercialBudget = await axios.get(
+          `http://${localIP}:3000/presupuestos_comerciales`
+        );
         const responseReference = await axios.get(
           `http://${localIP}:3000/referencias`
         );
@@ -51,6 +55,7 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
         setMolino(responseWindmill.data);
         setReferencia(responseReference.data);
         setBulto(responseBulk.data);
+        setCommercialBudget(responseCommercialBudget.data);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       }
@@ -174,6 +179,16 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
     return totals;
   }, [dataPorReferenciaPorSemana, allWeeksInPeriod]);
 
+  const presupuestoComercialDelAno = useMemo(() => {
+    if (!inicio || !fin || !commercialBudget.length) return null;
+
+    const anoInicio = parseISO(inicio).getFullYear();
+
+    return commercialBudget.find(
+      (presupuesto) => presupuesto.fecha_presupuesto_comercial === anoInicio
+    );
+  }, [inicio, fin, commercialBudget]);
+
   useEffect(() => {
     if (
       tablaRef.current &&
@@ -189,23 +204,27 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
         <>
           <motion.article
             ref={tablaRef}
-            className={Style.monitoringViewTableListProduced}
+            className={Style.monitoringViewTableListCommercialBudget}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
             <motion.table
-              className={Style.monitoringViewTableListProducedTable}
+              className={Style.monitoringViewTableListCommercialBudgetTable}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
               <caption>
-                <h2>Producción por referencia en toneladas</h2>
+                <h2>Presupuesto comercial promedio por mes</h2>
               </caption>
-              <thead className={Style.monitoringViewTableListProducedTableHead}>
+              <thead
+                className={
+                  Style.monitoringViewTableListCommercialBudgetTableHead
+                }
+              >
                 <tr>
-                  <th>Referencia</th>
+                  <th>Presupuesto</th>
                   {allWeeksInPeriod.map((weekNum) => (
                     <th
                       key={`th-week-${weekNum}`}
@@ -216,48 +235,54 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
                   ))}
                 </tr>
               </thead>
-              <tbody className={Style.monitoringViewTableListProducedTableBody}>
-                {referencia.map((ref) => {
-                  const totalPorReferencia = allWeeksInPeriod.reduce(
-                    (total, weekNum) => {
-                      return (
-                        total +
-                        (dataPorReferenciaPorSemana[ref.nombre_referencia]?.[
-                          weekNum
-                        ] || 0)
-                      );
-                    },
-                    0
-                  );
-
-                  return (
-                    <tr key={ref.id_referencia}>
-                      <td>{ref.nombre_referencia}</td>
-                      {allWeeksInPeriod.map((weekNum) => {
-                        const cantidad =
-                          dataPorReferenciaPorSemana[ref.nombre_referencia]?.[
-                            weekNum
-                          ] || 0;
-                        return (
-                          <td key={`${ref.nombre_referencia}-week-${weekNum}`}>
-                            {parseFloat(cantidad).toFixed(2)}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-              <tfoot
-                className={Style.monitoringViewTableListProducedTableFooter}
+              <tbody
+                className={
+                  Style.monitoringViewTableListCommercialBudgetTableBody
+                }
               >
                 <tr>
-                  <td>Total general</td>
-                  {allWeeksInPeriod.map((weekNum) => (
-                    <td key={`total-week-${weekNum}`}>
-                      {parseFloat(weeklyTotals[weekNum] || 0).toFixed(2)}
-                    </td>
-                  ))}
+                  <td>
+                    {presupuestoComercialDelAno?.capacidad_presupuesto_comercial
+                      ? parseFloat(
+                          presupuestoComercialDelAno.capacidad_presupuesto_comercial
+                        ).toFixed(2)
+                      : "0"}
+                  </td>
+                  {allWeeksInPeriod.map((weekNum) => {
+                    const capacidad =
+                      presupuestoComercialDelAno?.capacidad_presupuesto_comercial ||
+                      0;
+                    const capacidadSemanal = capacidad / 4.35;
+
+                    return (
+                      <td key={`capacidad-week-${weekNum}`}>
+                        {parseFloat(capacidadSemanal).toFixed(2)}
+                      </td>
+                    );
+                  })}
+                </tr>
+              </tbody>
+              <tfoot
+                className={
+                  Style.monitoringViewTableListCommercialBudgetTableFooter
+                }
+              >
+                <tr>
+                  <td>Desviación</td>
+                  {allWeeksInPeriod.map((weekNum) => {
+                    const capacidad =
+                      presupuestoComercialDelAno?.capacidad_presupuesto_comercial ||
+                      0;
+                    const capacidadSemanal = capacidad / 4.35;
+                    const produccion = weeklyTotals[weekNum] || 0;
+                    const diferencia = produccion - capacidadSemanal;
+
+                    return (
+                      <td key={`diff-week-${weekNum}`}>
+                        {parseFloat(diferencia).toFixed(2)}
+                      </td>
+                    );
+                  })}
                 </tr>
               </tfoot>
             </motion.table>
@@ -265,7 +290,7 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
         </>
       ) : (
         <motion.div
-          className={Style.monitoringViewTableListProducedAlternative}
+          className={Style.monitoringViewTableListCommercialBudgetAlternative}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -277,4 +302,4 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
   );
 }
 
-export default MonitoringViewTableListProduced;
+export default MonitoringViewTableListCommercialBudget;

@@ -4,26 +4,26 @@ const { DataTypes } = require("sequelize");
 const Despachos = sequelize.define(
   "despachos",
   {
-    id_despachos: {
+    id_despacho: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
-    fecha_despachos: {
+    fecha_despacho: {
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
-    cantidad_despachos: {
+    cantidad_despacho: {
       type: DataTypes.BIGINT,
       allowNull: false,
     },
-    actividad_despachos: {
+    actividad_despacho: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
     },
-    actualizacion_despachos: {
+    actualizacion_despacho: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,

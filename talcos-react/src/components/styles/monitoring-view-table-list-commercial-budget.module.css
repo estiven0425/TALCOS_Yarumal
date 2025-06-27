@@ -1,4 +1,4 @@
-﻿.monitoringViewTableListEfficiencyAlternative {
+﻿.monitoringViewTableListCommercialBudgetAlternative {
   align-content: center;
   box-sizing: border-box;
   display: flex;
@@ -10,18 +10,18 @@
   width: 100%;
 }
 
-.monitoringViewTableListEfficiencyTable {
+.monitoringViewTableListCommercialBudgetTable {
   border-collapse: separate;
   border-spacing: 10px;
   width: 100%;
 }
 
-.monitoringViewTableListEfficiencyTable caption {
+.monitoringViewTableListCommercialBudgetTable caption {
   font-size: 1rem;
   text-align: left;
 }
 
-.monitoringViewTableListEfficiencyTable caption h2 {
+.monitoringViewTableListCommercialBudgetTable caption h2 {
   display: inline;
   font-size: 1.5rem;
   left: 0;
@@ -29,25 +29,25 @@
   position: sticky;
 }
 
-.monitoringViewTableListEfficiencyTableHead,
-.monitoringViewTableListEfficiencyTableBody,
-.monitoringViewTableListEfficiencyTableFooter {
+.monitoringViewTableListCommercialBudgetTableHead,
+.monitoringViewTableListCommercialBudgetTableBody,
+.monitoringViewTableListCommercialBudgetTableFooter {
   width: 100%;
 }
 
-.monitoringViewTableListEfficiencyTableHead tr,
-.monitoringViewTableListEfficiencyTableBody tr,
-.monitoringViewTableListEfficiencyTableFooter tr {
+.monitoringViewTableListCommercialBudgetTableHead tr,
+.monitoringViewTableListCommercialBudgetTableBody tr,
+.monitoringViewTableListCommercialBudgetTableFooter tr {
   width: 100%;
 }
-.monitoringViewTableListEfficiencyTableHead tr th {
+.monitoringViewTableListCommercialBudgetTableHead tr th {
   font-size: 1rem;
   text-align: center;
   vertical-align: baseline;
 }
 
-.monitoringViewTableListEfficiencyTableBody tr td,
-.monitoringViewTableListEfficiencyTableFooter tr td {
+.monitoringViewTableListCommercialBudgetTableBody tr td,
+.monitoringViewTableListCommercialBudgetTableFooter tr td {
   font-size: 1rem;
   text-align: center;
   vertical-align: baseline;
