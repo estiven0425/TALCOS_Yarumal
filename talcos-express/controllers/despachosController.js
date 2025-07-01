@@ -1,9 +1,31 @@
 const Despachos = require("../models/Despachos");
+const { Op } = require("sequelize");
 
 exports.leerDespachos = async (req, res) => {
   try {
     const despachos = await Despachos.findAll({
       where: { actividad_despacho: true },
+    });
+
+    res.json(despachos);
+  } catch (error) {
+    res.status(500).send("Error del servidor: " + error);
+  }
+};
+
+exports.leerDespachosFiltrados = async (req, res) => {
+  try {
+    const { inicio, fin } = req.query;
+    let whereClause = { actividad_despacho: true };
+
+    if (inicio && fin) {
+      whereClause.fecha_despacho = {
+        [Op.between]: [inicio, fin],
+      };
+    }
+
+    const despachos = await Despachos.findAll({
+      where: whereClause,
     });
 
     res.json(despachos);

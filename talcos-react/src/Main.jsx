@@ -27,6 +27,7 @@ import {
   InventoryCreateBobCat,
   InventoryCreateBulk,
   InventoryCreateCommercialBudget,
+  InventoryCreateCommercialDispatche,
   InventoryCreateDispatche,
   InventoryCreateProfile,
   InventoryCreateRawMaterial,
@@ -39,6 +40,7 @@ import {
   InventoryDeleteBobCat,
   InventoryDeleteBulk,
   InventoryDeleteCommercialBudget,
+  InventoryDeleteCommercialDispatche,
   InventoryDeleteDispatche,
   InventoryDeleteProfile,
   InventoryDeleteRawMaterial,
@@ -51,6 +53,7 @@ import {
   InventoryEditBobCat,
   InventoryEditBulk,
   InventoryEditCommercialBudget,
+  InventoryEditCommercialDispatche,
   InventoryEditDispatche,
   InventoryEditProfile,
   InventoryEditRawMaterial,
@@ -63,6 +66,7 @@ import {
   InventoryListDeleteBobCat,
   InventoryListDeleteBulk,
   InventoryListDeleteCommercialBudget,
+  InventoryListDeleteCommercialDispatche,
   InventoryListDeleteDispatche,
   InventoryListDeleteProfile,
   InventoryListDeleteRawMaterial,
@@ -74,6 +78,7 @@ import {
   InventoryListEditBobCat,
   InventoryListEditBulk,
   InventoryListEditCommercialBudget,
+  InventoryListEditCommercialDispatche,
   InventoryListEditDispatche,
   InventoryListEditProfile,
   InventoryListEditRawMaterial,
@@ -86,6 +91,7 @@ import {
   InventoryBobCat,
   InventoryBulk,
   InventoryCommercialBudget,
+  InventoryCommercialDispatche,
   InventoryDispatche,
   InventoryProfile,
   InventoryRawMaterial,
@@ -262,48 +268,6 @@ createRoot(document.getElementById("root")).render(
             />
             <Route path="deletebulk" element={<InventoryDeleteBulk />} />
             <Route
-              path="inventorycommercialbudget"
-              element={<InventoryCommercialBudget />}
-            />
-            <Route
-              path="createcommercialbudget"
-              element={<InventoryCreateCommercialBudget />}
-            />
-            <Route
-              path="listeditcommercialbudget"
-              element={<InventoryListEditCommercialBudget />}
-            />
-            <Route
-              path="editcommercialbudget"
-              element={<InventoryEditCommercialBudget />}
-            />
-            <Route
-              path="listdeletecommercialbudget"
-              element={<InventoryListDeleteCommercialBudget />}
-            />
-            <Route
-              path="deletecommercialbudget"
-              element={<InventoryDeleteCommercialBudget />}
-            />
-            <Route path="inventorydispatche" element={<InventoryDispatche />} />
-            <Route
-              path="createdispatche"
-              element={<InventoryCreateDispatche />}
-            />
-            <Route
-              path="listeditdispatche"
-              element={<InventoryListEditDispatche />}
-            />
-            <Route path="editdispatche" element={<InventoryEditDispatche />} />
-            <Route
-              path="listdeletedispatche"
-              element={<InventoryListDeleteDispatche />}
-            />
-            <Route
-              path="deletedispatche"
-              element={<InventoryDeleteDispatche />}
-            />
-            <Route
               path="inventoryrawmaterial"
               element={<InventoryRawMaterial />}
             />
@@ -399,6 +363,73 @@ createRoot(document.getElementById("root")).render(
               element={<InventoryListDeleteBobCat />}
             />
             <Route path="deletebobcat" element={<InventoryDeleteBobCat />} />
+            <Route
+              path="inventorycommercialbudget"
+              element={<InventoryCommercialBudget />}
+            />
+            <Route
+              path="createcommercialbudget"
+              element={<InventoryCreateCommercialBudget />}
+            />
+            <Route
+              path="listeditcommercialbudget"
+              element={<InventoryListEditCommercialBudget />}
+            />
+            <Route
+              path="editcommercialbudget"
+              element={<InventoryEditCommercialBudget />}
+            />
+            <Route
+              path="listdeletecommercialbudget"
+              element={<InventoryListDeleteCommercialBudget />}
+            />
+            <Route
+              path="deletecommercialbudget"
+              element={<InventoryDeleteCommercialBudget />}
+            />
+            <Route path="inventorydispatche" element={<InventoryDispatche />} />
+            <Route
+              path="createdispatche"
+              element={<InventoryCreateDispatche />}
+            />
+            <Route
+              path="listeditdispatche"
+              element={<InventoryListEditDispatche />}
+            />
+            <Route path="editdispatche" element={<InventoryEditDispatche />} />
+            <Route
+              path="listdeletedispatche"
+              element={<InventoryListDeleteDispatche />}
+            />
+            <Route
+              path="deletedispatche"
+              element={<InventoryDeleteDispatche />}
+            />
+
+            <Route
+              path="inventorycommercialdispatche"
+              element={<InventoryCommercialDispatche />}
+            />
+            <Route
+              path="createcommercialdispatche"
+              element={<InventoryCreateCommercialDispatche />}
+            />
+            <Route
+              path="listeditcommercialdispatche"
+              element={<InventoryListEditCommercialDispatche />}
+            />
+            <Route
+              path="editcommercialdispatche"
+              element={<InventoryEditCommercialDispatche />}
+            />
+            <Route
+              path="listdeletecommercialdispatche"
+              element={<InventoryListDeleteCommercialDispatche />}
+            />
+            <Route
+              path="deletecommercialdispatche"
+              element={<InventoryDeleteCommercialDispatche />}
+            />
           </Route>
           <Route path="fastinventory" element={<FastInventory />} />
           <Route path="notification" element={<Notification />} />

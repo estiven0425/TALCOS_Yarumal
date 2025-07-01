@@ -290,6 +290,16 @@ CREATE TABLE `presupuesto_comercial` (
 	CONSTRAINT PRIMARY KEY(`id_presupuesto_comercial`)
 );
 
+CREATE TABLE `despacho_comercial` (
+	`id_despacho_comercial` BIGINT(100) NOT NULL AUTO_INCREMENT,
+	`fecha_despacho_comercial` DATE NOT NULL,
+	`cantidad_despacho_comercial` BIGINT(100) NOT NULL,
+	`actividad_despacho_comercial` BIT NOT NULL DEFAULT(1),
+	`actualizacion_despacho_comercial` TIMESTAMP NOT NULL,
+
+	CONSTRAINT PRIMARY KEY(`id_despacho_comercial`)
+);
+
 CREATE TABLE `despachos` (
 	`id_despacho` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`fecha_despacho` DATE NOT NULL,

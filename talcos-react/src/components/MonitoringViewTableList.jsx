@@ -1,8 +1,9 @@
 ﻿import { motion } from "framer-motion";
+import MonitoringViewTableListCommercialBudget from "./MonitoringViewTableListCommercialBudget";
+import MonitoringViewTableListDispatche from "./MonitoringViewTableListDispatche";
 import MonitoringViewTableListEfficiency from "./MonitoringViewTableListEfficiency";
 import MonitoringViewTableListProduced from "./MonitoringViewTableListProduced";
 import Style from "./styles/monitoring-view-table-List.module.css";
-import MonitoringViewTableListCommercialBudget from "./MonitoringViewTableListCommercialBudget";
 
 function MonitoringViewTableList({ inicioMonitoreo, finMonitoreo }) {
   return (
@@ -18,6 +19,10 @@ function MonitoringViewTableList({ inicioMonitoreo, finMonitoreo }) {
             fin={finMonitoreo}
           />
           <MonitoringViewTableListCommercialBudget
+            inicio={inicioMonitoreo}
+            fin={finMonitoreo}
+          />
+          <MonitoringViewTableListDispatche
             inicio={inicioMonitoreo}
             fin={finMonitoreo}
           />

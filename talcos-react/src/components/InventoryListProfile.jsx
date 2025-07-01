@@ -101,14 +101,6 @@ function InventoryListProfile() {
         </button>
         <button
           className={Style.inventoryListProfileMainButton}
-          onClick={() => redirect("inventory/inventoryaggregates")}
-          type="button"
-        >
-          <h2>Agregados pétreos</h2>
-          <img alt="Icono" src="/aggregates.svg"></img>
-        </button>
-        <button
-          className={Style.inventoryListProfileMainButton}
           onClick={() => redirect("inventory/inventorycommercialbudget")}
           type="button"
         >
@@ -117,11 +109,27 @@ function InventoryListProfile() {
         </button>
         <button
           className={Style.inventoryListProfileMainButton}
+          onClick={() => redirect("inventory/inventorycommercialdispatche")}
+          type="button"
+        >
+          <h2>Despachos programados</h2>
+          <img alt="Icono" src="/commercial_dispatche.svg"></img>
+        </button>
+        <button
+          className={Style.inventoryListProfileMainButton}
           onClick={() => redirect("inventory/inventorydispatche")}
           type="button"
         >
           <h2>Despachos</h2>
           <img alt="Icono" src="/despachos.svg"></img>
+        </button>
+        <button
+          className={Style.inventoryListProfileMainButton}
+          onClick={() => redirect("inventory/inventoryaggregates")}
+          type="button"
+        >
+          <h2>Agregados pétreos</h2>
+          <img alt="Icono" src="/aggregates.svg"></img>
         </button>
       </motion.main>
     </>

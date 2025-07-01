@@ -22,6 +22,7 @@ export { default as InventoryGeneral } from "./InventoryGeneral";
 export { default as InventoryCreateBobCat } from "./InventoryCreateBobCat";
 export { default as InventoryCreateBulk } from "./InventoryCreateBulk";
 export { default as InventoryCreateCommercialBudget } from "./InventoryCreateCommercialBudget";
+export { default as InventoryCreateCommercialDispatche } from "./InventoryCreateCommercialDispatche";
 export { default as InventoryCreateDispatche } from "./InventoryCreateDispatche";
 export { default as InventoryCreateProfile } from "./InventoryCreateProfile";
 export { default as InventoryCreateRawMaterial } from "./InventoryCreateRawMaterial";
@@ -34,6 +35,7 @@ export { default as InventoryCreateWindmillAp } from "./InventoryCreateWindmillA
 export { default as InventoryDeleteBobCat } from "./InventoryDeleteBobCat";
 export { default as InventoryDeleteBulk } from "./InventoryDeleteBulk";
 export { default as InventoryDeleteCommercialBudget } from "./InventoryDeleteCommercialBudget";
+export { default as InventoryDeleteCommercialDispatche } from "./InventoryDeleteCommercialDispatche";
 export { default as InventoryDeleteDispatche } from "./InventoryDeleteDispatche";
 export { default as InventoryDeleteProfile } from "./InventoryDeleteProfile";
 export { default as InventoryDeleteRawMaterial } from "./InventoryDeleteRawMaterial";
@@ -46,6 +48,7 @@ export { default as InventoryDeleteWindmillAp } from "./InventoryDeleteWindmillA
 export { default as InventoryEditBobCat } from "./InventoryEditBobCat";
 export { default as InventoryEditBulk } from "./InventoryEditBulk";
 export { default as InventoryEditCommercialBudget } from "./InventoryEditCommercialBudget";
+export { default as InventoryEditCommercialDispatche } from "./InventoryEditCommercialDispatche";
 export { default as InventoryEditDispatche } from "./InventoryEditDispatche";
 export { default as InventoryEditProfile } from "./InventoryEditProfile";
 export { default as InventoryEditRawMaterial } from "./InventoryEditRawMaterial";
@@ -58,6 +61,7 @@ export { default as InventoryEditWindmillAp } from "./InventoryEditWindmillAp";
 export { default as InventoryListDeleteBobCat } from "./InventoryListDeleteBobCat";
 export { default as InventoryListDeleteBulk } from "./InventoryListDeleteBulk";
 export { default as InventoryListDeleteCommercialBudget } from "./InventoryListDeleteCommercialBudget";
+export { default as InventoryListDeleteCommercialDispatche } from "./InventoryListDeleteCommercialDispatche";
 export { default as InventoryListDeleteDispatche } from "./InventoryListDeleteDispatche";
 export { default as InventoryListDeleteProfile } from "./InventoryListDeleteProfile";
 export { default as InventoryListDeleteRawMaterial } from "./InventoryListDeleteRawMaterial";
@@ -69,6 +73,7 @@ export { default as InventoryListDeleteWindmillAp } from "./InventoryListDeleteW
 export { default as InventoryListEditBobCat } from "./InventoryListEditBobCat";
 export { default as InventoryListEditBulk } from "./InventoryListEditBulk";
 export { default as InventoryListEditCommercialBudget } from "./InventoryListEditCommercialBudget";
+export { default as InventoryListEditCommercialDispatche } from "./InventoryListEditCommercialDispatche";
 export { default as InventoryListEditDispatche } from "./InventoryListEditDispatche";
 export { default as InventoryListEditProfile } from "./InventoryListEditProfile";
 export { default as InventoryListEditRawMaterial } from "./InventoryListEditRawMaterial";
@@ -81,6 +86,7 @@ export { default as InventoryListReasignedRejectedMaterial } from "./InventoryLi
 export { default as InventoryBobCat } from "./InventoryBobCat";
 export { default as InventoryBulk } from "./InventoryBulk";
 export { default as InventoryCommercialBudget } from "./InventoryCommercialBudget";
+export { default as InventoryCommercialDispatche } from "./InventoryCommercialDispatche";
 export { default as InventoryDispatche } from "./InventoryDispatche";
 export { default as InventoryProfile } from "./InventoryProfile";
 export { default as InventoryRawMaterial } from "./InventoryRawMaterial";
