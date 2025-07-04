@@ -162,6 +162,10 @@ const ProtectedRoute = ({ children }) => {
             "/inventory/editdispatche",
             "/inventory/listdeletedispatche",
             "/inventory/deletedispatche",
+            "/inventory/inventoryaggregate",
+            "/inventory/createaggregate",
+            "/inventory/detailaggregate",
+            "/inventory/deleteaggregate",
           ],
           4: [
             "/staff",
@@ -257,6 +261,10 @@ const ProtectedRoute = ({ children }) => {
             "/inventory/editdispatche",
             "/inventory/listdeletedispatche",
             "/inventory/deletedispatche",
+            "/inventory/inventoryaggregate",
+            "/inventory/createaggregate",
+            "/inventory/detailaggregate",
+            "/inventory/deleteaggregate",
           ],
         };
 

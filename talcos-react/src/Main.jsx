@@ -88,6 +88,7 @@ import {
   InventoryListEditWindmill,
   InventoryListEditWindmillAp,
   InventoryListReasignedRejectedMaterial,
+  InventoryAggregate,
   InventoryBobCat,
   InventoryBulk,
   InventoryCommercialBudget,
@@ -430,6 +431,19 @@ createRoot(document.getElementById("root")).render(
               path="deletecommercialdispatche"
               element={<InventoryDeleteCommercialDispatche />}
             />
+            <Route path="inventoryaggregate" element={<InventoryAggregate />} />
+            {/* <Route
+              path="createaggregate"
+              element={<InventoryCreateAggregate />}
+            /> */}
+            {/* <Route
+              path="detailaggregate"
+              element={<InventoryAggregateDetail />}
+            /> */}
+            {/* <Route
+              path="deleteaggregate"
+              element={<InventoryDeleteAggregate />}
+            /> */}
           </Route>
           <Route path="fastinventory" element={<FastInventory />} />
           <Route path="notification" element={<Notification />} />
