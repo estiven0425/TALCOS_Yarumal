@@ -19,7 +19,7 @@ export { default as GenerateReportMenu } from "./GenerateReportMenu";
 export { default as Home } from "./Home";
 export { default as Inventory } from "./Inventory";
 export { default as InventoryGeneral } from "./InventoryGeneral";
-// export { default as InventoryCreateAggregate } from "./InventoryCreateAggregate";
+export { default as InventoryCreateAggregate } from "./InventoryCreateAggregate";
 export { default as InventoryCreateBobCat } from "./InventoryCreateBobCat";
 export { default as InventoryCreateBulk } from "./InventoryCreateBulk";
 export { default as InventoryCreateCommercialBudget } from "./InventoryCreateCommercialBudget";

@@ -3,7 +3,7 @@ import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import InventoryRawMaterialRegisterAction from "./InventoryRawMaterialRegisterAction";
+import InventoryAggregateAction from "./InventoryAggregateAction";
 import Style from "./styles/inventory-aggregate-List.module.css";
 
 function InventoryAggregateList() {
@@ -85,7 +85,7 @@ function InventoryAggregateList() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <InventoryRawMaterialRegisterAction item={selectedItem} />
+            <InventoryAggregateAction item={selectedItem} />
           </motion.section>
         </>
       ) : (
@@ -104,7 +104,7 @@ function InventoryAggregateList() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <InventoryRawMaterialRegisterAction />
+            <InventoryAggregateAction />
           </motion.section>
         </>
       )}

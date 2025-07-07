@@ -1,6 +1,6 @@
 ﻿import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Style from "./styles/inventory-create-raw-material-register-form.module.css";
 

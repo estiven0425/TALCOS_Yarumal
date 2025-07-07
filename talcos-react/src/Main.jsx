@@ -24,6 +24,7 @@ import {
   Home,
   Inventory,
   InventoryGeneral,
+  InventoryCreateAggregate,
   InventoryCreateBobCat,
   InventoryCreateBulk,
   InventoryCreateCommercialBudget,
@@ -37,6 +38,7 @@ import {
   InventoryCreateShift,
   InventoryCreateWindmill,
   InventoryCreateWindmillAp,
+  // InventoryDeleteAggregate,
   InventoryDeleteBobCat,
   InventoryDeleteBulk,
   InventoryDeleteCommercialBudget,
@@ -89,6 +91,7 @@ import {
   InventoryListEditWindmillAp,
   InventoryListReasignedRejectedMaterial,
   InventoryAggregate,
+  //InventoryAggregateDetail,
   InventoryBobCat,
   InventoryBulk,
   InventoryCommercialBudget,
@@ -432,10 +435,10 @@ createRoot(document.getElementById("root")).render(
               element={<InventoryDeleteCommercialDispatche />}
             />
             <Route path="inventoryaggregate" element={<InventoryAggregate />} />
-            {/* <Route
+            <Route
               path="createaggregate"
               element={<InventoryCreateAggregate />}
-            /> */}
+            />
             {/* <Route
               path="detailaggregate"
               element={<InventoryAggregateDetail />}
