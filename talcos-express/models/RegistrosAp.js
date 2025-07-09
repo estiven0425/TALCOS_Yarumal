@@ -40,7 +40,7 @@ const RegistrosAp = sequelize.define(
       },
     },
     ingreso_roca_registro_ap: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(5,2),
       allowNull: false,
     },
     bobcat_roca_registro_ap: {
@@ -48,7 +48,7 @@ const RegistrosAp = sequelize.define(
       allowNull: false,
     },
     ingreso_grueso_registro_ap: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(5,2),
       allowNull: false,
     },
     bobcat_grueso_registro_ap: {
@@ -56,15 +56,15 @@ const RegistrosAp = sequelize.define(
       allowNull: false,
     },
     peso_bobcat_registro_ap: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(5,2),
       allowNull: false,
     },
     total_roca_registro_ap: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(5,2),
       allowNull: false,
     },
     total_grueso_registro_ap: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(5,2),
       allowNull: false,
     },
     molino_registro_ap: {

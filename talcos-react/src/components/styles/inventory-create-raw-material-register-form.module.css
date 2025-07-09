@@ -23,7 +23,6 @@
   width: 100%;
 }
 
-
 .inventoryCreateRawMaterialRegisterSecondary {
   align-content: flex-start;
   box-sizing: border-box;
@@ -186,7 +185,7 @@
   background-color: #0048b6;
   font-size: 1.5rem;
   margin: 0px;
-  padding: 5px;	
+  padding: 5px;
   text-align: center;
 }
 
