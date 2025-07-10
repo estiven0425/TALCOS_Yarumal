@@ -66,49 +66,40 @@ exports.actualizarInventarioAp = async (req, res) => {
 };
 
 exports.actualizarCantidadesInventarioAp = async (req, res) => {
-  const actualizaciones = req.body;
+  const { total_inventario_ap } = req.body;
 
   try {
-    const resultados = await Promise.all(
-      actualizaciones.map(async (actualizacion) => {
-        const { id_inventario_ap, total_inventario_ap } = actualizacion;
-        const inventarioApExistente = await InventarioAp.findByPk(
-          id_inventario_ap
-        );
+    const registros = await InventarioAp.findAll();
 
-        if (inventarioApExistente) {
-          const cantidadActual =
-            parseFloat(inventarioApExistente.total_inventario_ap) || 0;
-          const cantidadNueva = parseFloat(total_inventario_ap) || 0;
+    if (!registros || registros.length === 0) {
+      return res.json({
+        mensaje: "No hay registros de inventario AP para actualizar",
+        resultados: [],
+      });
+    }
 
-          inventarioApExistente.total_inventario_ap =
-            cantidadActual + cantidadNueva;
+    const cantidadNueva = parseFloat(total_inventario_ap) || 0;
+    const resultados = [];
 
-          await inventarioApExistente.save();
+    for (const registro of registros) {
+      const cantidadActual = parseFloat(registro.total_inventario_ap) || 0;
+      registro.total_inventario_ap = cantidadActual + cantidadNueva;
+      await registro.save();
 
-          return {
-            id_inventario_ap,
-            mensaje: "Cantidad de inventario AP actualizada con éxito",
-            nueva_cantidad: inventarioApExistente.total_inventario_ap,
-          };
-        } else {
-          return { id_inventario_ap, error: "Inventario AP no encontrado" };
-        }
-      })
-    );
-
-    const errores = resultados.filter((resultado) => resultado.error);
-    if (errores.length > 0) {
-      return res.status(404).json({ errores });
+      resultados.push({
+        id_inventario_ap: registro.id_inventario_ap,
+        mensaje: "Cantidad actualizada con éxito",
+        nueva_cantidad: registro.total_inventario_ap,
+      });
     }
 
     res.json({
-      mensaje: "Cantidades de inventario AP actualizadas con éxito",
+      mensaje: "Todos los registros de inventario AP fueron actualizados",
       resultados,
     });
   } catch (error) {
     res.status(500).json({
-      error: "Error al actualizar las cantidades de el inventario AP",
+      error: "Error al actualizar las cantidades del inventario AP",
       details: error.message,
     });
   }

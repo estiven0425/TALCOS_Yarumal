@@ -91,7 +91,7 @@ import {
   InventoryListEditWindmillAp,
   InventoryListReasignedRejectedMaterial,
   InventoryAggregate,
-  //InventoryAggregateDetail,
+  InventoryAggregateDetail,
   InventoryBobCat,
   InventoryBulk,
   InventoryCommercialBudget,
@@ -439,10 +439,10 @@ createRoot(document.getElementById("root")).render(
               path="createaggregate"
               element={<InventoryCreateAggregate />}
             />
-            {/* <Route
+            <Route
               path="detailaggregate"
               element={<InventoryAggregateDetail />}
-            /> */}
+            />
             {/* <Route
               path="deleteaggregate"
               element={<InventoryDeleteAggregate />}
@@ -457,5 +457,5 @@ createRoot(document.getElementById("root")).render(
         </Route>
       </Routes>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );

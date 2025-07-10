@@ -207,32 +207,33 @@ function InventoryCreateAggregate() {
     setServerError(null);
     setLoading(true);
 
-    const fullRecord = {
-      fecha_registro_ap: fechaRegistroAp,
-      turno_registro_ap: turnoRegistroAp,
-      mes_registro_ap: mesRegistroAp,
-      titular_registro_ap: titularRegistroAp,
-      operador_registro_ap: operadorRegistroAp,
-      ingreso_roca_registro_ap: ingresoRocaRegistroAp,
-      bobcat_roca_registro_ap: bobCatRocaRegistroAp,
-      ingreso_grueso_registro_ap: ingresoGruesoRegistroAp,
-      bobcat_grueso_registro_ap: bobCatGruesoRegistroAp,
-      peso_bobcat_registro_ap: pesoBobCatRegistroAp,
-      total_roca_registro_ap: totalRocaRegistroAp,
-      total_grueso_registro_ap: totalGruesoRegistroAp,
-      molino_registro_ap: molinoApRegistroAp,
-      horometro_inicio_registro_ap: horometroInicioRegistroAp,
-      horometro_fin_registro_ap: horometroFinRegistroAp,
-      carguero_registro_ap: cargueroRegistroAp,
-      observacion_registro_ap: observacionRegistroAp,
-    };
-
     try {
-      // await axios.post(`http://${localIP}:3000/registros_ap`, {
-      //     fullRecord: fullRecord,
-      // });
+      await axios.post(`http://${localIP}:3000/registros_ap`, {
+        fecha_registro_ap: fechaRegistroAp,
+        turno_registro_ap: turnoRegistroAp,
+        mes_registro_ap: mesRegistroAp,
+        titular_registro_ap: titularRegistroAp,
+        operador_registro_ap: operadorRegistroAp,
+        ingreso_roca_registro_ap: ingresoRocaRegistroAp,
+        bobcat_roca_registro_ap: bobCatRocaRegistroAp,
+        ingreso_grueso_registro_ap: ingresoGruesoRegistroAp,
+        bobcat_grueso_registro_ap: bobCatGruesoRegistroAp,
+        peso_bobcat_registro_ap: pesoBobCatRegistroAp,
+        total_roca_registro_ap: totalRocaRegistroAp,
+        total_grueso_registro_ap: totalGruesoRegistroAp,
+        molino_registro_ap: molinoApRegistroAp,
+        horometro_inicio_registro_ap: horometroInicioRegistroAp,
+        horometro_fin_registro_ap: horometroFinRegistroAp,
+        carguero_registro_ap: cargueroRegistroAp,
+        observacion_registro_ap: observacionRegistroAp,
+      });
 
-      console.log(fullRecord);
+      await axios.put(
+        `http://${localIP}:3000/inventario_ap/actualizarcantidad`,
+        {
+          total_inventario_ap: totalRocaRegistroAp + totalGruesoRegistroAp,
+        },
+      );
 
       setSendStatus(true);
     } catch (error) {

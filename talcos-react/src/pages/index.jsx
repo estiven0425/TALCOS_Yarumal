@@ -86,7 +86,7 @@ export { default as InventoryListEditWindmill } from "./InventoryListEditWindmil
 export { default as InventoryListEditWindmillAp } from "./InventoryListEditWindmillAp";
 export { default as InventoryListReasignedRejectedMaterial } from "./InventoryListReasignedRejectedMaterial";
 export { default as InventoryAggregate } from "./InventoryAggregate";
-// export { default as InventoryAggregateDetail } from "./InventoryAggregateDetail";
+export { default as InventoryAggregateDetail } from "./InventoryAggregateDetail";
 export { default as InventoryBobCat } from "./InventoryBobCat";
 export { default as InventoryBulk } from "./InventoryBulk";
 export { default as InventoryCommercialBudget } from "./InventoryCommercialBudget";

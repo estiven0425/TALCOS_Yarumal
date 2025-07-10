@@ -31,15 +31,52 @@ exports.leerRegistroAp = async (req, res) => {
 };
 
 exports.crearRegistroAp = async (req, res) => {
-  const fullRecord = req.body;
+  const {
+    fecha_registro_ap,
+    turno_registro_ap,
+    mes_registro_ap,
+    titular_registro_ap,
+    operador_registro_ap,
+    ingreso_roca_registro_ap,
+    bobcat_roca_registro_ap,
+    ingreso_grueso_registro_ap,
+    bobcat_grueso_registro_ap,
+    peso_bobcat_registro_ap,
+    total_roca_registro_ap,
+    total_grueso_registro_ap,
+    molino_registro_ap,
+    horometro_inicio_registro_ap,
+    horometro_fin_registro_ap,
+    carguero_registro_ap,
+    observacion_registro_ap,
+  } = req.body;
 
   try {
-    const nuevoRegistroAp = await RegistrosAp.bulkCreate(fullRecord);
+    const nuevoRegistroAp = await RegistrosAp.create({
+      fecha_registro_ap,
+      turno_registro_ap,
+      mes_registro_ap,
+      titular_registro_ap,
+      operador_registro_ap,
+      ingreso_roca_registro_ap,
+      bobcat_roca_registro_ap,
+      ingreso_grueso_registro_ap,
+      bobcat_grueso_registro_ap,
+      peso_bobcat_registro_ap,
+      total_roca_registro_ap,
+      total_grueso_registro_ap,
+      molino_registro_ap,
+      horometro_inicio_registro_ap,
+      horometro_fin_registro_ap,
+      carguero_registro_ap,
+      observacion_registro_ap,
+    });
+
     res.status(201).json(nuevoRegistroAp);
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error al crear el registro AP: " + error.message });
+    res.status(500).json({
+      error: "Error al crear el registro AP: " + error.message,
+    });
   }
 };
 
@@ -108,7 +145,7 @@ exports.eliminarRegistrosAp = async (req, res) => {
   try {
     await RegistrosAp.update(
       { actividad_registro_ap: false },
-      { where: { id_registro_ap: ids_registros_ap } }
+      { where: { id_registro_ap: ids_registros_ap } },
     );
 
     res.status(200).json({ message: "Registro AP eliminado correctamente" });

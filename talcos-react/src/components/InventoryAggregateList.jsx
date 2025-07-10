@@ -38,7 +38,7 @@ function InventoryAggregateList() {
     return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
   };
   const groupedItems = items.reduce((groups, item) => {
-    const date = item.fecha_registro;
+    const date = item.fecha_registro_ap;
     if (!groups[date]) {
       groups[date] = [];
     }

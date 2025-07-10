@@ -1,0 +1,89 @@
+.inventoryAggregateActionDetailMain {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+  height: 85%;
+  justify-content: flex-start;
+}
+
+.inventoryAggregateActionDetailMain div {
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 5px;
+  justify-content: flex-start;
+}
+
+.inventoryAggregateActionDetailMainEspecial h2 {
+  font-size: 1.5rem;
+  margin: 0px;
+  text-align: center !important;
+}
+
+.inventoryAggregateActionDetailMain div h2 {
+  font-size: 1.5rem;
+  margin: 0px;
+  text-align: left;
+}
+
+.inventoryAggregateActionDetailMain div p {
+  font-size: 1rem;
+  margin: 0px;
+  text-align: left;
+}
+
+.inventoryAggregateActionDetailFooter {
+  align-content: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+  height: 15%;
+  justify-content: flex-end;
+}
+
+.inventoryAggregateActionDetailFooter button {
+  background-color: #0061c2;
+  border-color: transparent;
+  border-radius: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  max-height: 39px;
+  outline: transparent 1px solid;
+  padding: 10px;
+  transition: all 0.5s ease-in-out;
+}
+
+.inventoryAggregateActionDetailFooter button:hover {
+  background-color: #017fd3;
+}
+
+.inventoryAggregateActionDetailFooter button:focus {
+  background-color: #017fd3;
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+  border: 5px solid #0048b6;
+  border-radius: 50%;
+  border-top: 5px solid transparent;
+  height: 20px;
+  margin: -7.5px auto 0px;
+  width: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
