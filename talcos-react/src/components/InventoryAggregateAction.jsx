@@ -46,11 +46,11 @@ function InventoryAggregateAction({ item }) {
             </div>
             <div>
               <h2>Roca total</h2>
-              <p>{item.total_roca_registro_ap}</p>
+              <p>{item.total_roca_registro_ap} Kg</p>
             </div>
             <div>
               <h2>Grueso total</h2>
-              <p>{item.total_grueso_registro_ap}</p>
+              <p>{item.total_grueso_registro_ap} Kg</p>
             </div>
           </motion.main>
           <motion.footer

@@ -23,7 +23,7 @@ const InventarioAp = sequelize.define(
       allowNull: false,
     },
     total_inventario_ap: {
-      type: DataTypes.DECIMAL(5, 2),
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     actividad_inventario_ap: {

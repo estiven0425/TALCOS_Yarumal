@@ -78,7 +78,8 @@ function InventoryAggregateActionDetail({ item }) {
               item.total_grueso_registro_ap,
               item.horometro_fin_registro_ap -
                 item.horometro_inicio_registro_ap,
-            )}
+            )}{" "}
+            Kg/Hr
           </p>
         </div>
       </motion.main>

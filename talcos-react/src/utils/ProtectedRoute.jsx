@@ -166,6 +166,11 @@ const ProtectedRoute = ({ children }) => {
             "/inventory/createaggregate",
             "/inventory/detailaggregate",
             "/inventory/deleteaggregate",
+            "/inventory/createinventoryap",
+            "/inventory/listeditinventoryap",
+            "/inventory/editinventoryap",
+            "/inventory/listdeleteinventoryap",
+            "/inventory/deleteinventoryap",
           ],
           4: [
             "/staff",
@@ -265,6 +270,11 @@ const ProtectedRoute = ({ children }) => {
             "/inventory/createaggregate",
             "/inventory/detailaggregate",
             "/inventory/deleteaggregate",
+            "/inventory/createinventoryap",
+            "/inventory/listeditinventoryap",
+            "/inventory/editinventoryap",
+            "/inventory/listdeleteinventoryap",
+            "/inventory/deleteinventoryap",
           ],
         };
 

@@ -30,6 +30,7 @@ import {
   InventoryCreateCommercialBudget,
   InventoryCreateCommercialDispatche,
   InventoryCreateDispatche,
+  InventoryCreateInventoryAp,
   InventoryCreateProfile,
   InventoryCreateRawMaterial,
   InventoryCreateRawMaterialRegister,
@@ -38,12 +39,13 @@ import {
   InventoryCreateShift,
   InventoryCreateWindmill,
   InventoryCreateWindmillAp,
-  // InventoryDeleteAggregate,
+  InventoryDeleteAggregate,
   InventoryDeleteBobCat,
   InventoryDeleteBulk,
   InventoryDeleteCommercialBudget,
   InventoryDeleteCommercialDispatche,
   InventoryDeleteDispatche,
+  InventoryDeleteInventoryAp,
   InventoryDeleteProfile,
   InventoryDeleteRawMaterial,
   InventoryDeleteRawMaterialRegister,
@@ -57,6 +59,7 @@ import {
   InventoryEditCommercialBudget,
   InventoryEditCommercialDispatche,
   InventoryEditDispatche,
+  InventoryEditInventoryAp,
   InventoryEditProfile,
   InventoryEditRawMaterial,
   InventoryEditReasignedRejectedMaterial,
@@ -70,6 +73,7 @@ import {
   InventoryListDeleteCommercialBudget,
   InventoryListDeleteCommercialDispatche,
   InventoryListDeleteDispatche,
+  InventoryListDeleteInventoryAp,
   InventoryListDeleteProfile,
   InventoryListDeleteRawMaterial,
   InventoryListDeleteReference,
@@ -82,6 +86,7 @@ import {
   InventoryListEditCommercialBudget,
   InventoryListEditCommercialDispatche,
   InventoryListEditDispatche,
+  InventoryListEditInventoryAp,
   InventoryListEditProfile,
   InventoryListEditRawMaterial,
   InventoryListEditReference,
@@ -97,6 +102,7 @@ import {
   InventoryCommercialBudget,
   InventoryCommercialDispatche,
   InventoryDispatche,
+  InventoryInventoryAp,
   InventoryProfile,
   InventoryRawMaterial,
   InventoryRawMaterialRegister,
@@ -443,10 +449,31 @@ createRoot(document.getElementById("root")).render(
               path="detailaggregate"
               element={<InventoryAggregateDetail />}
             />
-            {/* <Route
+            <Route
               path="deleteaggregate"
               element={<InventoryDeleteAggregate />}
-            /> */}
+            />
+            <Route path="inventoryap" element={<InventoryInventoryAp />} />
+            <Route
+              path="createinventoryap"
+              element={<InventoryCreateInventoryAp />}
+            />
+            <Route
+              path="listeditinventoryap"
+              element={<InventoryListEditInventoryAp />}
+            />
+            <Route
+              path="editinventoryap"
+              element={<InventoryEditInventoryAp />}
+            />
+            <Route
+              path="listdeleteinventoryap"
+              element={<InventoryListDeleteInventoryAp />}
+            />
+            <Route
+              path="deleteinventoryap"
+              element={<InventoryDeleteInventoryAp />}
+            />
           </Route>
           <Route path="fastinventory" element={<FastInventory />} />
           <Route path="notification" element={<Notification />} />

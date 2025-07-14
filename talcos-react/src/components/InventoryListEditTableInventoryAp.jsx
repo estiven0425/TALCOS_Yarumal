@@ -1,21 +1,10 @@
-﻿import { es } from "date-fns/locale";
-import { format, isValid, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Style from "./styles/inventory-list-table.module.css";
+import Style from "./styles/inventory-list-table-inventory-ap.module.css";
 
-function InventoryListDeleteTable({
-  endpoint,
-  redirectPath,
-  title,
-  head,
-  index,
-  body,
-  name,
-  optional,
-}) {
+function InventoryListEditTableInventoryAp() {
   const [item, setItem] = useState([]);
   const navigate = useNavigate();
   const localIP = import.meta.env.VITE_LOCAL_IP;
@@ -23,7 +12,9 @@ function InventoryListDeleteTable({
   useEffect(() => {
     const getItem = async () => {
       try {
-        const response = await axios.get(`http://${localIP}:3000/${endpoint}`);
+        const response = await axios.get(
+          `http://${localIP}:3000/inventario_ap`,
+        );
         const data = Array.isArray(response.data)
           ? response.data
           : Object.values(response.data);
@@ -37,32 +28,16 @@ function InventoryListDeleteTable({
     getItem();
   }, [localIP]);
   const redirectInventory = () => {
-    navigate(`/inventory/inventory${redirectPath}`);
+    navigate(`/inventory/inventoryap`);
   };
-  const redirectDeleteInventory = (data) => {
-    navigate(`/inventory/delete${redirectPath}`, { state: data });
-  };
-  const capitalizeFirstLetter = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
-  const formatIfDate = (value) => {
-    if (typeof value === "string") {
-      const parsed = parseISO(value);
-      if (isValid(parsed)) {
-        const formatted = format(parsed, "EEEE d 'de' MMMM 'del' yyyy", {
-          locale: es,
-        });
-        return capitalizeFirstLetter(formatted);
-      }
-    }
-    return value;
+  const redirectEditInventory = (data) => {
+    navigate(`/inventory/editinventoryap`, { state: data });
   };
 
   return (
     <>
       <header className={Style.inventoryListTableHeader}>
-        <h1>Seleccione {title} para eliminar</h1>
+        <h1>Seleccione inventario AP para editar</h1>
       </header>
       <main className={Style.inventoryListTableMain}>
         {item.length > 0 ? (
@@ -74,28 +49,37 @@ function InventoryListDeleteTable({
           >
             <thead className={Style.inventoryListTableMainTableHead}>
               <tr>
-                {head.map((head) => (
-                  <th key={head}>{head}</th>
-                ))}
+                <th>Tipo</th>
+                <th>Nombre</th>
+                <th>Porcentaje</th>
+                <th>Total</th>
+                <th>Cantidad correspondiente</th>
               </tr>
             </thead>
             <tbody className={Style.inventoryListTableMainTableBody}>
               {item.map((item) => (
                 <tr
-                  key={item[index]}
-                  onClick={() => redirectDeleteInventory(item)}
+                  key={item.id_inventario_ap}
+                  onClick={() => redirectEditInventory(item)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      redirectDeleteInventory(item);
+                      redirectEditInventory(item);
                     }
                   }}
                   tabIndex="0"
                 >
-                  {body.map((body) => (
-                    <td key={body}>
-                      {formatIfDate(item[body])} {optional[body] || ""}
-                    </td>
-                  ))}
+                  <td>{item.tipo_inventario_ap}</td>
+                  <td>{item.nombre_inventario_ap}</td>
+                  <td>{item.porcentaje_inventario_ap} %</td>
+                  <td>{item.total_inventario_ap}</td>
+                  <td>
+                    {(
+                      (item.total_inventario_ap *
+                        item.porcentaje_inventario_ap) /
+                      100
+                    ).toFixed(2)}{" "}
+                    Kg
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -107,7 +91,7 @@ function InventoryListDeleteTable({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <h2>No existen {name}</h2>
+            <h2>No existen inventarios AP</h2>
           </motion.div>
         )}
       </main>
@@ -120,4 +104,4 @@ function InventoryListDeleteTable({
   );
 }
 
-export default InventoryListDeleteTable;
+export default InventoryListEditTableInventoryAp;

@@ -69,35 +69,55 @@ exports.actualizarCantidadesInventarioAp = async (req, res) => {
   const { total_inventario_ap } = req.body;
 
   try {
+    if (isNaN(total_inventario_ap)) {
+      return res
+        .status(400)
+        .json({ error: "Valor inválido para total_inventario_ap" });
+    }
+
+    const cantidadNueva = parseFloat(total_inventario_ap);
     const registros = await InventarioAp.findAll();
 
-    if (!registros || registros.length === 0) {
+    if (!registros.length) {
       return res.json({
         mensaje: "No hay registros de inventario AP para actualizar",
         resultados: [],
       });
     }
 
-    const cantidadNueva = parseFloat(total_inventario_ap) || 0;
     const resultados = [];
 
     for (const registro of registros) {
       const cantidadActual = parseFloat(registro.total_inventario_ap) || 0;
       registro.total_inventario_ap = cantidadActual + cantidadNueva;
-      await registro.save();
 
-      resultados.push({
-        id_inventario_ap: registro.id_inventario_ap,
-        mensaje: "Cantidad actualizada con éxito",
-        nueva_cantidad: registro.total_inventario_ap,
-      });
+      try {
+        await registro.save();
+        resultados.push({
+          id_inventario_ap: registro.id_inventario_ap,
+          mensaje: "Cantidad actualizada con éxito",
+          nueva_cantidad: registro.total_inventario_ap,
+        });
+      } catch (errorInterno) {
+        console.error(
+          "Error actualizando registro:",
+          registro.id_inventario_ap,
+          errorInterno,
+        );
+        resultados.push({
+          id_inventario_ap: registro.id_inventario_ap,
+          mensaje: "Error al actualizar este registro",
+          error: errorInterno.message,
+        });
+      }
     }
 
     res.json({
-      mensaje: "Todos los registros de inventario AP fueron actualizados",
+      mensaje: "Proceso de actualización completado",
       resultados,
     });
   } catch (error) {
+    console.error("Error general:", error);
     res.status(500).json({
       error: "Error al actualizar las cantidades del inventario AP",
       details: error.message,

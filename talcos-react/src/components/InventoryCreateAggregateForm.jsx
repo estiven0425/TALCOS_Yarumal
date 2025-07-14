@@ -228,10 +228,13 @@ function InventoryCreateAggregate() {
         observacion_registro_ap: observacionRegistroAp,
       });
 
+      const total =
+        parseFloat(totalRocaRegistroAp) + parseFloat(totalGruesoRegistroAp);
+
       await axios.put(
         `http://${localIP}:3000/inventario_ap/actualizarcantidad`,
         {
-          total_inventario_ap: totalRocaRegistroAp + totalGruesoRegistroAp,
+          total_inventario_ap: total,
         },
       );
 

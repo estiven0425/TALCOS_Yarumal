@@ -1,0 +1,116 @@
+.inventoryListTableHeader {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.inventoryListTableHeader h1 {
+    font-size: 1.5rem;
+    margin: 0px;
+    text-align: center;
+}
+
+.inventoryListTableMain {
+    align-content: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+}
+
+.inventoryListTableMainTable {
+    border-collapse: separate;
+    border-spacing: 0px 10px;
+    width: 100%;
+}
+
+.inventoryListTableMainTableHead,
+.inventoryListTableMainTableBody {
+    width: 100%;
+}
+
+.inventoryListTableMainTableHead tr,
+.inventoryListTableMainTableBody tr {
+    width: 100%;
+}
+
+.inventoryListTableMainTableHead tr th {
+    font-size: 1rem;
+    text-align: center;
+    vertical-align: baseline;
+    width: 20%;
+}
+
+.inventoryListTableMainTableBody tr {
+    cursor: pointer;
+    outline: transparent 1px solid;
+    transition: all 0.5s ease-in-out;
+}
+
+.inventoryListTableMainTableBody tr:hover,
+.inventoryListTableMainTableBody tr:focus {
+    background-color: #0048b6;
+}
+
+.inventoryListTableMainTableBody tr td {
+    font-size: 1rem;
+    text-align: center;
+    vertical-align: baseline;
+    width: 20%;
+}
+
+.inventoryListTableMainTableBody tr td:first-child {
+    border-radius: 20px 0px 0px 20px;
+}
+
+.inventoryListTableMainTableBody tr td:last-child {
+    border-radius: 0px 20px 20px 0px;
+}
+
+.inventoryListTableMainAlternative {
+    align-content: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    height: 100%;
+}
+
+.inventoryListTableMainAlternative h2 {
+    margin: 0px;
+    text-align: center;
+}
+
+.inventoryListTableFooter {
+    align-content: flex-start;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.inventoryListTableFooter button {
+    background-color: #0037ae;
+    border-color: transparent;
+    border-radius: 20px;
+    color: #ffffff;
+    cursor: pointer;
+    max-height: 49px;
+    outline: transparent 1px solid;
+    padding: 15px;
+    transition: all 0.5s ease-in-out;
+}
+
+.inventoryListTableFooter button:hover {
+    background-color: #0048b6;
+}
+
+.inventoryListTableFooter button:focus {
+    background-color: #0048b6;
+}
