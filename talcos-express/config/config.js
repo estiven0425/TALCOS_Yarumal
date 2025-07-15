@@ -1,28 +1,28 @@
-#!/usr/bin/env node
+#!/usr/bin/env node // Indica que este archivo debe ejecutarse con Node.js
 
-// Importación de dependencias
-const app = require("../app");
-const http = require("http");
-const normalizePort = require("./normalizePort");
-const onError = require("./onError");
-const onListening = require("./onListening");
+const app = require("../app"); // Importa la aplicación Express principal
+const http = require("http"); // Importa el módulo HTTP de Node.js
+const normalizePort = require("./normalizePort"); // Importa función para normalizar el puerto
+const onError = require("./onError"); // Importa manejador de errores del servidor
+const onListening = require("./onListening"); // Importa manejador de eventos de escucha
+const { conectionDataBase } = require("./conectionDataBase"); // Importa función de conexión a la base de datos
 
-// Importación de base de datos
-const { conectionDataBase } = require("./conectionDataBase");
+conectionDataBase() // Intenta conectar a la base de datos
+  .then(() => console.log("Conexión exitosa a la base de datos"))
+  .catch((error) =>
+    console.error("Error al conectar con la base de datos:", error),
+  );
 
-// Conexión a la base de datos
-conectionDataBase();
+const port = normalizePort(process.env.PORT || 3000); // Normaliza el puerto desde variables de entorno o usa 3000
 
-// Obtener el puerto, configurarlo y almacenarlo en Express
-const port = normalizePort(process.env.PORT || 3000);
-app.set("port", port);
+app.set("port", port); // Configura el puerto en la aplicación Express
 
-// Crear servidor HTTP
-const server = http.createServer(app);
+const server = http.createServer(app); // Crea el servidor HTTP con la aplicación Express
 
-// Escuchar en el puerto y en las demás interfaces
 server.listen(port, "0.0.0.0", () =>
-  console.log(`Servidor iniciado en el puerto: ${port}`)
+  // Inicia el servidor en todas las interfaces
+  console.log(`Servidor iniciado en el puerto: ${port}`),
 );
-server.on("error", onError(port));
-server.on("listening", onListening(server));
+
+server.on("error", onError(port)); // Maneja eventos de error del servidor
+server.on("listening", onListening(server)); // Maneja eventos de inicio de escucha
