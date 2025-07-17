@@ -23,7 +23,7 @@ exports.crearMateriaPrima = async (req, res) => {
 
     res.status(201).json(nuevaMateriaPrima);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear la materia prima" });
+    res.status(500).json({ error: "Error al crear la materia prima" + error });
   }
 };
 
@@ -50,7 +50,9 @@ exports.actualizarMateriaPrima = async (req, res) => {
       res.status(404).json({ error: "Materia prima no encontrada" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar la materia prima" });
+    res
+      .status(500)
+      .json({ error: "Error al actualizar la materia prima" + error });
   }
 };
 
@@ -70,6 +72,8 @@ exports.eliminarMateriaPrima = async (req, res) => {
       res.status(404).json({ error: "Materia prima no encontrada" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar la materia prima" });
+    res
+      .status(500)
+      .json({ error: "Error al eliminar la materia prima" + error });
   }
 };

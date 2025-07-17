@@ -32,7 +32,7 @@ const DespachoComercial = sequelize.define(
   {
     tableName: "despacho_comercial",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = DespachoComercial;

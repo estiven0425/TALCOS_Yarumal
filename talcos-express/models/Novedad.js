@@ -106,7 +106,7 @@ const Novedad = sequelize.define(
   {
     tableName: "novedad",
     timestamps: false,
-  }
+  },
 );
 
 Novedad.belongsTo(Usuarios, {

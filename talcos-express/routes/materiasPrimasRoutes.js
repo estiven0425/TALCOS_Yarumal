@@ -7,7 +7,7 @@ router.post("/", materiaPrimaController.crearMateriaPrima);
 router.put("/", materiaPrimaController.actualizarMateriaPrima);
 router.put(
   "/eliminarmateriaprima",
-  materiaPrimaController.eliminarMateriaPrima
+  materiaPrimaController.eliminarMateriaPrima,
 );
 
 module.exports = router;

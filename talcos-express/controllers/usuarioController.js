@@ -121,6 +121,7 @@ exports.registroTransportador = async (req, res) => {
 
 exports.informeInicialUsuario = async (req, res) => {
   const { idPerfil } = req.body;
+
   try {
     const usuarios = await Usuarios.findAll({
       include: [
@@ -156,6 +157,7 @@ exports.crearUsuario = async (req, res) => {
 
   try {
     const contrasenaEncriptada = await bcrypt.hash(contrasena_usuario, 10);
+
     const nuevoUsuario = await Usuarios.create({
       nombre_usuario,
       documento_usuario,
@@ -168,7 +170,7 @@ exports.crearUsuario = async (req, res) => {
 
     res.status(201).json(nuevoUsuario);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el usuario" });
+    res.status(500).json({ error: "Error al crear el usuario" + error });
   }
 };
 
@@ -211,7 +213,7 @@ exports.actualizarUsuario = async (req, res) => {
       res.status(404).json({ error: "Usuario no encontrado" });
     }
   } catch (error) {
-    console.error("Error al actualizar el usuario:", error);
+    console.error("Error al actualizar el usuario:" + error);
     res.status(500).json({ error: "Error al actualizar el usuario" });
   }
 };
@@ -232,6 +234,6 @@ exports.eliminarUsuario = async (req, res) => {
       res.status(404).json({ error: "Usuario no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el usuario" });
+    res.status(500).json({ error: "Error al eliminar el usuario" + error });
   }
 };

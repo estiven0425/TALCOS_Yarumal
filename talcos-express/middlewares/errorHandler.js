@@ -1,12 +1,10 @@
 const createError = require("http-errors");
 
-// Manejador de errores 404
 const notFoundHandler = (req, res, next) => {
   next(createError(404));
 };
 
-// Manejador de errores globales
-const globalErrorHandler = (err, req, res, next) => {
+const globalErrorHandler = (err, req, res) => {
   res.status(err.status || 500);
   res.json({
     message: err.message,

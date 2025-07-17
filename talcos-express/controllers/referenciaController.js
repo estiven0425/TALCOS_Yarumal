@@ -25,7 +25,7 @@ exports.crearReferencia = async (req, res) => {
 
     res.status(201).json(nuevaReferencia);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear la referencia" });
+    res.status(500).json({ error: "Error al crear la referencia" + error });
   }
 };
 
@@ -54,7 +54,9 @@ exports.actualizarReferencia = async (req, res) => {
       res.status(404).json({ error: "Referencia no encontrada" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar la referencia" });
+    res
+      .status(500)
+      .json({ error: "Error al actualizar la referencia" + error });
   }
 };
 
@@ -65,11 +67,13 @@ exports.actualizarCantidadesReferencias = async (req, res) => {
     const resultados = await Promise.all(
       actualizaciones.map(async (actualizacion) => {
         const { id_referencia, cantidad_referencia } = actualizacion;
+
         const referenciaExistente = await Referencias.findByPk(id_referencia);
 
         if (referenciaExistente) {
           const cantidadActual =
             parseFloat(referenciaExistente.cantidad_referencia) || 0;
+
           const cantidadNueva = parseFloat(cantidad_referencia) || 0;
 
           referenciaExistente.cantidad_referencia =
@@ -85,10 +89,11 @@ exports.actualizarCantidadesReferencias = async (req, res) => {
         } else {
           return { id_referencia, error: "Referencia no encontrada" };
         }
-      })
+      }),
     );
 
     const errores = resultados.filter((resultado) => resultado.error);
+
     if (errores.length > 0) {
       return res.status(404).json({ errores });
     }
@@ -121,6 +126,6 @@ exports.eliminarReferencia = async (req, res) => {
       res.status(404).json({ error: "Referencia no encontrada" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar la referencia" });
+    res.status(500).json({ error: "Error al eliminar la referencia" + error });
   }
 };

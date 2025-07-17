@@ -30,7 +30,7 @@ exports.crearInventarioAp = async (req, res) => {
 
     res.status(201).json(nuevoInventarioAp);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el inventario AP" });
+    res.status(500).json({ error: "Error al crear el inventario AP" + error });
   }
 };
 
@@ -61,7 +61,9 @@ exports.actualizarInventarioAp = async (req, res) => {
       res.status(404).json({ error: "Inventario AP no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el inventario AP" });
+    res
+      .status(500)
+      .json({ error: "Error al actualizar el inventario AP" + error });
   }
 };
 
@@ -89,10 +91,12 @@ exports.actualizarCantidadesInventarioAp = async (req, res) => {
 
     for (const registro of registros) {
       const cantidadActual = parseFloat(registro.total_inventario_ap) || 0;
+
       registro.total_inventario_ap = cantidadActual + cantidadNueva;
 
       try {
         await registro.save();
+
         resultados.push({
           id_inventario_ap: registro.id_inventario_ap,
           mensaje: "Cantidad actualizada con éxito",
@@ -104,6 +108,7 @@ exports.actualizarCantidadesInventarioAp = async (req, res) => {
           registro.id_inventario_ap,
           errorInterno,
         );
+
         resultados.push({
           id_inventario_ap: registro.id_inventario_ap,
           mensaje: "Error al actualizar este registro",
@@ -141,6 +146,8 @@ exports.eliminarInventarioAp = async (req, res) => {
       res.status(404).json({ error: "Inventario AP no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el inventario AP" });
+    res
+      .status(500)
+      .json({ error: "Error al eliminar el inventario AP" + error });
   }
 };

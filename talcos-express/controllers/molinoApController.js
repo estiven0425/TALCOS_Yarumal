@@ -23,7 +23,7 @@ exports.crearMolinoAp = async (req, res) => {
 
     res.status(201).json(nuevoMolinoAp);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el molino" });
+    res.status(500).json({ error: "Error al crear el molino" + error });
   }
 };
 
@@ -50,7 +50,7 @@ exports.actualizarMolinoAp = async (req, res) => {
       res.status(404).json({ error: "Molino AP no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el Molino AP" });
+    res.status(500).json({ error: "Error al actualizar el Molino AP" + error });
   }
 };
 
@@ -61,18 +61,21 @@ exports.actualizarHorometrosMolinosAp = async (req, res) => {
     const resultados = await Promise.all(
       actualizaciones.map(async (actualizacion) => {
         const { id_molino_ap, horometro_molino_ap } = actualizacion;
+
         const molinoAp = await MolinosAp.findByPk(id_molino_ap);
 
         if (molinoAp) {
           await molinoAp.update({ horometro_molino_ap });
+
           return { id_molino_ap, mensaje: "Horómetro actualizado con éxito" };
         } else {
           return { id_molino_ap, error: "Molino AP no encontrado" };
         }
-      })
+      }),
     );
 
     const errores = resultados.filter((resultado) => resultado.error);
+
     if (errores.length > 0) {
       return res.status(404).json({ errores });
     }
@@ -105,6 +108,6 @@ exports.eliminarMolinoAp = async (req, res) => {
       res.status(404).json({ error: "Molino AP no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el molino AP" });
+    res.status(500).json({ error: "Error al eliminar el molino AP" + error });
   }
 };

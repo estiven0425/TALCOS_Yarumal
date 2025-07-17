@@ -3,11 +3,9 @@ const path = require("path");
 const os = require("os");
 const app = express();
 
-// Establecer motor de vistas
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-// Importar middlewares
 const cors = require("./middlewares/cors");
 const logger = require("./middlewares/logger");
 const jsonParser = require("./middlewares/jsonParser");
@@ -18,7 +16,6 @@ const {
   globalErrorHandler,
 } = require("./middlewares/errorHandler");
 
-// Importar rutas
 const perfilesRoutes = require("./routes/perfilesRoutes");
 const molinosRoutes = require("./routes/molinosRoutes");
 const molinosApRoutes = require("./routes/molinosApRoutes");
@@ -29,7 +26,7 @@ const productosRechazadosRoutes = require("./routes/productosRechazadosRoutes");
 const materiasPrimasRoutes = require("./routes/materiasPrimasRoutes");
 const bobCatsRoutes = require("./routes/bobCatsRoutes");
 const usuariosRoutes = require("./routes/usuariosRoutes");
-const informesIniciaeslRoutes = require("./routes/informesInicialesRoutes");
+const informesInicialesRoutes = require("./routes/informesInicialesRoutes");
 const novedadesRoutes = require("./routes/novedadesRoutes");
 const controlesCalidadRoutes = require("./routes/controlesCalidadRoutes");
 const informesFinalesRoutes = require("./routes/informesFinalesRoutes");
@@ -44,14 +41,12 @@ const login = require("./utils/login");
 const pdfRoutes = require("./routes/pdfRoutes");
 const monitoreoRoutes = require("./routes/monitoreosRoutes");
 
-// Usar middlewares
 app.use(cors);
 app.use(logger);
 app.use(jsonParser);
 app.use(urlencodedParser);
 app.use(cookieParser);
 
-// Usar rutas
 app.use("/perfiles", perfilesRoutes);
 app.use("/molinos", molinosRoutes);
 app.use("/molinos_ap", molinosApRoutes);
@@ -62,7 +57,7 @@ app.use("/productos_rechazados", productosRechazadosRoutes);
 app.use("/materias_primas", materiasPrimasRoutes);
 app.use("/bob_cats", bobCatsRoutes);
 app.use("/usuarios", usuariosRoutes);
-app.use("/informes_iniciales", informesIniciaeslRoutes);
+app.use("/informes_iniciales", informesInicialesRoutes);
 app.use("/novedades", novedadesRoutes);
 app.use("/controles_calidad", controlesCalidadRoutes);
 app.use("/informes_finales", informesFinalesRoutes);
@@ -77,10 +72,8 @@ app.use("/login", login);
 app.use("/pdf", pdfRoutes);
 app.use("/monitoreo", monitoreoRoutes);
 
-// Ruta para archivos estáticos
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Ruta de verificación
 app.get("/verify", (req, res) => {
   const serverStatus = {
     message: "Servidor funcionando correctamente",
@@ -94,7 +87,6 @@ app.get("/verify", (req, res) => {
   res.render("verify", serverStatus);
 });
 
-// Usar middlewares de errores
 app.use(notFoundHandler);
 app.use(globalErrorHandler);
 

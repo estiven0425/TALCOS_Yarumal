@@ -1,80 +1,70 @@
-const Bultos = require("../models/Bultos"); // Importa el modelo de Bultos
+const Bultos = require("../models/Bultos");
 
 exports.leerBulto = async (req, res) => {
-  // Controlador para obtener todos los bultos activos
   try {
     const bultos = await Bultos.findAll({
-      // Busca todos los bultos con estado activo
       where: { actividad_bulto: true },
     });
 
-    res.json(bultos); // Envía la respuesta con los bultos encontrados
+    res.json(bultos);
   } catch (error) {
-    res.status(500).send("Error del servidor: " + error); // Maneja errores del servidor
+    res.status(500).send("Error del servidor: " + error);
   }
 };
 
 exports.crearBulto = async (req, res) => {
-  // Controlador para crear un nuevo bulto
-  const { nombre_bulto, capacidad_bulto } = req.body; // Extrae nombre y capacidad del cuerpo
+  const { nombre_bulto, capacidad_bulto } = req.body;
 
   try {
     const nuevoBulto = await Bultos.create({
-      // Crea un nuevo registro de bulto
       nombre_bulto,
       capacidad_bulto,
     });
 
-    res.status(201).json(nuevoBulto); // Envía respuesta exitosa con el nuevo bulto
+    res.status(201).json(nuevoBulto);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el bulto" + error }); // Maneja errores de creación
+    res.status(500).json({ error: "Error al crear el bulto" + error });
   }
 };
 
 exports.actualizarBulto = async (req, res) => {
-  // Controlador para actualizar un bulto
-  const { id_bulto, nombre_bulto, capacidad_bulto, actividad_bulto } = req.body; // Extrae datos del cuerpo
+  const { id_bulto, nombre_bulto, capacidad_bulto, actividad_bulto } = req.body;
 
   try {
-    const bulto = await Bultos.findByPk(id_bulto); // Busca el bulto por su ID
+    const bulto = await Bultos.findByPk(id_bulto);
 
     if (bulto) {
-      // Si existe el bulto
       await bulto.update({
-        // Actualiza los campos del bulto
         nombre_bulto,
         capacidad_bulto,
         actividad_bulto,
       });
 
-      res.json(bulto); // Envía respuesta con el bulto actualizado
+      res.json(bulto);
     } else {
-      res.status(404).json({ error: "Bulto no encontrado" }); // Maneja caso no encontrado
+      res.status(404).json({ error: "Bulto no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el bulto" + error }); // Maneja errores de actualización
+    res.status(500).json({ error: "Error al actualizar el bulto" + error });
   }
 };
 
 exports.eliminarBulto = async (req, res) => {
-  // Controlador para eliminar (desactivar) un bulto
-  const { id_bulto, actividad_bulto } = req.body; // Extrae ID y estado de actividad
+  const { id_bulto, actividad_bulto } = req.body;
 
   try {
-    const bulto = await Bultos.findByPk(id_bulto); // Busca el bulto por su ID
+    const bulto = await Bultos.findByPk(id_bulto);
 
     if (bulto) {
-      // Si existe el bulto
       await bulto.update({
-        // Actualiza solo el estado de actividad
         actividad_bulto,
       });
 
-      res.json(bulto); // Envía respuesta con el bulto actualizado
+      res.json(bulto);
     } else {
-      res.status(404).json({ error: "Bulto no encontrado" }); // Maneja caso no encontrado
+      res.status(404).json({ error: "Bulto no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el bulto" + error }); // Maneja errores de eliminación
+    res.status(500).json({ error: "Error al eliminar el bulto" + error });
   }
 };

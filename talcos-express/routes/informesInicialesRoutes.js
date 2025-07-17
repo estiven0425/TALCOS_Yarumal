@@ -5,11 +5,11 @@ const informeInicialController = require("../controllers/informeInicialControlle
 router.get("/", informeInicialController.leerInformeInicial);
 router.get(
   "/turnoinformeinicial",
-  informeInicialController.turnoInformeInicial
+  informeInicialController.turnoInformeInicial,
 );
 router.get(
   "/validarinformefinalpendiente",
-  informeInicialController.validarInformeFinalPendiente
+  informeInicialController.validarInformeFinalPendiente,
 );
 router.post("/", informeInicialController.crearInformeInicial);
 router.put("/", informeInicialController.actualizarInformeInicial);

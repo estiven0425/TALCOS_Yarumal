@@ -61,7 +61,7 @@ const ControlCalidad = sequelize.define(
   {
     tableName: "control_calidad",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = ControlCalidad;

@@ -27,6 +27,8 @@ exports.crearRegistro = async (req, res) => {
 
   try {
     const nuevoRegistro = await Registros.create(fullRecord);
+
+    // noinspection JSCheckFunctionSignatures
     const materiaPrima = await MateriasPrimas.findOne({
       where: { nombre_materia_prima: fullRecord.mp_registro },
     });
@@ -41,7 +43,7 @@ exports.crearRegistro = async (req, res) => {
 
     res.status(201).json(nuevoRegistro);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el registro" });
+    res.status(500).json({ error: "Error al crear el registro" + error });
   }
 };
 
@@ -52,6 +54,7 @@ exports.importarRegistro = async (req, res) => {
     const nuevosRegistros = await Registros.bulkCreate(fullRecord);
 
     for (const record of fullRecord) {
+      // noinspection JSCheckFunctionSignatures
       const materiaPrima = await MateriasPrimas.findOne({
         where: { nombre_materia_prima: record.mp_registro },
       });
@@ -67,7 +70,7 @@ exports.importarRegistro = async (req, res) => {
 
     res.status(201).json(nuevosRegistros);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear los registros" });
+    res.status(500).json({ error: "Error al crear los registros" + error });
   }
 };
 
@@ -126,7 +129,7 @@ exports.actualizarRegistro = async (req, res) => {
       res.status(404).json({ error: "Registro no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el registro" });
+    res.status(500).json({ error: "Error al actualizar el registro" + error });
   }
 };
 
@@ -134,13 +137,14 @@ exports.eliminarRegistros = async (req, res) => {
   const { ids_registros } = req.body;
 
   try {
+    // noinspection JSCheckFunctionSignatures
     await Registros.update(
       { actividad_registro: false },
-      { where: { id_registro: ids_registros } }
+      { where: { id_registro: ids_registros } },
     );
 
     res.status(200).json({ message: "Registros eliminados correctamente" });
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar los registros" });
+    res.status(500).json({ error: "Error al eliminar los registros" + error });
   }
 };

@@ -58,7 +58,7 @@ const Usuarios = sequelize.define(
   {
     tableName: "usuarios",
     timestamps: false,
-  }
+  },
 );
 
 Usuarios.belongsTo(Perfiles, {

@@ -102,7 +102,7 @@ const InformeInicial = sequelize.define(
   {
     tableName: "informe_inicial",
     timestamps: false,
-  }
+  },
 );
 
 InformeInicial.belongsTo(Usuarios, {

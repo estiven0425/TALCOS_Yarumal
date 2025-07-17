@@ -36,8 +36,8 @@ exports.turnoNovedad = async (req, res) => {
 
   let fechaConsulta = new Date(fecha);
 
-  const [horaInicio, minutoInicio] = inicioTurno.split(":").map(Number);
-  const [horaFin, minutoFin] = finTurno.split(":").map(Number);
+  const [horaInicio] = inicioTurno.split(":").map(Number);
+  const [horaFin] = finTurno.split(":").map(Number);
 
   if (horaFin < horaInicio) {
     fechaConsulta.setDate(fechaConsulta.getDate() - 1);
@@ -76,7 +76,7 @@ exports.turnoNovedad = async (req, res) => {
 
     res.json(novedades);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener novedades" });
+    res.status(500).json({ error: "Error al obtener novedades" + error });
   }
 };
 
@@ -85,8 +85,8 @@ exports.listaNovedad = async (req, res) => {
 
   let fechaConsulta = new Date(fecha);
 
-  const [horaInicio, minutoInicio] = inicioTurno.split(":").map(Number);
-  const [horaFin, minutoFin] = finTurno.split(":").map(Number);
+  const [horaInicio] = inicioTurno.split(":").map(Number);
+  const [horaFin] = finTurno.split(":").map(Number);
 
   if (horaFin < horaInicio) {
     fechaConsulta.setDate(fechaConsulta.getDate() - 1);
@@ -126,7 +126,7 @@ exports.listaNovedad = async (req, res) => {
 
     res.json(novedades);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener novedades" });
+    res.status(500).json({ error: "Error al obtener novedades" + error });
   }
 };
 
@@ -135,8 +135,8 @@ exports.listaParoNovedad = async (req, res) => {
 
   let fechaConsulta = new Date(fecha);
 
-  const [horaInicio, minutoInicio] = inicioTurno.split(":").map(Number);
-  const [horaFin, minutoFin] = finTurno.split(":").map(Number);
+  const [horaInicio] = inicioTurno.split(":").map(Number);
+  const [horaFin] = finTurno.split(":").map(Number);
 
   if (horaFin < horaInicio) {
     fechaConsulta.setDate(fechaConsulta.getDate() - 1);
@@ -177,7 +177,7 @@ exports.listaParoNovedad = async (req, res) => {
 
     res.json(novedades);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener novedades" });
+    res.status(500).json({ error: "Error al obtener novedades" + error });
   }
 };
 
@@ -189,7 +189,7 @@ exports.crearNovedad = async (req, res) => {
 
     res.status(201).json(nuevaNovedad);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear la novedad" });
+    res.status(500).json({ error: "Error al crear la novedad" + error });
   }
 };
 
@@ -230,7 +230,9 @@ exports.actualizarNovedad = async (req, res) => {
     const resultados = await Promise.all(updatePromises);
     res.json(resultados);
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar las novedades" });
+    res
+      .status(500)
+      .json({ error: "Error al actualizar las novedades" + error });
   }
 };
 
@@ -251,6 +253,6 @@ exports.finParoNovedad = async (req, res) => {
       res.status(404).json({ error: "Paro no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al finalizar el paro" });
+    res.status(500).json({ error: "Error al finalizar el paro" + error });
   }
 };

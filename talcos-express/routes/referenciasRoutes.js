@@ -7,7 +7,7 @@ router.post("/", referenciaController.crearReferencia);
 router.put("/", referenciaController.actualizarReferencia);
 router.put(
   "/actualizarcantidad",
-  referenciaController.actualizarCantidadesReferencias
+  referenciaController.actualizarCantidadesReferencias,
 );
 router.put("/eliminarreferencia", referenciaController.eliminarReferencia);
 

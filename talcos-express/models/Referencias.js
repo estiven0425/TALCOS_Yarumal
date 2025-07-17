@@ -37,7 +37,7 @@ const Referencias = sequelize.define(
   {
     tableName: "referencias",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = Referencias;

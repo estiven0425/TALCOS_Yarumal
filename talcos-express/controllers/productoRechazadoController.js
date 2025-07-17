@@ -21,6 +21,7 @@ exports.crearProductoRechazado = async (req, res) => {
   } = req.body;
 
   try {
+    // noinspection JSCheckFunctionSignatures
     const productoExistente = await ProductosRechazados.findOne({
       where: {
         nombre_producto_rechazado,
@@ -34,6 +35,7 @@ exports.crearProductoRechazado = async (req, res) => {
     if (productoExistente) {
       const cantidadActual =
         parseFloat(productoExistente.cantidad_producto_rechazado) || 0;
+
       const cantidadNueva = parseFloat(cantidad_producto_rechazado) || 0;
 
       productoExistente.cantidad_producto_rechazado =
@@ -54,7 +56,9 @@ exports.crearProductoRechazado = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Error al crear o actualizar el producto rechazado" });
+      .json({
+        error: "Error al crear o actualizar el producto rechazado" + error,
+      });
   }
 };
 
@@ -69,7 +73,7 @@ exports.actualizarProductoRechazado = async (req, res) => {
 
   try {
     const productoRechazado = await ProductosRechazados.findByPk(
-      id_producto_rechazado
+      id_producto_rechazado,
     );
 
     if (productoRechazado) {
@@ -87,7 +91,7 @@ exports.actualizarProductoRechazado = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Error al actualizar el producto rechazado" });
+      .json({ error: "Error al actualizar el producto rechazado" + error });
   }
 };
 
@@ -100,14 +104,16 @@ exports.reasignarProductoRechazado = async (req, res) => {
 
   try {
     const productoRechazado = await ProductosRechazados.findByPk(
-      id_producto_rechazado
+      id_producto_rechazado,
     );
+
     const referencia = await Referencias.findByPk(referenciaSeleccionada);
 
     if (productoRechazado && referencia) {
       const nuevaCantidadProductoRechazado =
         parseFloat(productoRechazado.cantidad_producto_rechazado) -
         parseFloat(cantidad_producto_rechazado);
+
       const nuevaCantidadReferencia =
         parseFloat(referencia.cantidad_referencia) +
         parseFloat(cantidad_producto_rechazado);
@@ -129,7 +135,7 @@ exports.reasignarProductoRechazado = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Error al actualizar el producto rechazado" });
+      .json({ error: "Error al actualizar el producto rechazado" + error });
   }
 };
 
@@ -138,7 +144,7 @@ exports.eliminarProductoRechazado = async (req, res) => {
 
   try {
     const productoRechazado = await ProductosRechazados.findByPk(
-      id_producto_rechazado
+      id_producto_rechazado,
     );
 
     if (productoRechazado) {
@@ -151,6 +157,8 @@ exports.eliminarProductoRechazado = async (req, res) => {
       res.status(404).json({ error: "Producto rechazado no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el producto rechazado" });
+    res
+      .status(500)
+      .json({ error: "Error al eliminar el producto rechazado" + error });
   }
 };

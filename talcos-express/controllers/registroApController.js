@@ -143,6 +143,7 @@ exports.eliminarRegistrosAp = async (req, res) => {
   const { ids_registros_ap } = req.body;
 
   try {
+    // noinspection JSCheckFunctionSignatures
     await RegistrosAp.update(
       { actividad_registro_ap: false },
       { where: { id_registro_ap: ids_registros_ap } },

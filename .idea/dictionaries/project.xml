@@ -2,18 +2,56 @@
   <dictionary name="project">
     <words>
       <w>actualizacion</w>
+      <w>actualizarcantidad</w>
+      <w>actualizarhorometro</w>
       <w>bonificacion</w>
       <w>conection</w>
+      <w>conteoperfil</w>
       <w>contrasena</w>
+      <w>eliminarbobcat</w>
+      <w>eliminarbulto</w>
+      <w>eliminardespacho</w>
+      <w>eliminardespachocomercial</w>
+      <w>eliminarinventarioap</w>
+      <w>eliminarmateriaprima</w>
+      <w>eliminarmolino</w>
+      <w>eliminarperfil</w>
+      <w>eliminarpresupuestocomercial</w>
+      <w>eliminarproductorechazado</w>
+      <w>eliminarreferencia</w>
+      <w>eliminarregistro</w>
+      <w>eliminarregistroap</w>
+      <w>eliminarturno</w>
+      <w>eliminarusuario</w>
       <w>estiven</w>
+      <w>finparonovedad</w>
+      <w>hashear</w>
       <w>horometro</w>
+      <w>horometros</w>
       <w>horómetro</w>
+      <w>horómetros</w>
+      <w>importarregistro</w>
+      <w>informeinicialusuario</w>
+      <w>listanovedad</w>
+      <w>listaparonovedad</w>
       <w>mecanico</w>
+      <w>mensajeusuario</w>
       <w>minicargador</w>
+      <w>notificacion</w>
+      <w>notificacionmensaje</w>
       <w>observacion</w>
+      <w>personalperfil</w>
+      <w>personalusuario</w>
+      <w>reasignarproductorechazado</w>
+      <w>registrotransportador</w>
+      <w>registrousuario</w>
       <w>remision</w>
       <w>retencion</w>
       <w>telefono</w>
+      <w>turnoinformefinal</w>
+      <w>turnoinformeinicial</w>
+      <w>turnonovedad</w>
+      <w>validarinformefinalpendiente</w>
       <w>yarumal</w>
     </words>
   </dictionary>

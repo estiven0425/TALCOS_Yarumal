@@ -16,6 +16,7 @@ exports.leerDespachos = async (req, res) => {
 exports.leerDespachosFiltrados = async (req, res) => {
   try {
     const { inicio, fin } = req.query;
+
     let whereClause = { actividad_despacho: true };
 
     if (inicio && fin) {
@@ -45,7 +46,7 @@ exports.crearDespacho = async (req, res) => {
 
     res.status(201).json(nuevoDespacho);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el despacho" });
+    res.status(500).json({ error: "Error al crear el despacho" + error });
   }
 };
 
@@ -68,7 +69,7 @@ exports.actualizarDespacho = async (req, res) => {
       res.status(404).json({ error: "Despacho no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el despacho" });
+    res.status(500).json({ error: "Error al actualizar el despacho" + error });
   }
 };
 
@@ -88,6 +89,6 @@ exports.eliminarDespacho = async (req, res) => {
       res.status(404).json({ error: "Despacho no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el despacho" });
+    res.status(500).json({ error: "Error al eliminar el despacho" + error });
   }
 };

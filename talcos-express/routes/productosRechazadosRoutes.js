@@ -7,11 +7,11 @@ router.post("/", productoRechazadoController.crearProductoRechazado);
 router.put("/", productoRechazadoController.actualizarProductoRechazado);
 router.put(
   "/reasignarproductorechazado",
-  productoRechazadoController.reasignarProductoRechazado
+  productoRechazadoController.reasignarProductoRechazado,
 );
 router.put(
   "/eliminarproductorechazado",
-  productoRechazadoController.eliminarProductoRechazado
+  productoRechazadoController.eliminarProductoRechazado,
 );
 
 module.exports = router;

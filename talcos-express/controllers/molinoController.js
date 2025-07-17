@@ -23,7 +23,7 @@ exports.crearMolino = async (req, res) => {
 
     res.status(201).json(nuevoMolino);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el molino" });
+    res.status(500).json({ error: "Error al crear el molino" + error });
   }
 };
 
@@ -46,7 +46,7 @@ exports.actualizarMolino = async (req, res) => {
       res.status(404).json({ error: "Molino no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el Molino" });
+    res.status(500).json({ error: "Error al actualizar el Molino" + error });
   }
 };
 
@@ -57,18 +57,21 @@ exports.actualizarHorometrosMolinos = async (req, res) => {
     const resultados = await Promise.all(
       actualizaciones.map(async (actualizacion) => {
         const { id_molino, horometro_molino } = actualizacion;
+
         const molino = await Molinos.findByPk(id_molino);
 
         if (molino) {
           await molino.update({ horometro_molino });
+
           return { id_molino, mensaje: "Horómetro actualizado con éxito" };
         } else {
           return { id_molino, error: "Molino no encontrado" };
         }
-      })
+      }),
     );
 
     const errores = resultados.filter((resultado) => resultado.error);
+
     if (errores.length > 0) {
       return res.status(404).json({ errores });
     }
@@ -101,6 +104,6 @@ exports.eliminarMolino = async (req, res) => {
       res.status(404).json({ error: "Molino no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el molino" });
+    res.status(500).json({ error: "Error al eliminar el molino" + error });
   }
 };

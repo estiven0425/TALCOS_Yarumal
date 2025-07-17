@@ -48,7 +48,7 @@ const Mensajes = sequelize.define(
   {
     tableName: "mensajes",
     timestamps: false,
-  }
+  },
 );
 
 Mensajes.belongsTo(Usuarios, {

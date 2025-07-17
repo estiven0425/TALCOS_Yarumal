@@ -102,7 +102,7 @@ const Registros = sequelize.define(
   {
     tableName: "registros",
     timestamps: false,
-  }
+  },
 );
 
 Registros.belongsTo(Usuarios, {

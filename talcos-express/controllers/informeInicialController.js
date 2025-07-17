@@ -53,8 +53,8 @@ exports.turnoInformeInicial = async (req, res) => {
 
   let fechaConsulta = new Date(fecha);
 
-  const [horaInicio, minutoInicio] = inicioTurno.split(":").map(Number);
-  const [horaFin, minutoFin] = finTurno.split(":").map(Number);
+  const [horaInicio] = inicioTurno.split(":").map(Number);
+  const [horaFin] = finTurno.split(":").map(Number);
 
   if (horaFin < horaInicio) {
     fechaConsulta.setDate(fechaConsulta.getDate() - 1);
@@ -103,7 +103,7 @@ exports.turnoInformeInicial = async (req, res) => {
 
     res.json(informes);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener informe inicial" });
+    res.status(500).json({ error: "Error al obtener informe inicial" + error });
   }
 };
 
@@ -115,7 +115,7 @@ exports.crearInformeInicial = async (req, res) => {
 
     res.status(201).json(nuevoInforme);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el informe inicial" });
+    res.status(500).json({ error: "Error al crear el informe inicial" + error });
   }
 };
 
@@ -134,6 +134,7 @@ exports.validarInformeFinalPendiente = async (req, res) => {
 
     const { fecha_informe_inicial, turno_informe_inicial } =
       ultimoInformeInicial;
+
     const ahora = new Date();
     const fechaActual = ahora.toISOString().split("T")[0];
 
@@ -147,8 +148,10 @@ exports.validarInformeFinalPendiente = async (req, res) => {
         .split(":")
         .map(Number);
       const [finHora, finMinuto] = turno.fin_turno.split(":").map(Number);
+
       const inicioTurnoHoy = new Date(ahora);
       inicioTurnoHoy.setHours(inicioHora, inicioMinuto, 0, 0);
+
       const finTurnoHoy = new Date(ahora);
       finTurnoHoy.setHours(finHora, finMinuto, 0, 0);
 
@@ -163,6 +166,7 @@ exports.validarInformeFinalPendiente = async (req, res) => {
       }
     }
 
+    // noinspection JSCheckFunctionSignatures
     const informeFinalExistente = await InformeFinal.findOne({
       where: {
         fecha_informe_final: fecha_informe_inicial,
@@ -188,7 +192,8 @@ exports.validarInformeFinalPendiente = async (req, res) => {
       }
     }
   } catch (error) {
-    console.error("Error al validar informe final pendiente:", error);
+    console.error("Error al validar informe final pendiente:" + error);
+
     res.status(500).json({
       error: "Error al validar el estado del informe final pendiente",
     });
@@ -201,7 +206,7 @@ exports.actualizarInformeInicial = async (req, res) => {
   try {
     const updatePromises = informe_inicial.map(async (informe) => {
       const informeInicial = await InformeInicial.findByPk(
-        informe.id_informe_inicial
+        informe.id_informe_inicial,
       );
 
       if (informeInicial) {
@@ -222,19 +227,21 @@ exports.actualizarInformeInicial = async (req, res) => {
           observacion_informe_inicial: informe.observacion_informe_inicial,
           actividad_informe_inicial: informe.actividad_informe_inicial,
         });
+
         return informeInicial;
       } else {
         throw new Error(
-          `Informe inicial con id ${informe.id_informe_inicial} no encontrado`
+          `Informe inicial con id ${informe.id_informe_inicial} no encontrado`,
         );
       }
     });
 
     const resultados = await Promise.all(updatePromises);
+
     res.json(resultados);
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Error al actualizar los informes iniciales" });
+      .json({ error: "Error al actualizar los informes iniciales" + error});
   }
 };

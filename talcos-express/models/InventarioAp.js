@@ -40,7 +40,7 @@ const InventarioAp = sequelize.define(
   {
     tableName: "inventario_ap",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = InventarioAp;

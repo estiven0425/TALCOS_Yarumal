@@ -5,13 +5,13 @@ const despachoComercialController = require("../controllers/despachoComercialCon
 router.get("/", despachoComercialController.leerDespachoComercial);
 router.get(
   "/filtrados",
-  despachoComercialController.leerDespachosComercialesFiltrados
+  despachoComercialController.leerDespachosComercialesFiltrados,
 );
 router.post("/", despachoComercialController.crearDespachoComercial);
 router.put("/", despachoComercialController.actualizarDespachoComercial);
 router.put(
   "/eliminardespachocomercial",
-  despachoComercialController.eliminarDespachoComercial
+  despachoComercialController.eliminarDespachoComercial,
 );
 
 module.exports = router;

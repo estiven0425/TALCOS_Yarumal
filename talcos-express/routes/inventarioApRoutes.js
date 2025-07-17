@@ -7,11 +7,11 @@ router.post("/", inventarioApController.crearInventarioAp);
 router.put("/", inventarioApController.actualizarInventarioAp);
 router.put(
   "/actualizarcantidad",
-  inventarioApController.actualizarCantidadesInventarioAp
+  inventarioApController.actualizarCantidadesInventarioAp,
 );
 router.put(
   "/eliminarinventarioap",
-  inventarioApController.eliminarInventarioAp
+  inventarioApController.eliminarInventarioAp,
 );
 
 module.exports = router;

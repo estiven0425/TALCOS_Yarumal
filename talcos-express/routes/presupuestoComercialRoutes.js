@@ -7,7 +7,7 @@ router.post("/", presupuestoComercialController.crearPresupuestoComercial);
 router.put("/", presupuestoComercialController.actualizarPresupuestoComercial);
 router.put(
   "/eliminarpresupuestocomercial",
-  presupuestoComercialController.eliminarPresupuestoComercial
+  presupuestoComercialController.eliminarPresupuestoComercial,
 );
 
 module.exports = router;

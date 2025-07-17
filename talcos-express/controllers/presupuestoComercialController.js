@@ -24,7 +24,9 @@ exports.crearPresupuestoComercial = async (req, res) => {
 
     res.status(201).json(nuevoPresupuestoComercial);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el presupuesto comercial" });
+    res
+      .status(500)
+      .json({ error: "Error al crear el presupuesto comercial" + error });
   }
 };
 
@@ -38,7 +40,7 @@ exports.actualizarPresupuestoComercial = async (req, res) => {
 
   try {
     const presupuestoComercial = await PresupuestoComercial.findByPk(
-      id_presupuesto_comercial
+      id_presupuesto_comercial,
     );
 
     if (presupuestoComercial) {
@@ -55,7 +57,7 @@ exports.actualizarPresupuestoComercial = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Error al actualizar el presupuesto comercial" });
+      .json({ error: "Error al actualizar el presupuesto comercial" + error });
   }
 };
 
@@ -65,7 +67,7 @@ exports.eliminarPresupuestoComercial = async (req, res) => {
 
   try {
     const presupuestoComercial = await PresupuestoComercial.findByPk(
-      id_presupuesto_comercial
+      id_presupuesto_comercial,
     );
 
     if (presupuestoComercial) {
@@ -80,6 +82,6 @@ exports.eliminarPresupuestoComercial = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Error al eliminar el presupuesto comercial" });
+      .json({ error: "Error al eliminar el presupuesto comercial" + error });
   }
 };

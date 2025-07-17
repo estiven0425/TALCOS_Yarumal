@@ -16,6 +16,8 @@ let secretKey;
 router.post("/", async (req, res) => {
   try {
     const { documento_usuario, contrasena_usuario } = req.body;
+
+    // noinspection JSCheckFunctionSignatures
     const usuario = await Usuario.findOne({
       where: { documento_usuario },
       include: [
@@ -33,7 +35,7 @@ router.post("/", async (req, res) => {
 
     const contrasena = bcrypt.compareSync(
       contrasena_usuario,
-      usuario.contrasena_usuario
+      usuario.contrasena_usuario,
     );
 
     if (!contrasena) {
@@ -41,18 +43,21 @@ router.post("/", async (req, res) => {
     }
 
     const perfilesPermitidos = [1, 2, 3, 4];
+
     if (!perfilesPermitidos.includes(usuario.perfil.id_perfil)) {
       return res.status(403).json({ error: "Acceso denegado" });
     }
 
     secretKey = generateSecretKey();
+
     const token = jwt.sign({ id_usuario: usuario.id_usuario }, secretKey);
 
     res.json({ token });
   } catch (error) {
-    res.status(500).json({ error: "Error de servidor" });
+    res.status(500).json({ error: "Error de servidor" + error });
   }
 });
+
 router.post("/get", async (req, res) => {
   try {
     const { token } = req.body;
@@ -64,6 +69,7 @@ router.post("/get", async (req, res) => {
     }
 
     const decoding = jwt.verify(token, secretKey);
+
     const usuario = await Usuario.findByPk(decoding.id_usuario, {
       include: [
         {
@@ -73,6 +79,7 @@ router.post("/get", async (req, res) => {
         },
       ],
     });
+
     if (usuario) {
       res.json({
         id_usuario: usuario.id_usuario,
@@ -88,7 +95,7 @@ router.post("/get", async (req, res) => {
       res.status(404).json({ error: "Usuario no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error de servidor" });
+    res.status(500).json({ error: "Error de servidor" + error });
   }
 });
 

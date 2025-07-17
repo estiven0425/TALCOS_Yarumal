@@ -36,7 +36,7 @@ const Turnos = sequelize.define(
   {
     tableName: "turnos",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = Turnos;

@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const Perfiles = require("../models/Perfiles");
 const { sequelize } = require("../config/conectionDataBase");
+const { QueryTypes } = require("sequelize");
 
 exports.leerPerfil = async (req, res) => {
   try {
@@ -35,12 +36,14 @@ exports.conteoPerfil = async (req, res) => {
     const [perfiles] = await sequelize.query(
       "CALL obtener_usuarios_de_perfil()",
       {
-        type: sequelize.QueryTypes.SELECT,
-      }
+        type: QueryTypes.SELECT,
+      },
     );
+
     res.json(perfiles);
   } catch (error) {
     console.error("Error al obtener los perfiles:", error);
+
     res.status(500).send("Error del servidor: " + error);
   }
 };
@@ -55,7 +58,7 @@ exports.crearPerfil = async (req, res) => {
 
     res.status(201).json(nuevoPerfil);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el perfil" });
+    res.status(500).json({ error: "Error al crear el perfil" + error });
   }
 };
 
@@ -76,7 +79,7 @@ exports.actualizarPerfil = async (req, res) => {
       res.status(404).json({ error: "Perfil no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el perfil" });
+    res.status(500).json({ error: "Error al actualizar el perfil" + error });
   }
 };
 
@@ -96,6 +99,6 @@ exports.eliminarPerfil = async (req, res) => {
       res.status(404).json({ error: "Perfil no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el perfil" });
+    res.status(500).json({ error: "Error al eliminar el perfil" + error });
   }
 };

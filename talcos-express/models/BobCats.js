@@ -28,7 +28,7 @@ const BobCats = sequelize.define(
   {
     tableName: "bob_cats",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = BobCats;

@@ -32,7 +32,7 @@ const MateriasPrimas = sequelize.define(
   {
     tableName: "materias_primas",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = MateriasPrimas;

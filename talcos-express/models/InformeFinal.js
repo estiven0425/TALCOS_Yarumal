@@ -61,7 +61,7 @@ const InformeFinal = sequelize.define(
   {
     tableName: "informe_final",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = InformeFinal;

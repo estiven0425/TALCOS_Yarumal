@@ -32,7 +32,7 @@ const PresupuestoComercial = sequelize.define(
   {
     tableName: "presupuesto_comercial",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = PresupuestoComercial;

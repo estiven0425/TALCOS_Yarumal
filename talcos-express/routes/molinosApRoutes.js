@@ -7,7 +7,7 @@ router.post("/", molinoApController.crearMolinoAp);
 router.put("/", molinoApController.actualizarMolinoAp);
 router.put(
   "/actualizarhorometro",
-  molinoApController.actualizarHorometrosMolinosAp
+  molinoApController.actualizarHorometrosMolinosAp,
 );
 router.put("/eliminarmolino", molinoApController.eliminarMolinoAp);
 

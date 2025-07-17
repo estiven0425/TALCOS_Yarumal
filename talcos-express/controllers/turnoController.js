@@ -24,7 +24,7 @@ exports.crearTurno = async (req, res) => {
 
     res.status(201).json(nuevoTurno);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el turno" });
+    res.status(500).json({ error: "Error al crear el turno" + error });
   }
 };
 
@@ -48,7 +48,7 @@ exports.actualizarTurno = async (req, res) => {
       res.status(404).json({ error: "Turno no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el turno" });
+    res.status(500).json({ error: "Error al actualizar el turno" + error });
   }
 };
 
@@ -68,6 +68,6 @@ exports.eliminarTurno = async (req, res) => {
       res.status(404).json({ error: "Turno no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el turno" });
+    res.status(500).json({ error: "Error al eliminar el turno" + error });
   }
 };

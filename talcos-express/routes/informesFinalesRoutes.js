@@ -6,7 +6,7 @@ router.get("/", informeFinalController.leerInformeFinal);
 router.get("/turnoinformefinal", informeFinalController.turnoInformeFinal);
 router.get(
   "/obtenerultimoinformeinicialpendiente",
-  informeFinalController.obtenerUltimoInformeInicialPendiente
+  informeFinalController.obtenerUltimoInformeInicialPendiente,
 );
 router.post("/", informeFinalController.crearInformeFinal);
 router.put("/", informeFinalController.actualizarInformeFinal);

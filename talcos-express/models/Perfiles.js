@@ -33,7 +33,7 @@ const Perfiles = sequelize.define(
   {
     tableName: "perfiles",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = Perfiles;

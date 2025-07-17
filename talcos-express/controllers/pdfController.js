@@ -7,11 +7,14 @@ const { es } = require("date-fns/locale");
 const generarPDF = async (req, res) => {
   try {
     const { titulo, contenido, nombre } = req.body;
+
     const logoPath = path.join(__dirname, "../uploads/logo.png");
 
     let logoBase64 = "";
+
     if (fs.existsSync(logoPath)) {
       const imageBuffer = fs.readFileSync(logoPath);
+
       logoBase64 = `data:image/png;base64,${imageBuffer.toString("base64")}`;
     }
 
@@ -20,10 +23,11 @@ const generarPDF = async (req, res) => {
       "EEEE d 'de' MMMM 'del' yyyy ' - ' HH:mm",
       {
         locale: es,
-      }
+      },
     );
+
     const htmlContent = `
-    <html>
+    <html lang="es-CO">
         <head>
             <style>
                 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
@@ -35,13 +39,13 @@ const generarPDF = async (req, res) => {
                 }
                     
                 body {
-                    margin: 0px;
+                    margin: 0;
                     padding: 10px;
                 }
                     
                 table {
                     border-collapse: separate;
-                    border-spacing: 0px 10px;
+                    border-spacing: 0 10px;
                     height: 100%;
                     width: 100%;
                 } 
@@ -68,7 +72,7 @@ const generarPDF = async (req, res) => {
                     flex-direction: row;
                     flex-wrap: nowrap;
                     justify-content: space-between;
-                    padding: 0px 10px;
+                    padding: 0 10px;
                 }
                     
                 .header section img {
@@ -77,7 +81,7 @@ const generarPDF = async (req, res) => {
                 }
 
                 .header section p {
-                    margin: 0px;
+                    margin: 0;
                 }
                     
                 .header hr {
@@ -87,7 +91,7 @@ const generarPDF = async (req, res) => {
                 .header h1 {
                     color: #696a9e;
                     font-size: 1.5rem;
-                    margin: 0px;
+                    margin: 0;
                     text-align: center;
                 }
 
@@ -109,7 +113,7 @@ const generarPDF = async (req, res) => {
 
                 .mainValidation {
                     font-size: 1.5rem;
-                    margin: 0px;
+                    margin: 0;
                     text-align: center;
                 }
                     
@@ -133,7 +137,7 @@ const generarPDF = async (req, res) => {
                 }
 
                 .footer p {
-                    margin: 0px;
+                    margin: 0;
                     text-align: center;
                 }
                 
@@ -198,10 +202,12 @@ const generarPDF = async (req, res) => {
         </body>
     </html>
     `;
+
     const browser = await puppeteer.launch({
-      headless: "new",
+      headless: true,
       args: ["--no-sandbox"],
     });
+
     const page = await browser.newPage();
 
     await page.setContent(htmlContent, { waitUntil: "load" });
@@ -212,7 +218,7 @@ const generarPDF = async (req, res) => {
 
     const sanitizedTitle = nombre.replace(/[^a-zA-Z0-9-_]/g, "_");
     const fileName = `${sanitizedTitle}.pdf`;
-    
+
     res.setHeader("Content-Length", pdfBuffer.length);
     res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
     res.setHeader("Content-Type", "application/pdf");

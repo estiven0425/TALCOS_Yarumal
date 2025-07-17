@@ -32,7 +32,7 @@ const MolinosAp = sequelize.define(
   {
     tableName: "molinos_ap",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = MolinosAp;

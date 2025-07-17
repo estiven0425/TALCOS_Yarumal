@@ -74,7 +74,7 @@ exports.crearMensaje = async (req, res) => {
 
     res.status(201).json(nuevoMensaje);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el mensaje" });
+    res.status(500).json({ error: "Error al crear el mensaje" + error });
   }
 };
 
@@ -105,6 +105,6 @@ exports.actualizarMensaje = async (req, res) => {
       res.status(404).json({ error: "Mensaje no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el mensaje" });
+    res.status(500).json({ error: "Error al actualizar el mensaje" + error });
   }
 };

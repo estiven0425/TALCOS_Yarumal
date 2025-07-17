@@ -36,7 +36,7 @@ const ProductosRechazados = sequelize.define(
   {
     tableName: "productos_rechazados",
     timestamps: false,
-  }
+  },
 );
 
 module.exports = ProductosRechazados;
