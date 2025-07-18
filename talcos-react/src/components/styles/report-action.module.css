@@ -11,7 +11,7 @@
 
 .reportActionHeader h2 {
   font-size: 1rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -38,13 +38,13 @@
 
 .reportActionMain div h2 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
   text-align: left;
 }
 
 .reportActionMain div p {
   font-size: 1rem;
-  margin: 0px;
+  margin: 0;
   text-align: left;
 }
 
@@ -121,7 +121,7 @@
 .reportActionMainSecondary div h2,
 .reportActionMainSecondary div p {
   font-size: 1rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -141,7 +141,7 @@
   border-radius: 50%;
   border-top: 5px solid transparent;
   height: 20px;
-  margin: -7.5px auto 0px;
+  margin: -7.5px auto 0;
   width: 20px;
 }
 

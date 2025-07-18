@@ -1,114 +1,114 @@
 .inventoryAggregateListDetailPrimary {
-    align-content: flex-start;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 25px;
-    height: 100%;
-    justify-content: flex-start;
-    overflow: auto;
-    padding: 10px;
-    width: 70%;
+  align-content: flex-start;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 25px;
+  height: 100%;
+  justify-content: flex-start;
+  overflow: auto;
+  padding: 10px;
+  width: 70%;
 }
 
 .inventoryAggregateListDetailPrimaryAlternative {
-    align-content: center;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    height: 100%;
-    justify-content: center;
-    overflow: auto;
-    width: 100%;
+  align-content: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: center;
+  overflow: auto;
+  width: 100%;
 }
 
 .inventoryAggregateListDetailPrimaryTable {
-    border-collapse: separate;
-    border-spacing: 0px 10px;
-    width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  width: 100%;
 }
 
 .inventoryAggregateListDetailPrimaryTable caption {
-    font-size: 1rem;
-    text-align: left;
+  font-size: 1rem;
+  text-align: left;
 }
 
 .inventoryAggregateListDetailPrimaryTable caption h2 {
-    display: inline;
-    font-size: 1.5rem;
-    margin: 0px;
+  display: inline;
+  font-size: 1.5rem;
+  margin: 0;
 }
 
 .inventoryAggregateListDetailPrimaryTableHead,
 .inventoryAggregateListDetailPrimaryTableBody,
 .inventoryAggregateListDetailPrimaryTableFooter {
-    width: 100%;
+  width: 100%;
 }
 
 .inventoryAggregateListDetailPrimaryTableHead tr,
 .inventoryAggregateListDetailPrimaryTableBody tr,
 .inventoryAggregateListDetailPrimaryTableFooter tr {
-    width: 100%;
+  width: 100%;
 }
 .inventoryAggregateListDetailPrimaryTableHead tr th {
-    font-size: 1rem;
-    text-align: center;
-    vertical-align: baseline;
-    width: auto;
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: baseline;
+  width: auto;
 }
 
 .inventoryAggregateListDetailPrimaryTableFooter tr th {
-    padding-top: 15px;
-    vertical-align: baseline;
-    text-align: center;
+  padding-top: 15px;
+  vertical-align: baseline;
+  text-align: center;
 }
 
 .inventoryAggregateListDetailPrimaryTableBody tr td {
-    font-size: 1rem;
-    text-align: center;
-    vertical-align: baseline;
-    width: auto;
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: baseline;
+  width: auto;
 }
 
 .inventoryAggregateListDetailPrimaryTableFooter tr td {
-    font-size: 1rem;
-    text-align: left;
-    vertical-align: baseline;
-    width: 100%;
+  font-size: 1rem;
+  text-align: left;
+  vertical-align: baseline;
+  width: 100%;
 }
 
 .inventoryAggregateListSecondary {
-    align-content: stretch;
-    background-color: #0037ae;
-    border-radius: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    height: 100%;
-    justify-content: flex-start;
-    padding: 10px;
-    width: 30%;
+  align-content: stretch;
+  background-color: #0037ae;
+  border-radius: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: flex-start;
+  padding: 10px;
+  width: 30%;
 }
 
 .loader {
-    animation: spin 1s linear infinite;
-    border: 5px solid #0048b6;
-    border-radius: 50%;
-    border-top: 5px solid transparent;
-    height: 20px;
-    margin: -7.5px auto 0px;
-    width: 20px;
+  animation: spin 1s linear infinite;
+  border: 5px solid #0048b6;
+  border-radius: 50%;
+  border-top: 5px solid transparent;
+  height: 20px;
+  margin: -7.5px auto 0;
+  width: 20px;
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
 
-    100% {
-        transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
+  }
 }

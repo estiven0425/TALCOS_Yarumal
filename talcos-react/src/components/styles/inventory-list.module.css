@@ -1,6 +1,6 @@
 .inventoryListMainTable {
   border-collapse: separate;
-  border-spacing: 0px 10px;
+  border-spacing: 0 10px;
   width: 100%;
 }
 
@@ -39,6 +39,6 @@
 }
 
 .inventoryListMainAlternative h2 {
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }

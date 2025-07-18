@@ -30,7 +30,7 @@
 .staffCreateUserFormHeader h1,
 .staffCreateUserFormAlternative h1 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -51,7 +51,7 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  padding: 0px;
+  padding: 0;
 }
 
 .staffCreateUserFormMain fieldset label {
@@ -122,7 +122,7 @@
   border-radius: 50%;
   border-top: 5px solid transparent;
   height: 20px;
-  margin: -7.5px auto 0px;
+  margin: -7.5px auto 0;
   width: 20px;
 }
 

@@ -39,7 +39,7 @@
 
 .monitoringViewTableActionHeader h2 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -74,7 +74,7 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  padding: 0px;
+  padding: 0;
   width: 100%;
 }
 
@@ -96,16 +96,13 @@
   text-align: center;
   transition: all 0.5s ease-in-out;
   position: relative;
-  cursor: pointer;
 }
 
-.monitoringViewTableActionMainForm
-  fieldset
-  input::-webkit-calendar-picker-indicator {
+.monitoringViewTableActionMainForm fieldset input::-webkit-calendar-picker-indicator {
   cursor: pointer;
   height: 100%;
   left: 0;
-  opacity: 0%;
+  opacity: 0;
   position: absolute;
   width: 100%;
 }
@@ -122,7 +119,7 @@
   border-radius: 20px;
   color: #ffffff;
   cursor: pointer;
-  max-height: 47.33px;
+  max-height: 47px;
   outline: transparent 1px solid;
   padding: 15px;
   transition: all 0.5s ease-in-out;
@@ -156,7 +153,7 @@
   border-radius: 20px;
   color: #ffffff;
   cursor: pointer;
-  max-height: 47.33px;
+  max-height: 47px;
   outline: transparent 1px solid;
   padding: 15px;
   transition: all 0.5s ease-in-out;
@@ -176,7 +173,7 @@
   border-radius: 50%;
   border-top: 5px solid transparent;
   height: 20px;
-  margin: -7.5px auto 0px;
+  margin: -7.5px auto 0;
   width: 20px;
 }
 

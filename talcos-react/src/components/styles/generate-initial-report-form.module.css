@@ -67,7 +67,7 @@
 .generateInitialReportFormHeader h1,
 .generateInitialReportFormAlternative h1 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -75,7 +75,7 @@
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(auto, 1fr);
+  grid-template-rows: repeat(auto-fill, 1fr);
   gap: 15px;
 }
 
@@ -87,7 +87,7 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  padding: 0px;
+  padding: 0;
 }
 
 .generateInitialReportFormMainPrimary label {
@@ -116,7 +116,7 @@
   flex-wrap: nowrap;
   justify-content: flex-start;
   gap: 5px;
-  margin: 0px;
+  margin: 0;
   padding: 10px;
   transition: all 0.5s ease-in-out;
 }
@@ -149,8 +149,8 @@
   gap: 15px;
   grid-column: span 2;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(auto, 1fr);
-  padding: 0px;
+  grid-template-rows: repeat(auto-fill, 1fr);
+  padding: 0;
   transition: all 0.5s ease-in-out;
 }
 
@@ -162,13 +162,13 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  padding: 0px;
+  padding: 0;
   transition: all 0.5s ease-in-out;
 }
 
 .generateInitialReportFormMainSecondary div h2 {
   font-size: 1rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -206,12 +206,12 @@
   flex-wrap: nowrap;
   grid-column: span 2;
   justify-content: flex-start;
-  padding: 0px;
+  padding: 0;
 }
 
 .generateInitialReportFormMainThird h2 {
   font-size: 1rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -241,7 +241,7 @@
   flex-wrap: nowrap;
   grid-column: span 2;
   justify-content: flex-start;
-  padding: 0px;
+  padding: 0;
 }
 
 .generateInitialReportFormMainFourth label {
@@ -278,7 +278,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-end;
-  padding: 0px;
+  padding: 0;
   width: 100%;
 }
 
@@ -291,7 +291,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  padding: 0px;
+  padding: 0;
   width: 25%;
 }
 
@@ -373,7 +373,7 @@
   border-radius: 50%;
   border-top: 5px solid transparent;
   height: 20px;
-  margin: -7.5px auto 0px;
+  margin: -7.5px auto 0;
   width: 20px;
 }
 

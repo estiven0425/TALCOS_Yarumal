@@ -42,11 +42,15 @@
       <w>observacion</w>
       <w>personalperfil</w>
       <w>personalusuario</w>
+      <w>primaryobject</w>
       <w>reasignarproductorechazado</w>
+      <w>reasigned</w>
       <w>registrotransportador</w>
       <w>registrousuario</w>
       <w>remision</w>
       <w>retencion</w>
+      <w>secondaryfooter</w>
+      <w>sectioninput</w>
       <w>telefono</w>
       <w>turnoinformefinal</w>
       <w>turnoinformeinicial</w>

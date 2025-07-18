@@ -1,7 +1,7 @@
 ﻿.navBar {
   align-content: center;
   background-color: #ffffff1a;
-  border-radius: 0px 20px 20px 0px;
+  border-radius: 0 20px 20px 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -9,9 +9,9 @@
   gap: 10px;
   height: 100%;
   justify-content: space-around;
-  left: 0px;
+  left: 0;
   position: fixed;
-  top: 0px;
+  top: 0;
   width: 75px;
 }
 
@@ -38,7 +38,7 @@
   flex-wrap: nowrap;
   justify-content: center;
   outline: transparent 1px solid;
-  padding: 10px 12.5px;
+  padding: 10px 13px;
   transition: all 0.5s ease-in-out;
 }
 

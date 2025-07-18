@@ -33,7 +33,7 @@
 
 .inventoryRawMaterialRegisterListPrimaryDate h2 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
   text-align: left;
 }
 
@@ -79,7 +79,7 @@
 
 .inventoryRawMaterialRegisterListPrimaryobject button h2 {
   font-size: 1rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -100,7 +100,7 @@
 }
 
 .inventoryRawMaterialRegisterListPrimaryAlternative h2 {
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 

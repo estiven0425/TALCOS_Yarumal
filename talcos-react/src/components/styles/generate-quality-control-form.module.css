@@ -30,7 +30,7 @@
 .generateQualityControlFormHeader h1,
 .generateQualityControlFormAlternative h1 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -47,7 +47,7 @@
 
 .generateQualityControlFormMainTable {
   border-collapse: separate;
-  border-spacing: 0px 10px;
+  border-spacing: 0 10px;
   width: 100%;
 }
 
@@ -88,7 +88,7 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  padding: 0px;
+  padding: 0;
 }
 
 .generateQualityControlFormMain fieldset label {
@@ -135,7 +135,7 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
-  padding: 0px;
+  padding: 0;
   width: 100%;
 }
 
@@ -188,12 +188,8 @@
   background-color: #0048b6;
 }
 
-.generateQualityControlFormMain
-  fieldset
-  select:hover
-  .generateQualityControlFormMainAlternative
-  fieldset
-  input:hover {
+.generateQualityControlFormMain fieldset select:hover,
+.generateQualityControlFormMainAlternative fieldset input:hover {
   outline: #0095dc 1px solid;
 }
 
@@ -215,12 +211,8 @@
   background-color: #0048b6;
 }
 
-.generateQualityControlFormMain
-  fieldset
-  select:focus
-  .generateQualityControlFormMainAlternative
-  fieldset
-  input:focus {
+.generateQualityControlFormMain fieldset select:focus,
+.generateQualityControlFormMainAlternative fieldset input:focus {
   outline: #0095dc 1px solid;
 }
 
@@ -235,7 +227,7 @@
   border-radius: 50%;
   border-top: 5px solid transparent;
   height: 20px;
-  margin: -7.5px auto 0px;
+  margin: -7.5px auto 0;
   width: 20px;
 }
 

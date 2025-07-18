@@ -30,7 +30,7 @@
 .inventoryEditReasignedRejectedMaterialFormHeader h1,
 .inventoryEditReasignedRejectedMaterialFormAlternative h1 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -47,7 +47,7 @@
 
 .inventoryEditReasignedRejectedMaterialTableFormMain {
   border-collapse: separate;
-  border-spacing: 0px 10px;
+  border-spacing: 0 10px;
   width: 100%;
 }
 
@@ -88,7 +88,7 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  padding: 0px;
+  padding: 0;
 }
 
 .inventoryEditReasignedRejectedMaterialFormMain fieldset label {
@@ -108,9 +108,7 @@
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryEditReasignedRejectedMaterialFormMain
-  fieldset
-  select::-webkit-scrollbar {
+.inventoryEditReasignedRejectedMaterialFormMain fieldset select::-webkit-scrollbar {
   width: 10px;
 }
 
@@ -149,22 +147,16 @@
   outline: #0095dc 1px solid;
 }
 
-.inventoryEditReasignedRejectedMaterialFormMain
-  fieldset
-  select::-webkit-scrollbar {
+.inventoryEditReasignedRejectedMaterialFormMain fieldset select::-webkit-scrollbar {
   width: 10px;
 }
 
-.inventoryEditReasignedRejectedMaterialFormMain
-  fieldset
-  select::-webkit-scrollbar-track {
+.inventoryEditReasignedRejectedMaterialFormMain fieldset select::-webkit-scrollbar-track {
   background: #0037ae;
   border-radius: 10px;
 }
 
-.inventoryEditReasignedRejectedMaterialFormMain
-  fieldset
-  select::-webkit-scrollbar-thumb {
+.inventoryEditReasignedRejectedMaterialFormMain fieldset select::-webkit-scrollbar-thumb {
   background: #017fd3;
   border-radius: 10px;
 }
@@ -188,7 +180,7 @@
   border-radius: 50%;
   border-top: 5px solid transparent;
   height: 20px;
-  margin: -7.5px auto 0px;
+  margin: -7.5px auto 0;
   width: 20px;
 }
 

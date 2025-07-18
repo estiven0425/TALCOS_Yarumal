@@ -33,7 +33,7 @@
 
 .inventoryAggregateListPrimaryDate h2 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
   text-align: left;
 }
 
@@ -79,7 +79,7 @@
 
 .inventoryAggregateListPrimaryobject button h2 {
   font-size: 1rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -100,7 +100,7 @@
 }
 
 .inventoryAggregateListPrimaryAlternative h2 {
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 

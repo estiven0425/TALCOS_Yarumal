@@ -12,7 +12,7 @@
 
 .generateNoveltyStrikeOptionListMainTable {
   border-collapse: separate;
-  border-spacing: 0px 10px;
+  border-spacing: 0 10px;
   width: 100%;
 }
 
@@ -30,14 +30,14 @@
   font-size: 1rem;
   vertical-align: baseline;
   text-align: center;
-  width: 14.28;
+  width: 14.28%;
 }
 
 .generateNoveltyStrikeOptionListMainTableBody tr td {
   font-size: 1rem;
   vertical-align: baseline;
   text-align: center;
-  width: 14.28;
+  width: 14.28%;
 }
 
 .generateNoveltyStrikeOptionListMainAlternative {
@@ -51,7 +51,7 @@
 }
 
 .generateNoveltyStrikeOptionListMainAlternative h2 {
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -61,7 +61,7 @@
   border-radius: 50%;
   border-top: 5px solid transparent;
   height: 20px;
-  margin: -7.5px auto 0px;
+  margin: -7.5px auto 0;
   width: 20px;
 }
 

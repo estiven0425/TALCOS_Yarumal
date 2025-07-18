@@ -21,13 +21,13 @@
 
 .inventoryRawMaterialRegisterActionDetailMain div h2 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
   text-align: left;
 }
 
 .inventoryRawMaterialRegisterActionDetailMain div p {
   font-size: 1rem;
-  margin: 0px;
+  margin: 0;
   text-align: left;
 }
 
@@ -68,7 +68,7 @@
   border-radius: 50%;
   border-top: 5px solid transparent;
   height: 20px;
-  margin: -7.5px auto 0px;
+  margin: -7.5px auto 0;
   width: 20px;
 }
 

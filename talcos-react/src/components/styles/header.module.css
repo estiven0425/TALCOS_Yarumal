@@ -6,16 +6,16 @@
   flex-wrap: nowrap;
   justify-content: flex-end;
   gap: 25px;
-  padding: 10px 10px 0px 75px;
+  padding: 10px 10px 0 75px;
   position: fixed;
-  right: 0px;
-  top: 0px;
+  right: 0;
+  top: 0;
   width: 100vw;
 }
 
 .header p {
   font-size: 1rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -27,6 +27,6 @@
 .main {
   box-sizing: border-box;
   height: calc(100vh - 28px);
-  margin: 28px 10px 0px 75px;
+  margin: 28px 10px 0 75px;
   padding: 25px;
 }

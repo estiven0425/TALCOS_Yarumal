@@ -11,7 +11,7 @@
 
 .settingUserHeader h2 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
 }
 
 .settingUserHeaderIcon {
@@ -32,7 +32,7 @@
 
 .settingUserTable {
   border-collapse: separate;
-  border-spacing: 0px 10px;
+  border-spacing: 0 10px;
   width: 100%;
 }
 
@@ -100,6 +100,6 @@
 }
 
 .settingUserAlternative h2 {
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }

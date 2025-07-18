@@ -6,7 +6,7 @@
   flex-wrap: nowrap;
   gap: 10px;
   justify-content: center;
-  max-width: 334.67px;
+  max-width: 335px;
   transition: all 0.5s ease-in-out;
 }
 
@@ -22,7 +22,7 @@
 .loginFormHeader h1 {
   font-size: 1.5rem;
   font-weight: 400;
-  margin: 0px;
+  margin: 0;
   text-align: center;
   transition: all 0.5s ease-in-out;
 }
@@ -90,7 +90,7 @@
   border-radius: 50%;
   border-top: 5px solid transparent;
   height: 20px;
-  margin: -7.5px auto 0px;
+  margin: -7.5px auto 0;
   width: 20px;
 }
 

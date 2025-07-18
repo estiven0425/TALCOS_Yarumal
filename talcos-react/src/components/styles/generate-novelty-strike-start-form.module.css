@@ -30,7 +30,7 @@
 .generateNoveltyStrikeStartFormHeader h1,
 .generateNoveltyStrikeStartFormAlternative h1 {
   font-size: 1.5rem;
-  margin: 0px;
+  margin: 0;
   text-align: center;
 }
 
@@ -38,7 +38,7 @@
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(auto, 1fr);
+  grid-template-rows: repeat(auto-fill, 1fr);
   gap: 15px;
   height: 100%;
 }
@@ -51,7 +51,7 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  padding: 0px;
+  padding: 0;
 }
 
 .generateNoveltyStrikeStartFormMain fieldset label {
@@ -139,7 +139,7 @@
   border-radius: 50%;
   border-top: 5px solid transparent;
   height: 20px;
-  margin: -7.5px auto 0px;
+  margin: -7.5px auto 0;
   width: 20px;
 }
 
