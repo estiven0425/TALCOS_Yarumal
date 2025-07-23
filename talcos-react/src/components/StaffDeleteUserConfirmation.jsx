@@ -18,13 +18,14 @@ function StaffDeleteUserConfirmation() {
   useEffect(() => {
     const getProfile = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/perfiles/personalperfil`,
           {
             params: {
               perfil: user.perfil_usuario,
             },
-          }
+          },
         );
 
         setPerfil(response.data[0]);
@@ -34,8 +35,9 @@ function StaffDeleteUserConfirmation() {
       }
     };
 
-    getProfile();
+    void getProfile();
   }, [localIP, user]);
+
   useEffect(() => {
     if (SendStatus) {
       const timer = setTimeout(() => {
@@ -67,11 +69,13 @@ function StaffDeleteUserConfirmation() {
 
     return word;
   };
+
   const sendDeleteUser = async () => {
     setServerError(null);
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.put(`http://${localIP}:3000/usuarios/eliminarusuario`, {
         id_usuario: idUsuario,
         actividad_usuario: false,
@@ -81,19 +85,22 @@ function StaffDeleteUserConfirmation() {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al eliminar el usuario. Por favor, inténtelo de nuevo."
+          "Error al eliminar el usuario. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
     }
   };
+
   const redirectStaffUser = (id_perfil) => {
     navigate("/listdeleteuser", { state: id_perfil });
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {SendStatus === true ? (

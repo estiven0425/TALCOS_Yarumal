@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import Style from "./styles/inventory-aggregate-action.module.css";
-import log from "eslint-plugin-react/lib/util/log.js";
+
+InventoryAggregateAction.propTypes = {
+  item: PropTypes.any,
+};
 
 function InventoryAggregateAction({ item }) {
   const navigate = useNavigate();
@@ -9,15 +13,18 @@ function InventoryAggregateAction({ item }) {
   const redirectCreate = () => {
     navigate("/inventory/createaggregate");
   };
+
   const redirectDetail = () => {
     navigate("/inventory/detailaggregate", { state: item });
   };
+
   const redirectDelete = () => {
     navigate("/inventory/deleteaggregate", {
       state: item.id_registro_ap,
     });
   };
 
+  // noinspection JSUnresolvedReference
   return (
     <>
       {item ? (

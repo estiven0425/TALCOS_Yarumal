@@ -29,22 +29,29 @@ function GenerateNoveltyFreighterForm() {
       return () => clearTimeout(timer);
     }
   }, [sendStatus, navigate]);
+
   useEffect(() => {
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseBobCat = await axios.get(
-          `http://${localIP}:3000/bob_cats`
+          `http://${localIP}:3000/bob_cats`,
         );
         const bobCats = responseBobCat.data;
+
+        // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
+
         const currentTime = new Date();
 
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -56,7 +63,7 @@ function GenerateNoveltyFreighterForm() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
 
         if (!currentShift) {
@@ -73,7 +80,7 @@ function GenerateNoveltyFreighterForm() {
           currentDate = new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
-            currentTime.getDate() - 1
+            currentTime.getDate() - 1,
           );
         }
 
@@ -82,6 +89,8 @@ function GenerateNoveltyFreighterForm() {
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -91,8 +100,10 @@ function GenerateNoveltyFreighterForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -102,8 +113,10 @@ function GenerateNoveltyFreighterForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -113,7 +126,7 @@ function GenerateNoveltyFreighterForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
         const reports = responseStartReport.data;
@@ -124,25 +137,29 @@ function GenerateNoveltyFreighterForm() {
           const report = reports
             .filter(
               (report) =>
-                report.bob_cat_informe_inicial === bobCat.nombre_bob_cat
+                report.bob_cat_informe_inicial === bobCat.nombre_bob_cat,
             )
             .sort(
               (a, b) =>
                 new Date(b.hora_informe_inicial) -
-                new Date(a.hora_informe_inicial)
+                new Date(a.hora_informe_inicial),
             )[0];
+
           const novelty = news
             .filter(
-              (novelty) => novelty.bob_cat_novedad === bobCat.nombre_bob_cat
+              (novelty) => novelty.bob_cat_novedad === bobCat.nombre_bob_cat,
             )
             .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
             )[0];
+
           const recent =
             report &&
             (!novelty ||
               new Date(
-                report.fecha_informe_inicial + " " + report.hora_informe_inicial
+                report.fecha_informe_inicial +
+                  " " +
+                  report.hora_informe_inicial,
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
@@ -166,22 +183,25 @@ function GenerateNoveltyFreighterForm() {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP]);
+
   useEffect(() => {
     const getUser = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.post(
           `http://${localIP}:3000/usuarios/informeinicialusuario`,
-          { idPerfil: 8 }
+          { idPerfil: 8 },
         );
+
         setCarguero(response.data);
       } catch (error) {
         console.error("Error al obtener los usuarios: ", error);
       }
     };
 
-    getUser();
+    void getUser();
   }, [localIP]);
 
   const validation = () => {
@@ -198,6 +218,7 @@ function GenerateNoveltyFreighterForm() {
 
     return Object.keys(errors).length === 0;
   };
+
   const determinateShift = (data) => {
     if (!data || data.length === 0) return null;
 
@@ -208,12 +229,15 @@ function GenerateNoveltyFreighterForm() {
 
       return acc;
     }, {});
+
+    // noinspection UnnecessaryLocalVariableJS
     const mostFrequentTurno = Object.keys(turnoCounts).reduce((a, b) =>
-      turnoCounts[a] > turnoCounts[b] ? a : b
+      turnoCounts[a] > turnoCounts[b] ? a : b,
     );
 
     return mostFrequentTurno;
   };
+
   const determinateDate = (data) => {
     if (!data || data.length === 0) return null;
 
@@ -225,12 +249,14 @@ function GenerateNoveltyFreighterForm() {
       return acc;
     }, {});
 
+    // noinspection UnnecessaryLocalVariableJS
     const mostFrequentDate = Object.keys(dateCounts).reduce((a, b) =>
-      dateCounts[a] > dateCounts[b] ? a : b
+      dateCounts[a] > dateCounts[b] ? a : b,
     );
 
     return mostFrequentDate;
   };
+
   const sendCreate = async (e) => {
     e.preventDefault();
 
@@ -244,8 +270,10 @@ function GenerateNoveltyFreighterForm() {
     const horaNovedad = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
+
     const fechaNovedad = determinateDate(currentData);
     const shiftNovelty = determinateShift(currentData);
+
     const novedad = [
       {
         fecha_novedad: fechaNovedad,
@@ -259,16 +287,18 @@ function GenerateNoveltyFreighterForm() {
     ];
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/novedades`, novedad);
 
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear el cambio de operador de minicargador. Por favor, inténtelo de nuevo.`
+          `Error al crear el cambio de operador de minicargador. Por favor, inténtelo de nuevo.`,
         );
         setLoading(false);
       }
@@ -279,6 +309,7 @@ function GenerateNoveltyFreighterForm() {
     navigate("/generatereport/noveltyoption");
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {finalData.length > 0 ? (
@@ -403,18 +434,6 @@ function GenerateNoveltyFreighterForm() {
                     onChange={(e) => setObservacionNovedad(e.target.value)}
                     placeholder="Ingresa una observación"
                   />
-                  {!validationError.observacionNovedad ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={Style.generateNoveltyComponentFormValidation}
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError.observacionNovedad}
-                    </motion.span>
-                  )}
                 </fieldset>
               </main>
               <footer className={Style.generateNoveltyComponentFormFooter}>

@@ -24,9 +24,11 @@ function GenerateNoveltyStrikeStopForm() {
   useEffect(() => {
     setIdNovedad(novelty);
   }, [novelty]);
+
   useEffect(() => {
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
         const currentTime = new Date();
@@ -34,8 +36,10 @@ function GenerateNoveltyStrikeStopForm() {
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -47,8 +51,9 @@ function GenerateNoveltyStrikeStopForm() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
+
         if (!currentShift) {
           console.error("No se pudo determinar el turno actual.");
           return;
@@ -65,7 +70,7 @@ function GenerateNoveltyStrikeStopForm() {
           currentDate = new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
-            currentTime.getDate() - 1
+            currentTime.getDate() - 1,
           );
         }
 
@@ -74,6 +79,8 @@ function GenerateNoveltyStrikeStopForm() {
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -83,8 +90,10 @@ function GenerateNoveltyStrikeStopForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -94,8 +103,9 @@ function GenerateNoveltyStrikeStopForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
         const reports = responseStartReport.data;
         const endReports = responseEndReport.data;
 
@@ -108,8 +118,9 @@ function GenerateNoveltyStrikeStopForm() {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP]);
+
   useEffect(() => {
     if (SendStatus) {
       const timer = setTimeout(() => {
@@ -129,12 +140,15 @@ function GenerateNoveltyStrikeStopForm() {
       const [inicioTurnoHour, inicioTurnoMinute] = currentShift.inicio_turno
         .split(":")
         .map(Number);
+
       const [finTurnoHour, finTurnoMinute] = currentShift.fin_turno
         .split(":")
         .map(Number);
+
       const [finParoHour, finParoMinute] = finParoNovedad
         .split(":")
         .map(Number);
+
       const inicioTurnoMs = (inicioTurnoHour * 60 + inicioTurnoMinute) * 60000;
       const finTurnoMs = (finTurnoHour * 60 + finTurnoMinute) * 60000;
       const finParoMs = (finParoHour * 60 + finParoMinute) * 60000;
@@ -146,7 +160,7 @@ function GenerateNoveltyStrikeStopForm() {
     if (!horometroFinParoNovedad) {
       errors.horometroFinParoNovedad = "El horómetro de fin es obligatorio.";
     } else if (!/^[0-9]+$/.test(horometroFinParoNovedad)) {
-      errors.horometroFinParoNovedad = "El horómetro debe ser solo numeros.";
+      errors.horometroFinParoNovedad = "El horómetro debe ser solo números.";
     }
 
     setValidationError(errors);
@@ -166,6 +180,7 @@ function GenerateNoveltyStrikeStopForm() {
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.put(`http://${localIP}:3000/novedades/finparonovedad`, {
         id_novedad: idNovedad,
         fin_paro_novedad: finParoNovedad,
@@ -176,19 +191,22 @@ function GenerateNoveltyStrikeStopForm() {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al finalizar el paro. Por favor, inténtelo de nuevo."
+          "Error al finalizar el paro. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
     }
   };
+
   const redirectNovelty = () => {
     navigate("/generatereport/noveltystrike");
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {finalData.length > 0 ? (

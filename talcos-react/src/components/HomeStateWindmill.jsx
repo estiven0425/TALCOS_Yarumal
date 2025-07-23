@@ -10,17 +10,23 @@ function HomeStateWindmill() {
   useEffect(() => {
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
         const mills = responseMills.data;
+
+        // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
+
         const currentTime = new Date();
 
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -32,7 +38,7 @@ function HomeStateWindmill() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
 
         if (!currentShift) {
@@ -49,7 +55,7 @@ function HomeStateWindmill() {
           currentDate = new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
-            currentTime.getDate() - 1
+            currentTime.getDate() - 1,
           );
         }
 
@@ -58,6 +64,8 @@ function HomeStateWindmill() {
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+
+        // noinspection HttpUrlsUsage
         const responseReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -67,8 +75,10 @@ function HomeStateWindmill() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -78,48 +88,60 @@ function HomeStateWindmill() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
         const reports = responseReport.data;
+
+        // noinspection EqualityComparisonWithCoercionJS
         const operatorsChange = responseNews.data.filter(
           (novelty) =>
             novelty.tipo_novedad === "Cambio de operador de molino" ||
-            novelty.tipo_novedad == "Encendido de molino"
+            novelty.tipo_novedad == "Encendido de molino",
         );
+
+        // noinspection EqualityComparisonWithCoercionJS
         const news = responseNews.data.filter(
           (novelty) =>
             novelty.tipo_novedad === "Paro" ||
-            novelty.tipo_novedad == "Encendido de molino"
+            novelty.tipo_novedad == "Encendido de molino",
         );
+
         const combinedData = mills.map((molino) => {
           const report = reports
             .filter(
-              (report) => report.molino_informe_inicial === molino.nombre_molino
+              (report) =>
+                report.molino_informe_inicial === molino.nombre_molino,
             )
             .sort(
               (a, b) =>
                 new Date(b.hora_informe_inicial) -
-                new Date(a.hora_informe_inicial)
+                new Date(a.hora_informe_inicial),
             )[0];
+
           const novelty = news
             .filter((n) => n.molino_novedad === molino.nombre_molino)
             .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
             )[0];
+
           const operatorChange = operatorsChange
             .filter((n) => n.molino_novedad === molino.nombre_molino)
             .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
             )[0];
+
           const recent =
             report &&
             (!novelty ||
               new Date(
-                report.fecha_informe_inicial + " " + report.hora_informe_inicial
+                report.fecha_informe_inicial +
+                  " " +
+                  report.hora_informe_inicial,
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
+
           const horometro =
             [
               recent?.horometro_informe_inicial,
@@ -136,16 +158,19 @@ function HomeStateWindmill() {
               const [inicioHour, inicioMinute] = novelty.inicio_paro_novedad
                 .split(":")
                 .map(Number);
+
               const [finHour, finMinute] = novelty.fin_paro_novedad
                 .split(":")
                 .map(Number);
+
               const now = new Date();
+
               const inicioParo = new Date(
                 now.getFullYear(),
                 now.getMonth(),
                 now.getDate(),
                 inicioHour,
-                inicioMinute
+                inicioMinute,
               );
 
               let finParo = new Date(
@@ -153,7 +178,7 @@ function HomeStateWindmill() {
                 now.getMonth(),
                 now.getDate(),
                 finHour,
-                finMinute
+                finMinute,
               );
 
               if (finParo <= inicioParo) {
@@ -184,7 +209,7 @@ function HomeStateWindmill() {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP]);
 
   return molino.length > 0 ? (

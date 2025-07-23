@@ -2,7 +2,19 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/inventory-delete-confirmation.module.css";
+
+InventoryDeleteConfirmation.propTypes = {
+  dataId: PropTypes.any,
+  redirectPath: PropTypes.any,
+  endpoint: PropTypes.any,
+  name: PropTypes.any,
+  nameError: PropTypes.any,
+  nameConfirmation: PropTypes.any,
+  title: PropTypes.any,
+  nameButton: PropTypes.any,
+};
 
 function InventoryDeleteConfirmation({
   dataId,
@@ -44,6 +56,7 @@ function InventoryDeleteConfirmation({
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.put(`http://${localIP}:3000/${endpoint}`, {
         [dataId]: idItem,
         [name]: false,
@@ -53,10 +66,11 @@ function InventoryDeleteConfirmation({
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          `Error al eliminar ${nameError}. Por favor, inténtelo de nuevo.`
+          `Error al eliminar ${nameError}. Por favor, inténtelo de nuevo.`,
         );
         setLoading(false);
       }
@@ -67,6 +81,7 @@ function InventoryDeleteConfirmation({
     navigate(`/inventory/listdelete${redirectPath}`);
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {sendStatus === true ? (

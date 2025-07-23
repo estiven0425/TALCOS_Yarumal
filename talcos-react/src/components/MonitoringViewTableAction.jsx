@@ -15,7 +15,7 @@ function MonitoringViewTableAction() {
     if (!anoMonitoreo.trim()) {
       errors.anoMonitoreo = "La fecha es obligatoria.";
     } else if (!/^[0-9]+$/.test(anoMonitoreo)) {
-      errors.anoMonitoreo = "La decha debe ser solo numeros.";
+      errors.anoMonitoreo = "La fecha debe ser solo números.";
     }
     if (anoMonitoreo && anoMonitoreo < 2000) {
       errors.anoMonitoreo = "La fecha debe ser mayor al año 2000.";

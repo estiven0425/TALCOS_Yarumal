@@ -10,9 +10,11 @@ function InventoryListInventoryAp() {
   useEffect(() => {
     const getItem = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/inventario_ap`,
         );
+
         const data = Array.isArray(response.data)
           ? response.data
           : Object.values(response.data);
@@ -23,7 +25,7 @@ function InventoryListInventoryAp() {
       }
     };
 
-    getItem();
+    void getItem();
   }, [localIP]);
 
   return (

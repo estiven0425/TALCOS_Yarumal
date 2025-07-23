@@ -3,7 +3,13 @@ import MonitoringListEfficiency from "./MonitoringListEfficiency";
 import MonitoringListHours from "./MonitoringListHours";
 import MonitoringListProduced from "./MonitoringListProduced";
 import MonitoringListStrike from "./MonitoringListStrike";
+import PropTypes from "prop-types";
 import Style from "./styles/monitoring-List.module.css";
+
+MonitoringList.propTypes = {
+  inicioMonitoreo: PropTypes.any,
+  finMonitoreo: PropTypes.any,
+};
 
 function MonitoringList({ inicioMonitoreo, finMonitoreo }) {
   return (

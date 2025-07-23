@@ -16,25 +16,32 @@ function Header() {
   useEffect(() => {
     const updateDateTime = () => {
       const currentDateTime = new Date();
+
       const formattedDate = format(
         currentDateTime,
         "EEEE d 'de' MMMM 'del' yyyy",
-        { locale: es }
+        { locale: es },
       );
+
       const formattedTime = format(currentDateTime, "HH:mm", { locale: es });
+
       setDate(formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1));
       setTime(formattedTime);
     };
+
     const interval = setInterval(updateDateTime, 1000);
 
     updateDateTime();
 
     return () => clearInterval(interval);
   }, []);
+
   useEffect(() => {
     const token = sessionStorage.getItem("token");
+
     const getUsuario = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.post(`http://${localIP}:3000/login/get`, {
           token: token,
         });
@@ -44,7 +51,7 @@ function Header() {
         console.error("Error al obtener el usuario: ", error);
       }
     };
-    getUsuario();
+    void getUsuario();
   }, [localIP]);
 
   return (

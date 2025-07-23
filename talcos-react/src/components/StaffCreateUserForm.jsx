@@ -12,7 +12,7 @@ function StaffCreateUserForm() {
   const [correoUsuario, setCorreoUsuario] = useState("");
   const [contratoUsuario, setContratoUsuario] = useState("");
   const [contrasenaUsuario, setContrasenaUsuario] = useState("");
-  const [passwordVerify, setpasswordVerify] = useState("");
+  const [passwordVerify, setPasswordVerify] = useState("");
   const [loading, setLoading] = useState(false);
   const [SendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
@@ -25,13 +25,14 @@ function StaffCreateUserForm() {
   useEffect(() => {
     const getProfile = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/perfiles/personalperfil`,
           {
             params: {
               perfil: profile,
             },
-          }
+          },
         );
 
         setPerfil(response.data[0]);
@@ -40,8 +41,9 @@ function StaffCreateUserForm() {
       }
     };
 
-    getProfile();
+    void getProfile();
   }, [localIP, profile]);
+
   useEffect(() => {
     if (SendStatus) {
       const timer = setTimeout(() => {
@@ -73,6 +75,7 @@ function StaffCreateUserForm() {
 
     return word;
   };
+
   const validation = () => {
     const errors = {};
 
@@ -84,18 +87,18 @@ function StaffCreateUserForm() {
     if (!documentoUsuario) {
       errors.documentoUsuario = "El documento del usuario es obligatorio.";
     } else if (!/^[0-9]+$/.test(documentoUsuario)) {
-      errors.documentoUsuario = "El documento debe ser solo numeros.";
+      errors.documentoUsuario = "El documento debe ser solo números.";
     }
     if (!telefonoUsuario) {
       errors.telefonoUsuario = "El teléfono del usuario es obligatorio.";
     } else if (!/^[0-9]+$/.test(telefonoUsuario)) {
-      errors.telefonoUsuario = "El teléfono debe ser solo numeros.";
+      errors.telefonoUsuario = "El teléfono debe ser solo números.";
     }
     if (correoUsuario && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoUsuario)) {
       errors.correoUsuario = "El correo ingresado no tiene un formato válido.";
     }
     if (contratoUsuario && !/^[0-9]+$/.test(contratoUsuario)) {
-      errors.contratoUsuario = "El contrato del usuario debe ser solo numeros.";
+      errors.contratoUsuario = "El contrato del usuario debe ser solo números.";
     }
     if (!contrasenaUsuario) {
       errors.contrasenaUsuario = "La contraseña del usuario es obligatoria.";
@@ -112,6 +115,7 @@ function StaffCreateUserForm() {
 
     return Object.keys(errors).length === 0;
   };
+
   const sendCreateUser = async (e) => {
     e.preventDefault();
 
@@ -123,6 +127,7 @@ function StaffCreateUserForm() {
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/usuarios`, {
         nombre_usuario: nombreUsuario,
         documento_usuario: documentoUsuario,
@@ -137,10 +142,11 @@ function StaffCreateUserForm() {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al crear el usuario. Por favor, inténtelo de nuevo."
+          "Error al crear el usuario. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
@@ -148,10 +154,12 @@ function StaffCreateUserForm() {
 
     setContrasenaUsuario("");
   };
+
   const redirectStaffUser = (id_perfil) => {
     navigate("/user", { state: id_perfil });
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {SendStatus === true ? (
@@ -165,7 +173,7 @@ function StaffCreateUserForm() {
             {perfil.nombre_perfil
               ? singularize(perfil.nombre_perfil.toLowerCase())
               : "Usuario"}{" "}
-            creado con éxtio
+            creado con éxito
           </h1>
         </motion.div>
       ) : (
@@ -328,7 +336,7 @@ function StaffCreateUserForm() {
               <input
                 id="passwordVerify"
                 name="passwordVerify"
-                onChange={(e) => setpasswordVerify(e.target.value)}
+                onChange={(e) => setPasswordVerify(e.target.value)}
                 placeholder="Repite la contraseña del usuario"
                 type="password"
                 value={passwordVerify}

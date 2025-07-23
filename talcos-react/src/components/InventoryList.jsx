@@ -3,7 +3,17 @@ import { format, isValid, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/inventory-list.module.css";
+
+InventoryList.propTypes = {
+  location: PropTypes.any,
+  head: PropTypes.any,
+  index: PropTypes.any,
+  body: PropTypes.any,
+  name: PropTypes.any,
+  optional: PropTypes.any,
+};
 
 function InventoryList({ location, head, index, body, name, optional }) {
   const [item, setItem] = useState([]);
@@ -12,7 +22,9 @@ function InventoryList({ location, head, index, body, name, optional }) {
   useEffect(() => {
     const getItem = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(`http://${localIP}:3000/${location}`);
+
         const data = Array.isArray(response.data)
           ? response.data
           : Object.values(response.data);
@@ -23,8 +35,8 @@ function InventoryList({ location, head, index, body, name, optional }) {
       }
     };
 
-    getItem();
-  }, [localIP]);
+    void getItem();
+  }, [localIP, location]);
 
   const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -33,13 +45,16 @@ function InventoryList({ location, head, index, body, name, optional }) {
   const formatIfDate = (value) => {
     if (typeof value === "string") {
       const parsed = parseISO(value);
+
       if (isValid(parsed)) {
         const formatted = format(parsed, "EEEE d 'de' MMMM 'del' yyyy", {
           locale: es,
         });
+
         return capitalizeFirstLetter(formatted);
       }
     }
+
     return value;
   };
 

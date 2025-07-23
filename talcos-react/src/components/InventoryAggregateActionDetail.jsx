@@ -2,7 +2,12 @@ import { es } from "date-fns/locale";
 import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import Style from "./styles/inventory-aggregate-action-detail.module.css";
+
+InventoryAggregateActionDetail.propTypes = {
+  item: PropTypes.any,
+};
 
 function InventoryAggregateActionDetail({ item }) {
   const navigate = useNavigate();
@@ -15,6 +20,7 @@ function InventoryAggregateActionDetail({ item }) {
         locale: es,
       },
     );
+
     return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
   };
 
@@ -25,12 +31,15 @@ function InventoryAggregateActionDetail({ item }) {
   const performance = (produced1, produced2, time) => {
     const prod1 = parseFloat(produced1) || 0;
     const prod2 = parseFloat(produced2) || 0;
+
     const totalProduced = prod1 + prod2;
+
     const duration = parseFloat(time) || 1;
 
     return totalProduced / duration;
   };
 
+  // noinspection JSUnresolvedReference
   return (
     <>
       <motion.main

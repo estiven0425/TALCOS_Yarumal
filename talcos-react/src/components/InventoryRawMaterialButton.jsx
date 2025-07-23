@@ -4,15 +4,19 @@ import Style from "./styles/inventory-raw-material-button.module.css";
 
 function InventoryRawMaterialButton() {
   const navigate = useNavigate();
+
   const redirectCreate = () => {
     navigate("/inventory/createrawmaterial");
   };
+
   const redirectEdit = () => {
     navigate("/inventory/listeditrawmaterial");
   };
+
   const redirectDelete = () => {
     navigate("/inventory/listdeleterawmaterial");
   };
+
   const redirectRegister = () => {
     navigate("/inventory/registerrawmaterial");
   };

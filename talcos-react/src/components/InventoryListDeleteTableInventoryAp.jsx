@@ -12,9 +12,11 @@ function InventoryListDeleteTableInventoryAp() {
   useEffect(() => {
     const getItem = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/inventario_ap`,
         );
+
         const data = Array.isArray(response.data)
           ? response.data
           : Object.values(response.data);
@@ -25,11 +27,13 @@ function InventoryListDeleteTableInventoryAp() {
       }
     };
 
-    getItem();
+    void getItem();
   }, [localIP]);
+
   const redirectInventory = () => {
     navigate(`/inventory/inventoryap`);
   };
+
   const redirectDeleteInventory = (data) => {
     navigate(`/inventory/deleteinventoryap`, { state: data });
   };

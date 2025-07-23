@@ -34,19 +34,27 @@ function GenerateQualityControlForm() {
   useEffect(() => {
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
         const mills = responseMills.data;
+
+        // noinspection HttpUrlsUsage
         const responseBulks = await axios.get(`http://${localIP}:3000/bultos`);
         const bulks = responseBulks.data;
+
+        // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
+
         const currentTime = new Date();
 
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -58,7 +66,7 @@ function GenerateQualityControlForm() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
 
         if (!currentShift) {
@@ -75,7 +83,7 @@ function GenerateQualityControlForm() {
           currentDate = new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
-            currentTime.getDate() - 1
+            currentTime.getDate() - 1,
           );
         }
 
@@ -85,6 +93,7 @@ function GenerateQualityControlForm() {
           fin_turno: finTurno,
         } = currentShift;
 
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -94,9 +103,10 @@ function GenerateQualityControlForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
+        // noinspection HttpUrlsUsage
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -106,8 +116,10 @@ function GenerateQualityControlForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -117,23 +129,24 @@ function GenerateQualityControlForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
         const endReports = responseEndReport.data;
+
         const evaluateIsInParo = (report, allNovelties) => {
           if (!report?.molino_informe_inicial) {
             const turnOnNovelty = allNovelties.find(
-              (nov) => nov.tipo_novedad === "Encendido de molino"
+              (nov) => nov.tipo_novedad === "Encendido de molino",
             );
 
             if (turnOnNovelty) {
               const pauses = allNovelties
                 .filter((nov) => nov.tipo_novedad === "Paro")
                 .sort(
-                  (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+                  (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
                 );
 
               if (pauses.length > 0) {
@@ -150,17 +163,20 @@ function GenerateQualityControlForm() {
                     return true;
                   } else if (latestPause.fin_paro_novedad) {
                     const now = new Date();
+
                     const [inicioHour, inicioMinute] =
                       latestPause.inicio_paro_novedad.split(":").map(Number);
+
                     const [finHour, finMinute] = latestPause.fin_paro_novedad
                       .split(":")
                       .map(Number);
+
                     const inicioParo = new Date(
                       now.getFullYear(),
                       now.getMonth(),
                       now.getDate(),
                       inicioHour,
-                      inicioMinute
+                      inicioMinute,
                     );
 
                     let finParo = new Date(
@@ -168,7 +184,7 @@ function GenerateQualityControlForm() {
                       now.getMonth(),
                       now.getDate(),
                       finHour,
-                      finMinute
+                      finMinute,
                     );
 
                     if (finParo <= inicioParo) {
@@ -188,7 +204,7 @@ function GenerateQualityControlForm() {
           const pauses = allNovelties
             .filter((nov) => nov.tipo_novedad === "Paro")
             .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
             );
 
           if (pauses.length > 0) {
@@ -205,17 +221,20 @@ function GenerateQualityControlForm() {
                 return true;
               } else if (latestPause.fin_paro_novedad) {
                 const now = new Date();
+
                 const [inicioHour, inicioMinute] =
                   latestPause.inicio_paro_novedad.split(":").map(Number);
+
                 const [finHour, finMinute] = latestPause.fin_paro_novedad
                   .split(":")
                   .map(Number);
+
                 const inicioParo = new Date(
                   now.getFullYear(),
                   now.getMonth(),
                   now.getDate(),
                   inicioHour,
-                  inicioMinute
+                  inicioMinute,
                 );
 
                 let finParo = new Date(
@@ -223,7 +242,7 @@ function GenerateQualityControlForm() {
                   now.getMonth(),
                   now.getDate(),
                   finHour,
-                  finMinute
+                  finMinute,
                 );
 
                 if (finParo <= inicioParo) {
@@ -239,32 +258,40 @@ function GenerateQualityControlForm() {
         const combinedData = mills.map((molino) => {
           const report = reports
             .filter(
-              (report) => report.molino_informe_inicial === molino.nombre_molino
+              (report) =>
+                report.molino_informe_inicial === molino.nombre_molino,
             )
             .sort(
               (a, b) =>
                 new Date(b.hora_informe_inicial) -
-                new Date(a.hora_informe_inicial)
+                new Date(a.hora_informe_inicial),
             )[0];
+
           const millNovelties = news.filter(
-            (novelty) => novelty.molino_novedad === molino.nombre_molino
+            (novelty) => novelty.molino_novedad === molino.nombre_molino,
           );
+
           const novelty = millNovelties.sort(
-            (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+            (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
           )[0];
+
           const recent =
             report &&
             (!novelty ||
               new Date(
-                report.fecha_informe_inicial + " " + report.hora_informe_inicial
+                report.fecha_informe_inicial +
+                  " " +
+                  report.hora_informe_inicial,
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
+
           const isInParo = evaluateIsInParo(report, millNovelties);
+
           const bulkInUse = bulks.find(
             (bulto) =>
               bulto.nombre_bulto ===
-              (recent?.bulto_informe_inicial || recent?.bulto_novedad || "")
+              (recent?.bulto_informe_inicial || recent?.bulto_novedad || ""),
           );
 
           return {
@@ -289,8 +316,9 @@ function GenerateQualityControlForm() {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP]);
+
   const validation = () => {
     const errors = {};
 
@@ -301,6 +329,7 @@ function GenerateQualityControlForm() {
       errors.rechazadoControlCalidad =
         "La cantidad de bultos rechazados es obligatoria.";
     }
+    // noinspection JSCheckFunctionSignatures
     if (rechazadoControlCalidad && isNaN(rechazadoControlCalidad)) {
       errors.rechazadoControlCalidad =
         "La cantidad de bultos rechazados debe ser un número.";
@@ -308,6 +337,7 @@ function GenerateQualityControlForm() {
     if (!retencionControlCalidad.trim()) {
       errors.retencionControlCalidad = "La retención es obligatoria.";
     }
+    // noinspection JSCheckFunctionSignatures
     if (retencionControlCalidad && isNaN(retencionControlCalidad)) {
       errors.retencionControlCalidad = "La retención debe ser un número.";
     }
@@ -316,6 +346,7 @@ function GenerateQualityControlForm() {
 
     return Object.keys(errors).length === 0;
   };
+
   const determinateShift = (data) => {
     if (!data || data.length === 0) return null;
 
@@ -326,12 +357,15 @@ function GenerateQualityControlForm() {
 
       return acc;
     }, {});
+
+    // noinspection UnnecessaryLocalVariableJS
     const mostFrequentTurno = Object.keys(turnoCounts).reduce((a, b) =>
-      turnoCounts[a] > turnoCounts[b] ? a : b
+      turnoCounts[a] > turnoCounts[b] ? a : b,
     );
 
     return mostFrequentTurno;
   };
+
   const determinateDate = (data) => {
     if (!data || data.length === 0) return null;
 
@@ -343,12 +377,14 @@ function GenerateQualityControlForm() {
       return acc;
     }, {});
 
+    // noinspection UnnecessaryLocalVariableJS
     const mostFrequentDate = Object.keys(dateCounts).reduce((a, b) =>
-      dateCounts[a] > dateCounts[b] ? a : b
+      dateCounts[a] > dateCounts[b] ? a : b,
     );
 
     return mostFrequentDate;
   };
+
   const sendCreate = async (e) => {
     e.preventDefault();
 
@@ -362,13 +398,17 @@ function GenerateQualityControlForm() {
     const horaControlCalidad = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
+
     const fechaControlCalidad = determinateDate(currentData);
     const shiftQualityControl = determinateShift(currentData);
+
     const matchingWindmill = molino?.find(
-      (item) => item.name === molinoControlCalidad
+      (item) => item.name === molinoControlCalidad,
     );
+
     const referenceQualityControl = matchingWindmill?.reference || "";
     const bulkQualityControl = matchingWindmill?.bulk || "";
+
     const cantidadProductoRechazado =
       (matchingWindmill?.capacity * parseInt(rechazadoControlCalidad)) / 1000;
 
@@ -385,11 +425,15 @@ function GenerateQualityControlForm() {
         observacion_control_calidad: observacionControlCalidad,
       },
     ];
+
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(
         `http://${localIP}:3000/controles_calidad`,
-        control_calidad
+        control_calidad,
       );
+
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/productos_rechazados`, {
         nombre_producto_rechazado: referenceQualityControl,
         cantidad_producto_rechazado: cantidadProductoRechazado,
@@ -400,22 +444,26 @@ function GenerateQualityControlForm() {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear el control de calidad. Por favor, inténtelo de nuevo.`
+          `Error al crear el control de calidad. Por favor, inténtelo de nuevo.`,
         );
         setLoading(false);
       }
     }
   };
+
   const molinoSeleccionado = molino.find(
-    (item) => item.name === molinoControlCalidad
+    (item) => item.name === molinoControlCalidad,
   );
+
   const redirectReport = () => {
     navigate("/generatereport/generatereportmenu");
   };
 
+  // noinspection JSUnresolvedReference,JSValidateTypes
   return (
     <>
       {finalData.length > 0 ? (
@@ -602,20 +650,6 @@ function GenerateQualityControlForm() {
                           setObservacionControlCalidad(e.target.value)
                         }
                       />
-                      {!validationError.observacionControlCalidad ? (
-                        <></>
-                      ) : (
-                        <motion.span
-                          className={
-                            Style.generateNoveltyStrikeStartFormValidation
-                          }
-                          initial={{ zoom: 0 }}
-                          animate={{ zoom: 1 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          {validationError.observacionControlCalidad}
-                        </motion.span>
-                      )}
                     </fieldset>
                   </main>
                   <footer className={Style.generateQualityControlFormFooter}>

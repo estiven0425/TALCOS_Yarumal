@@ -1,15 +1,20 @@
-﻿import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import {
-  getWeek,
-  parseISO,
-  startOfWeek,
+﻿import {
   endOfWeek,
   eachWeekOfInterval,
   format,
+  getWeek,
+  parseISO,
 } from "date-fns";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/monitoring-view-table-list-efficiency.module.css";
+
+MonitoringViewTableListDispatche.propTypes = {
+  inicio: PropTypes.any,
+  fin: PropTypes.any,
+};
 
 function MonitoringViewTableListDispatche({ inicio, fin }) {
   const [despachoProgramado, setDespachoProgramado] = useState([]);
@@ -27,17 +32,20 @@ function MonitoringViewTableListDispatche({ inicio, fin }) {
 
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseProgrammedDispatche = await axios.get(
           `http://${localIP}:3000/despachos_comerciales/filtrados`,
           {
             params: { inicio, fin },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseDispatche = await axios.get(
           `http://${localIP}:3000/despachos/filtrados`,
           {
             params: { inicio, fin },
-          }
+          },
         );
 
         setDespachoProgramado(responseProgrammedDispatche.data);
@@ -47,7 +55,7 @@ function MonitoringViewTableListDispatche({ inicio, fin }) {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP, inicio, fin]);
 
   useEffect(() => {
@@ -66,7 +74,7 @@ function MonitoringViewTableListDispatche({ inicio, fin }) {
 
       const weeks = eachWeekOfInterval(
         { start: startDate, end: endDate },
-        { weekStartsOn: 1 }
+        { weekStartsOn: 1 },
       );
 
       const weekNumbers = [];
@@ -74,9 +82,11 @@ function MonitoringViewTableListDispatche({ inicio, fin }) {
 
       weeks.forEach((weekStart) => {
         const weekNumber = getWeekNumberISO(weekStart);
+
         const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
 
         weekNumbers.push(weekNumber);
+
         ranges[weekNumber] = {
           start: format(weekStart, "yyyy-MM-dd"),
           end: format(weekEnd, "yyyy-MM-dd"),
@@ -116,6 +126,7 @@ function MonitoringViewTableListDispatche({ inicio, fin }) {
       despachoProgramado.forEach((item) => {
         const date = parseISO(item.fecha_despacho_comercial);
         const weekNumber = getWeekNumberISO(date);
+
         if (groupedProgramados[weekNumber]) {
           groupedProgramados[weekNumber].push(item);
         }
@@ -124,6 +135,7 @@ function MonitoringViewTableListDispatche({ inicio, fin }) {
       despacho.forEach((item) => {
         const date = parseISO(item.fecha_despacho);
         const weekNumber = getWeekNumberISO(date);
+
         if (groupedReales[weekNumber]) {
           groupedReales[weekNumber].push(item);
         }
@@ -165,7 +177,7 @@ function MonitoringViewTableListDispatche({ inicio, fin }) {
             const totalCantidadProgramada = dataPorSemana.programados[weekNum]
               ? dataPorSemana.programados[weekNum].reduce(
                   (sum, item) => sum + (item.cantidad_despacho_comercial || 0),
-                  0
+                  0,
                 )
               : 0;
             return (
@@ -179,7 +191,7 @@ function MonitoringViewTableListDispatche({ inicio, fin }) {
             const totalCantidadRealizada = dataPorSemana.reales[weekNum]
               ? dataPorSemana.reales[weekNum].reduce(
                   (sum, item) => sum + (item.cantidad_despacho || 0),
-                  0
+                  0,
                 )
               : 0;
             return <td key={`reales-${weekNum}`}>{totalCantidadRealizada}</td>;
@@ -193,13 +205,13 @@ function MonitoringViewTableListDispatche({ inicio, fin }) {
             const totalProgramados = dataPorSemana.programados[weekNum]
               ? dataPorSemana.programados[weekNum].reduce(
                   (sum, item) => sum + (item.cantidad_despacho_comercial || 0),
-                  0
+                  0,
                 )
               : 0;
             const totalReales = dataPorSemana.reales[weekNum]
               ? dataPorSemana.reales[weekNum].reduce(
                   (sum, item) => sum + (item.cantidad_despacho || 0),
-                  0
+                  0,
                 )
               : 0;
             const deviation = totalReales - totalProgramados;

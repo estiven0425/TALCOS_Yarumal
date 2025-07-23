@@ -13,13 +13,14 @@ function StaffUserList() {
   useEffect(() => {
     const getUser = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/usuarios/personalusuario`,
           {
             params: {
               perfil: profile,
             },
-          }
+          },
         );
 
         setUsuario(response.data);
@@ -28,7 +29,7 @@ function StaffUserList() {
       }
     };
 
-    getUser();
+    void getUser();
   }, [localIP, profile]);
 
   return (

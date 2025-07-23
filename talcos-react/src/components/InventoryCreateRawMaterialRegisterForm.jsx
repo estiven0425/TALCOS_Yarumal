@@ -45,8 +45,10 @@ function InventoryCreateRawMaterialRegister() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
+
     const getUsuario = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.post(`http://${localIP}:3000/login/get`, {
           token: token,
         });
@@ -56,14 +58,16 @@ function InventoryCreateRawMaterialRegister() {
         console.error("Error al obtener el usuario: ", error);
       }
     };
-    getUsuario();
+
+    void getUsuario();
   }, [localIP]);
 
   useEffect(() => {
     const getSupplier = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
-          `http://${localIP}:3000/usuarios/registrousuario`
+          `http://${localIP}:3000/usuarios/registrousuario`,
         );
 
         setProveedor(response.data);
@@ -72,14 +76,15 @@ function InventoryCreateRawMaterialRegister() {
       }
     };
 
-    getSupplier();
+    void getSupplier();
   }, [localIP]);
 
   useEffect(() => {
     const getConveyor = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
-          `http://${localIP}:3000/usuarios/registrotransportador`
+          `http://${localIP}:3000/usuarios/registrotransportador`,
         );
 
         setTransportador(response.data);
@@ -88,14 +93,15 @@ function InventoryCreateRawMaterialRegister() {
       }
     };
 
-    getConveyor();
+    void getConveyor();
   }, [localIP]);
 
   useEffect(() => {
     const getRawMaterial = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
-          `http://${localIP}:3000/materias_primas`
+          `http://${localIP}:3000/materias_primas`,
         );
 
         setMateriaPrima(response.data);
@@ -104,7 +110,7 @@ function InventoryCreateRawMaterialRegister() {
       }
     };
 
-    getRawMaterial();
+    void getRawMaterial();
   }, [localIP]);
 
   useEffect(() => {
@@ -115,7 +121,7 @@ function InventoryCreateRawMaterialRegister() {
 
       return () => clearTimeout(timer);
     }
-  }, [SendStatus]);
+  }, [SendStatus, navigate]);
 
   const validation = () => {
     const errors = {};
@@ -206,6 +212,7 @@ function InventoryCreateRawMaterialRegister() {
 
       reader.onload = (event) => {
         try {
+          // noinspection JSCheckFunctionSignatures
           const jsonData = JSON.parse(event.target.result);
 
           if (
@@ -215,39 +222,46 @@ function InventoryCreateRawMaterialRegister() {
           ) {
             const jsonArray = [jsonData];
             setDatosArchivo(jsonArray);
+
             setArchivoRegistro(file.name);
-            setValidationError({});
-          } else if (
-            Array.isArray(jsonData) &&
-            jsonData.every((item) =>
-              [
-                "fecha_registro",
-                "remision_registro",
-                "nombre_proveedor_registro",
-                "documento_proveedor_registro",
-                "nombre_transportador_registro",
-                "documento_transportador_registro",
-                "mp_registro",
-                "valor_mp_registro",
-                "peso_mp_registro",
-                "concepto_registro",
-                "zona_registro",
-                "bonificacion_registro",
-                "valor_t_registro",
-                "observacion_registro",
-              ].every((key) => key in item)
-            )
-          ) {
-            setDatosArchivo(jsonData);
-            setArchivoRegistro(file.name);
+
             setValidationError({});
           } else {
-            throw new Error("Estructura del JSON no válida.");
+            // noinspection JSObjectNullOrUndefined
+            if (
+              Array.isArray(jsonData) &&
+              jsonData.every((item) =>
+                [
+                  "fecha_registro",
+                  "remision_registro",
+                  "nombre_proveedor_registro",
+                  "documento_proveedor_registro",
+                  "nombre_transportador_registro",
+                  "documento_transportador_registro",
+                  "mp_registro",
+                  "valor_mp_registro",
+                  "peso_mp_registro",
+                  "concepto_registro",
+                  "zona_registro",
+                  "bonificacion_registro",
+                  "valor_t_registro",
+                  "observacion_registro",
+                ].every((key) => key in item),
+              )
+            ) {
+              setDatosArchivo(jsonData);
+              setArchivoRegistro(file.name);
+              setValidationError({});
+            } else {
+              // noinspection ExceptionCaughtLocallyJS
+              throw new Error("Estructura del JSON no válida.");
+            }
           }
         } catch (error) {
           setValidationError({
             archivoRegistro:
-              "El archivo no es un JSON válido o tiene una estructura incorrecta.",
+              "El archivo no es un JSON válido o tiene una estructura incorrecta." +
+              error,
           });
         }
       };
@@ -266,10 +280,13 @@ function InventoryCreateRawMaterialRegister() {
     setLoading(true);
 
     const fechaRegistro = new Date().toISOString().split("T")[0];
+
     const horaRegistro = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
+
     const monthRegistro = new Date().getMonth() + 1;
+
     const fullRecord = {
       fecha_registro: fechaRegistro,
       hora_registro: horaRegistro,
@@ -292,6 +309,7 @@ function InventoryCreateRawMaterialRegister() {
     };
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/registros`, {
         fullRecord: fullRecord,
       });
@@ -300,10 +318,11 @@ function InventoryCreateRawMaterialRegister() {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al crear el registro. Por favor, inténtelo de nuevo."
+          "Error al crear el registro. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
@@ -323,7 +342,9 @@ function InventoryCreateRawMaterialRegister() {
     const horaRegistro = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
+
     const monthRegistro = new Date().getMonth() + 1;
+
     const fullRecord = datosArchivo.map((registro) => ({
       ...registro,
       hora_registro: horaRegistro,
@@ -333,25 +354,28 @@ function InventoryCreateRawMaterialRegister() {
     }));
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(
         `http://${localIP}:3000/registros/importarregistro`,
-        fullRecord
+        fullRecord,
       );
 
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al crear el registro. Por favor, inténtelo de nuevo."
+          "Error al crear el registro. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
     }
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {SendStatus === true ? (
@@ -422,8 +446,8 @@ function InventoryCreateRawMaterialRegister() {
                           proveedor.find(
                             (proveedor) =>
                               proveedor.nombre_usuario ===
-                              nombreProveedorRegistro
-                          )
+                              nombreProveedorRegistro,
+                          ),
                         )
                       : ""
                   }
@@ -465,7 +489,7 @@ function InventoryCreateRawMaterialRegister() {
 
                     setNombreTransportadorRegistro(selected.nombre_usuario);
                     setDocumentoTransportadorRegistro(
-                      selected.documento_usuario
+                      selected.documento_usuario,
                     );
                   }}
                   value={
@@ -474,8 +498,8 @@ function InventoryCreateRawMaterialRegister() {
                           transportador.find(
                             (transportador) =>
                               transportador.nombre_usuario ===
-                              nombreTransportadorRegistro
-                          )
+                              nombreTransportadorRegistro,
+                          ),
                         )
                       : ""
                   }
@@ -712,20 +736,6 @@ function InventoryCreateRawMaterialRegister() {
                   type="text"
                   value={observacionRegistro}
                 />
-                {!validationError.observacionRegistro ? (
-                  <></>
-                ) : (
-                  <motion.span
-                    className={
-                      Style.inventoryCreateRawMaterialRegisterValidation
-                    }
-                    initial={{ zoom: 0 }}
-                    animate={{ zoom: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {validationError.observacionRegistro}
-                  </motion.span>
-                )}
               </fieldset>
             </div>
           </main>
@@ -771,7 +781,7 @@ function InventoryCreateRawMaterialRegister() {
             className={Style.inventoryCreateRawMaterialRegisterHeaderSecondary}
           >
             <h1>
-              Seleccione un arhivo JSON para importar un nuevo registro de
+              Seleccione un archivo JSON para importar un nuevo registro de
               materia prima
             </h1>
           </header>
@@ -784,7 +794,7 @@ function InventoryCreateRawMaterialRegister() {
               }
             >
               <fieldset>
-                <h2>Arhivo JSON</h2>
+                <h2>Archivo JSON</h2>
                 <label htmlFor="archivoRegistro">
                   <img alt="Icono" src="/import.svg"></img>
                 </label>

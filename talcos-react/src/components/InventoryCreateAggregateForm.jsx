@@ -36,8 +36,10 @@ function InventoryCreateAggregate() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
+
     const getUsuario = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.post(`http://${localIP}:3000/login/get`, {
           token: token,
         });
@@ -47,12 +49,14 @@ function InventoryCreateAggregate() {
         console.error("Error al obtener el usuario: ", error);
       }
     };
-    getUsuario();
+
+    void getUsuario();
   }, [localIP]);
 
   useEffect(() => {
     const getUsers = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const [operadorRes, cargueroRes] = await Promise.all([
           axios.post(`http://${localIP}:3000/usuarios/informeinicialusuario`, {
             idPerfil: 6,
@@ -69,12 +73,13 @@ function InventoryCreateAggregate() {
       }
     };
 
-    getUsers();
+    void getUsers();
   }, [localIP]);
 
   useEffect(() => {
     const getItems = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const [turnoRes, molinoApRes] = await Promise.all([
           axios.get(`http://${localIP}:3000/turnos`),
           axios.get(`http://${localIP}:3000/molinos_ap`),
@@ -87,7 +92,7 @@ function InventoryCreateAggregate() {
       }
     };
 
-    getItems();
+    void getItems();
   }, [localIP]);
 
   useEffect(() => {
@@ -208,6 +213,7 @@ function InventoryCreateAggregate() {
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/registros_ap`, {
         fecha_registro_ap: fechaRegistroAp,
         turno_registro_ap: turnoRegistroAp,
@@ -231,6 +237,7 @@ function InventoryCreateAggregate() {
       const total =
         parseFloat(totalRocaRegistroAp) + parseFloat(totalGruesoRegistroAp);
 
+      // noinspection HttpUrlsUsage
       await axios.put(
         `http://${localIP}:3000/inventario_ap/actualizarcantidad`,
         {
@@ -242,6 +249,7 @@ function InventoryCreateAggregate() {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
@@ -252,6 +260,7 @@ function InventoryCreateAggregate() {
     }
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {SendStatus === true ? (
@@ -716,20 +725,6 @@ function InventoryCreateAggregate() {
                   type="text"
                   value={observacionRegistroAp}
                 />
-                {!validationError.observacionRegistro ? (
-                  <></>
-                ) : (
-                  <motion.span
-                    className={
-                      Style.inventoryCreateAggregateRegisterApValidation
-                    }
-                    initial={{ zoom: 0 }}
-                    animate={{ zoom: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {validationError.observacionRegistro}
-                  </motion.span>
-                )}
               </fieldset>
             </div>
           </main>

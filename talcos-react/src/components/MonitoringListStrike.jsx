@@ -2,7 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import { registrarTabla } from "../utils/tablaStore";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/monitoring-list-strike.module.css";
+
+MonitoringListStrike.propTypes = {
+  inicio: PropTypes.any,
+  fin: PropTypes.any,
+};
 
 function MonitoringListStrike({ inicio, fin }) {
   const [molino, setMolino] = useState([]);
@@ -19,14 +25,17 @@ function MonitoringListStrike({ inicio, fin }) {
 
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMonitoring = await axios.get(
           `http://${localIP}:3000/monitoreo`,
           {
             params: { inicio, fin },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseWindmill = await axios.get(
-          `http://${localIP}:3000/molinos`
+          `http://${localIP}:3000/molinos`,
         );
 
         setItem(responseMonitoring.data);
@@ -36,22 +45,27 @@ function MonitoringListStrike({ inicio, fin }) {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP, inicio, fin]);
+
   useEffect(() => {
     if (!item) return;
 
     const getShifts = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseShift = await axios.get(`http://${localIP}:3000/turnos`);
+
         const shifts = responseShift.data;
+
         const novedadesParo = item.novedades.filter(
           (novedad) =>
-            novedad.tipo_novedad === "Paro" && !novedad.fin_paro_novedad
+            novedad.tipo_novedad === "Paro" && !novedad.fin_paro_novedad,
         );
+
         const novedadesActualizadas = novedadesParo.map((novedad) => {
           const turnoEncontrado = shifts.find(
-            (shift) => shift.nombre_turno === novedad.turno_novedad
+            (shift) => shift.nombre_turno === novedad.turno_novedad,
           );
 
           return {
@@ -61,8 +75,9 @@ function MonitoringListStrike({ inicio, fin }) {
               : null,
           };
         });
+
         const news = item.novedades.filter(
-          (novedad) => novedad.tipo_novedad === "Paro"
+          (novedad) => novedad.tipo_novedad === "Paro",
         );
 
         setNews(news);
@@ -73,8 +88,9 @@ function MonitoringListStrike({ inicio, fin }) {
       }
     };
 
-    getShifts();
+    void getShifts();
   }, [localIP, item]);
+
   useEffect(() => {
     if (!item || !molino.length) return;
 
@@ -94,9 +110,11 @@ function MonitoringListStrike({ inicio, fin }) {
       }
 
       const fechaInicio = new Date(`${fecha_novedad}T${inicio_paro_novedad}`);
+
       const fechaFin = fin_paro_novedad
         ? new Date(`${fecha_novedad}T${fin_paro_novedad}`)
         : null;
+
       const horasParo = fechaFin
         ? (fechaFin - fechaInicio) / (1000 * 60 * 60)
         : 0;
@@ -114,7 +132,7 @@ function MonitoringListStrike({ inicio, fin }) {
 
     const horasTotales = Object.values(parosPorMotivo).reduce(
       (sum, motivo) => sum + motivo.totalHoras,
-      0
+      0,
     );
 
     setHorasTotalesParo(horasTotales);
@@ -124,8 +142,9 @@ function MonitoringListStrike({ inicio, fin }) {
         (sum, motivo) => {
           return sum + (motivo.molinos[molinoItem.nombre_molino] || 0);
         },
-        0
+        0,
       );
+
       return acc;
     }, {});
 
@@ -137,17 +156,20 @@ function MonitoringListStrike({ inicio, fin }) {
     });
 
     setParosAgrupados(parosPorMotivo);
+
     setMolino((prevMolino) =>
       prevMolino.map((m) => ({
         ...m,
         totalHoras: horasTotalesPorMolino[m.nombre_molino],
-      }))
+      })),
     );
-  }, [newsUpdated, news]);
+  }, [newsUpdated, news, item, molino]);
 
   function convertirHorasDecimalAHorasMinutos(horasDecimal) {
     const horas = Math.floor(horasDecimal);
+
     const minutos = Math.round((horasDecimal - horas) * 60);
+
     return `${horas}:${minutos.toString().padStart(2, "0")} Hrs`;
   }
 
@@ -196,7 +218,7 @@ function MonitoringListStrike({ inicio, fin }) {
                     <td key={molinoItem.id_molino}>
                       {datos.molinos[molinoItem.nombre_molino]
                         ? convertirHorasDecimalAHorasMinutos(
-                            datos.molinos[molinoItem.nombre_molino]
+                            datos.molinos[molinoItem.nombre_molino],
                           )
                         : "0:00 Hrs"}
                     </td>
@@ -215,7 +237,7 @@ function MonitoringListStrike({ inicio, fin }) {
                   <td key={molinoItem.id_molino}>
                     {molinoItem.totalHoras
                       ? convertirHorasDecimalAHorasMinutos(
-                          molinoItem.totalHoras
+                          molinoItem.totalHoras,
                         )
                       : "0:00 Hrs"}
                   </td>

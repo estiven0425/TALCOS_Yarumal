@@ -17,15 +17,19 @@ function GenerateReportShift() {
   useEffect(() => {
     const getShifts = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = response.data;
+
         const currentTime = new Date();
 
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -37,8 +41,9 @@ function GenerateReportShift() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
+
         if (!currentShift) {
           console.error("No se pudo determinar el turno actual.");
           return;
@@ -48,11 +53,14 @@ function GenerateReportShift() {
         currentShift.fin_turno = currentShift.fin_turno.slice(0, 5);
 
         const currentDate = currentTime.toISOString().split("T")[0];
+
         const {
           nombre_turno: turno,
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -62,8 +70,10 @@ function GenerateReportShift() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -73,8 +83,10 @@ function GenerateReportShift() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -84,12 +96,13 @@ function GenerateReportShift() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
         const startReports = responseStartReport.data;
         const news = responseNews.data;
         const endReports = responseEndReport.data;
+
         const startReport = startReports.length > 0;
         const novelty = news.length;
         const endReport = endReports.length > 0;
@@ -106,14 +119,16 @@ function GenerateReportShift() {
       }
     };
 
-    getShifts();
+    void getShifts();
   }, [localIP]);
 
   const formatDate = () => {
     const date = new Date();
+
     const formattedDate = format(date, "EEEE d 'de' MMMM 'del' yyyy", {
       locale: es,
     });
+
     return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
   };
 

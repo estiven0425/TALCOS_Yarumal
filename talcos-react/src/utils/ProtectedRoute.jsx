@@ -13,15 +13,19 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     if (!token) {
       navigate("/", { replace: true });
+
       return;
     }
 
     const verifySession = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.post(`http://${localIP}:3000/login/get`, {
           token,
         });
+
         const perfilUsuario = response.data.id_perfil_usuario;
+
         const restrictions = {
           1: [
             "/generatereport",
@@ -286,11 +290,12 @@ const ProtectedRoute = ({ children }) => {
         setIsAuthorized(true);
       } catch (error) {
         console.error("Error al verificar sesión:", error);
+
         navigate("/", { replace: true });
       }
     };
 
-    verifySession();
+    void verifySession();
   }, [token, localIP, navigate, location.pathname]);
 
   return isAuthorized ? children : null;

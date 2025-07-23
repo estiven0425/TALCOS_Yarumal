@@ -14,15 +14,19 @@ function HomeStateShift() {
   useEffect(() => {
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
+
         const currentTime = new Date();
 
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -34,8 +38,9 @@ function HomeStateShift() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
+
         if (!currentShift) {
           console.error("No se pudo determinar el turno actual.");
           return;
@@ -50,7 +55,7 @@ function HomeStateShift() {
           currentDate = new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
-            currentTime.getDate() - 1
+            currentTime.getDate() - 1,
           );
         }
 
@@ -59,6 +64,8 @@ function HomeStateShift() {
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -68,8 +75,10 @@ function HomeStateShift() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -79,8 +88,10 @@ function HomeStateShift() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -90,12 +101,13 @@ function HomeStateShift() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
         const startReports = responseStartReport.data;
         const news = responseNews.data;
         const endReports = responseEndReport.data;
+
         const startReport = startReports.length > 0;
         const novelty = news.length;
         const endReport = endReports.length > 0;
@@ -110,7 +122,7 @@ function HomeStateShift() {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP]);
 
   return shiftState ? (

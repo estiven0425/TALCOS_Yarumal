@@ -27,23 +27,30 @@ function GenerateNoveltyMechanicForm() {
       return () => clearTimeout(timer);
     }
   }, [sendStatus, navigate]);
+
   useEffect(() => {
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMechanic = await axios.post(
           `http://${localIP}:3000/usuarios/informeinicialusuario`,
-          { idPerfil: 7 }
+          { idPerfil: 7 },
         );
         const mechanics = responseMechanic.data;
+
+        // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
+
         const currentTime = new Date();
 
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -55,7 +62,7 @@ function GenerateNoveltyMechanicForm() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
 
         if (!currentShift) {
@@ -72,7 +79,7 @@ function GenerateNoveltyMechanicForm() {
           currentDate = new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
-            currentTime.getDate() - 1
+            currentTime.getDate() - 1,
           );
         }
 
@@ -81,6 +88,8 @@ function GenerateNoveltyMechanicForm() {
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -90,8 +99,10 @@ function GenerateNoveltyMechanicForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -101,8 +112,10 @@ function GenerateNoveltyMechanicForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -112,12 +125,13 @@ function GenerateNoveltyMechanicForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
         const endReports = responseEndReport.data;
+
         const usedMechanicIds = new Set([
           ...reports
             .filter((reports) => reports.mecanico_informe_inicial !== null)
@@ -126,8 +140,9 @@ function GenerateNoveltyMechanicForm() {
             .filter((news) => news.mecanico_novedad !== null)
             .map((news) => news.mecanico_novedad),
         ]);
+
         const availableMechanics = mechanics.filter(
-          (mecanico) => !usedMechanicIds.has(mecanico.id_usuario)
+          (mecanico) => !usedMechanicIds.has(mecanico.id_usuario),
         );
 
         setCurrentData(reports);
@@ -140,7 +155,7 @@ function GenerateNoveltyMechanicForm() {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP]);
 
   const validation = () => {
@@ -154,6 +169,7 @@ function GenerateNoveltyMechanicForm() {
 
     return Object.keys(errors).length === 0;
   };
+
   const determinateShift = (data) => {
     if (!data || data.length === 0) return null;
 
@@ -164,12 +180,14 @@ function GenerateNoveltyMechanicForm() {
 
       return acc;
     }, {});
+    // noinspection UnnecessaryLocalVariableJS
     const mostFrequentTurno = Object.keys(turnoCounts).reduce((a, b) =>
-      turnoCounts[a] > turnoCounts[b] ? a : b
+      turnoCounts[a] > turnoCounts[b] ? a : b,
     );
 
     return mostFrequentTurno;
   };
+
   const determinateDate = (data) => {
     if (!data || data.length === 0) return null;
 
@@ -181,12 +199,14 @@ function GenerateNoveltyMechanicForm() {
       return acc;
     }, {});
 
+    // noinspection UnnecessaryLocalVariableJS
     const mostFrequentDate = Object.keys(dateCounts).reduce((a, b) =>
-      dateCounts[a] > dateCounts[b] ? a : b
+      dateCounts[a] > dateCounts[b] ? a : b,
     );
 
     return mostFrequentDate;
   };
+
   const sendCreate = async (e) => {
     e.preventDefault();
 
@@ -200,8 +220,10 @@ function GenerateNoveltyMechanicForm() {
     const horaNovedad = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
+
     const fechaNovedad = determinateDate(currentData);
     const shiftNovelty = determinateShift(currentData);
+
     const novedad = [
       {
         fecha_novedad: fechaNovedad,
@@ -214,16 +236,18 @@ function GenerateNoveltyMechanicForm() {
     ];
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/novedades`, novedad);
 
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear la adición de mecánico. Por favor, inténtelo de nuevo.`
+          `Error al crear la adición de mecánico. Por favor, inténtelo de nuevo.`,
         );
         setLoading(false);
       }
@@ -234,6 +258,7 @@ function GenerateNoveltyMechanicForm() {
     navigate("/generatereport/noveltyoption");
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {finalData.length > 0 ? (
@@ -316,18 +341,6 @@ function GenerateNoveltyMechanicForm() {
                     onChange={(e) => setObservacionNovedad(e.target.value)}
                     placeholder="Ingresa una observación"
                   />
-                  {!validationError.observacionNovedad ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={Style.generateNoveltyComponentFormValidation}
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError.observacionNovedad}
-                    </motion.span>
-                  )}
                 </fieldset>
               </main>
               <footer className={Style.generateNoveltyComponentFormFooter}>

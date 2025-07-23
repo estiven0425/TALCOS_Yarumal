@@ -35,6 +35,7 @@ function InventoryDeleteRawMaterialRegisterConfirmation() {
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.put(`http://${localIP}:3000/registros/eliminarregistros`, {
         ids_registros: idItem,
       });
@@ -43,10 +44,11 @@ function InventoryDeleteRawMaterialRegisterConfirmation() {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al eliminar el registro. Por favor, inténtelo de nuevo."
+          "Error al eliminar el registro. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
@@ -57,6 +59,7 @@ function InventoryDeleteRawMaterialRegisterConfirmation() {
     navigate("/inventory/registerrawmaterial");
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {sendStatus === true ? (

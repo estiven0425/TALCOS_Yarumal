@@ -13,14 +13,15 @@ function SettingUser() {
   const [correoUsuario, setCorreoUsuario] = useState("");
   const [contratoUsuario, setContratoUsuario] = useState("");
   const [perfilUsuario, setPerfilUsuario] = useState("");
-  const [idPerfilUsuario, setIdPerfilUsuario] = useState("");
   const navigate = useNavigate();
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
+
     const getUsuario = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.post(`http://${localIP}:3000/login/get`, {
           token: token,
         });
@@ -32,13 +33,12 @@ function SettingUser() {
         setCorreoUsuario(response.data.correo_usuario);
         setContratoUsuario(response.data.contrato_usuario);
         setPerfilUsuario(response.data.perfil_usuario);
-        setIdPerfilUsuario(response.data.id_perfil_usuario);
         setIsReady(true);
       } catch (error) {
         console.error("Error al obtener el usuario: ", error);
       }
     };
-    getUsuario();
+    void getUsuario();
   }, [localIP]);
 
   const singularize = (word) => {
@@ -62,6 +62,7 @@ function SettingUser() {
 
     return word;
   };
+
   const redirectUser = (id_usuario) => {
     navigate("/changepassword", { state: id_usuario });
   };

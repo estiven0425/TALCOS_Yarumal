@@ -4,15 +4,19 @@ import Style from "./styles/inventory-rejected-material-button.module.css";
 
 function InventoryRejectedMaterialButton() {
   const navigate = useNavigate();
+
   const redirectCreate = () => {
     navigate("/inventory/createrejectedmaterial");
   };
+
   const redirectEdit = () => {
     navigate("/inventory/listeditrejectedmaterial");
   };
+
   const redirectDelete = () => {
     navigate("/inventory/listdeleterejectedmaterial");
   };
+
   const redirectReasigned = () => {
     navigate("/inventory/listreasignedrejectedmaterial");
   };

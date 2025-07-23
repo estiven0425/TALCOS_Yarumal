@@ -4,7 +4,12 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/inventory-raw-material-register-action.module.css";
+
+InventoryRawMaterialRegisterAction.propTypes = {
+  item: PropTypes.any,
+};
 
 function InventoryRawMaterialRegisterAction({ item }) {
   const [loading, setLoading] = useState(false);
@@ -20,14 +25,17 @@ function InventoryRawMaterialRegisterAction({ item }) {
         "EEEE dd 'de' MMMM 'del' yyyy",
         {
           locale: es,
-        }
+        },
       );
+
       return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
     };
+
     const formatTime = (time) => {
       return time.slice(0, 5);
     };
 
+    // noinspection JSUnresolvedReference
     const content = `
     <style>
       .aside {
@@ -55,13 +63,13 @@ function InventoryRawMaterialRegisterAction({ item }) {
       .aside div h2 {
         color: #696a9e;
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
         text-align: left;
       }
 
       .aside div p {
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
         text-align: left;
       }
 
@@ -205,8 +213,11 @@ function InventoryRawMaterialRegisterAction({ item }) {
       </tfoot>
     </table>
     `;
+
     try {
       setLoading(true);
+
+      // noinspection HttpUrlsUsage
       const response = await axios.post(
         `http://${localIP}:3000/pdf`,
         {
@@ -216,20 +227,27 @@ function InventoryRawMaterialRegisterAction({ item }) {
         },
         {
           responseType: "blob",
-        }
+        },
       );
+
       const url = window.URL.createObjectURL(
-        new Blob([response.data], { type: "application/pdf" })
+        new Blob([response.data], { type: "application/pdf" }),
       );
+
       const a = document.createElement("a");
       a.href = url;
       a.download = "registro_de_materia_prima.pdf";
+
       document.body.appendChild(a);
+
       a.click();
+
       document.body.removeChild(a);
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
+
       console.log("Error al imprimir: ", error);
     }
   };
@@ -237,9 +255,11 @@ function InventoryRawMaterialRegisterAction({ item }) {
   const redirectCreate = (data) => {
     navigate("/inventory/createregisterrawmaterial", { state: data });
   };
+
   const redirectDetail = () => {
     navigate("/inventory/detailregisterrawmaterial", { state: item });
   };
+
   const redirectDelete = () => {
     navigate("/inventory/deleteregisterrawmaterial", {
       state: item.id_registro,

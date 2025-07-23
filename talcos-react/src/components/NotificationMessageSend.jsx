@@ -19,8 +19,11 @@ function NotificationMessageSend() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
+
     if (token) {
       const decodedToken = jwtDecode(token);
+
+      // noinspection JSUnresolvedReference
       setIdUsuario(decodedToken.id_usuario);
     }
   }, []);
@@ -30,21 +33,23 @@ function NotificationMessageSend() {
 
     const getUser = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/usuarios/mensajeusuario`,
           {
             params: {
               id_usuario: idUsuario,
             },
-          }
+          },
         );
+
         setUsuario(response.data);
       } catch (error) {
         console.error("Error al obtener los usuarios: ", error);
       }
     };
 
-    getUser();
+    void getUser();
   }, [idUsuario, localIP]);
 
   const validation = () => {
@@ -60,10 +65,12 @@ function NotificationMessageSend() {
     }
 
     setValidationError(errors);
+
     setLoading(false);
 
     return Object.keys(errors).length === 0;
   };
+
   const sendMessage = async (e) => {
     e.preventDefault();
 
@@ -72,12 +79,15 @@ function NotificationMessageSend() {
     }
 
     const currentDateTime = new Date();
+
     const formattedDate = format(currentDateTime, "yyyy-MM-dd");
+
     const formattedTime = format(currentDateTime, "HH:mm:ss", { locale: es });
 
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/mensajes`, {
         fecha_mensaje: formattedDate,
         hora_mensaje: formattedTime,
@@ -89,6 +99,7 @@ function NotificationMessageSend() {
       setMessage("");
       setSelectedUser("");
       setSendStatus(true);
+
       setTimeout(() => {
         setSendStatus(false);
         setLoading(false);
@@ -96,16 +107,18 @@ function NotificationMessageSend() {
     } catch (error) {
       if (error.response?.data?.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al enviar el mensaje. Por favor, inténtelo de nuevo."
+          "Error al enviar el mensaje. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
     }
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       <motion.header

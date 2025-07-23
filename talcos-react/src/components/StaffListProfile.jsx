@@ -12,6 +12,7 @@ function StaffListProfile() {
   useEffect(() => {
     const getProfile = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(`http://${localIP}:3000/perfiles`);
 
         setPerfil(response.data);
@@ -20,13 +21,14 @@ function StaffListProfile() {
       }
     };
 
-    getProfile();
+    void getProfile();
   }, [localIP]);
 
   const redirect = (id_perfil) => {
     navigate("/user", { state: id_perfil });
   };
 
+  // noinspection JSValidateTypes,HttpUrlsUsage
   return (
     <>
       <motion.header

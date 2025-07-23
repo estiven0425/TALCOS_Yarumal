@@ -18,7 +18,7 @@ function ErrorMain() {
         transition={{ duration: 0.5 }}
       >
         <h1>
-          ¡Opps! <br /> Parece que entraste a un lugar desconocido
+          ¡Ops! <br /> Parece que entraste a un lugar desconocido
         </h1>
       </motion.main>
       <motion.footer

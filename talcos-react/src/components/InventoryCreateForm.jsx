@@ -2,7 +2,18 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/inventory-create-form.module.css";
+
+InventoryCreateForm.propTypes = {
+  redirectPath: PropTypes.any,
+  fields: PropTypes.any,
+  endpoint: PropTypes.any,
+  nameError: PropTypes.any,
+  nameConfirmation: PropTypes.any,
+  title: PropTypes.any,
+  nameButton: PropTypes.any,
+};
 
 function InventoryCreateForm({
   redirectPath,
@@ -79,16 +90,18 @@ function InventoryCreateForm({
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/${endpoint}`, data);
 
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear ${nameError}. Por favor, inténtelo de nuevo.`
+          `Error al crear ${nameError}. Por favor, inténtelo de nuevo.`,
         );
         setLoading(false);
       }
@@ -99,6 +112,7 @@ function InventoryCreateForm({
     navigate(`/inventory/inventory${redirectPath}`);
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {sendStatus === true ? (

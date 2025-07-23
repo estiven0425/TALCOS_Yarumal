@@ -52,20 +52,23 @@ function LoginForm() {
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       const response = await axios.post(`http://${localIP}:3000/login`, {
         documento_usuario: documentoUsuario,
         contrasena_usuario: contrasenaUsuario,
       });
 
       sessionStorage.setItem("token", response.data.token);
+
       redirect("/home");
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al iniciar sesión. Por favor, inténtelo de nuevo."
+          "Error al iniciar sesión. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
@@ -74,6 +77,7 @@ function LoginForm() {
     setContrasenaUsuario("");
   };
 
+  // noinspection JSValidateTypes
   return (
     <motion.form
       className={Style.loginForm}

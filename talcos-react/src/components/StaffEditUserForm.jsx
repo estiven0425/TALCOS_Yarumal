@@ -14,7 +14,7 @@ function StaffEditUserForm() {
   const [correoUsuario, setCorreoUsuario] = useState("");
   const [contratoUsuario, setContratoUsuario] = useState("");
   const [contrasenaUsuario, setContrasenaUsuario] = useState("");
-  const [passwordVerify, setpasswordVerify] = useState("");
+  const [passwordVerify, setPasswordVerify] = useState("");
   const [loading, setLoading] = useState(false);
   const [SendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
@@ -27,13 +27,14 @@ function StaffEditUserForm() {
   useEffect(() => {
     const getProfile = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/perfiles/personalperfil`,
           {
             params: {
               perfil: user.perfil_usuario,
             },
-          }
+          },
         );
 
         setPerfil(response.data[0]);
@@ -44,8 +45,9 @@ function StaffEditUserForm() {
       }
     };
 
-    getProfile();
+    void getProfile();
   }, [localIP, user]);
+
   useEffect(() => {
     if (SendStatus) {
       const timer = setTimeout(() => {
@@ -77,6 +79,7 @@ function StaffEditUserForm() {
 
     return word;
   };
+
   const validation = () => {
     const errors = {};
 
@@ -120,6 +123,7 @@ function StaffEditUserForm() {
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.put(`http://${localIP}:3000/usuarios`, {
         id_usuario: idUsuario,
         nombre_usuario:
@@ -140,10 +144,11 @@ function StaffEditUserForm() {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al editar el usuario. Por favor, inténtelo de nuevo."
+          "Error al editar el usuario. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
@@ -151,10 +156,12 @@ function StaffEditUserForm() {
 
     setContrasenaUsuario("");
   };
+
   const redirectStaffUser = (id_perfil) => {
     navigate("/listedituser", { state: id_perfil });
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {SendStatus === true ? (
@@ -327,7 +334,7 @@ function StaffEditUserForm() {
               <input
                 id="passwordVerify"
                 name="passwordVerify"
-                onChange={(e) => setpasswordVerify(e.target.value)}
+                onChange={(e) => setPasswordVerify(e.target.value)}
                 placeholder="Repite la contraseña del usuario"
                 type="password"
                 value={passwordVerify}

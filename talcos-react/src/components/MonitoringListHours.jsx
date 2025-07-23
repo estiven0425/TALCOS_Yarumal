@@ -2,7 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import { registrarTabla } from "../utils/tablaStore";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/monitoring-list-hours.module.css";
+
+MonitoringListHours.propTypes = {
+  inicio: PropTypes.any,
+  fin: PropTypes.any,
+};
 
 function MonitoringListHours({ inicio, fin }) {
   const [molino, setMolino] = useState([]);
@@ -17,15 +23,20 @@ function MonitoringListHours({ inicio, fin }) {
 
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMonitoring = await axios.get(
           `http://${localIP}:3000/monitoreo`,
           {
             params: { inicio, fin },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseWindmill = await axios.get(
-          `http://${localIP}:3000/molinos`
+          `http://${localIP}:3000/molinos`,
         );
+
+        // noinspection HttpUrlsUsage
         const responseShift = await axios.get(`http://${localIP}:3000/turnos`);
 
         setItem(responseMonitoring.data);
@@ -36,13 +47,15 @@ function MonitoringListHours({ inicio, fin }) {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP, inicio, fin]);
+
   useEffect(() => {
     if (!item || turno.length === 0) return;
 
     const calculateTurnoDuration = (inicioTurnoStr, finTurnoStr) => {
       let dummyDate = "2000-01-01";
+
       let inicioDateTime = new Date(`${dummyDate}T${inicioTurnoStr}`);
       let finDateTime = new Date(`${dummyDate}T${finTurnoStr}`);
 
@@ -59,13 +72,15 @@ function MonitoringListHours({ inicio, fin }) {
 
       if (isNaN(inicioDateTime.getTime()) || isNaN(finDateTime.getTime())) {
         console.warn(
-          `Fechas/horas de turno inválidas. Inicio: ${inicioTurnoStr}, Fin: ${finTurnoStr}`
+          `Fechas/horas de turno inválidas. Inicio: ${inicioTurnoStr}, Fin: ${finTurnoStr}`,
         );
+
         return 0;
       }
 
       const durationMilisegundos =
         finDateTime.getTime() - inicioDateTime.getTime();
+
       return durationMilisegundos / (1000 * 60 * 60);
     };
 
@@ -78,6 +93,7 @@ function MonitoringListHours({ inicio, fin }) {
         .filter((registro) => registro.molino_informe_inicial != null)
         .reduce((acc, registro) => {
           const idMolino = registro.molino_informe_inicial;
+
           if (!acc[idMolino]) {
             acc[idMolino] = {
               iniciales: [],
@@ -87,15 +103,19 @@ function MonitoringListHours({ inicio, fin }) {
               totalHorasEsperadas: 0,
             };
           }
+
           acc[idMolino].iniciales.push(registro);
+
           return acc;
         }, {});
+
       const encendidos = novedades.filter(
-        (n) => n.tipo_novedad === "Encendido de molino"
+        (n) => n.tipo_novedad === "Encendido de molino",
       );
 
       encendidos.forEach((encendido) => {
         const idMolino = encendido.molino_novedad;
+
         if (!gruposPorMolino[idMolino]) {
           gruposPorMolino[idMolino] = {
             iniciales: [],
@@ -119,6 +139,7 @@ function MonitoringListHours({ inicio, fin }) {
         .filter((registro) => registro.molino_informe_final != null)
         .forEach((registro) => {
           const idMolino = registro.molino_informe_final;
+
           if (gruposPorMolino[idMolino]) {
             gruposPorMolino[idMolino].finales.push(registro);
           }
@@ -129,8 +150,9 @@ function MonitoringListHours({ inicio, fin }) {
         .map((novedad) => {
           if (!novedad.fin_paro_novedad) {
             const turnoRelacionado = turno.find(
-              (t) => t.nombre_turno === novedad.turno_novedad
+              (t) => t.nombre_turno === novedad.turno_novedad,
             );
+
             if (turnoRelacionado) {
               return {
                 ...novedad,
@@ -138,11 +160,13 @@ function MonitoringListHours({ inicio, fin }) {
               };
             }
           }
+
           return novedad;
         });
 
       novedadesParo.forEach((novedad) => {
         const idMolino = novedad.molino_novedad;
+
         if (gruposPorMolino[idMolino]) {
           gruposPorMolino[idMolino].paros.push(novedad);
         }
@@ -150,7 +174,9 @@ function MonitoringListHours({ inicio, fin }) {
 
       for (const idMolino in gruposPorMolino) {
         const grupo = gruposPorMolino[idMolino];
+
         const emparejamientos = [];
+
         let totalHorasMolino = 0;
         let totalHorasParo = 0;
         let horasEsperadasAcumuladas = 0;
@@ -159,15 +185,15 @@ function MonitoringListHours({ inicio, fin }) {
           const finalMatch = grupo.finales.find(
             (final) =>
               final.fecha_informe_final === inicial.fecha_informe_inicial &&
-              final.turno_informe_final === inicial.turno_informe_inicial
+              final.turno_informe_final === inicial.turno_informe_inicial,
           );
 
           if (finalMatch) {
             let inicioDateTime = new Date(
-              `${inicial.fecha_informe_inicial}T${inicial.hora_informe_inicial}`
+              `${inicial.fecha_informe_inicial}T${inicial.hora_informe_inicial}`,
             );
             let finDateTime = new Date(
-              `${finalMatch.fecha_informe_final}T${finalMatch.hora_informe_final}`
+              `${finalMatch.fecha_informe_final}T${finalMatch.hora_informe_final}`,
             );
 
             if (
@@ -185,13 +211,15 @@ function MonitoringListHours({ inicio, fin }) {
               isNaN(finDateTime.getTime())
             ) {
               console.warn(
-                `Fechas inválidas para el cálculo de duración en molino ${idMolino}. Inicio: ${inicial.fecha_informe_inicial}T${inicial.hora_informe_inicial}, Fin: ${finalMatch.fecha_informe_final}T${finalMatch.hora_informe_final}`
+                `Fechas inválidas para el cálculo de duración en molino ${idMolino}. Inicio: ${inicial.fecha_informe_inicial}T${inicial.hora_informe_inicial}, Fin: ${finalMatch.fecha_informe_final}T${finalMatch.hora_informe_final}`,
               );
+
               return;
             }
 
             const duracionMilisegundos =
               finDateTime.getTime() - inicioDateTime.getTime();
+
             const duracionHoras = duracionMilisegundos / (1000 * 60 * 60);
 
             emparejamientos.push({
@@ -202,31 +230,34 @@ function MonitoringListHours({ inicio, fin }) {
               duracion: duracionHoras.toFixed(2),
               paros: [],
             });
+
             totalHorasMolino += duracionHoras;
           }
 
           const turnoAsociado = turno.find(
-            (t) => t.nombre_turno === inicial.turno_informe_inicial
+            (t) => t.nombre_turno === inicial.turno_informe_inicial,
           );
+
           if (turnoAsociado) {
             const duracionEsperadaTurno = calculateTurnoDuration(
               turnoAsociado.inicio_turno,
-              turnoAsociado.fin_turno
+              turnoAsociado.fin_turno,
             );
+
             horasEsperadasAcumuladas += duracionEsperadaTurno;
           } else {
             console.warn(
-              `Turno '${inicial.turno_informe_inicial}' no encontrado para molino ${idMolino}.`
+              `Turno '${inicial.turno_informe_inicial}' no encontrado para molino ${idMolino}.`,
             );
           }
         });
 
         grupo.paros.forEach((paro) => {
           let inicioParoDateTime = new Date(
-            `${paro.fecha_novedad}T${paro.inicio_paro_novedad}`
+            `${paro.fecha_novedad}T${paro.inicio_paro_novedad}`,
           );
           let finParoDateTime = new Date(
-            `${paro.fecha_novedad}T${paro.fin_paro_novedad}`
+            `${paro.fecha_novedad}T${paro.fin_paro_novedad}`,
           );
 
           if (
@@ -246,26 +277,30 @@ function MonitoringListHours({ inicio, fin }) {
             isNaN(finParoDateTime.getTime())
           ) {
             console.warn(
-              `Fechas de paro inválidas para el molino ${idMolino}. Inicio: ${paro.fecha_novedad}T${paro.inicio_paro_novedad}, Fin: ${paro.fecha_novedad}T${paro.fin_paro_novedad}`
+              `Fechas de paro inválidas para el molino ${idMolino}. Inicio: ${paro.fecha_novedad}T${paro.inicio_paro_novedad}, Fin: ${paro.fecha_novedad}T${paro.fin_paro_novedad}`,
             );
+
             return;
           }
 
           if (finParoDateTime > inicioParoDateTime) {
             const duracionParoMilisegundos =
               finParoDateTime.getTime() - inicioParoDateTime.getTime();
+
             totalHorasParo += duracionParoMilisegundos / (1000 * 60 * 60);
           } else {
             console.warn(
-              `Fin de paro anterior o igual al inicio para el molino ${idMolino}. Inicio: ${paro.fecha_novedad}T${paro.inicio_paro_novedad}, Fin: ${paro.fecha_novedad}T${paro.fin_paro_novedad}`
+              `Fin de paro anterior o igual al inicio para el molino ${idMolino}. Inicio: ${paro.fecha_novedad}T${paro.inicio_paro_novedad}, Fin: ${paro.fecha_novedad}T${paro.fin_paro_novedad}`,
             );
           }
         });
 
         grupo.emparejamientos = emparejamientos;
+
         grupo.totalHorasTrabajadas = (
           totalHorasMolino - totalHorasParo
         ).toFixed(2);
+
         grupo.totalHorasEsperadas = horasEsperadasAcumuladas.toFixed(2);
       }
 
@@ -274,6 +309,7 @@ function MonitoringListHours({ inicio, fin }) {
 
     groupData();
   }, [item, turno]);
+
   useEffect(() => {
     if (tablaRef.current) {
       registrarTabla("horas", tablaRef.current.outerHTML);
@@ -282,7 +318,9 @@ function MonitoringListHours({ inicio, fin }) {
 
   function convertirHorasDecimalAHorasMinutos(horasDecimal) {
     const horas = Math.floor(horasDecimal);
+
     const minutos = Math.round((horasDecimal - horas) * 60);
+
     return `${horas}:${minutos.toString().padStart(2, "0")} Hrs`;
   }
 
@@ -321,8 +359,8 @@ function MonitoringListHours({ inicio, fin }) {
                       ? convertirHorasDecimalAHorasMinutos(
                           parseFloat(
                             gruposPorMolino[molinoData.nombre_molino]
-                              .totalHorasTrabajadas
-                          )
+                              .totalHorasTrabajadas,
+                          ),
                         )
                       : "00:00"}
                   </td>
@@ -331,8 +369,8 @@ function MonitoringListHours({ inicio, fin }) {
                       ? convertirHorasDecimalAHorasMinutos(
                           parseFloat(
                             gruposPorMolino[molinoData.nombre_molino]
-                              .totalHorasEsperadas
-                          )
+                              .totalHorasEsperadas,
+                          ),
                         )
                       : "00:00"}
                   </td>
@@ -341,12 +379,12 @@ function MonitoringListHours({ inicio, fin }) {
                       ? convertirHorasDecimalAHorasMinutos(
                           parseFloat(
                             gruposPorMolino[molinoData.nombre_molino]
-                              .totalHorasEsperadas
+                              .totalHorasEsperadas,
                           ) -
                             parseFloat(
                               gruposPorMolino[molinoData.nombre_molino]
-                                .totalHorasTrabajadas
-                            )
+                                .totalHorasTrabajadas,
+                            ),
                         )
                       : "00:00"}
                   </td>

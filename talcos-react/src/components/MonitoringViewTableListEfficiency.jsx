@@ -1,21 +1,23 @@
-﻿import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import {
-  getWeek,
-  parseISO,
-  startOfWeek,
+﻿import {
   endOfWeek,
   eachWeekOfInterval,
   format,
-  addDays,
+  getWeek,
+  parseISO,
 } from "date-fns";
-import { es } from "date-fns/locale";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/monitoring-view-table-list-efficiency.module.css";
+
+MonitoringViewTableListEfficiency.propTypes = {
+  inicio: PropTypes.any,
+  fin: PropTypes.any,
+};
 
 function MonitoringViewTableListEfficiency({ inicio, fin }) {
   const [molino, setMolino] = useState([]);
-  const [referencia, setReferencia] = useState([]);
   const [turno, setTurno] = useState([]);
   const [item, setItem] = useState(null);
   const [dataPorMolinoPorSemana, setDataPorMolinoPorSemana] = useState({});
@@ -29,30 +31,31 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
 
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMonitoring = await axios.get(
           `http://${localIP}:3000/monitoreo`,
           {
             params: { inicio, fin },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseWindmill = await axios.get(
-          `http://${localIP}:3000/molinos`
+          `http://${localIP}:3000/molinos`,
         );
+
+        // noinspection HttpUrlsUsage
         const responseShift = await axios.get(`http://${localIP}:3000/turnos`);
-        const responseReference = await axios.get(
-          `http://${localIP}:3000/referencias`
-        );
 
         setItem(responseMonitoring.data);
         setMolino(responseWindmill.data);
         setTurno(responseShift.data);
-        setReferencia(responseReference.data);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       }
     };
 
-    getData();
+    void getData();
   }, [localIP, inicio, fin]);
 
   useEffect(() => {
@@ -61,6 +64,7 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
 
     const calculateTurnoDuration = (inicioTurnoStr, finTurnoStr) => {
       let dummyDate = "2000-01-01";
+
       let inicioDateTime = new Date(`${dummyDate}T${inicioTurnoStr}`);
       let finDateTime = new Date(`${dummyDate}T${finTurnoStr}`);
 
@@ -77,13 +81,15 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
 
       if (isNaN(inicioDateTime.getTime()) || isNaN(finDateTime.getTime())) {
         console.warn(
-          `Fechas/horas de turno inválidas. Inicio: ${inicioTurnoStr}, Fin: ${finTurnoStr}`
+          `Fechas/horas de turno inválidas. Inicio: ${inicioTurnoStr}, Fin: ${finTurnoStr}`,
         );
+
         return 0;
       }
 
       const durationMilisegundos =
         finDateTime.getTime() - inicioDateTime.getTime();
+
       return durationMilisegundos / (1000 * 60 * 60);
     };
 
@@ -100,7 +106,7 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
 
       const weeks = eachWeekOfInterval(
         { start: startDate, end: endDate },
-        { weekStartsOn: 1 }
+        { weekStartsOn: 1 },
       );
 
       const weekNumbers = [];
@@ -108,9 +114,11 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
 
       weeks.forEach((weekStart) => {
         const weekNumber = getWeekNumberISO(weekStart);
+
         const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
 
         weekNumbers.push(weekNumber);
+
         ranges[weekNumber] = {
           start: format(weekStart, "yyyy-MM-dd"),
           end: format(weekEnd, "yyyy-MM-dd"),
@@ -121,20 +129,25 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
       const uniqueWeeks = [...new Set(weekNumbers)].sort((a, b) => a - b);
 
       setWeekRanges(ranges);
+
       return uniqueWeeks;
     };
 
     const groupDataAndCalculate = () => {
       const { informeInicial, informeFinal, novedades } = item;
+
       const dataAgrupada = {};
       const weeklyTotals = {};
 
       const weeksInPeriod = getAllWeeksInDateRange(inicio, fin);
+
       setAllWeeksInPeriod(weeksInPeriod);
 
       molino.forEach((m) => {
         const nombreMolino = m.nombre_molino;
+
         dataAgrupada[nombreMolino] = {};
+
         weeksInPeriod.forEach((weekNum) => {
           dataAgrupada[nombreMolino][weekNum] = {
             iniciales: [],
@@ -163,6 +176,7 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
 
       const addDataToWeek = (molinoName, dateStr, type, data) => {
         const date = parseISO(dateStr);
+
         const weekNumber = getWeekNumberISO(date);
 
         if (dataAgrupada[molinoName] && dataAgrupada[molinoName][weekNumber]) {
@@ -172,19 +186,22 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
 
       informeInicial.forEach((inicial) => {
         const molino = inicial.molino_informe_inicial;
+
         if (!molino) return;
         addDataToWeek(
           molino,
           inicial.fecha_informe_inicial,
           "iniciales",
-          inicial
+          inicial,
         );
       });
 
       novedades.forEach((novedad) => {
         if (novedad.tipo_novedad === "Encendido de molino") {
           const { molino_novedad: molino } = novedad;
+
           if (!molino) return;
+
           addDataToWeek(molino, novedad.fecha_novedad, "encendidos", novedad);
         }
       });
@@ -192,12 +209,14 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
       novedades.forEach((novedad) => {
         if (novedad.tipo_novedad === "Cambio de referencia") {
           const { molino_novedad: molino } = novedad;
+
           if (!molino) return;
+
           addDataToWeek(
             molino,
             novedad.fecha_novedad,
             "cambiosReferencia",
-            novedad
+            novedad,
           );
         }
       });
@@ -207,8 +226,9 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
         .map((paro) => {
           if (!paro.fin_paro_novedad) {
             const turnoRelacionado = turno.find(
-              (t) => t.nombre_turno === paro.turno_novedad
+              (t) => t.nombre_turno === paro.turno_novedad,
             );
+
             if (turnoRelacionado) {
               return {
                 ...paro,
@@ -216,18 +236,23 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
               };
             }
           }
+
           return paro;
         });
 
       novedadesParo.forEach((paro) => {
         const molino = paro.molino_novedad;
+
         if (!molino) return;
+
         addDataToWeek(molino, paro.fecha_novedad, "paros", paro);
       });
 
       informeFinal.forEach((final) => {
         const molino = final.molino_informe_final;
+
         if (!molino) return;
+
         addDataToWeek(molino, final.fecha_informe_final, "finales", final);
       });
 
@@ -261,31 +286,33 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
             const finalMatch = weekData.finales.find(
               (final) =>
                 final.fecha_informe_final === inicial.fecha_informe_inicial &&
-                final.turno_informe_final === inicial.turno_informe_inicial
+                final.turno_informe_final === inicial.turno_informe_inicial,
             );
 
             if (!finalMatch) return;
 
             const inicio = new Date(
-              `${inicial.fecha_informe_inicial}T${inicial.hora_informe_inicial}`
+              `${inicial.fecha_informe_inicial}T${inicial.hora_informe_inicial}`,
             );
             const fin = new Date(
-              `${finalMatch.fecha_informe_final}T${finalMatch.hora_informe_final}`
+              `${finalMatch.fecha_informe_final}T${finalMatch.hora_informe_final}`,
             );
 
             if (fin < inicio) fin.setDate(fin.getDate() + 1);
+
             if (isNaN(inicio.getTime()) || isNaN(fin.getTime())) return;
 
             const duracion = (fin - inicio) / (1000 * 60 * 60);
             totalHoras += duracion;
 
             const turnoAsociado = turno.find(
-              (t) => t.nombre_turno === inicial.turno_informe_inicial
+              (t) => t.nombre_turno === inicial.turno_informe_inicial,
             );
+
             if (turnoAsociado) {
               horasEsperadas += calculateTurnoDuration(
                 turnoAsociado.inicio_turno,
-                turnoAsociado.fin_turno
+                turnoAsociado.fin_turno,
               );
             }
 
@@ -301,20 +328,26 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
 
           weekData.paros.forEach((paro) => {
             const inicioParo = new Date(
-              `${paro.fecha_novedad}T${paro.inicio_paro_novedad}`
+              `${paro.fecha_novedad}T${paro.inicio_paro_novedad}`,
             );
+
             const finParo = new Date(
-              `${paro.fecha_novedad}T${paro.fin_paro_novedad}`
+              `${paro.fecha_novedad}T${paro.fin_paro_novedad}`,
             );
+
             if (finParo < inicioParo) finParo.setDate(finParo.getDate() + 1);
+
+            // noinspection JSCheckFunctionSignatures
             if (isNaN(inicioParo) || isNaN(finParo)) return;
 
             const duracionParo = (finParo - inicioParo) / (1000 * 60 * 60);
+
             totalHoras -= duracionParo;
           });
 
           weekData.finales.forEach((final) => {
             const cantidad = parseFloat(final.cantidad_informe_final);
+
             if (!isNaN(cantidad)) {
               totalToneladas += cantidad;
             }
@@ -323,6 +356,7 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
           weekData.totalHorasTrabajadas = totalHoras.toFixed(2);
           weekData.totalHorasEsperadas = horasEsperadas.toFixed(2);
           weekData.totalToneladas = totalToneladas.toFixed(2);
+
           weekData.rendimiento =
             weekData.totalHorasTrabajadas > 0
               ? (
@@ -345,13 +379,13 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
             parseFloat(weekData.totalHorasTrabajadas) > 0
           ) {
             weeklyTotals[weekNumber].totalHorasTrabajadas += parseFloat(
-              weekData.totalHorasTrabajadas
+              weekData.totalHorasTrabajadas,
             );
             weeklyTotals[weekNumber].totalHorasEsperadas += parseFloat(
-              weekData.totalHorasEsperadas
+              weekData.totalHorasEsperadas,
             );
             weeklyTotals[weekNumber].totalToneladas += parseFloat(
-              weekData.totalToneladas
+              weekData.totalToneladas,
             );
             weeklyTotals[weekNumber].molinosConDatos++;
           }
@@ -359,8 +393,10 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
       }
 
       const finalWeeklyAverages = {};
+
       for (const weekNum of weeksInPeriod) {
         const totalData = weeklyTotals[weekNum];
+
         let avgEfficiency = "0.0";
         let avgRendimiento = "0.00";
 
@@ -430,7 +466,7 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
                       );
                     })}
                   </tr>
-                )
+                ),
               )}
             </tbody>
             <tfoot
@@ -484,7 +520,7 @@ function MonitoringViewTableListEfficiency({ inicio, fin }) {
                       );
                     })}
                   </tr>
-                )
+                ),
               )}
             </tbody>
             <tfoot

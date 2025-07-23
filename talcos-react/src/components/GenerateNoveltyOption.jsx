@@ -14,15 +14,19 @@ function GenerateNoveltyOption() {
   useEffect(() => {
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
+
         const currentTime = new Date();
 
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -34,19 +38,23 @@ function GenerateNoveltyOption() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
+
         if (!currentShift) {
           console.error("No se pudo determinar el turno actual.");
           return;
         }
 
         const currentDate = currentTime.toISOString().split("T")[0];
+
         const {
           nombre_turno: turno,
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -56,8 +64,10 @@ function GenerateNoveltyOption() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -67,8 +77,9 @@ function GenerateNoveltyOption() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
         const reports = responseStartReport.data;
         const endReports = responseEndReport.data;
 
@@ -81,7 +92,7 @@ function GenerateNoveltyOption() {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP]);
 
   const redirect = (category) => {

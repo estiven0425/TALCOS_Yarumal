@@ -4,7 +4,19 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/inventory-list-table.module.css";
+
+InventoryListDeleteTable.propTypes = {
+  endpoint: PropTypes.any,
+  redirectPath: PropTypes.any,
+  title: PropTypes.any,
+  head: PropTypes.any,
+  index: PropTypes.any,
+  body: PropTypes.any,
+  name: PropTypes.any,
+  optional: PropTypes.any,
+};
 
 function InventoryListDeleteTable({
   endpoint,
@@ -23,7 +35,9 @@ function InventoryListDeleteTable({
   useEffect(() => {
     const getItem = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(`http://${localIP}:3000/${endpoint}`);
+
         const data = Array.isArray(response.data)
           ? response.data
           : Object.values(response.data);
@@ -34,14 +48,17 @@ function InventoryListDeleteTable({
       }
     };
 
-    getItem();
-  }, [localIP]);
+    void getItem();
+  }, [endpoint, localIP]);
+
   const redirectInventory = () => {
     navigate(`/inventory/inventory${redirectPath}`);
   };
+
   const redirectDeleteInventory = (data) => {
     navigate(`/inventory/delete${redirectPath}`, { state: data });
   };
+
   const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
@@ -49,13 +66,16 @@ function InventoryListDeleteTable({
   const formatIfDate = (value) => {
     if (typeof value === "string") {
       const parsed = parseISO(value);
+
       if (isValid(parsed)) {
         const formatted = format(parsed, "EEEE d 'de' MMMM 'del' yyyy", {
           locale: es,
         });
+
         return capitalizeFirstLetter(formatted);
       }
     }
+
     return value;
   };
 

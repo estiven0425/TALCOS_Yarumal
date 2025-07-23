@@ -134,4 +134,4 @@ Si tienes dudas o quieres contribuir, no dudes en abrir un issue o enviar un pul
 
 ---
 
-**Powered by TALCOS Yarumal - estiven0425 - 2025**
+**© 2025 - TALCOS Yarumal - [estiven0425](https://github.com/estiven0425)**  

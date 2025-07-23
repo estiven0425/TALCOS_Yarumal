@@ -10,7 +10,12 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/report-action.module.css";
+
+ReportAction.propTypes = {
+  item: PropTypes.any,
+};
 
 function ReportAction({ item }) {
   const [loading, setLoading] = useState(false);
@@ -23,10 +28,12 @@ function ReportAction({ item }) {
       if (!item) return;
 
       try {
+        // noinspection HttpUrlsUsage
         const responseShift = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShift.data;
+
         const shift = shifts?.find(
-          (shift) => shift.nombre_turno === item[0]?.turno_informe_inicial
+          (shift) => shift.nombre_turno === item[0]?.turno_informe_inicial,
         );
 
         setShift(shift);
@@ -35,49 +42,67 @@ function ReportAction({ item }) {
       }
     };
 
-    getShifts();
+    void getShifts();
   }, [localIP, item]);
 
   const startReport = item?.filter((item) => item.id_informe_inicial) || [];
+
   const windmill =
     startReport?.filter((item) => item.molino_informe_inicial) || [];
+
   const bobCat =
     startReport?.filter((item) => item.bob_cat_informe_inicial) || [];
+
   const news = item?.filter((item) => item.id_novedad) || [];
+
   const windmillOn =
     news?.filter((item) => item.tipo_novedad === "Encendido de molino") || [];
+
   const windmillStrikes =
     news?.filter((item) => item.tipo_novedad === "Paro") || [];
+
   const mechanic =
     news?.filter((item) => item.tipo_novedad === "Adición de mecánico") || [];
+
   const qualityControl = item?.filter((item) => item.id_control_calidad) || [];
+
   const endReport = item?.filter((item) => item.id_informe_final) || [];
+
   const windmillTotal = [];
+
   const allMolinos = new Set([
     ...windmill.map((windmill) => windmill.molino_informe_inicial),
     ...windmillOn.map((windmill) => windmill.molino_novedad),
     ...windmillStrikes.map((item) => item.molino_novedad),
     ...endReport.map((windmill) => windmill.molino_informe_final),
   ]);
+
   allMolinos.forEach((molino) => {
     const inicio =
       windmill.find((windmill) => windmill.molino_informe_inicial === molino) ||
       null;
+
     const encendido =
       windmillOn.find((windmill) => windmill.molino_novedad === molino) || null;
+
     const paros = windmillStrikes.filter(
-      (item) => item.molino_novedad === molino
+      (item) => item.molino_novedad === molino,
     );
+
     const apagado =
       endReport.find((windmill) => windmill.molino_informe_final === molino) ||
       null;
 
     windmillTotal.push([inicio, encendido, paros, apagado]);
   });
+
+  // noinspection JSUnresolvedReference
   const cdcHtml = startReport
     .filter((informe) => informe?.cdc?.nombre_usuario)
     .map((informe) => `<p>${informe.cdc.nombre_usuario}</p>`)
     .join("");
+
+  // noinspection JSUnresolvedReference
   const mecanicosHtml = [
     ...startReport
       .filter((informe) => informe?.mecanico?.nombre_usuario)
@@ -86,6 +111,7 @@ function ReportAction({ item }) {
       .filter((novedad) => novedad?.mecanico?.nombre_usuario)
       .map((novedad) => `<p>${novedad.mecanico.nombre_usuario}</p>`),
   ].join("");
+
   const formatTime = (time) => {
     if (!time) return "";
 
@@ -119,7 +145,7 @@ function ReportAction({ item }) {
             <td>${item.bulto_informe_inicial}</td>
             <td>${item.horometro_informe_inicial} Hrs</td>
             <td>${item.operador?.nombre_usuario}</td>
-          </tr>`
+          </tr>`,
           )
           .join("")}
         <tr>
@@ -132,7 +158,7 @@ function ReportAction({ item }) {
           <tr>
             <td colSpan="2">${item.bob_cat_informe_inicial}</td>
             <td colSpan="3">${item.carguero?.nombre_usuario}</td>
-          </tr>`
+          </tr>`,
           )
           .join("")}
       </tbody>
@@ -151,6 +177,7 @@ function ReportAction({ item }) {
         </tr>
       </tfoot>
     </table>`;
+
   const newsHTML = news
     .map((item) => {
       switch (item.tipo_novedad) {
@@ -207,7 +234,7 @@ function ReportAction({ item }) {
                 </tr>
               </tfoot>
             </table>`;
-          break;
+
         case "Cambio de referencia":
           return `
             <table
@@ -246,7 +273,7 @@ function ReportAction({ item }) {
                 </tr>
               </tfoot>
             </table>`;
-          break;
+
         case "Cambio de operador de molino":
           return `
             <table class="table">
@@ -281,7 +308,7 @@ function ReportAction({ item }) {
                 </tr>
               </tfoot>
             </table>`;
-          break;
+
         case "Cambio de operador de minicargador":
           return `
             <table class="table">
@@ -316,8 +343,9 @@ function ReportAction({ item }) {
                 </tr>
               </tfoot>
             </table>`;
-          break;
+
         case "Adición de mecánico":
+          // noinspection JSUnresolvedReference
           return `
             <table
               class ="table"
@@ -351,8 +379,9 @@ function ReportAction({ item }) {
                 </tr>
               </tfoot>
             </table>`;
-          break;
+
         case "Encendido de molino":
+          // noinspection ES6RedundantNestingInTemplateLiteral
           return `
             <table
               class="table"
@@ -400,12 +429,13 @@ function ReportAction({ item }) {
                 </tr>
               </tfoot>
             </table>`;
-          break;
+
         default:
           break;
       }
     })
     .join("");
+
   const qualityControlHTML =
     qualityControl.length > 0
       ? `
@@ -434,7 +464,7 @@ function ReportAction({ item }) {
             <td>${item.bulto_control_calidad}</td>
             <td>${item.retencion_control_calidad}</td>
             <td>${item.rechazado_control_calidad}</td>
-          </tr>`
+          </tr>`,
           )
           .join("")}
       </tbody>
@@ -454,6 +484,7 @@ function ReportAction({ item }) {
       </tfoot>
     </table>`
       : ``;
+
   const endReportHTML = `
     <table
       class="table"
@@ -483,7 +514,7 @@ function ReportAction({ item }) {
             <td>${item.bulto_informe_final}</td>
             <td>${item.cantidad_informe_final} Tons</td>
             <td>${item.horometro_informe_final} Hrs</td>
-          </tr>`
+          </tr>`,
           )
           .join("")}
       </tbody>
@@ -502,6 +533,7 @@ function ReportAction({ item }) {
         </tr>
       </tfoot>
     </table>`;
+
   const aditionalHTML = `
     <table class="table">
       <caption>
@@ -527,24 +559,28 @@ function ReportAction({ item }) {
 
             const horaInicioStr =
               inicio?.hora_informe_inicial || encendido?.hora_novedad;
+
             const horaFinalStr = apagado?.hora_informe_final;
 
             let totalMinutosParo = 0;
+
             if (Array.isArray(paros)) {
               paros.forEach((paro) => {
                 const inicioParoStr = paro?.inicio_paro_novedad || null;
+
                 const finParoStr = paro?.fin_paro_novedad || shift?.fin_turno;
 
                 if (inicioParoStr && finParoStr) {
                   let inicioParo = parse(
                     inicioParoStr.slice(0, 5),
                     "HH:mm",
-                    new Date()
+                    new Date(),
                   );
+
                   let finParo = parse(
                     finParoStr.slice(0, 5),
                     "HH:mm",
-                    new Date()
+                    new Date(),
                   );
 
                   if (finParo < inicioParo) {
@@ -552,6 +588,7 @@ function ReportAction({ item }) {
                   }
 
                   const diff = differenceInMinutes(finParo, inicioParo);
+
                   if (diff > 0) {
                     totalMinutosParo += diff;
                   }
@@ -559,18 +596,20 @@ function ReportAction({ item }) {
               });
             } else if (paros) {
               const inicioParoStr = paros.inicio_paro_novedad || null;
+
               const finParoStr = paros.fin_paro_novedad || shift?.fin_turno;
 
               if (inicioParoStr && finParoStr) {
                 let inicioParo = parse(
                   inicioParoStr.slice(0, 5),
                   "HH:mm",
-                  new Date()
+                  new Date(),
                 );
+
                 let finParo = parse(
                   finParoStr.slice(0, 5),
                   "HH:mm",
-                  new Date()
+                  new Date(),
                 );
 
                 if (finParo < inicioParo) {
@@ -578,6 +617,7 @@ function ReportAction({ item }) {
                 }
 
                 const diff = differenceInMinutes(finParo, inicioParo);
+
                 if (diff > 0) {
                   totalMinutosParo += diff;
                 }
@@ -585,9 +625,12 @@ function ReportAction({ item }) {
             }
 
             let horasParoFormatted = "0";
+
             if (totalMinutosParo > 0) {
               const horas = Math.floor(totalMinutosParo / 60);
+
               const mins = totalMinutosParo % 60;
+
               horasParoFormatted = `${horas}:${mins
                 .toString()
                 .padStart(2, "0")}`;
@@ -600,12 +643,13 @@ function ReportAction({ item }) {
               let horaInicio = parse(
                 horaInicioStr.slice(0, 5),
                 "HH:mm",
-                new Date()
+                new Date(),
               );
+
               let horaFinal = parse(
                 horaFinalStr.slice(0, 5),
                 "HH:mm",
-                new Date()
+                new Date(),
               );
 
               if (horaFinal < horaInicio) {
@@ -613,11 +657,14 @@ function ReportAction({ item }) {
               }
 
               const totalMinutos = differenceInMinutes(horaFinal, horaInicio);
+
               minutosTrabajados = Math.max(totalMinutos - totalMinutosParo, 0);
 
               if (minutosTrabajados > 0) {
                 const horas = Math.floor(minutosTrabajados / 60);
+
                 const mins = minutosTrabajados % 60;
+
                 horasTrabajadasFormatted = `${horas}:${mins
                   .toString()
                   .padStart(2, "0")}`;
@@ -625,7 +672,9 @@ function ReportAction({ item }) {
             }
 
             const kilosTotales = apagado?.cantidad_informe_final * 1000 || 0;
+
             const horasTrabajadasDecimal = minutosTrabajados / 60;
+
             const kilosPorHora =
               horasTrabajadasDecimal > 0
                 ? (kilosTotales / horasTrabajadasDecimal).toFixed(2)
@@ -640,12 +689,13 @@ function ReportAction({ item }) {
               let inicioTurno = parse(
                 inicioTurnoStr.slice(0, 5),
                 "HH:mm",
-                new Date()
+                new Date(),
               );
+
               let finTurno = parse(
                 finTurnoStr.slice(0, 5),
                 "HH:mm",
-                new Date()
+                new Date(),
               );
 
               if (finTurno < inicioTurno) {
@@ -653,13 +703,14 @@ function ReportAction({ item }) {
               }
 
               const minutosTurno = differenceInMinutes(finTurno, inicioTurno);
+
               duracionTurnoHoras = minutosTurno / 60;
             }
 
             const eficiencia =
               duracionTurnoHoras > 0
                 ? ((horasTrabajadasDecimal / duracionTurnoHoras) * 100).toFixed(
-                    2
+                    2,
                   )
                 : "0";
 
@@ -676,17 +727,6 @@ function ReportAction({ item }) {
       </tbody>
     </table>`;
 
-  const formatDate = (date) => {
-    const formattedDate = format(
-      parseISO(date),
-      "EEEE dd 'de' MMMM 'del' yyyy",
-      {
-        locale: es,
-      }
-    );
-    return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-  };
-
   const printItem = async (e) => {
     e.preventDefault();
 
@@ -696,14 +736,16 @@ function ReportAction({ item }) {
         "EEEE dd 'de' MMMM 'del' yyyy",
         {
           locale: es,
-        }
+        },
       );
       return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
     };
+
     const formatTime = (time) => {
       return time.slice(0, 5);
     };
 
+    // noinspection JSUnresolvedReference
     const content = `
     <style>
       .aside {
@@ -731,13 +773,13 @@ function ReportAction({ item }) {
       .aside div h2 {
         color: #696a9e;
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
         text-align: left;
       }
 
       .aside div p {
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
         text-align: left;
       }
 
@@ -754,12 +796,12 @@ function ReportAction({ item }) {
       .table caption h2 {
         color: #696a9e;
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
       }
 
       .table caption span {
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
       }
 
       .tableHead,
@@ -834,8 +876,8 @@ function ReportAction({ item }) {
       <div>
         <h2>Turno de informe</h2>
         <p>${formatTime(shift?.inicio_turno)} - ${formatTime(
-      shift?.fin_turno
-    )} (${shift?.nombre_turno})</p>
+          shift?.fin_turno,
+        )} (${shift?.nombre_turno})</p>
       </div>
       <div>
         <h2>Supervisor</h2>
@@ -856,8 +898,11 @@ function ReportAction({ item }) {
     ${endReportHTML}
     ${aditionalHTML}
     `;
+
     try {
       setLoading(true);
+
+      // noinspection HttpUrlsUsage
       const response = await axios.post(
         `http://${localIP}:3000/pdf`,
         {
@@ -867,17 +912,24 @@ function ReportAction({ item }) {
         },
         {
           responseType: "blob",
-        }
+        },
       );
+
       const url = window.URL.createObjectURL(
-        new Blob([response.data], { type: "application/pdf" })
+        new Blob([response.data], { type: "application/pdf" }),
       );
+
       const a = document.createElement("a");
+
       a.href = url;
       a.download = "informe_de_turno.pdf";
+
       document.body.appendChild(a);
+
       a.click();
+
       document.body.removeChild(a);
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -888,6 +940,7 @@ function ReportAction({ item }) {
     navigate("/report/detailreport", { state: item });
   };
 
+  // noinspection JSUnresolvedReference
   return (
     <>
       {item ? (

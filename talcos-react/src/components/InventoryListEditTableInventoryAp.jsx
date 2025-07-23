@@ -12,9 +12,11 @@ function InventoryListEditTableInventoryAp() {
   useEffect(() => {
     const getItem = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/inventario_ap`,
         );
+
         const data = Array.isArray(response.data)
           ? response.data
           : Object.values(response.data);
@@ -25,11 +27,13 @@ function InventoryListEditTableInventoryAp() {
       }
     };
 
-    getItem();
+    void getItem();
   }, [localIP]);
+
   const redirectInventory = () => {
     navigate(`/inventory/inventoryap`);
   };
+
   const redirectEditInventory = (data) => {
     navigate(`/inventory/editinventoryap`, { state: data });
   };

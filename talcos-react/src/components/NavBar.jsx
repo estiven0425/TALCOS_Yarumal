@@ -17,20 +17,23 @@ function NavBar() {
 
     const fetchUserProfile = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.post(`http://${localIP}:3000/login/get`, {
           token,
         });
+
         setPerfilUsuario(response.data.id_perfil_usuario);
       } catch (error) {
         console.error("Error al obtener el perfil del usuario:", error);
       }
     };
 
-    fetchUserProfile();
+    void fetchUserProfile();
   }, [localIP]);
 
   if (perfilUsuario === null) return null;
 
+  // noinspection JSUnresolvedReference
   return (
     <motion.nav
       className={Style.navBar}

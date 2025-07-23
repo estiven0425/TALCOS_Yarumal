@@ -1,9 +1,16 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import Style from "./styles/inventory-button.module.css";
+
+InventoryButton.propTypes = {
+  location: PropTypes.any,
+  name: PropTypes.any,
+};
 
 function InventoryButton({ location, name }) {
   const navigate = useNavigate();
+
   const redirectCreate = () => {
     navigate(`/inventory/create${location}`);
   };

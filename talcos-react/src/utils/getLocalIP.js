@@ -21,9 +21,11 @@ function getLocalIP() {
 
 function saveIPToEnv() {
   const localIP = getLocalIP();
+
   const envPath = join(__dirname, "../../.env");
 
   let envContent = "";
+
   if (existsSync(envPath)) {
     envContent = readFileSync(envPath, "utf-8");
   }

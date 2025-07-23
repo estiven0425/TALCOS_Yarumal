@@ -15,13 +15,14 @@ function StaffListEditUserTable() {
   useEffect(() => {
     const getProfile = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/perfiles/personalperfil`,
           {
             params: {
               perfil: profile,
             },
-          }
+          },
         );
 
         setPerfil(response.data[0]);
@@ -30,18 +31,20 @@ function StaffListEditUserTable() {
       }
     };
 
-    getProfile();
+    void getProfile();
   }, [localIP, profile]);
+
   useEffect(() => {
     const getUser = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/usuarios/personalusuario`,
           {
             params: {
               perfil: profile,
             },
-          }
+          },
         );
 
         setUsuario(response.data);
@@ -50,7 +53,7 @@ function StaffListEditUserTable() {
       }
     };
 
-    getUser();
+    void getUser();
   }, [localIP, profile]);
 
   const singularize = (word) => {
@@ -74,9 +77,11 @@ function StaffListEditUserTable() {
 
     return word;
   };
+
   const redirectUser = (id_perfil) => {
     navigate("/user", { state: id_perfil });
   };
+
   const redirectEditUser = (usuario) => {
     navigate("/edituser", { state: usuario });
   };

@@ -11,23 +11,28 @@ function NotificationMessageReceived() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
+
     if (token) {
       const decodedToken = jwtDecode(token);
+
+      // noinspection JSUnresolvedReference
       setIdUsuario(decodedToken.id_usuario);
     }
   }, []);
+
   useEffect(() => {
     if (!idUsuario) return;
 
     const getMessage = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/mensajes/notificacionmensaje`,
           {
             params: {
               id_usuario: idUsuario,
             },
-          }
+          },
         );
 
         setMensaje(response.data);
@@ -36,8 +41,10 @@ function NotificationMessageReceived() {
       }
     };
 
-    getMessage();
+    void getMessage();
   }, [idUsuario, localIP]);
+
+  // noinspection JSUnresolvedReference
   return (
     <>
       <motion.header

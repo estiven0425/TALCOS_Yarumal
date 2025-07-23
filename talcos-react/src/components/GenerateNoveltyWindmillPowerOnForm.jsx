@@ -36,20 +36,27 @@ function GenerateNoveltyWindmillPowerOnForm() {
       return () => clearTimeout(timer);
     }
   }, [sendStatus, navigate]);
+
   useEffect(() => {
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
         const mills = responseMills.data;
+
+        // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
+
         const currentTime = new Date();
 
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -61,8 +68,9 @@ function GenerateNoveltyWindmillPowerOnForm() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
+
         if (!currentShift) {
           console.error("No se pudo determinar el turno actual.");
           return;
@@ -77,7 +85,7 @@ function GenerateNoveltyWindmillPowerOnForm() {
           currentDate = new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
-            currentTime.getDate() - 1
+            currentTime.getDate() - 1,
           );
         }
 
@@ -86,6 +94,8 @@ function GenerateNoveltyWindmillPowerOnForm() {
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -95,9 +105,10 @@ function GenerateNoveltyWindmillPowerOnForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
+        // noinspection HttpUrlsUsage
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -107,8 +118,10 @@ function GenerateNoveltyWindmillPowerOnForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -118,16 +131,17 @@ function GenerateNoveltyWindmillPowerOnForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
         const endReports = responseEndReport.data;
+
         const isAvailable = (report, allNovelties) => {
           if (!report?.molino_informe_inicial) {
             const turnOnNovelty = allNovelties.find(
-              (nov) => nov.tipo_novedad === "Encendido de molino"
+              (nov) => nov.tipo_novedad === "Encendido de molino",
             );
 
             if (!turnOnNovelty) {
@@ -142,11 +156,13 @@ function GenerateNoveltyWindmillPowerOnForm() {
 
         const combinedData = mills.map((molino) => {
           const report = reports.find(
-            (report) => report.molino_informe_inicial === molino.nombre_molino
+            (report) => report.molino_informe_inicial === molino.nombre_molino,
           );
+
           const millNovelties = news.filter(
-            (novelty) => novelty.molino_novedad === molino.nombre_molino
+            (novelty) => novelty.molino_novedad === molino.nombre_molino,
           );
+
           const available = isAvailable(report, millNovelties);
 
           return {
@@ -165,11 +181,13 @@ function GenerateNoveltyWindmillPowerOnForm() {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP]);
+
   useEffect(() => {
     const getItems = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const [referenciaRes, bultoRes] = await Promise.all([
           axios.get(`http://${localIP}:3000/referencias`),
           axios.get(`http://${localIP}:3000/bultos`),
@@ -182,14 +200,16 @@ function GenerateNoveltyWindmillPowerOnForm() {
       }
     };
 
-    getItems();
+    void getItems();
   }, [localIP]);
+
   useEffect(() => {
     const getUser = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.post(
           `http://${localIP}:3000/usuarios/informeinicialusuario`,
-          { idPerfil: 6 }
+          { idPerfil: 6 },
         );
 
         setOperador(response.data);
@@ -197,11 +217,12 @@ function GenerateNoveltyWindmillPowerOnForm() {
         console.error("Error al obtener los usuarios: ", error);
       }
     };
-    getUser();
+    void getUser();
   }, [localIP]);
 
   const validation = () => {
     const errors = {};
+
     if (!molinoNovedad) {
       errors.molinoNovedad = "El molino es obligatorio.";
     }
@@ -218,6 +239,7 @@ function GenerateNoveltyWindmillPowerOnForm() {
       errors.horometroFinParoNovedad =
         "El horómetro del molino es obligatorio.";
     }
+    // noinspection JSCheckFunctionSignatures
     if (horometroFinParoNovedad && isNaN(horometroFinParoNovedad)) {
       errors.horometroFinParoNovedad =
         "El horómetro del molino debe ser un número.";
@@ -227,6 +249,7 @@ function GenerateNoveltyWindmillPowerOnForm() {
 
     return Object.keys(errors).length === 0;
   };
+
   const determinateShift = (data) => {
     if (!data || data.length === 0) return null;
 
@@ -237,12 +260,15 @@ function GenerateNoveltyWindmillPowerOnForm() {
 
       return acc;
     }, {});
+
+    // noinspection UnnecessaryLocalVariableJS
     const mostFrequentTurno = Object.keys(turnoCounts).reduce((a, b) =>
-      turnoCounts[a] > turnoCounts[b] ? a : b
+      turnoCounts[a] > turnoCounts[b] ? a : b,
     );
 
     return mostFrequentTurno;
   };
+
   const determinateDate = (data) => {
     if (!data || data.length === 0) return null;
 
@@ -254,12 +280,14 @@ function GenerateNoveltyWindmillPowerOnForm() {
       return acc;
     }, {});
 
+    // noinspection UnnecessaryLocalVariableJS
     const mostFrequentDate = Object.keys(dateCounts).reduce((a, b) =>
-      dateCounts[a] > dateCounts[b] ? a : b
+      dateCounts[a] > dateCounts[b] ? a : b,
     );
 
     return mostFrequentDate;
   };
+
   const sendCreate = async (e) => {
     e.preventDefault();
 
@@ -273,8 +301,10 @@ function GenerateNoveltyWindmillPowerOnForm() {
     const horaNovedad = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
+
     const fechaNovedad = determinateDate(currentData);
     const shiftNovelty = determinateShift(currentData);
+
     const novedad = [
       {
         fecha_novedad: fechaNovedad,
@@ -292,16 +322,18 @@ function GenerateNoveltyWindmillPowerOnForm() {
     ];
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/novedades`, novedad);
 
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          `Error al encender el molino. Por favor, inténtelo de nuevo.`
+          `Error al encender el molino. Por favor, inténtelo de nuevo.`,
         );
         setLoading(false);
       }
@@ -312,6 +344,7 @@ function GenerateNoveltyWindmillPowerOnForm() {
     navigate("/generatereport/noveltyoption");
   };
 
+  // noinspection JSUnresolvedReference,JSValidateTypes
   return (
     <>
       {finalData.length > 0 ? (
@@ -546,20 +579,6 @@ function GenerateNoveltyWindmillPowerOnForm() {
                     onChange={(e) => setObservacionNovedad(e.target.value)}
                     placeholder="Ingresa una observación"
                   />
-                  {!validationError.observacionNovedad ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={
-                        Style.generateNoveltyWindmillPowerOnFormValidation
-                      }
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError.observacionNovedad}
-                    </motion.span>
-                  )}
                 </fieldset>
               </main>
               <footer

@@ -29,20 +29,27 @@ function GenerateNoveltyOperatorForm() {
       return () => clearTimeout(timer);
     }
   }, [sendStatus, navigate]);
+
   useEffect(() => {
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
         const mills = responseMills.data;
+
+        // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
+
         const currentTime = new Date();
 
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -54,7 +61,7 @@ function GenerateNoveltyOperatorForm() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
 
         if (!currentShift) {
@@ -71,7 +78,7 @@ function GenerateNoveltyOperatorForm() {
           currentDate = new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
-            currentTime.getDate() - 1
+            currentTime.getDate() - 1,
           );
         }
 
@@ -81,6 +88,7 @@ function GenerateNoveltyOperatorForm() {
           fin_turno: finTurno,
         } = currentShift;
 
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -90,9 +98,10 @@ function GenerateNoveltyOperatorForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
+        // noinspection HttpUrlsUsage
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -102,8 +111,10 @@ function GenerateNoveltyOperatorForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -113,23 +124,24 @@ function GenerateNoveltyOperatorForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
         const endReports = responseEndReport.data;
+
         const evaluateIsInParo = (report, allNovelties) => {
           if (!report?.molino_informe_inicial) {
             const turnOnNovelty = allNovelties.find(
-              (nov) => nov.tipo_novedad === "Encendido de molino"
+              (nov) => nov.tipo_novedad === "Encendido de molino",
             );
 
             if (turnOnNovelty) {
               const pauses = allNovelties
                 .filter((nov) => nov.tipo_novedad === "Paro")
                 .sort(
-                  (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+                  (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
                 );
 
               if (pauses.length > 0) {
@@ -146,17 +158,20 @@ function GenerateNoveltyOperatorForm() {
                     return true;
                   } else if (latestPause.fin_paro_novedad) {
                     const now = new Date();
+
                     const [inicioHour, inicioMinute] =
                       latestPause.inicio_paro_novedad.split(":").map(Number);
+
                     const [finHour, finMinute] = latestPause.fin_paro_novedad
                       .split(":")
                       .map(Number);
+
                     const inicioParo = new Date(
                       now.getFullYear(),
                       now.getMonth(),
                       now.getDate(),
                       inicioHour,
-                      inicioMinute
+                      inicioMinute,
                     );
 
                     let finParo = new Date(
@@ -164,7 +179,7 @@ function GenerateNoveltyOperatorForm() {
                       now.getMonth(),
                       now.getDate(),
                       finHour,
-                      finMinute
+                      finMinute,
                     );
 
                     if (finParo <= inicioParo) {
@@ -184,7 +199,7 @@ function GenerateNoveltyOperatorForm() {
           const pauses = allNovelties
             .filter((nov) => nov.tipo_novedad === "Paro")
             .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
             );
 
           if (pauses.length > 0) {
@@ -201,17 +216,20 @@ function GenerateNoveltyOperatorForm() {
                 return true;
               } else if (latestPause.fin_paro_novedad) {
                 const now = new Date();
+
                 const [inicioHour, inicioMinute] =
                   latestPause.inicio_paro_novedad.split(":").map(Number);
+
                 const [finHour, finMinute] = latestPause.fin_paro_novedad
                   .split(":")
                   .map(Number);
+
                 const inicioParo = new Date(
                   now.getFullYear(),
                   now.getMonth(),
                   now.getDate(),
                   inicioHour,
-                  inicioMinute
+                  inicioMinute,
                 );
 
                 let finParo = new Date(
@@ -219,7 +237,7 @@ function GenerateNoveltyOperatorForm() {
                   now.getMonth(),
                   now.getDate(),
                   finHour,
-                  finMinute
+                  finMinute,
                 );
 
                 if (finParo <= inicioParo) {
@@ -231,30 +249,38 @@ function GenerateNoveltyOperatorForm() {
           }
           return false;
         };
+
         const combinedData = mills.map((molino) => {
           const report = reports
             .filter(
-              (report) => report.molino_informe_inicial === molino.nombre_molino
+              (report) =>
+                report.molino_informe_inicial === molino.nombre_molino,
             )
             .sort(
               (a, b) =>
                 new Date(b.hora_informe_inicial) -
-                new Date(a.hora_informe_inicial)
+                new Date(a.hora_informe_inicial),
             )[0];
+
           const millNovelties = news.filter(
-            (novelty) => novelty.molino_novedad === molino.nombre_molino
+            (novelty) => novelty.molino_novedad === molino.nombre_molino,
           );
+
           const novelty = millNovelties.sort(
-            (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad)
+            (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
           )[0];
+
           const recent =
             report &&
             (!novelty ||
               new Date(
-                report.fecha_informe_inicial + " " + report.hora_informe_inicial
+                report.fecha_informe_inicial +
+                  " " +
+                  report.hora_informe_inicial,
               ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
               ? report
               : novelty;
+
           const isInParo = evaluateIsInParo(report, millNovelties);
 
           return {
@@ -281,22 +307,25 @@ function GenerateNoveltyOperatorForm() {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP]);
+
   useEffect(() => {
     const getUser = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.post(
           `http://${localIP}:3000/usuarios/informeinicialusuario`,
-          { idPerfil: 6 }
+          { idPerfil: 6 },
         );
+
         setOperador(response.data);
       } catch (error) {
         console.error("Error al obtener los usuarios: ", error);
       }
     };
 
-    getUser();
+    void getUser();
   }, [localIP]);
 
   const validation = () => {
@@ -313,6 +342,7 @@ function GenerateNoveltyOperatorForm() {
 
     return Object.keys(errors).length === 0;
   };
+
   const determinateShift = (data) => {
     if (!data || data.length === 0) return null;
 
@@ -323,12 +353,15 @@ function GenerateNoveltyOperatorForm() {
 
       return acc;
     }, {});
+
+    // noinspection UnnecessaryLocalVariableJS
     const mostFrequentTurno = Object.keys(turnoCounts).reduce((a, b) =>
-      turnoCounts[a] > turnoCounts[b] ? a : b
+      turnoCounts[a] > turnoCounts[b] ? a : b,
     );
 
     return mostFrequentTurno;
   };
+
   const determinateDate = (data) => {
     if (!data || data.length === 0) return null;
 
@@ -340,12 +373,14 @@ function GenerateNoveltyOperatorForm() {
       return acc;
     }, {});
 
+    // noinspection UnnecessaryLocalVariableJS
     const mostFrequentDate = Object.keys(dateCounts).reduce((a, b) =>
-      dateCounts[a] > dateCounts[b] ? a : b
+      dateCounts[a] > dateCounts[b] ? a : b,
     );
 
     return mostFrequentDate;
   };
+
   const sendCreate = async (e) => {
     e.preventDefault();
 
@@ -359,13 +394,17 @@ function GenerateNoveltyOperatorForm() {
     const horaNovedad = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
+
     const fechaNovedad = determinateDate(currentData);
     const shiftNovelty = determinateShift(currentData);
+
     const matchingWindmill = molino?.find(
-      (item) => item.name === molinoNovedad
+      (item) => item.name === molinoNovedad,
     );
+
     const referencenovelty = matchingWindmill?.reference || "";
     const bulknovelty = matchingWindmill?.bulk || "";
+
     const novedad = [
       {
         fecha_novedad: fechaNovedad,
@@ -381,17 +420,20 @@ function GenerateNoveltyOperatorForm() {
     ];
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/novedades`, novedad);
 
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear el cambio de operador de molino. Por favor, inténtelo de nuevo.`
+          `Error al crear el cambio de operador de molino. Por favor, inténtelo de nuevo.`,
         );
+
         setLoading(false);
       }
     }
@@ -401,6 +443,7 @@ function GenerateNoveltyOperatorForm() {
     navigate("/generatereport/noveltyoption");
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {finalData.length > 0 ? (
@@ -523,18 +566,6 @@ function GenerateNoveltyOperatorForm() {
                     onChange={(e) => setObservacionNovedad(e.target.value)}
                     placeholder="Ingresa una observación"
                   />
-                  {!validationError.observacionNovedad ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={Style.generateNoveltyComponentFormValidation}
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError.observacionNovedad}
-                    </motion.span>
-                  )}
                 </fieldset>
               </main>
               <footer className={Style.generateNoveltyComponentFormFooter}>

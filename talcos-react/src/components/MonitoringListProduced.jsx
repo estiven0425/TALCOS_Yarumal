@@ -2,7 +2,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { registrarTabla } from "../utils/tablaStore";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/monitoring-list-produced.module.css";
+
+MonitoringListProduced.propTypes = {
+  inicio: PropTypes.any,
+  fin: PropTypes.any,
+};
 
 function MonitoringListProduced({ inicio, fin }) {
   const [molino, setMolino] = useState([]);
@@ -18,18 +24,25 @@ function MonitoringListProduced({ inicio, fin }) {
 
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMonitoring = await axios.get(
           `http://${localIP}:3000/monitoreo`,
           {
             params: { inicio, fin },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseWindmill = await axios.get(
-          `http://${localIP}:3000/molinos`
+          `http://${localIP}:3000/molinos`,
         );
+
+        // noinspection HttpUrlsUsage
         const responseReference = await axios.get(
-          `http://${localIP}:3000/referencias`
+          `http://${localIP}:3000/referencias`,
         );
+
+        // noinspection HttpUrlsUsage
         const responseBulk = await axios.get(`http://${localIP}:3000/bultos`);
 
         setItem(responseMonitoring.data);
@@ -41,8 +54,9 @@ function MonitoringListProduced({ inicio, fin }) {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP, inicio, fin]);
+
   useEffect(() => {
     if (!item) return;
 
@@ -71,21 +85,25 @@ function MonitoringListProduced({ inicio, fin }) {
 
       if (!totalPerRow[molino]) totalPerRow[molino] = {};
       if (!totalPerRow[molino][referencia]) totalPerRow[molino][referencia] = 0;
+
       totalPerRow[molino][referencia] += cantidad;
 
       if (!totalPerColumn[molino]) totalPerColumn[molino] = {};
       if (!totalPerColumn[molino][bulto]) totalPerColumn[molino][bulto] = 0;
+
       totalPerColumn[molino][bulto] += cantidad;
     });
 
     return { result, totalPerRow, totalPerColumn };
   }, [finalReport]);
+
   useEffect(() => {
     if (tablaRef.current) {
       registrarTabla("producidos", tablaRef.current.outerHTML);
     }
   }, [finalReport, molino]);
 
+  // noinspection JSValidateTypes
   return (
     <>
       {item ? (
@@ -141,7 +159,7 @@ function MonitoringListProduced({ inicio, fin }) {
                         {parseFloat(
                           groupedData.totalPerRow[molino.nombre_molino]?.[
                             ref.nombre_referencia
-                          ] ?? 0
+                          ] ?? 0,
                         ).toFixed(2)}{" "}
                         Tons
                       </td>

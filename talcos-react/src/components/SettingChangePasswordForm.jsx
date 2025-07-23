@@ -6,7 +6,7 @@ import Style from "./styles/setting-change-password-form.module.css";
 
 function SettingChangePasswordForm() {
   const [contrasenaUsuario, setContrasenaUsuario] = useState("");
-  const [passwordVerify, setpasswordVerify] = useState("");
+  const [passwordVerify, setPasswordVerify] = useState("");
   const [loading, setLoading] = useState(false);
   const [SendStatus, setSendStatus] = useState(false);
   const [validationError, setValidationError] = useState({});
@@ -56,6 +56,7 @@ function SettingChangePasswordForm() {
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.put(`http://${localIP}:3000/usuarios`, {
         id_usuario: idUsuario,
         contrasena_usuario: contrasenaUsuario,
@@ -65,10 +66,11 @@ function SettingChangePasswordForm() {
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al cambiar la contraseña. Por favor, inténtelo de nuevo."
+          "Error al cambiar la contraseña. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
@@ -76,10 +78,12 @@ function SettingChangePasswordForm() {
 
     setContrasenaUsuario("");
   };
+
   const redirectSetting = () => {
     navigate("/setting");
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {SendStatus === true ? (
@@ -131,7 +135,7 @@ function SettingChangePasswordForm() {
               <input
                 id="passwordVerify"
                 name="passwordVerify"
-                onChange={(e) => setpasswordVerify(e.target.value)}
+                onChange={(e) => setPasswordVerify(e.target.value)}
                 placeholder="Repite la nueva contraseña del usuario"
                 type="password"
                 value={passwordVerify}

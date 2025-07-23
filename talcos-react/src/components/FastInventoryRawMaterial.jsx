@@ -4,33 +4,35 @@ import axios from "axios";
 import Style from "./styles/fast-inventory-list.module.css";
 
 function FastInventoryRawMaterial() {
-  const [materiaPrima, setmateriaPrima] = useState([]);
+  const [materiaPrima, setMateriaPrima] = useState([]);
   const localIP = import.meta.env.VITE_LOCAL_IP;
 
   useEffect(() => {
     const getRawMaterial = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
-          `http://${localIP}:3000/materias_primas`
+          `http://${localIP}:3000/materias_primas`,
         );
 
-        setmateriaPrima(response.data);
+        setMateriaPrima(response.data);
       } catch (error) {
         console.error("Error al obtener las materias primas: ", error);
       }
     };
 
-    getRawMaterial();
+    void getRawMaterial();
   }, [localIP]);
 
   const talcProduced = (
     materiaPrima.reduce(
       (total, materiaPrima) =>
         total + materiaPrima.cantidad_materia_prima * 1000,
-      0
+      0,
     ) / 1000
   ).toFixed(2);
 
+  // noinspection JSValidateTypes
   return materiaPrima.length > 0 ? (
     <>
       <motion.header

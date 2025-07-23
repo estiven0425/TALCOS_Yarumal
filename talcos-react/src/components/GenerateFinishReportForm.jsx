@@ -30,6 +30,7 @@ function GenerateFinishReportForm() {
       return () => clearTimeout(timer);
     }
   }, [sendStatus, navigate]);
+
   useEffect(() => {
     const initialMolinoData = {};
 
@@ -47,26 +48,39 @@ function GenerateFinishReportForm() {
 
     setMolinoInformeFinal(initialMolinoData);
   }, [molino]);
+
   useEffect(() => {
     const getData = async () => {
       if (!oldData?.fecha || !oldData?.turno || !oldData?.finTurno) {
         console.error(
-          "No se recibieron fecha, turno u hora de finalización en el estado."
+          "No se recibieron fecha, turno u hora de finalización en el estado.",
         );
+
         setLoadingAlternative(false);
+
         return;
       }
+
       try {
+        // noinspection HttpUrlsUsage
         const responseMills = await axios.get(`http://${localIP}:3000/molinos`);
         const mills = responseMills.data;
+
+        // noinspection HttpUrlsUsage
         const responseBulks = await axios.get(`http://${localIP}:3000/bultos`);
         const bulks = responseBulks.data;
+
+        // noinspection HttpUrlsUsage
         const responseReferences = await axios.get(
-          `http://${localIP}:3000/referencias`
+          `http://${localIP}:3000/referencias`,
         );
         const references = responseReferences.data;
+
+        // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
+
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -74,12 +88,14 @@ function GenerateFinishReportForm() {
               fecha: oldData.fecha,
               turno: oldData.turno,
               inicioTurno: shifts.find(
-                (shift) => shift.nombre_turno === oldData.turno
+                (shift) => shift.nombre_turno === oldData.turno,
               )?.inicio_turno,
               finTurno: oldData.finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseNews = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -87,12 +103,14 @@ function GenerateFinishReportForm() {
               fecha: oldData.fecha,
               turno: oldData.turno,
               inicioTurno: shifts.find(
-                (shift) => shift.nombre_turno === oldData.turno
+                (shift) => shift.nombre_turno === oldData.turno,
               )?.inicio_turno,
               finTurno: oldData.finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -100,27 +118,28 @@ function GenerateFinishReportForm() {
               fecha: oldData.fecha,
               turno: oldData.turno,
               inicioTurno: shifts.find(
-                (shift) => shift.nombre_turno === oldData.turno
+                (shift) => shift.nombre_turno === oldData.turno,
               )?.inicio_turno,
               finTurno: oldData.finTurno,
             },
-          }
+          },
         );
 
         const reports = responseStartReport.data;
         const news = responseNews.data;
         const endReports = responseEndReport.data;
+
         const combinedData = mills
           .map((molino) => {
             const initialRecord =
               reports.find(
                 (report) =>
-                  report.molino_informe_inicial === molino.nombre_molino
+                  report.molino_informe_inicial === molino.nombre_molino,
               ) ||
               news.find(
                 (novelty) =>
                   novelty.molino_novedad === molino.nombre_molino &&
-                  novelty.tipo_novedad === "Encendido de molino"
+                  novelty.tipo_novedad === "Encendido de molino",
               );
 
             if (!initialRecord) return null;
@@ -129,7 +148,7 @@ function GenerateFinishReportForm() {
               .filter(
                 (novelty) =>
                   novelty.molino_novedad === molino.nombre_molino &&
-                  novelty.tipo_novedad === "Cambio de referencia"
+                  novelty.tipo_novedad === "Cambio de referencia",
               )
               .map((novelty) => ({
                 reference: novelty.referencia_novedad,
@@ -138,9 +157,10 @@ function GenerateFinishReportForm() {
                   bulks.find((b) => b.nombre_bulto === novelty.bulto_novedad)
                     ?.capacidad_bulto || "No disponible",
                 timestamp: new Date(
-                  novelty.fecha_novedad + " " + novelty.hora_novedad
+                  novelty.fecha_novedad + " " + novelty.hora_novedad,
                 ),
               }));
+
             const referenceHistory = [
               {
                 reference:
@@ -156,12 +176,12 @@ function GenerateFinishReportForm() {
                     (b) =>
                       b.nombre_bulto ===
                       (initialRecord.bulto_informe_inicial ||
-                        initialRecord.bulto_novedad)
+                        initialRecord.bulto_novedad),
                   )?.capacidad_bulto || "No disponible",
                 timestamp: new Date(
                   initialRecord.fecha_informe_inicial +
                     " " +
-                    initialRecord.hora_informe_inicial
+                    initialRecord.hora_informe_inicial,
                 ),
               },
               ...referenceChanges.sort((a, b) => a.timestamp - b.timestamp),
@@ -186,11 +206,13 @@ function GenerateFinishReportForm() {
       }
     };
 
-    getData();
-  }, [localIP]);
+    void getData();
+  }, [localIP, oldData.fecha, oldData.finTurno, oldData.turno]);
+
   const handleChange = (molino, reference, field, value) => {
     setMolinoInformeFinal((prevData) => {
       const updatedMolinoData = { ...prevData[molino] };
+
       if (reference === "" && field === "horometro_informe_final") {
         updatedMolinoData[field] = value;
       } else {
@@ -199,12 +221,14 @@ function GenerateFinishReportForm() {
           [field]: value,
         };
       }
+
       return {
         ...prevData,
         [molino]: updatedMolinoData,
       };
     });
   };
+
   const handleChangeHorometro = (molinoName, value) => {
     setMolinoInformeFinal((prevData) => ({
       ...prevData,
@@ -214,6 +238,7 @@ function GenerateFinishReportForm() {
       },
     }));
   };
+
   const validation = () => {
     const errors = {};
 
@@ -222,35 +247,35 @@ function GenerateFinishReportForm() {
         !references.horometro_informe_final ||
         references.horometro_informe_final.trim() === ""
       ) {
-        errors[
-          `${molino}-horometro`
-        ] = `El horómetro del ${molino} es obligatorio.`;
+        errors[`${molino}-horometro`] =
+          `El horómetro del ${molino} es obligatorio.`;
       } else if (isNaN(references.horometro_informe_final)) {
-        errors[
-          `${molino}-horometro`
-        ] = `El horómetro del ${molino} debe ser un número válido.`;
+        errors[`${molino}-horometro`] =
+          `El horómetro del ${molino} debe ser un número válido.`;
       }
+
+      // noinspection JSCheckFunctionSignatures
       Object.entries(references).forEach(([reference, data]) => {
         if (reference !== "horometro_informe_final") {
           if (
             !data.cantidad_informe_final ||
             data.cantidad_informe_final.trim() === ""
           ) {
-            errors[
-              `${molino}-${reference}-cantidad`
-            ] = `La cantidad de ${reference} producido por el ${molino} es obligatorio.`;
+            errors[`${molino}-${reference}-cantidad`] =
+              `La cantidad de ${reference} producido por el ${molino} es obligatorio.`;
           } else if (isNaN(data.cantidad_informe_final)) {
-            errors[
-              `${molino}-${reference}-cantidad`
-            ] = `La cantidad de ${reference} producido por el ${molino} debe ser un número válido.`;
+            errors[`${molino}-${reference}-cantidad`] =
+              `La cantidad de ${reference} producido por el ${molino} debe ser un número válido.`;
           }
         }
       });
     });
 
     setValidationError(errors);
+
     return Object.keys(errors).length === 0;
   };
+
   const sendCreate = async (e) => {
     e.preventDefault();
 
@@ -269,8 +294,9 @@ function GenerateFinishReportForm() {
         data.horometro_informe_final.trim() !== ""
       ) {
         const matchingWindmill = molino.find(
-          (item) => item.name === molinoName
+          (item) => item.name === molinoName,
         );
+
         if (matchingWindmill) {
           horometrosMolinos.push({
             id_molino: matchingWindmill.id,
@@ -284,6 +310,7 @@ function GenerateFinishReportForm() {
 
     Object.entries(molinoInformeFinal).forEach(
       ([molinoName, referencesData]) => {
+        // noinspection JSCheckFunctionSignatures
         Object.entries(referencesData).forEach(([referenceName, data]) => {
           if (
             referenceName !== "horometro_informe_final" &&
@@ -291,16 +318,17 @@ function GenerateFinishReportForm() {
             data.cantidad_informe_final.trim() !== ""
           ) {
             const matchingWindmill = molino.find(
-              (item) => item.name === molinoName
+              (item) => item.name === molinoName,
             );
+
             const matchingReference = referencia.find(
-              (ref) => ref.nombre_referencia === referenceName
+              (ref) => ref.nombre_referencia === referenceName,
             );
 
             if (matchingWindmill && matchingReference) {
               const cantidadProducido =
                 (matchingWindmill.referenceHistory.find(
-                  (hist) => hist.reference === referenceName
+                  (hist) => hist.reference === referenceName,
                 )?.capacity *
                   parseInt(data.cantidad_informe_final)) /
                 1000;
@@ -312,7 +340,7 @@ function GenerateFinishReportForm() {
             }
           }
         });
-      }
+      },
     );
 
     const informeFinalArray = [];
@@ -320,6 +348,7 @@ function GenerateFinishReportForm() {
     Object.entries(molinoInformeFinal).forEach(([molinoName, references]) => {
       const horometro = references.horometro_informe_final;
 
+      // noinspection JSCheckFunctionSignatures
       Object.entries(references).forEach(([reference, data]) => {
         if (
           reference !== "horometro_informe_final" &&
@@ -327,16 +356,18 @@ function GenerateFinishReportForm() {
           data.cantidad_informe_final.trim() !== ""
         ) {
           const matchingWindmill = molino.find(
-            (item) => item.name === molinoName
+            (item) => item.name === molinoName,
           );
+
           const cantidadProducido =
             (matchingWindmill?.referenceHistory.find(
-              (hist) => hist.reference === reference
+              (hist) => hist.reference === reference,
             )?.capacity *
               parseInt(data.cantidad_informe_final)) /
             1000;
+
           const nombreBulto = matchingWindmill?.referenceHistory.find(
-            (hist) => hist.reference === reference
+            (hist) => hist.reference === reference,
           )?.bulk;
 
           informeFinalArray.push({
@@ -355,17 +386,20 @@ function GenerateFinishReportForm() {
     });
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.put(
         `http://${localIP}:3000/molinos/actualizarhorometro`,
-        horometrosMolinos
+        horometrosMolinos,
       );
+      // noinspection HttpUrlsUsage
       await axios.put(
         `http://${localIP}:3000/referencias/actualizarcantidad`,
-        cantidadesReferencias
+        cantidadesReferencias,
       );
+      // noinspection HttpUrlsUsage
       await axios.post(
         `http://${localIP}:3000/informes_finales`,
-        informeFinalArray
+        informeFinalArray,
       );
 
       setSendStatus(true);
@@ -378,10 +412,12 @@ function GenerateFinishReportForm() {
       setLoading(false);
     }
   };
+
   const redirectReport = () => {
     navigate("/generatereport/generatereportmenu");
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {finalData.length > 0 ? (
@@ -453,7 +489,7 @@ function GenerateFinishReportForm() {
                               <td>{history.reference || "No disponible"}</td>
                               <td>{history.bulk || "No disponible"}</td>
                             </tr>
-                          ))
+                          )),
                         )}
                       </tbody>
                     </table>
@@ -490,7 +526,7 @@ function GenerateFinishReportForm() {
                                     item.name,
                                     history.reference,
                                     "cantidad_informe_final",
-                                    e.target.value
+                                    e.target.value,
                                   )
                                 }
                                 placeholder="Ingrese la cantidad de bultos producidos"
@@ -572,18 +608,6 @@ function GenerateFinishReportForm() {
                             setObservacionInformeFinal(e.target.value)
                           }
                         />
-                        {!validationError.observacionInformeFinal ? (
-                          <></>
-                        ) : (
-                          <motion.span
-                            className={Style.generateFinalReportFormValidation}
-                            initial={{ zoom: 0 }}
-                            animate={{ zoom: 1 }}
-                            transition={{ duration: 0.5 }}
-                          >
-                            {validationError.observacionInformeFinal}
-                          </motion.span>
-                        )}
                       </fieldset>
                     </div>
                   </main>

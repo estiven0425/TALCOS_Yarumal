@@ -26,14 +26,16 @@ function InventoryEditReasignedRejectedMaterialForm() {
   useEffect(() => {
     const getReference = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(`http://${localIP}:3000/referencias`);
+
         setReferencias(response.data);
       } catch (error) {
         console.error("Error al obtener las referencias: ", error);
       }
     };
 
-    getReference();
+    void getReference();
   }, [localIP]);
 
   useEffect(() => {
@@ -62,23 +64,25 @@ function InventoryEditReasignedRejectedMaterialForm() {
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.put(
         `http://${localIP}:3000/productos_rechazados/reasignarproductorechazado`,
         {
           id_producto_rechazado: data.id_producto_rechazado,
           cantidad_producto_rechazado: data.cantidad_producto_rechazado,
           referenciaSeleccionada: selectedReference,
-        }
+        },
       );
 
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          "Error al reasignar el producto rechazado. Por favor, inténtelo de nuevo."
+          "Error al reasignar el producto rechazado. Por favor, inténtelo de nuevo.",
         );
         setLoading(false);
       }
@@ -89,6 +93,7 @@ function InventoryEditReasignedRejectedMaterialForm() {
     navigate("/inventory/inventoryrejectedmaterial");
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {sendStatus === true ? (

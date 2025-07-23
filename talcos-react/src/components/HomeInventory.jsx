@@ -10,6 +10,7 @@ function HomeInventory() {
   useEffect(() => {
     const getReference = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(`http://${localIP}:3000/referencias`);
 
         setReferencia(response.data);
@@ -18,13 +19,13 @@ function HomeInventory() {
       }
     };
 
-    getReference();
+    void getReference();
   }, [localIP]);
 
   const talcProduced = (
     referencia.reduce(
       (total, referencia) => total + referencia.cantidad_referencia * 1000,
-      0
+      0,
     ) / 1000
   ).toFixed(2);
 

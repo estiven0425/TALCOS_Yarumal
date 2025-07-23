@@ -3,7 +3,13 @@ import MonitoringViewTableListCommercialBudget from "./MonitoringViewTableListCo
 import MonitoringViewTableListDispatche from "./MonitoringViewTableListDispatche";
 import MonitoringViewTableListEfficiency from "./MonitoringViewTableListEfficiency";
 import MonitoringViewTableListProduced from "./MonitoringViewTableListProduced";
+import PropTypes from "prop-types";
 import Style from "./styles/monitoring-view-table-List.module.css";
+
+MonitoringViewTableList.propTypes = {
+  inicioMonitoreo: PropTypes.any,
+  finMonitoreo: PropTypes.any,
+};
 
 function MonitoringViewTableList({ inicioMonitoreo, finMonitoreo }) {
   return (

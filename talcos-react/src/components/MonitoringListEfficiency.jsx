@@ -2,7 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import { registrarTabla } from "../utils/tablaStore";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/monitoring-list-efficiency.module.css";
+
+MonitoringListEfficiency.propTypes = {
+  inicio: PropTypes.any,
+  fin: PropTypes.any,
+};
 
 function MonitoringListEfficiency({ inicio, fin }) {
   const [molino, setMolino] = useState([]);
@@ -18,18 +24,25 @@ function MonitoringListEfficiency({ inicio, fin }) {
 
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMonitoring = await axios.get(
           `http://${localIP}:3000/monitoreo`,
           {
             params: { inicio, fin },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseWindmill = await axios.get(
-          `http://${localIP}:3000/molinos`
+          `http://${localIP}:3000/molinos`,
         );
+
+        // noinspection HttpUrlsUsage
         const responseShift = await axios.get(`http://${localIP}:3000/turnos`);
+
+        // noinspection HttpUrlsUsage
         const responseReference = await axios.get(
-          `http://${localIP}:3000/referencias`
+          `http://${localIP}:3000/referencias`,
         );
 
         setItem(responseMonitoring.data);
@@ -41,13 +54,15 @@ function MonitoringListEfficiency({ inicio, fin }) {
       }
     };
 
-    getData();
+    void getData();
   }, [localIP, inicio, fin]);
+
   useEffect(() => {
     if (!item || turno.length === 0) return;
 
     const calculateTurnoDuration = (inicioTurnoStr, finTurnoStr) => {
       let dummyDate = "2000-01-01";
+
       let inicioDateTime = new Date(`${dummyDate}T${inicioTurnoStr}`);
       let finDateTime = new Date(`${dummyDate}T${finTurnoStr}`);
 
@@ -64,31 +79,37 @@ function MonitoringListEfficiency({ inicio, fin }) {
 
       if (isNaN(inicioDateTime.getTime()) || isNaN(finDateTime.getTime())) {
         console.warn(
-          `Fechas/horas de turno inválidas. Inicio: ${inicioTurnoStr}, Fin: ${finTurnoStr}`
+          `Fechas/horas de turno inválidas. Inicio: ${inicioTurnoStr}, Fin: ${finTurnoStr}`,
         );
+
         return 0;
       }
 
       const durationMilisegundos =
         finDateTime.getTime() - inicioDateTime.getTime();
+
       return durationMilisegundos / (1000 * 60 * 60);
     };
 
     const groupByReference = () => {
       const { informeInicial, informeFinal, novedades } = item;
+
       const grupos = {};
 
       referencia.forEach((ref) => {
         const nombreReferencia = ref.nombre_referencia;
+
         grupos[nombreReferencia] = {};
       });
 
       informeInicial.forEach((inicial) => {
         const ref = inicial.referencia_informe_inicial;
         const molino = inicial.molino_informe_inicial;
+
         if (!ref || !molino) return;
 
         if (!grupos[ref]) grupos[ref] = {};
+
         if (!grupos[ref][molino]) {
           grupos[ref][molino] = {
             iniciales: [],
@@ -108,9 +129,11 @@ function MonitoringListEfficiency({ inicio, fin }) {
       novedades.forEach((novedad) => {
         if (novedad.tipo_novedad === "Encendido de molino") {
           const { referencia_novedad: ref, molino_novedad: molino } = novedad;
+
           if (!ref || !molino) return;
 
           if (!grupos[ref]) grupos[ref] = {};
+
           if (!grupos[ref][molino]) {
             grupos[ref][molino] = {
               iniciales: [],
@@ -131,9 +154,11 @@ function MonitoringListEfficiency({ inicio, fin }) {
       novedades.forEach((novedad) => {
         if (novedad.tipo_novedad === "Cambio de referencia") {
           const { referencia_novedad: ref, molino_novedad: molino } = novedad;
+
           if (!ref || !molino) return;
 
           if (!grupos[ref]) grupos[ref] = {};
+
           if (!grupos[ref][molino]) {
             grupos[ref][molino] = {
               iniciales: [],
@@ -156,8 +181,9 @@ function MonitoringListEfficiency({ inicio, fin }) {
         .map((paro) => {
           if (!paro.fin_paro_novedad) {
             const turnoRelacionado = turno.find(
-              (t) => t.nombre_turno === paro.turno_novedad
+              (t) => t.nombre_turno === paro.turno_novedad,
             );
+
             if (turnoRelacionado) {
               return {
                 ...paro,
@@ -165,12 +191,14 @@ function MonitoringListEfficiency({ inicio, fin }) {
               };
             }
           }
+
           return paro;
         });
 
       novedadesParo.forEach((paro) => {
         const molino = paro.molino_novedad;
         const ref = paro.referencia_novedad;
+
         if (!molino || !ref || !grupos[ref] || !grupos[ref][molino]) return;
 
         grupos[ref][molino].paros.push(paro);
@@ -179,9 +207,11 @@ function MonitoringListEfficiency({ inicio, fin }) {
       informeFinal.forEach((final) => {
         const ref = final.referencia_informe_final;
         const molino = final.molino_informe_final;
+
         if (!ref || !molino) return;
 
         if (!grupos[ref]) grupos[ref] = {};
+
         if (!grupos[ref][molino]) {
           grupos[ref][molino] = {
             iniciales: [],
@@ -228,31 +258,35 @@ function MonitoringListEfficiency({ inicio, fin }) {
             const finalMatch = grupo.finales.find(
               (final) =>
                 final.fecha_informe_final === inicial.fecha_informe_inicial &&
-                final.turno_informe_final === inicial.turno_informe_inicial
+                final.turno_informe_final === inicial.turno_informe_inicial,
             );
 
             if (!finalMatch) return;
 
             const inicio = new Date(
-              `${inicial.fecha_informe_inicial}T${inicial.hora_informe_inicial}`
+              `${inicial.fecha_informe_inicial}T${inicial.hora_informe_inicial}`,
             );
+
             const fin = new Date(
-              `${finalMatch.fecha_informe_final}T${finalMatch.hora_informe_final}`
+              `${finalMatch.fecha_informe_final}T${finalMatch.hora_informe_final}`,
             );
 
             if (fin < inicio) fin.setDate(fin.getDate() + 1);
+
             if (isNaN(inicio.getTime()) || isNaN(fin.getTime())) return;
 
             const duracion = (fin - inicio) / (1000 * 60 * 60);
+
             totalHoras += duracion;
 
             const turnoAsociado = turno.find(
-              (t) => t.nombre_turno === inicial.turno_informe_inicial
+              (t) => t.nombre_turno === inicial.turno_informe_inicial,
             );
+
             if (turnoAsociado) {
               horasEsperadas += calculateTurnoDuration(
                 turnoAsociado.inicio_turno,
-                turnoAsociado.fin_turno
+                turnoAsociado.fin_turno,
               );
             }
 
@@ -268,20 +302,26 @@ function MonitoringListEfficiency({ inicio, fin }) {
 
           grupo.paros.forEach((paro) => {
             const inicioParo = new Date(
-              `${paro.fecha_novedad}T${paro.inicio_paro_novedad}`
+              `${paro.fecha_novedad}T${paro.inicio_paro_novedad}`,
             );
+
             const finParo = new Date(
-              `${paro.fecha_novedad}T${paro.fin_paro_novedad}`
+              `${paro.fecha_novedad}T${paro.fin_paro_novedad}`,
             );
+
             if (finParo < inicioParo) finParo.setDate(finParo.getDate() + 1);
+
+            // noinspection JSCheckFunctionSignatures
             if (isNaN(inicioParo) || isNaN(finParo)) return;
 
             const duracionParo = (finParo - inicioParo) / (1000 * 60 * 60);
+
             totalHoras -= duracionParo;
           });
 
           grupo.finales.forEach((final) => {
             const cantidad = parseFloat(final.cantidad_informe_final);
+
             if (!isNaN(cantidad)) {
               totalToneladas += cantidad;
             }
@@ -293,7 +333,7 @@ function MonitoringListEfficiency({ inicio, fin }) {
           grupo.rendimiento =
             grupo.totalHorasTrabajadas > 0
               ? ((totalToneladas * 1000) / grupo.totalHorasTrabajadas).toFixed(
-                  2
+                  2,
                 )
               : "0.00";
         }
@@ -303,7 +343,8 @@ function MonitoringListEfficiency({ inicio, fin }) {
     };
 
     groupByReference();
-  }, [item, turno]);
+  }, [item, referencia, turno]);
+
   useEffect(() => {
     if (tablaRef.current) {
       registrarTabla("eficiencia", tablaRef.current.outerHTML);
@@ -339,6 +380,7 @@ function MonitoringListEfficiency({ inicio, fin }) {
             >
               {Object.entries(gruposPorMolino).map(
                 ([nombreReferencia, molinos]) => {
+                  // noinspection JSCheckFunctionSignatures
                   const molinosArray = Object.entries(molinos);
                   return molinosArray.map(([nombreMolino, dataMolino], idx) => (
                     <tr key={`${nombreReferencia}-${nombreMolino}`}>
@@ -360,7 +402,7 @@ function MonitoringListEfficiency({ inicio, fin }) {
                       <td>{dataMolino.rendimiento} Kg/Hr</td>
                     </tr>
                   ));
-                }
+                },
               )}
             </tbody>
           </motion.table>

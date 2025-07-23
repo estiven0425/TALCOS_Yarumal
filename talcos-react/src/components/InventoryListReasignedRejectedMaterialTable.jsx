@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Style from "./styles/inventory-list-table.module.css";
 
-function InventoryListReasignedRejectedMaterialTable({}) {
+function InventoryListReasignedRejectedMaterialTable() {
   const [productoRechazado, setProductoRechazado] = useState([]);
   const navigate = useNavigate();
   const localIP = import.meta.env.VITE_LOCAL_IP;
@@ -12,24 +12,28 @@ function InventoryListReasignedRejectedMaterialTable({}) {
   useEffect(() => {
     const getRejectetMaterial = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
-          `http://${localIP}:3000/productos_rechazados`
+          `http://${localIP}:3000/productos_rechazados`,
         );
+
         const data = Array.isArray(response.data)
           ? response.data
           : Object.values(response.data);
 
         setProductoRechazado(data);
       } catch (error) {
-        console.error("Error al obtener los prdouctos rechazados: ", error);
+        console.error("Error al obtener los productos rechazados: ", error);
       }
     };
 
-    getRejectetMaterial();
+    void getRejectetMaterial();
   }, [localIP]);
+
   const redirectInventory = () => {
     navigate(`/inventory/inventoryrejectedmaterial`);
   };
+
   const redirectReasignedInventory = (data) => {
     navigate(`/inventory/reasignedrejectedmaterial`, { state: data });
   };

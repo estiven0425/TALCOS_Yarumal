@@ -1,5 +1,5 @@
 ﻿import { es } from "date-fns/locale";
-import { format, parseISO, set } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -15,61 +15,85 @@ function ReportList() {
   useEffect(() => {
     const getItems = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
-          `http://${localIP}:3000/informes_iniciales`
+          `http://${localIP}:3000/informes_iniciales`,
         );
+
+        // noinspection HttpUrlsUsage
         const responseNews = await axios.get(
-          `http://${localIP}:3000/novedades`
+          `http://${localIP}:3000/novedades`,
         );
+
+        // noinspection HttpUrlsUsage
         const responseQualityControl = await axios.get(
-          `http://${localIP}:3000/controles_calidad`
+          `http://${localIP}:3000/controles_calidad`,
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
-          `http://${localIP}:3000/informes_finales`
+          `http://${localIP}:3000/informes_finales`,
         );
 
         const groupedInformesIniciales = responseStartReport.data.reduce(
           (groups, item) => {
             const key = `${item.fecha_informe_inicial}/${item.turno_informe_inicial}`;
+
             if (!groups[key]) {
               groups[key] = [];
             }
+
             groups[key].push(item);
+
             return groups;
           },
-          {}
+          {},
         );
+
         const groupedNovedades = responseNews.data.reduce((groups, item) => {
           const key = `${item.fecha_novedad}/${item.turno_novedad}`;
+
           if (!groups[key]) {
             groups[key] = [];
           }
+
           groups[key].push(item);
+
           return groups;
         }, {});
+
         const groupedControlCalidad = responseQualityControl.data.reduce(
           (groups, item) => {
             const key = `${item.fecha_control_calidad}/${item.turno_control_calidad}`;
+
             if (!groups[key]) {
               groups[key] = [];
             }
+
             groups[key].push(item);
+
             return groups;
           },
-          {}
+          {},
         );
+
         const groupedInformesFinales = responseEndReport.data.reduce(
           (groups, item) => {
             const key = `${item.fecha_informe_final}/${item.turno_informe_final}`;
+
             if (!groups[key]) {
               groups[key] = [];
             }
+
             groups[key].push(item);
+
             return groups;
           },
-          {}
+          {},
         );
+
         const combinedGroups = {};
+
         const allKeys = new Set([
           ...Object.keys(groupedInformesIniciales),
           ...Object.keys(groupedNovedades),
@@ -92,7 +116,7 @@ function ReportList() {
       }
     };
 
-    getItems();
+    void getItems();
   }, [localIP]);
 
   const handleButtonClick = (key, record) => {
@@ -111,15 +135,18 @@ function ReportList() {
       "EEEE dd 'de' MMMM 'del' yyyy",
       {
         locale: es,
-      }
+      },
     );
+
     return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
   };
+
   const uniqueDates = Object.keys(items)
     .map((key) => key.split("/")[0])
     .filter((date, index, self) => self.indexOf(date) === index)
     .sort((a, b) => new Date(b) - new Date(a));
 
+  // noinspection JSValidateTypes
   return (
     <>
       {Object.keys(items).length > 0 ? (

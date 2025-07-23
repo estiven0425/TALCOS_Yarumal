@@ -1,5 +1,5 @@
 ﻿import { motion } from "framer-motion";
-import { addDays, parse, differenceInMinutes } from "date-fns";
+import { addDays, differenceInMinutes, parse } from "date-fns";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReportActionDetail from "./ReportActionDetail";
@@ -23,10 +23,12 @@ function ReportListDetail() {
       if (!item) return;
 
       try {
+        // noinspection HttpUrlsUsage
         const responseShift = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShift.data;
+
         const shift = shifts?.find(
-          (shift) => shift.nombre_turno === item[0]?.turno_informe_inicial
+          (shift) => shift.nombre_turno === item[0]?.turno_informe_inicial,
         );
 
         setShift(shift);
@@ -35,21 +37,30 @@ function ReportListDetail() {
       }
     };
 
-    getShifts();
+    void getShifts();
   }, [localIP, item]);
 
   const startReport = item?.filter((item) => item.id_informe_inicial);
+
   const windmill =
     startReport?.filter((item) => item.molino_informe_inicial) || [];
+
   const bobCat = startReport?.filter((item) => item.bob_cat_informe_inicial);
+
   const news = item?.filter((item) => item.id_novedad);
+
   const windmillOn =
     news?.filter((item) => item.tipo_novedad === "Encendido de molino") || [];
+
   const windmillStrikes =
     news?.filter((item) => item.tipo_novedad === "Paro") || [];
+
   const qualityControl = item?.filter((item) => item.id_control_calidad);
+
   const endReport = item?.filter((item) => item.id_informe_final) || [];
+
   const windmillTotal = [];
+
   const allMolinos = new Set([
     ...windmill.map((windmill) => windmill.molino_informe_inicial),
     ...windmillOn.map((windmill) => windmill.molino_novedad),
@@ -61,11 +72,14 @@ function ReportListDetail() {
     const inicio =
       windmill.find((windmill) => windmill.molino_informe_inicial === molino) ||
       null;
+
     const encendido =
       windmillOn.find((windmill) => windmill.molino_novedad === molino) || null;
+
     const paros = windmillStrikes.filter(
-      (item) => item.molino_novedad === molino
+      (item) => item.molino_novedad === molino,
     );
+
     const apagado =
       endReport.find((windmill) => windmill.molino_informe_final === molino) ||
       null;
@@ -215,7 +229,7 @@ function ReportListDetail() {
                       </tfoot>
                     </motion.table>
                   );
-                  break;
+
                 case "Cambio de referencia":
                   return (
                     <motion.table
@@ -266,7 +280,7 @@ function ReportListDetail() {
                       </tfoot>
                     </motion.table>
                   );
-                  break;
+
                 case "Cambio de operador de molino":
                   return (
                     <motion.table
@@ -315,7 +329,7 @@ function ReportListDetail() {
                       </tfoot>
                     </motion.table>
                   );
-                  break;
+
                 case "Cambio de operador de minicargador":
                   return (
                     <motion.table
@@ -364,8 +378,9 @@ function ReportListDetail() {
                       </tfoot>
                     </motion.table>
                   );
-                  break;
+
                 case "Adición de mecánico":
+                  // noinspection JSUnresolvedReference
                   return (
                     <motion.table
                       className={Style.reportListDetailPrimaryTable}
@@ -411,7 +426,7 @@ function ReportListDetail() {
                       </tfoot>
                     </motion.table>
                   );
-                  break;
+
                 case "Encendido de molino":
                   return (
                     <motion.table
@@ -470,7 +485,7 @@ function ReportListDetail() {
                       </tfoot>
                     </motion.table>
                   );
-                  break;
+
                 default:
                   break;
               }
@@ -552,9 +567,11 @@ function ReportListDetail() {
 
                     endReport.forEach((item) => {
                       const molino = item.molino_informe_final;
+
                       if (!agrupadoPorMolino[molino]) {
                         agrupadoPorMolino[molino] = [];
                       }
+
                       agrupadoPorMolino[molino].push(item);
                     });
 
@@ -570,7 +587,7 @@ function ReportListDetail() {
                             <td>{item.cantidad_informe_final} Tons</td>
                             <td>{item.horometro_informe_final} Hrs</td>
                           </tr>
-                        ))
+                        )),
                     );
                   })()}
                 </tbody>
@@ -620,13 +637,16 @@ function ReportListDetail() {
 
                       const horaInicioStr =
                         inicio?.hora_informe_inicial || encendido?.hora_novedad;
+
                       const horaFinalStr = apagado?.hora_informe_final;
 
                       let totalMinutosParo = 0;
+
                       if (Array.isArray(paros)) {
                         paros.forEach((paro) => {
                           const inicioParoStr =
                             paro?.inicio_paro_novedad || null;
+
                           const finParoStr =
                             paro?.fin_paro_novedad || shift?.fin_turno;
 
@@ -634,12 +654,13 @@ function ReportListDetail() {
                             let inicioParo = parse(
                               inicioParoStr.slice(0, 5),
                               "HH:mm",
-                              new Date()
+                              new Date(),
                             );
+
                             let finParo = parse(
                               finParoStr.slice(0, 5),
                               "HH:mm",
-                              new Date()
+                              new Date(),
                             );
 
                             if (finParo < inicioParo) {
@@ -648,7 +669,7 @@ function ReportListDetail() {
 
                             const diff = differenceInMinutes(
                               finParo,
-                              inicioParo
+                              inicioParo,
                             );
                             if (diff > 0) {
                               totalMinutosParo += diff;
@@ -657,6 +678,7 @@ function ReportListDetail() {
                         });
                       } else if (paros) {
                         const inicioParoStr = paros.inicio_paro_novedad || null;
+
                         const finParoStr =
                           paros.fin_paro_novedad || shift?.fin_turno;
 
@@ -664,12 +686,13 @@ function ReportListDetail() {
                           let inicioParo = parse(
                             inicioParoStr.slice(0, 5),
                             "HH:mm",
-                            new Date()
+                            new Date(),
                           );
+
                           let finParo = parse(
                             finParoStr.slice(0, 5),
                             "HH:mm",
-                            new Date()
+                            new Date(),
                           );
 
                           if (finParo < inicioParo) {
@@ -677,6 +700,7 @@ function ReportListDetail() {
                           }
 
                           const diff = differenceInMinutes(finParo, inicioParo);
+
                           if (diff > 0) {
                             totalMinutosParo += diff;
                           }
@@ -684,27 +708,32 @@ function ReportListDetail() {
                       }
 
                       let horasParoFormatted = "0";
+
                       if (totalMinutosParo > 0) {
                         const horas = Math.floor(totalMinutosParo / 60);
+
                         const mins = totalMinutosParo % 60;
+
                         horasParoFormatted = `${horas}:${mins
                           .toString()
                           .padStart(2, "0")}`;
                       }
 
                       let horasTrabajadasFormatted = "0";
+
                       let minutosTrabajados = 0;
 
                       if (horaInicioStr && horaFinalStr) {
                         let horaInicio = parse(
                           horaInicioStr.slice(0, 5),
                           "HH:mm",
-                          new Date()
+                          new Date(),
                         );
+
                         let horaFinal = parse(
                           horaFinalStr.slice(0, 5),
                           "HH:mm",
-                          new Date()
+                          new Date(),
                         );
 
                         if (horaFinal < horaInicio) {
@@ -713,16 +742,19 @@ function ReportListDetail() {
 
                         const totalMinutos = differenceInMinutes(
                           horaFinal,
-                          horaInicio
+                          horaInicio,
                         );
+
                         minutosTrabajados = Math.max(
                           totalMinutos - totalMinutosParo,
-                          0
+                          0,
                         );
 
                         if (minutosTrabajados > 0) {
                           const horas = Math.floor(minutosTrabajados / 60);
+
                           const mins = minutosTrabajados % 60;
+
                           horasTrabajadasFormatted = `${horas}:${mins
                             .toString()
                             .padStart(2, "0")}`;
@@ -731,7 +763,9 @@ function ReportListDetail() {
 
                       const kilosTotales =
                         apagado?.cantidad_informe_final * 1000 || 0;
+
                       const horasTrabajadasDecimal = minutosTrabajados / 60;
+
                       const kilosPorHora =
                         horasTrabajadasDecimal > 0
                           ? (kilosTotales / horasTrabajadasDecimal).toFixed(2)
@@ -746,12 +780,13 @@ function ReportListDetail() {
                         let inicioTurno = parse(
                           inicioTurnoStr.slice(0, 5),
                           "HH:mm",
-                          new Date()
+                          new Date(),
                         );
+
                         let finTurno = parse(
                           finTurnoStr.slice(0, 5),
                           "HH:mm",
-                          new Date()
+                          new Date(),
                         );
 
                         if (finTurno < inicioTurno) {
@@ -760,7 +795,7 @@ function ReportListDetail() {
 
                         const minutosTurno = differenceInMinutes(
                           finTurno,
-                          inicioTurno
+                          inicioTurno,
                         );
                         duracionTurnoHoras = minutosTurno / 60;
                       }
@@ -782,7 +817,7 @@ function ReportListDetail() {
                           <td>{eficiencia} %</td>
                         </tr>
                       );
-                    }
+                    },
                   )}
                 </tbody>
               </motion.table>

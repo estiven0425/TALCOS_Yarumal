@@ -15,22 +15,29 @@ function HomeShift() {
   useEffect(() => {
     const getShifts = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = response.data;
+
         const currentTime = new Date();
+
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
+
           if (endTimeMs > startTimeMs) {
             return currentTimeMs >= startTimeMs && currentTimeMs < endTimeMs;
           } else {
             return currentTimeMs >= startTimeMs || currentTimeMs < endTimeMs;
           }
         };
+
         const calculateDuration = (start, end) => {
           const [startHour, startMinute] = start.split(":").map(Number);
           const [endHour, endMinute] = end.split(":").map(Number);
@@ -44,16 +51,20 @@ function HomeShift() {
 
           const totalMinutes = Math.round((endMs - startMs) / 60000);
           const hours = Math.floor(totalMinutes / 60);
+
           const minutes = totalMinutes % 60;
 
           return hours + minutes / 60;
         };
+
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
+
         const indexCurrentShift = shifts.findIndex(
-          (shift) => shift.id_turno === currentShift.id_turno
+          (shift) => shift.id_turno === currentShift.id_turno,
         );
+
         const nextTurn = shifts[(indexCurrentShift + 1) % shifts.length];
 
         currentShift.inicio_turno = currentShift.inicio_turno.slice(0, 5);
@@ -73,10 +84,11 @@ function HomeShift() {
           currentDate = new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
-            currentTime.getDate() - 1
+            currentTime.getDate() - 1,
           );
         }
 
+        // noinspection HttpUrlsUsage
         const reportResponse = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -86,20 +98,26 @@ function HomeShift() {
               inicioTurno: currentShift.inicio_turno,
               finTurno: currentShift.fin_turno,
             },
-          }
+          },
         );
         const reportData = reportResponse.data;
+
         const lastReport = reportData[0];
+
         const molinosEnInforme = reportData.filter(
           (report) =>
             report.molino_informe_inicial !== null &&
-            report.molino_informe_inicial !== undefined
+            report.molino_informe_inicial !== undefined,
         );
+
         const cantidadMolinosEnInforme = molinosEnInforme.length;
 
+        // noinspection JSUnresolvedReference
         setSupervisor(lastReport?.titular?.nombre_usuario || "No disponible");
+        // noinspection JSUnresolvedReference
         setControlCalidad(lastReport?.cdc?.nombre_usuario || "No disponible");
 
+        // noinspection HttpUrlsUsage
         const newResponse = await axios.get(
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
@@ -109,21 +127,24 @@ function HomeShift() {
               inicioTurno: currentShift.inicio_turno,
               finTurno: currentShift.fin_turno,
             },
-          }
+          },
         );
 
         const novelty = newResponse.data;
+
         const shiftDuration = calculateDuration(
           currentShift.inicio_turno,
-          currentShift.fin_turno
+          currentShift.fin_turno,
         );
+
+        // noinspection UnnecessaryLocalVariableJS
         const totalPossibleHoursInitial =
           shiftDuration * cantidadMolinosEnInforme;
 
         let totalPossibleHours = totalPossibleHoursInitial;
 
         const paroCount = novelty.filter(
-          (novedad) => novedad.tipo_novedad === "Paro"
+          (novedad) => novedad.tipo_novedad === "Paro",
         );
 
         setTotalStrike(paroCount.length);
@@ -137,8 +158,9 @@ function HomeShift() {
 
           return total + calculateDuration(inicioParo, finParo);
         }, 0);
+
         const encendidos = novelty.filter(
-          (novedad) => novedad.tipo_novedad === "Encendido de molino"
+          (novedad) => novedad.tipo_novedad === "Encendido de molino",
         );
 
         let totalEncendidoDelay = 0;
@@ -158,16 +180,17 @@ function HomeShift() {
 
         Object.values(encendidosPorMolino).forEach((novedad) => {
           const horaEncendido = novedad.hora_novedad;
+
           const tiempoPerdidoEncendido = calculateDuration(
             currentShift.inicio_turno,
-            horaEncendido
+            horaEncendido,
           );
 
           totalEncendidoDelay += tiempoPerdidoEncendido;
 
           const tiempoPosibleEncendido = calculateDuration(
             horaEncendido,
-            currentShift.fin_turno
+            currentShift.fin_turno,
           );
 
           totalPossibleHours += tiempoPosibleEncendido;
@@ -180,14 +203,19 @@ function HomeShift() {
         const initialReportDelay =
           calculateDuration(currentShift.inicio_turno, initialReportTime) *
           cantidadMolinosEnInforme;
+
         const totalLostHours =
           totalParoDuration + totalEncendidoDelay + initialReportDelay;
+
         const productiveHours = totalPossibleHours - totalLostHours;
+
         const efficiency = (productiveHours / totalPossibleHours) * 100;
 
         if (!isFinite(efficiency)) {
+          // noinspection JSCheckFunctionSignatures
           setOverallEfficiency("No disponible");
         } else {
+          // noinspection JSCheckFunctionSignatures
           setOverallEfficiency(efficiency.toFixed(2));
         }
       } catch (error) {
@@ -195,7 +223,7 @@ function HomeShift() {
       }
     };
 
-    getShifts();
+    void getShifts();
   }, [localIP]);
 
   return currentShift !== null ? (

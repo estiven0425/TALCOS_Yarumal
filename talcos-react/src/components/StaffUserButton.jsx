@@ -14,13 +14,14 @@ function StaffUserButton() {
   useEffect(() => {
     const getProfile = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(
           `http://${localIP}:3000/perfiles/personalperfil`,
           {
             params: {
               perfil: profile,
             },
-          }
+          },
         );
 
         setPerfil(response.data);
@@ -29,7 +30,7 @@ function StaffUserButton() {
       }
     };
 
-    getProfile();
+    void getProfile();
   }, [localIP, profile]);
 
   const singularize = (word) => {
@@ -53,12 +54,15 @@ function StaffUserButton() {
 
     return word;
   };
+
   const redirectCreate = (id_perfil) => {
     navigate("/createuser", { state: id_perfil });
   };
+
   const redirectEdit = (id_perfil) => {
     navigate("/listedituser", { state: id_perfil });
   };
+
   const redirectDelete = (id_perfil) => {
     navigate("/listdeleteuser", { state: id_perfil });
   };

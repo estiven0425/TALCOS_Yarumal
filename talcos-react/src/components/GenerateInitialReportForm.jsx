@@ -53,10 +53,13 @@ function GenerateInitialReportForm() {
       return () => clearTimeout(timer);
     }
   }, [sendStatus, navigate]);
+
   useEffect(() => {
     const token = sessionStorage.getItem("token");
+
     const getUsuario = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.post(`http://${localIP}:3000/login/get`, {
           token: token,
         });
@@ -66,20 +69,25 @@ function GenerateInitialReportForm() {
         console.error("Error al obtener el usuario: ", error);
       }
     };
-    getUsuario();
+    void getUsuario();
   }, [localIP]);
+
   useEffect(() => {
     const getShifts = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = response.data;
+
         const currentTime = new Date();
 
         const compareTime = (hour, start, end) => {
           const [startTime, startMinute] = start.split(":").map(Number);
           const [endTime, endMinute] = end.split(":").map(Number);
+
           const startTimeMs = (startTime * 60 + startMinute) * 60000;
           const endTimeMs = (endTime * 60 + endMinute) * 60000;
+
           const currentTimeMs =
             (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
@@ -91,7 +99,7 @@ function GenerateInitialReportForm() {
         };
 
         const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno)
+          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
         );
 
         let currentDate = new Date();
@@ -103,7 +111,7 @@ function GenerateInitialReportForm() {
           currentDate = new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
-            currentTime.getDate() - 1
+            currentTime.getDate() - 1,
           );
           setDateCorrected(currentDate);
         }
@@ -116,6 +124,8 @@ function GenerateInitialReportForm() {
           inicio_turno: inicioTurno,
           fin_turno: finTurno,
         } = currentShift;
+
+        // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
@@ -125,8 +135,10 @@ function GenerateInitialReportForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
+        // noinspection HttpUrlsUsage
         const responseEndReport = await axios.get(
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
@@ -136,8 +148,9 @@ function GenerateInitialReportForm() {
               inicioTurno,
               finTurno,
             },
-          }
+          },
         );
+
         const reports = responseStartReport.data;
         const endReports = responseEndReport.data;
 
@@ -148,8 +161,9 @@ function GenerateInitialReportForm() {
         setCurrentShift(currentShift);
         setFinalData(endReports);
 
+        // noinspection HttpUrlsUsage
         const responsePendiente = await axios.get(
-          `http://${localIP}:3000/informes_iniciales/validarinformefinalpendiente`
+          `http://${localIP}:3000/informes_iniciales/validarinformefinalpendiente`,
         );
 
         setInformeFinalPendiente(responsePendiente.data);
@@ -160,11 +174,13 @@ function GenerateInitialReportForm() {
       }
     };
 
-    getShifts();
+    void getShifts();
   }, [localIP]);
+
   useEffect(() => {
     const getItems = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const [bobCatRes, molinoRes, referenciaRes, bultoRes] =
           await Promise.all([
             axios.get(`http://${localIP}:3000/bob_cats`),
@@ -182,28 +198,30 @@ function GenerateInitialReportForm() {
       }
     };
 
-    getItems();
+    void getItems();
   }, [localIP]);
+
   useEffect(() => {
     const getUsers = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const [controlCalidadRes, mecanicoRes, operadorRes, cargueroRes] =
           await Promise.all([
             axios.post(
               `http://${localIP}:3000/usuarios/informeinicialusuario`,
-              { idPerfil: 4 }
+              { idPerfil: 4 },
             ),
             axios.post(
               `http://${localIP}:3000/usuarios/informeinicialusuario`,
-              { idPerfil: 7 }
+              { idPerfil: 7 },
             ),
             axios.post(
               `http://${localIP}:3000/usuarios/informeinicialusuario`,
-              { idPerfil: 6 }
+              { idPerfil: 6 },
             ),
             axios.post(
               `http://${localIP}:3000/usuarios/informeinicialusuario`,
-              { idPerfil: 8 }
+              { idPerfil: 8 },
             ),
           ]);
 
@@ -216,27 +234,32 @@ function GenerateInitialReportForm() {
       }
     };
 
-    getUsers();
+    void getUsers();
   }, [localIP]);
+
   useEffect(() => {
     setMolinoInformeInicial(
-      molino.map((molinoItem) => molinoItem.nombre_molino)
+      molino.map((molinoItem) => molinoItem.nombre_molino),
     );
   }, [molino]);
+
   useEffect(() => {
     setBobCatInformeInicial(
-      bobCat.map((bobCatItem) => bobCatItem.nombre_bob_cat)
+      bobCat.map((bobCatItem) => bobCatItem.nombre_bob_cat),
     );
   }, [bobCat]);
+
   useEffect(() => {
     setOperadorInformeInicial(new Array(molino.length).fill(""));
     setReferenciaInformeInicial(new Array(molino.length).fill(""));
     setBultoInformeInicial(new Array(molino.length).fill(""));
     setHorometroInformeInicial(new Array(molino.length).fill(""));
   }, [molino]);
+
   useEffect(() => {
     setCargueroInformeInicial(new Array(bobCat.length).fill(""));
   }, [bobCat]);
+
   useEffect(() => {
     setMolinoEnabled(new Array(molino.length).fill(true));
   }, [molino]);
@@ -247,20 +270,24 @@ function GenerateInitialReportForm() {
       { id_usuario, nombre_usuario },
     ]);
   };
+
   const removeQualityControl = (index) => {
     setControlCalidadInformeInicial((prev) =>
-      prev.filter((_, i) => i !== index)
+      prev.filter((_, i) => i !== index),
     );
   };
+
   const addMechanic = (id_usuario, nombre_usuario) => {
     setMecanicoInformeInicial((prev) => [
       ...prev,
       { id_usuario, nombre_usuario },
     ]);
   };
+
   const removeMechanic = (index) => {
     setMecanicoInformeInicial((prev) => prev.filter((_, i) => i !== index));
   };
+
   const handleOperadorChange = (index, value) => {
     setOperadorInformeInicial((prev) => {
       const updated = [...prev];
@@ -270,6 +297,7 @@ function GenerateInitialReportForm() {
       return updated;
     });
   };
+
   const handleReferenciaChange = (index, value) => {
     setReferenciaInformeInicial((prev) => {
       const updated = [...prev];
@@ -279,6 +307,7 @@ function GenerateInitialReportForm() {
       return updated;
     });
   };
+
   const handleBultoChange = (index, value) => {
     setBultoInformeInicial((prev) => {
       const updated = [...prev];
@@ -288,6 +317,7 @@ function GenerateInitialReportForm() {
       return updated;
     });
   };
+
   const handleHorometroChange = (index, value) => {
     setHorometroInformeInicial((prev) => {
       const updated = [...prev];
@@ -297,6 +327,7 @@ function GenerateInitialReportForm() {
       return updated;
     });
   };
+
   const handleCargueroChange = (index, value) => {
     setCargueroInformeInicial((prev) => {
       const updated = [...prev];
@@ -306,13 +337,17 @@ function GenerateInitialReportForm() {
       return updated;
     });
   };
+
   const handleMolinoToggle = (index) => {
     setMolinoEnabled((prev) => {
       const updated = [...prev];
+
       updated[index] = !updated[index];
+
       return updated;
     });
   };
+
   const validation = () => {
     const errors = {};
 
@@ -352,10 +387,11 @@ function GenerateInitialReportForm() {
     if (molinoErrors.some((error) => error)) {
       errors.molino = molinoErrors;
     }
+
     const cargueroErrors = cargueroInformeInicial.map((carguero, index) =>
       !carguero
         ? `El operador del ${bobCat[index].nombre_bob_cat} es obligatorio.`
-        : null
+        : null,
     );
 
     if (cargueroErrors.some((error) => error)) {
@@ -381,6 +417,7 @@ function GenerateInitialReportForm() {
     const horaInformeInicial = new Date().toLocaleTimeString("en-GB", {
       hour12: false,
     });
+
     const persistentData = {
       titular_informe_inicial: titularInformeInicial,
       fecha_informe_inicial: fechaInformeInicial,
@@ -388,16 +425,19 @@ function GenerateInitialReportForm() {
       turno_informe_inicial: currentShift.nombre_turno,
       observacion_informe_inicial: observacionInformeInicial,
     };
+
     const controlCalidadObjects = controlCalidadInformeInicial.map(
       (control) => ({
         ...persistentData,
         cdc_informe_inicial: control.id_usuario,
-      })
+      }),
     );
+
     const mecanicoObjects = mecanicoInformeInicial.map((mecanico) => ({
       ...persistentData,
       mecanico_informe_inicial: mecanico.id_usuario,
     }));
+
     const molinoObjects = molinoInformeInicial
       .map((_, index) => {
         if (!molinoEnabled[index]) return null;
@@ -418,6 +458,7 @@ function GenerateInitialReportForm() {
       carguero_informe_inicial: cargueroInformeInicial[index],
       bob_cat_informe_inicial: bobCatInformeInicial[index],
     }));
+
     const fullReport = [
       ...controlCalidadObjects,
       ...mecanicoObjects,
@@ -426,6 +467,7 @@ function GenerateInitialReportForm() {
     ];
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.post(`http://${localIP}:3000/informes_iniciales`, fullReport);
 
       setSendStatus(true);
@@ -435,7 +477,7 @@ function GenerateInitialReportForm() {
         setLoading(false);
       } else {
         setServerError(
-          `Error al crear el informe inicial. Por favor, inténtelo de nuevo.`
+          `Error al crear el informe inicial. Por favor, inténtelo de nuevo.`,
         );
         setLoading(false);
       }
@@ -445,10 +487,12 @@ function GenerateInitialReportForm() {
   const redirectGenerateReport = () => {
     navigate("/generatereport/generatereportmenu");
   };
+
   const redirectFinishReport = (data) => {
     navigate("/generatereport/finishreport", { state: data });
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {informeFinalPendiente ? (
@@ -465,7 +509,7 @@ function GenerateInitialReportForm() {
                 {format(
                   parseISO(informeFinalPendiente.fecha),
                   "EEEE d 'de' MMMM 'del' yyyy",
-                  { locale: es }
+                  { locale: es },
                 ).replace(/^./, (c) => c.toUpperCase())}{" "}
                 debe ser finalizado antes de continuar
               </h1>
@@ -544,7 +588,7 @@ function GenerateInitialReportForm() {
                               e.target.options[e.target.selectedIndex];
                             addQualityControl(
                               e.target.value,
-                              selectedOption.text
+                              selectedOption.text,
                             );
                             setSelectedControlCalidad("");
                           }}
@@ -888,20 +932,6 @@ function GenerateInitialReportForm() {
                           type="text"
                           value={observacionInformeInicial}
                         />
-                        {!validationError.observacionInformeInicial ? (
-                          <></>
-                        ) : (
-                          <motion.span
-                            className={
-                              Style.generateInitialReportFormValidation
-                            }
-                            initial={{ zoom: 0 }}
-                            animate={{ zoom: 1 }}
-                            transition={{ duration: 0.5 }}
-                          >
-                            {validationError.observacionInformeInicial}
-                          </motion.span>
-                        )}
                       </fieldset>
                     </main>
                     <footer className={Style.generateInitialReportFormFooter}>

@@ -1,30 +1,31 @@
-﻿import { motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { registrarTabla } from "../utils/tablaStore";
-import axios from "axios";
-import {
-  getWeek,
-  parseISO,
-  startOfWeek,
+﻿import {
   endOfWeek,
   eachWeekOfInterval,
   format,
-  addDays,
+  getWeek,
+  parseISO,
 } from "date-fns";
-import { es } from "date-fns/locale";
+import { motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { registrarTabla } from "../utils/tablaStore";
+import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/monitoring-view-table-list-commercial-budget.module.css";
 
+MonitoringViewTableListCommercialBudget.propTypes = {
+  inicio: PropTypes.any,
+  fin: PropTypes.any,
+};
+
 function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
-  const [molino, setMolino] = useState([]);
   const [referencia, setReferencia] = useState([]);
-  const [bulto, setBulto] = useState([]);
   const [commercialBudget, setCommercialBudget] = useState([]);
   const [item, setItem] = useState(null);
   const [finalReport, setFinalReport] = useState([]);
   const [allWeeksInPeriod, setAllWeeksInPeriod] = useState([]);
   const [weekRanges, setWeekRanges] = useState({});
   const [dataPorReferenciaPorSemana, setDataPorReferenciaPorSemana] = useState(
-    {}
+    {},
   );
   const tablaRef = useRef(null);
   const localIP = import.meta.env.VITE_LOCAL_IP;
@@ -34,40 +35,40 @@ function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
 
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMonitoring = await axios.get(
           `http://${localIP}:3000/monitoreo`,
           {
             params: { inicio, fin },
-          }
+          },
         );
-        const responseWindmill = await axios.get(
-          `http://${localIP}:3000/molinos`
-        );
+
+        // noinspection HttpUrlsUsage
         const responseCommercialBudget = await axios.get(
-          `http://${localIP}:3000/presupuestos_comerciales`
+          `http://${localIP}:3000/presupuestos_comerciales`,
         );
+
+        // noinspection HttpUrlsUsage
         const responseReference = await axios.get(
-          `http://${localIP}:3000/referencias`
+          `http://${localIP}:3000/referencias`,
         );
-        const responseBulk = await axios.get(`http://${localIP}:3000/bultos`);
 
         setItem(responseMonitoring.data);
-        setMolino(responseWindmill.data);
         setReferencia(responseReference.data);
-        setBulto(responseBulk.data);
         setCommercialBudget(responseCommercialBudget.data);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       }
     };
 
-    getData();
+    void getData();
   }, [localIP, inicio, fin]);
 
   useEffect(() => {
     if (!item) return;
 
     const endReport = item.informeFinal;
+
     setFinalReport(endReport);
   }, [localIP, item]);
 
@@ -87,17 +88,20 @@ function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
 
       const weeks = eachWeekOfInterval(
         { start: startDate, end: endDate },
-        { weekStartsOn: 1 }
+        { weekStartsOn: 1 },
       );
 
       const weekNumbers = [];
+
       const ranges = {};
 
       weeks.forEach((weekStart) => {
         const weekNumber = getWeekNumberISO(weekStart);
+
         const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
 
         weekNumbers.push(weekNumber);
+
         ranges[weekNumber] = {
           start: format(weekStart, "yyyy-MM-dd"),
           end: format(weekEnd, "yyyy-MM-dd"),
@@ -109,6 +113,7 @@ function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
 
       setWeekRanges(ranges);
       setAllWeeksInPeriod(uniqueWeeks);
+
       return uniqueWeeks;
     };
 
@@ -134,7 +139,9 @@ function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
 
       referencia.forEach((ref) => {
         const nombreReferencia = ref.nombre_referencia;
+
         dataAgrupada[nombreReferencia] = {};
+
         currentWeeksInPeriod.forEach((weekNum) => {
           dataAgrupada[nombreReferencia][weekNum] = 0;
         });
@@ -144,6 +151,7 @@ function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
         finalReport.forEach((entry) => {
           const referenciaName = entry.referencia_informe_final;
           const fecha = entry.fecha_informe_final;
+
           const cantidad = Number(entry.cantidad_informe_final);
 
           if (!referenciaName || !fecha) return;
@@ -185,7 +193,7 @@ function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
     const anoInicio = parseISO(inicio).getFullYear();
 
     return commercialBudget.find(
-      (presupuesto) => presupuesto.fecha_presupuesto_comercial === anoInicio
+      (presupuesto) => presupuesto.fecha_presupuesto_comercial === anoInicio,
     );
   }, [inicio, fin, commercialBudget]);
 
@@ -198,6 +206,7 @@ function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
     }
   }, [dataPorReferenciaPorSemana]);
 
+  // noinspection JSUnresolvedReference
   return (
     <>
       {item ? (
@@ -244,7 +253,7 @@ function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
                   <td>
                     {presupuestoComercialDelAno?.capacidad_presupuesto_comercial
                       ? parseFloat(
-                          presupuestoComercialDelAno.capacidad_presupuesto_comercial
+                          presupuestoComercialDelAno.capacidad_presupuesto_comercial,
                         ).toFixed(2)
                       : "0"}
                   </td>
@@ -254,6 +263,7 @@ function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
                       0;
                     const capacidadSemanal = capacidad / 4.35;
 
+                    // noinspection JSCheckFunctionSignatures
                     return (
                       <td key={`capacidad-week-${weekNum}`}>
                         {parseFloat(capacidadSemanal).toFixed(2)}
@@ -277,6 +287,7 @@ function MonitoringViewTableListCommercialBudget({ inicio, fin }) {
                     const produccion = weeklyTotals[weekNum] || 0;
                     const diferencia = produccion - capacidadSemanal;
 
+                    // noinspection JSCheckFunctionSignatures
                     return (
                       <td key={`diff-week-${weekNum}`}>
                         {parseFloat(diferencia).toFixed(2)}

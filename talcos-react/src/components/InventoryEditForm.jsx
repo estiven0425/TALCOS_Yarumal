@@ -2,7 +2,19 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/inventory-edit-form.module.css";
+
+InventoryEditForm.propTypes = {
+  redirectPath: PropTypes.any,
+  fields: PropTypes.any,
+  dataId: PropTypes.any,
+  endpoint: PropTypes.any,
+  nameError: PropTypes.any,
+  nameConfirmation: PropTypes.any,
+  title: PropTypes.any,
+  nameButton: PropTypes.any,
+};
 
 function InventoryEditForm({
   redirectPath,
@@ -32,7 +44,7 @@ function InventoryEditForm({
       });
       setData(initialData);
     }
-  }, [item, fields]);
+  }, [item, fields, dataId]);
 
   useEffect(() => {
     if (sendStatus) {
@@ -46,6 +58,7 @@ function InventoryEditForm({
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
+
     setData({
       ...data,
       [name]: type === "number" ? parseFloat(value) : value,
@@ -59,15 +72,18 @@ function InventoryEditForm({
     setLoading(true);
 
     try {
+      // noinspection HttpUrlsUsage
       await axios.put(`http://${localIP}:3000/${endpoint}`, data);
+
       setSendStatus(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setServerError(error.response.data.error);
+
         setLoading(false);
       } else {
         setServerError(
-          `Error al editar ${nameError}. Por favor, inténtelo de nuevo.`
+          `Error al editar ${nameError}. Por favor, inténtelo de nuevo.`,
         );
         setLoading(false);
       }
@@ -78,6 +94,7 @@ function InventoryEditForm({
     navigate(`/inventory/listedit${redirectPath}`);
   };
 
+  // noinspection JSValidateTypes
   return (
     <>
       {sendStatus === true ? (

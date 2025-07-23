@@ -57,13 +57,15 @@ function MonitoringAction() {
 
     const formatDate = (date) => {
       const isoDateString = date instanceof Date ? date.toISOString() : date;
+
       const formattedDate = format(
         parseISO(isoDateString),
         "EEEE dd 'de' MMMM 'del' yyyy",
         {
           locale: es,
-        }
+        },
       );
+
       return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
     };
 
@@ -94,13 +96,13 @@ function MonitoringAction() {
       .aside div h2 {
         color: #696a9e;
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
         text-align: left;
       }
 
       .aside div p {
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
         text-align: left;
       }
 
@@ -122,7 +124,7 @@ function MonitoringAction() {
       .article h2 {
         color: #696a9e;
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
         text-align: center;
       }
 
@@ -135,12 +137,12 @@ function MonitoringAction() {
       .table caption h2 {
         color: #696a9e;
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
       }
 
       .table caption span {
         font-size: 1rem;
-        margin: 0px;
+        margin: 0;
       }
 
       .tableHead,
@@ -220,8 +222,11 @@ function MonitoringAction() {
     .join("")
     .replace(/style="[^"]*opacity:\s*0;?[^"]*"/g, "")}
     `;
+
     try {
       setLoading(true);
+
+      // noinspection HttpUrlsUsage
       const response = await axios.post(
         `http://${localIP}:3000/pdf`,
         {
@@ -231,23 +236,31 @@ function MonitoringAction() {
         },
         {
           responseType: "blob",
-        }
+        },
       );
+
       const url = window.URL.createObjectURL(
-        new Blob([response.data], { type: "application/pdf" })
+        new Blob([response.data], { type: "application/pdf" }),
       );
+
       const a = document.createElement("a");
       a.href = url;
       a.download = "monitoreo_de_datos.pdf";
+
       document.body.appendChild(a);
+
       a.click();
+
       document.body.removeChild(a);
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
+
       console.log("Error al imprimir: ", error);
     }
   };
+
   const redirectView = () => {
     navigate("/monitoring/viewmonitoring");
   };

@@ -1,29 +1,32 @@
-﻿import { motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { registrarTabla } from "../utils/tablaStore";
-import axios from "axios";
+﻿// noinspection JSUnusedLocalSymbols
+
 import {
   getWeek,
   parseISO,
-  startOfWeek,
   endOfWeek,
   eachWeekOfInterval,
   format,
-  addDays,
 } from "date-fns";
-import { es } from "date-fns/locale";
+import { motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { registrarTabla } from "../utils/tablaStore";
+import axios from "axios";
+import PropTypes from "prop-types";
 import Style from "./styles/monitoring-view-table-list-produced.module.css";
 
+MonitoringViewTableListProduced.propTypes = {
+  inicio: PropTypes.any,
+  fin: PropTypes.any,
+};
+
 function MonitoringViewTableListProduced({ inicio, fin }) {
-  const [molino, setMolino] = useState([]);
   const [referencia, setReferencia] = useState([]);
-  const [bulto, setBulto] = useState([]);
   const [item, setItem] = useState(null);
   const [finalReport, setFinalReport] = useState([]);
   const [allWeeksInPeriod, setAllWeeksInPeriod] = useState([]);
   const [weekRanges, setWeekRanges] = useState({});
   const [dataPorReferenciaPorSemana, setDataPorReferenciaPorSemana] = useState(
-    {}
+    {},
   );
   const tablaRef = useRef(null);
   const localIP = import.meta.env.VITE_LOCAL_IP;
@@ -33,36 +36,34 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
 
     const getData = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const responseMonitoring = await axios.get(
           `http://${localIP}:3000/monitoreo`,
           {
             params: { inicio, fin },
-          }
+          },
         );
-        const responseWindmill = await axios.get(
-          `http://${localIP}:3000/molinos`
-        );
+
+        // noinspection HttpUrlsUsage
         const responseReference = await axios.get(
-          `http://${localIP}:3000/referencias`
+          `http://${localIP}:3000/referencias`,
         );
-        const responseBulk = await axios.get(`http://${localIP}:3000/bultos`);
 
         setItem(responseMonitoring.data);
-        setMolino(responseWindmill.data);
         setReferencia(responseReference.data);
-        setBulto(responseBulk.data);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       }
     };
 
-    getData();
+    void getData();
   }, [localIP, inicio, fin]);
 
   useEffect(() => {
     if (!item) return;
 
     const endReport = item.informeFinal;
+
     setFinalReport(endReport);
   }, [localIP, item]);
 
@@ -82,7 +83,7 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
 
       const weeks = eachWeekOfInterval(
         { start: startDate, end: endDate },
-        { weekStartsOn: 1 }
+        { weekStartsOn: 1 },
       );
 
       const weekNumbers = [];
@@ -90,9 +91,11 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
 
       weeks.forEach((weekStart) => {
         const weekNumber = getWeekNumberISO(weekStart);
+
         const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 });
 
         weekNumbers.push(weekNumber);
+
         ranges[weekNumber] = {
           start: format(weekStart, "yyyy-MM-dd"),
           end: format(weekEnd, "yyyy-MM-dd"),
@@ -104,6 +107,7 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
 
       setWeekRanges(ranges);
       setAllWeeksInPeriod(uniqueWeeks);
+
       return uniqueWeeks;
     };
 
@@ -129,7 +133,9 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
 
       referencia.forEach((ref) => {
         const nombreReferencia = ref.nombre_referencia;
+
         dataAgrupada[nombreReferencia] = {};
+
         currentWeeksInPeriod.forEach((weekNum) => {
           dataAgrupada[nombreReferencia][weekNum] = 0;
         });
@@ -139,11 +145,13 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
         finalReport.forEach((entry) => {
           const referenciaName = entry.referencia_informe_final;
           const fecha = entry.fecha_informe_final;
+
           const cantidad = Number(entry.cantidad_informe_final);
 
           if (!referenciaName || !fecha) return;
 
           const date = parseISO(fecha);
+
           const weekNumber = getWeekNumberISO(date);
 
           if (
@@ -166,6 +174,7 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
 
     allWeeksInPeriod.forEach((weekNum) => {
       totals[weekNum] = 0;
+
       Object.values(dataPorReferenciaPorSemana).forEach((semanas) => {
         totals[weekNum] += semanas[weekNum] || 0;
       });
@@ -183,6 +192,7 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
     }
   }, [dataPorReferenciaPorSemana]);
 
+  // noinspection JSUnresolvedReference
   return (
     <>
       {item ? (
@@ -218,6 +228,7 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
               </thead>
               <tbody className={Style.monitoringViewTableListProducedTableBody}>
                 {referencia.map((ref) => {
+                  // eslint-disable-next-line
                   const totalPorReferencia = allWeeksInPeriod.reduce(
                     (total, weekNum) => {
                       return (
@@ -227,7 +238,7 @@ function MonitoringViewTableListProduced({ inicio, fin }) {
                         ] || 0)
                       );
                     },
-                    0
+                    0,
                   );
 
                   return (

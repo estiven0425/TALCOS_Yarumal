@@ -14,41 +14,51 @@ function InventoryAggregateList() {
   useEffect(() => {
     const getItems = async () => {
       try {
+        // noinspection HttpUrlsUsage
         const response = await axios.get(`http://${localIP}:3000/registros_ap`);
+
         setItems(response.data);
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       }
     };
 
-    getItems();
+    void getItems();
   }, [localIP]);
 
   const handleButtonClick = (record) => {
     setSelectedItem(selectedItem === record ? null : record);
   };
+
   const formatDate = (date) => {
     const formattedDate = format(
       parseISO(date),
       "EEEE dd 'de' MMMM 'del' yyyy",
       {
         locale: es,
-      }
+      },
     );
+
     return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
   };
+
   const groupedItems = items.reduce((groups, item) => {
     const date = item.fecha_registro_ap;
+
     if (!groups[date]) {
       groups[date] = [];
     }
+
     groups[date].push(item);
+
     return groups;
   }, {});
+
   const sortedDates = Object.keys(groupedItems).sort((a, b) => {
     return new Date(b) - new Date(a);
   });
 
+  // noinspection JSValidateTypes
   return (
     <>
       {sortedDates.length > 0 ? (
