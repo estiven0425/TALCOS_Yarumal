@@ -312,41 +312,58 @@ function GenerateFinalReportForm() {
     setServerError(null);
     setLoading(true);
 
-    let horaInformeFinal = new Date().toLocaleTimeString("en-GB", {
-      hour12: false,
-    });
-
     const fechaInformeFinal = determinateDate();
     const turnoInformeFinal = determinateShift();
 
     const finTurnoInformeInicial = informeInicialPendiente?.finTurno;
 
-    if (finTurnoInformeInicial && informeInicialPendiente?.fecha) {
+    let horaInformeFinal = new Date().toLocaleTimeString("en-GB", {
+      hour12: false,
+    });
+
+    if (informeInicialPendiente?.fecha && informeInicialPendiente?.finTurno) {
+      const [year, month, day] = informeInicialPendiente.fecha
+        .split("-")
+        .map(Number);
+
+      const [finHora, finMinuto] = informeInicialPendiente.finTurno
+        .split(":")
+        .map(Number);
+
+      const fechaFinTurno = new Date(year, month - 1, day, finHora, finMinuto);
+
+      const [inicioHora] = informeInicialPendiente.inicioTurno?.split(":") || [
+        0,
+      ];
+
+      if (parseInt(inicioHora) > finHora) {
+        fechaFinTurno.setDate(fechaFinTurno.getDate() + 1);
+      }
+
       const ahora = new Date();
 
-      const fechaActualISO = ahora.toISOString().split("T")[0];
+      if (ahora > fechaFinTurno) {
+        horaInformeFinal = informeInicialPendiente.finTurno;
+      }
+    } else {
+      const ahora = new Date();
 
-      const fechaInformeInicial = informeInicialPendiente.fecha;
+      const [finHora, finMinuto] = finTurnoInformeInicial
+        .split(":")
+        .map(Number);
 
-      if (fechaActualISO !== fechaInformeInicial) {
+      const horaActual = ahora.getHours();
+      const minutoActual = ahora.getMinutes();
+
+      if (
+        horaActual > finHora ||
+        (horaActual === finHora && minutoActual > finMinuto)
+      ) {
         horaInformeFinal = finTurnoInformeInicial;
-      } else {
-        const [finHora, finMinuto] = finTurnoInformeInicial
-          .split(":")
-          .map(Number);
-
-        const horaActual = ahora.getHours();
-        const minutoActual = ahora.getMinutes();
-
-        if (
-          horaActual > finHora ||
-          (horaActual === finHora && minutoActual > finMinuto)
-        ) {
-          horaInformeFinal = finTurnoInformeInicial;
-        }
       }
     }
 
+    // noinspection JSMismatchedCollectionQueryUpdate
     const horometrosMolinos = [];
 
     Object.entries(molinoInformeFinal).forEach(([molinoName, data]) => {
@@ -367,6 +384,7 @@ function GenerateFinalReportForm() {
       }
     });
 
+    // noinspection JSMismatchedCollectionQueryUpdate
     const cantidadesReferencias = [];
 
     Object.entries(molinoInformeFinal).forEach(
@@ -566,7 +584,6 @@ function GenerateFinalReportForm() {
                           >
                             {item.name}
                           </h2>
-
                           {item.referenceHistory.map((history, subIndex) => (
                             <div key={`${index}-${subIndex}`}>
                               <label

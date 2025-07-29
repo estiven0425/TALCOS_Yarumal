@@ -140,6 +140,7 @@ CREATE TABLE `informe_inicial` (
 CREATE TABLE `novedad` (
 	`id_novedad` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`fecha_novedad` DATE NOT NULL,
+    `fecha_auxiliar_novedad` DATE NULL,
 	`hora_novedad` TIME NOT NULL,
 	`turno_novedad` VARCHAR(250) NOT NULL,
 	`tipo_novedad` VARCHAR(250) NOT NULL,

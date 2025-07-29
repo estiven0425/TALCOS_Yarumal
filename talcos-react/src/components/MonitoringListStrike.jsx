@@ -111,9 +111,27 @@ function MonitoringListStrike({ inicio, fin }) {
 
       const fechaInicio = new Date(`${fecha_novedad}T${inicio_paro_novedad}`);
 
-      const fechaFin = fin_paro_novedad
-        ? new Date(`${fecha_novedad}T${fin_paro_novedad}`)
-        : null;
+      let fechaFin = null;
+      if (fin_paro_novedad) {
+        const [inicioHour, inicioMin] = inicio_paro_novedad
+          .split(":")
+          .map(Number);
+        const [finHour, finMin] = fin_paro_novedad.split(":").map(Number);
+
+        const baseDate = new Date(`${fecha_novedad}T00:00`);
+
+        const fechaInicio = new Date(baseDate);
+
+        fechaInicio.setHours(inicioHour, inicioMin, 0);
+
+        fechaFin = new Date(baseDate);
+
+        fechaFin.setHours(finHour, finMin, 0);
+
+        if (fechaFin <= fechaInicio) {
+          fechaFin.setDate(fechaFin.getDate() + 1);
+        }
+      }
 
       const horasParo = fechaFin
         ? (fechaFin - fechaInicio) / (1000 * 60 * 60)
@@ -163,7 +181,8 @@ function MonitoringListStrike({ inicio, fin }) {
         totalHoras: horasTotalesPorMolino[m.nombre_molino],
       })),
     );
-  }, [newsUpdated, news, item, molino]);
+    // eslint-disable-next-line
+  }, [newsUpdated, news, item]);
 
   function convertirHorasDecimalAHorasMinutos(horasDecimal) {
     const horas = Math.floor(horasDecimal);

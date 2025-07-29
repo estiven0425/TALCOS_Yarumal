@@ -45,60 +45,71 @@ function GenerateNoveltyReferenceForm() {
 
         const currentTime = new Date();
 
-        const compareTime = (hour, start, end) => {
-          const [startTime, startMinute] = start.split(":").map(Number);
-          const [endTime, endMinute] = end.split(":").map(Number);
+        const getShiftForDate = (shifts, now) => {
+          const compareTime = (hour, start, end) => {
+            const [startHour, startMinute] = start.split(":").map(Number);
+            const [endHour, endMinute] = end.split(":").map(Number);
 
-          const startTimeMs = (startTime * 60 + startMinute) * 60000;
-          const endTimeMs = (endTime * 60 + endMinute) * 60000;
+            const startTimeMs = (startHour * 60 + startMinute) * 60000;
+            const endTimeMs = (endHour * 60 + endMinute) * 60000;
+            const currentTimeMs =
+              (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
-          const currentTimeMs =
-            (hour.getHours() * 60 + hour.getMinutes()) * 60000;
+            const isInShift =
+              endTimeMs > startTimeMs
+                ? currentTimeMs >= startTimeMs && currentTimeMs < endTimeMs
+                : currentTimeMs >= startTimeMs || currentTimeMs < endTimeMs;
 
-          if (endTimeMs > startTimeMs) {
-            return currentTimeMs >= startTimeMs && currentTimeMs < endTimeMs;
-          } else {
-            return currentTimeMs >= startTimeMs || currentTimeMs < endTimeMs;
+            return {
+              isInShift,
+              crossesMidnight: endTimeMs <= startTimeMs,
+              startTimeMs,
+              endTimeMs,
+              currentTimeMs,
+            };
+          };
+
+          for (const shift of shifts) {
+            const { isInShift, crossesMidnight, currentTimeMs, startTimeMs } =
+              compareTime(now, shift.inicio_turno, shift.fin_turno);
+
+            if (isInShift) {
+              const fechaTurno = new Date(now);
+
+              if (crossesMidnight && currentTimeMs < startTimeMs) {
+                fechaTurno.setDate(fechaTurno.getDate() - 1);
+              } else fechaTurno.setDate(fechaTurno.getDate() - 1);
+
+              if (currentTimeMs > startTimeMs) {
+                fechaTurno.setDate(fechaTurno.getDate() + 1);
+              }
+
+              return { shift, fechaTurno };
+            }
           }
+
+          return { shift: null, fechaTurno: null };
         };
 
-        const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
+        const { shift: currentShift, fechaTurno } = getShiftForDate(
+          shifts,
+          currentTime,
         );
 
         if (!currentShift) {
-          console.error("No se pudo determinar el turno actual.");
+          console.warn("No se encontró turno actual.");
           return;
         }
-
-        let currentDate = new Date();
-
-        if (
-          currentShift.fin_turno < currentShift.inicio_turno &&
-          currentTime.getHours() < 6
-        ) {
-          currentDate = new Date(
-            currentTime.getFullYear(),
-            currentTime.getMonth(),
-            currentTime.getDate() - 1,
-          );
-        }
-
-        const {
-          nombre_turno: turno,
-          inicio_turno: inicioTurno,
-          fin_turno: finTurno,
-        } = currentShift;
 
         // noinspection HttpUrlsUsage
         const responseStartReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
             params: {
-              fecha: currentDate,
-              turno,
-              inicioTurno,
-              finTurno,
+              fecha: fechaTurno.toISOString().split("T")[0],
+              turno: currentShift.nombre_turno,
+              inicioTurno: currentShift.inicio_turno,
+              finTurno: currentShift.fin_turno,
             },
           },
         );
@@ -108,10 +119,10 @@ function GenerateNoveltyReferenceForm() {
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
             params: {
-              fecha: currentDate,
-              turno,
-              inicioTurno,
-              finTurno,
+              fecha: fechaTurno.toISOString().split("T")[0],
+              turno: currentShift.nombre_turno,
+              inicioTurno: currentShift.inicio_turno,
+              finTurno: currentShift.fin_turno,
             },
           },
         );
@@ -121,10 +132,10 @@ function GenerateNoveltyReferenceForm() {
           `http://${localIP}:3000/informes_finales/turnoinformefinal`,
           {
             params: {
-              fecha: currentDate,
-              turno,
-              inicioTurno,
-              finTurno,
+              fecha: fechaTurno.toISOString().split("T")[0],
+              turno: currentShift.nombre_turno,
+              inicioTurno: currentShift.inicio_turno,
+              finTurno: currentShift.fin_turno,
             },
           },
         );
@@ -139,7 +150,14 @@ function GenerateNoveltyReferenceForm() {
               (nov) => nov.tipo_novedad === "Encendido de molino",
             );
 
-            if (turnOnNovelty) {
+            if (
+              turnOnNovelty ||
+              allNovelties.some(
+                (nov) =>
+                  nov.tipo_novedad === "Cambio de referencia" ||
+                  nov.tipo_novedad === "Cambio de operador de molino",
+              )
+            ) {
               const pauses = allNovelties
                 .filter((nov) => nov.tipo_novedad === "Paro")
                 .sort(
@@ -184,9 +202,38 @@ function GenerateNoveltyReferenceForm() {
                       finMinute,
                     );
 
-                    if (finParo <= inicioParo) {
-                      finParo.setDate(finParo.getDate() + 1);
+                    const [startHour] = currentShift.inicio_turno
+                      .split(":")
+                      .map(Number);
+                    const [endHour] = currentShift.fin_turno
+                      .split(":")
+                      .map(Number);
+                    const turnoCruzaMedianoche = endHour < startHour;
+
+                    if (turnoCruzaMedianoche) {
+                      const horaActual = now.getHours();
+
+                      if (horaActual < endHour) {
+                        if (inicioHour >= startHour) {
+                          inicioParo.setDate(inicioParo.getDate() - 1);
+                        }
+
+                        if (finHour >= startHour || finHour < endHour) {
+                          if (finHour >= startHour) {
+                            finParo.setDate(finParo.getDate() - 1);
+                          }
+                        }
+                      } else {
+                        if (finHour < startHour) {
+                          finParo.setDate(finParo.getDate() + 1);
+                        }
+                      }
+                    } else {
+                      if (finParo <= inicioParo) {
+                        finParo.setDate(finParo.getDate() + 1);
+                      }
                     }
+
                     return now < finParo;
                   }
                   return false;
@@ -242,9 +289,36 @@ function GenerateNoveltyReferenceForm() {
                   finMinute,
                 );
 
-                if (finParo <= inicioParo) {
-                  finParo.setDate(finParo.getDate() + 1);
+                const [startHour] = currentShift.inicio_turno
+                  .split(":")
+                  .map(Number);
+                const [endHour] = currentShift.fin_turno.split(":").map(Number);
+                const turnoCruzaMedianoche = endHour < startHour;
+
+                if (turnoCruzaMedianoche) {
+                  const horaActual = now.getHours();
+
+                  if (horaActual < endHour) {
+                    if (inicioHour >= startHour) {
+                      inicioParo.setDate(inicioParo.getDate() - 1);
+                    }
+
+                    if (finHour >= startHour || finHour < endHour) {
+                      if (finHour >= startHour) {
+                        finParo.setDate(finParo.getDate() - 1);
+                      }
+                    }
+                  } else {
+                    if (finHour < startHour) {
+                      finParo.setDate(finParo.getDate() + 1);
+                    }
+                  }
+                } else {
+                  if (finParo <= inicioParo) {
+                    finParo.setDate(finParo.getDate() + 1);
+                  }
                 }
+
                 return now < finParo;
               }
             }
@@ -408,6 +482,7 @@ function GenerateNoveltyReferenceForm() {
     const novedad = [
       {
         fecha_novedad: fechaNovedad,
+        fecha_auxiliar_novedad: new Date().toISOString().split('T')[0],
         hora_novedad: horaNovedad,
         turno_novedad: shiftNovelty,
         tipo_novedad: "Cambio de referencia",

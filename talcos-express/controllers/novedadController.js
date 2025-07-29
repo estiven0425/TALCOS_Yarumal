@@ -32,16 +32,9 @@ exports.leerNovedad = async (req, res) => {
 };
 
 exports.turnoNovedad = async (req, res) => {
-  const { fecha, turno, inicioTurno, finTurno } = req.query;
+  const { fecha, turno } = req.query;
 
   let fechaConsulta = new Date(fecha);
-
-  const [horaInicio] = inicioTurno.split(":").map(Number);
-  const [horaFin] = finTurno.split(":").map(Number);
-
-  if (horaFin < horaInicio) {
-    fechaConsulta.setDate(fechaConsulta.getDate() - 1);
-  }
 
   const fechaFormateada = fechaConsulta.toISOString().split("T")[0];
 
@@ -131,16 +124,9 @@ exports.listaNovedad = async (req, res) => {
 };
 
 exports.listaParoNovedad = async (req, res) => {
-  const { fecha, turno, inicioTurno, finTurno } = req.query;
+  const { fecha, turno } = req.query;
 
   let fechaConsulta = new Date(fecha);
-
-  const [horaInicio] = inicioTurno.split(":").map(Number);
-  const [horaFin] = finTurno.split(":").map(Number);
-
-  if (horaFin < horaInicio) {
-    fechaConsulta.setDate(fechaConsulta.getDate() - 1);
-  }
 
   const fechaFormateada = fechaConsulta.toISOString().split("T")[0];
 

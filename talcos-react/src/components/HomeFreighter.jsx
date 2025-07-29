@@ -23,60 +23,71 @@ function HomeFreighter() {
 
         const currentTime = new Date();
 
-        const compareTime = (hour, start, end) => {
-          const [startTime, startMinute] = start.split(":").map(Number);
-          const [endTime, endMinute] = end.split(":").map(Number);
+        const getShiftForDate = (shifts, now) => {
+          const compareTime = (hour, start, end) => {
+            const [startHour, startMinute] = start.split(":").map(Number);
+            const [endHour, endMinute] = end.split(":").map(Number);
 
-          const startTimeMs = (startTime * 60 + startMinute) * 60000;
-          const endTimeMs = (endTime * 60 + endMinute) * 60000;
+            const startTimeMs = (startHour * 60 + startMinute) * 60000;
+            const endTimeMs = (endHour * 60 + endMinute) * 60000;
+            const currentTimeMs =
+              (hour.getHours() * 60 + hour.getMinutes()) * 60000;
 
-          const currentTimeMs =
-            (hour.getHours() * 60 + hour.getMinutes()) * 60000;
+            const isInShift =
+              endTimeMs > startTimeMs
+                ? currentTimeMs >= startTimeMs && currentTimeMs < endTimeMs
+                : currentTimeMs >= startTimeMs || currentTimeMs < endTimeMs;
 
-          if (endTimeMs > startTimeMs) {
-            return currentTimeMs >= startTimeMs && currentTimeMs < endTimeMs;
-          } else {
-            return currentTimeMs >= startTimeMs || currentTimeMs < endTimeMs;
+            return {
+              isInShift,
+              crossesMidnight: endTimeMs <= startTimeMs,
+              startTimeMs,
+              endTimeMs,
+              currentTimeMs,
+            };
+          };
+
+          for (const shift of shifts) {
+            const { isInShift, crossesMidnight, currentTimeMs, startTimeMs } =
+              compareTime(now, shift.inicio_turno, shift.fin_turno);
+
+            if (isInShift) {
+              const fechaTurno = new Date(now);
+
+              if (crossesMidnight && currentTimeMs < startTimeMs) {
+                fechaTurno.setDate(fechaTurno.getDate() - 1);
+              } else fechaTurno.setDate(fechaTurno.getDate() - 1);
+
+              if (currentTimeMs > startTimeMs) {
+                fechaTurno.setDate(fechaTurno.getDate() + 1);
+              }
+
+              return { shift, fechaTurno };
+            }
           }
+
+          return { shift: null, fechaTurno: null };
         };
 
-        const currentShift = shifts.find((shift) =>
-          compareTime(currentTime, shift.inicio_turno, shift.fin_turno),
+        const { shift: currentShift, fechaTurno } = getShiftForDate(
+          shifts,
+          currentTime,
         );
 
         if (!currentShift) {
-          console.error("No se pudo determinar el turno actual.");
+          console.warn("No se encontró turno actual.");
           return;
         }
-
-        let currentDate = new Date();
-
-        if (
-          currentShift.fin_turno < currentShift.inicio_turno &&
-          currentTime.getHours() < 6
-        ) {
-          currentDate = new Date(
-            currentTime.getFullYear(),
-            currentTime.getMonth(),
-            currentTime.getDate() - 1,
-          );
-        }
-
-        const {
-          nombre_turno: turno,
-          inicio_turno: inicioTurno,
-          fin_turno: finTurno,
-        } = currentShift;
 
         // noinspection HttpUrlsUsage
         const responseReport = await axios.get(
           `http://${localIP}:3000/informes_iniciales/turnoinformeinicial`,
           {
             params: {
-              fecha: currentDate,
-              turno,
-              inicioTurno,
-              finTurno,
+              fecha: fechaTurno.toISOString().split("T")[0],
+              turno: currentShift.nombre_turno,
+              inicioTurno: currentShift.inicio_turno,
+              finTurno: currentShift.fin_turno,
             },
           },
         );
@@ -86,10 +97,10 @@ function HomeFreighter() {
           `http://${localIP}:3000/novedades/turnonovedad`,
           {
             params: {
-              fecha: currentDate,
-              turno,
-              inicioTurno,
-              finTurno,
+              fecha: fechaTurno.toISOString().split("T")[0],
+              turno: currentShift.nombre_turno,
+              inicioTurno: currentShift.inicio_turno,
+              finTurno: currentShift.fin_turno,
             },
           },
         );
@@ -124,7 +135,10 @@ function HomeFreighter() {
                 report.fecha_informe_inicial +
                   " " +
                   report.hora_informe_inicial,
-              ) > new Date(novelty.fecha_novedad + " " + novelty.hora_novedad))
+              ) >
+                new Date(
+                  novelty.fecha_auxiliar_novedad + " " + novelty.hora_novedad,
+                ))
               ? report
               : novelty;
 

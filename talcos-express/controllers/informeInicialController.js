@@ -49,16 +49,9 @@ exports.leerInformeInicial = async (req, res) => {
 };
 
 exports.turnoInformeInicial = async (req, res) => {
-  const { fecha, turno, inicioTurno, finTurno } = req.query;
+  const { fecha, turno } = req.query;
 
   let fechaConsulta = new Date(fecha);
-
-  const [horaInicio] = inicioTurno.split(":").map(Number);
-  const [horaFin] = finTurno.split(":").map(Number);
-
-  if (horaFin < horaInicio) {
-    fechaConsulta.setDate(fechaConsulta.getDate() - 1);
-  }
 
   fechaConsulta = fechaConsulta.toISOString().split("T")[0];
 
@@ -115,7 +108,9 @@ exports.crearInformeInicial = async (req, res) => {
 
     res.status(201).json(nuevoInforme);
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el informe inicial" + error });
+    res
+      .status(500)
+      .json({ error: "Error al crear el informe inicial" + error });
   }
 };
 
@@ -136,12 +131,14 @@ exports.validarInformeFinalPendiente = async (req, res) => {
       ultimoInformeInicial;
 
     const ahora = new Date();
-    const fechaActual = ahora.toISOString().split("T")[0];
 
     let turnoActual = null;
+    let fechaTurnoActual = null;
     let finTurnoInformeInicial = null;
 
-    const turnos = await Turnos.findAll();
+    const turnos = await Turnos.findAll({
+      where: { actividad_turno: true },
+    });
 
     for (const turno of turnos) {
       const [inicioHora, inicioMinuto] = turno.inicio_turno
@@ -149,20 +146,65 @@ exports.validarInformeFinalPendiente = async (req, res) => {
         .map(Number);
       const [finHora, finMinuto] = turno.fin_turno.split(":").map(Number);
 
-      const inicioTurnoHoy = new Date(ahora);
-      inicioTurnoHoy.setHours(inicioHora, inicioMinuto, 0, 0);
+      const inicioTurno = new Date(ahora);
 
-      const finTurnoHoy = new Date(ahora);
-      finTurnoHoy.setHours(finHora, finMinuto, 0, 0);
+      inicioTurno.setHours(inicioHora, inicioMinuto, 0, 0);
 
-      if (finTurnoHoy < inicioTurnoHoy) {
-        finTurnoHoy.setDate(finTurnoHoy.getDate() + 1);
+      const finTurno = new Date(ahora);
+
+      finTurno.setHours(finHora, finMinuto, 0, 0);
+
+      if (finTurno < inicioTurno) {
+        finTurno.setDate(finTurno.getDate() + 1);
       }
-      if (ahora >= inicioTurnoHoy && ahora < finTurnoHoy) {
+
+      if (ahora >= inicioTurno && ahora < finTurno) {
         turnoActual = turno.nombre_turno;
+
+        if (turno.inicio_turno > turno.fin_turno) {
+          const [inicioHora] = turno.inicio_turno.split(":").map(Number);
+
+          if (ahora.getHours() < inicioHora) {
+            const fecha = new Date(ahora);
+
+            fecha.setDate(fecha.getDate() - 1);
+
+            fechaTurnoActual = fecha.toISOString().split("T")[0];
+          } else {
+            fechaTurnoActual = ahora.toISOString().split("T")[0];
+          }
+        } else {
+          fechaTurnoActual = ahora.toISOString().split("T")[0];
+        }
       }
+
       if (turno.nombre_turno === turno_informe_inicial) {
         finTurnoInformeInicial = turno.fin_turno;
+      }
+    }
+
+    const turnoInicial = turnos.find(
+      (t) => t.nombre_turno === turno_informe_inicial,
+    );
+
+    if (turnoInicial) {
+      // noinspection JSUnresolvedReference
+      const [horaInicio] = turnoInicial.inicio_turno.split(":").map(Number);
+      // noinspection JSUnresolvedReference
+      const [horaFin, minutoFin] = turnoInicial.fin_turno
+        .split(":")
+        .map(Number);
+
+      const [anio, mes, dia] = fecha_informe_inicial.split("-").map(Number);
+
+      let fechaFinTurno = new Date(anio, mes - 1, dia, horaFin, minutoFin);
+
+      if (horaFin < horaInicio) {
+        fechaFinTurno.setDate(fechaFinTurno.getDate() + 1);
+      }
+
+      if (ahora < fechaFinTurno) {
+        return res.json({ pendiente: false });
       }
     }
 
@@ -176,21 +218,21 @@ exports.validarInformeFinalPendiente = async (req, res) => {
 
     if (informeFinalExistente) {
       return res.json({ pendiente: false });
-    } else {
-      if (
-        fecha_informe_inicial === fechaActual &&
-        turno_informe_inicial === turnoActual
-      ) {
-        return res.json({ pendiente: false });
-      } else {
-        return res.json({
-          pendiente: true,
-          fecha: fecha_informe_inicial,
-          turno: turno_informe_inicial,
-          finTurno: finTurnoInformeInicial,
-        });
-      }
     }
+
+    if (
+      fecha_informe_inicial === fechaTurnoActual &&
+      turno_informe_inicial === turnoActual
+    ) {
+      return res.json({ pendiente: false });
+    }
+
+    return res.json({
+      pendiente: true,
+      fecha: fecha_informe_inicial,
+      turno: turno_informe_inicial,
+      finTurno: finTurnoInformeInicial,
+    });
   } catch (error) {
     console.error("Error al validar informe final pendiente:" + error);
 
@@ -242,6 +284,6 @@ exports.actualizarInformeInicial = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Error al actualizar los informes iniciales" + error});
+      .json({ error: "Error al actualizar los informes iniciales" + error });
   }
 };

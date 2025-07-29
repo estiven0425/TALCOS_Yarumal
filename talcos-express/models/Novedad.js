@@ -15,6 +15,10 @@ const Novedad = sequelize.define(
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
+    fecha_auxiliar_novedad: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
     hora_novedad: {
       type: DataTypes.TIME,
       allowNull: false,

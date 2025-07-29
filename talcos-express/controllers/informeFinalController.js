@@ -16,16 +16,9 @@ exports.leerInformeFinal = async (req, res) => {
 };
 
 exports.turnoInformeFinal = async (req, res) => {
-  const { fecha, turno, inicioTurno, finTurno } = req.query;
+  const { fecha, turno } = req.query;
 
   let fechaConsulta = new Date(fecha);
-
-  const [horaInicio] = inicioTurno.split(":").map(Number);
-  const [horaFin] = finTurno.split(":").map(Number);
-
-  if (horaFin < horaInicio) {
-    fechaConsulta.setDate(fechaConsulta.getDate() - 1);
-  }
 
   fechaConsulta = fechaConsulta.toISOString().split("T")[0];
 
