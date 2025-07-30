@@ -61,18 +61,30 @@ function GenerateNoveltyStrikeStopForm() {
             const { isInShift, crossesMidnight, currentTimeMs, startTimeMs } =
               compareTime(now, shift.inicio_turno, shift.fin_turno);
 
-            if (isInShift) {
-              const fechaTurno = new Date(now);
+            if (shift.inicio_turno > shift.fin_turno) {
+              if (isInShift) {
+                const fechaTurno = new Date(now);
 
-              if (crossesMidnight && currentTimeMs < startTimeMs) {
-                fechaTurno.setDate(fechaTurno.getDate() - 1);
-              } else fechaTurno.setDate(fechaTurno.getDate() - 1);
+                if (crossesMidnight && currentTimeMs < startTimeMs) {
+                  fechaTurno.setDate(fechaTurno.getDate() - 1);
+                } else fechaTurno.setDate(fechaTurno.getDate() - 1);
 
-              if (currentTimeMs > startTimeMs) {
-                fechaTurno.setDate(fechaTurno.getDate() + 1);
+                return { shift, fechaTurno };
               }
+            } else {
+              if (isInShift) {
+                const fechaTurno = new Date(now);
 
-              return { shift, fechaTurno };
+                if (crossesMidnight && currentTimeMs < startTimeMs) {
+                  fechaTurno.setDate(fechaTurno.getDate() - 1);
+                } else fechaTurno.setDate(fechaTurno.getDate() - 1);
+
+                if (currentTimeMs > startTimeMs) {
+                  fechaTurno.setDate(fechaTurno.getDate() + 1);
+                }
+
+                return { shift, fechaTurno };
+              }
             }
           }
 

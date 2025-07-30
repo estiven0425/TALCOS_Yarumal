@@ -95,6 +95,7 @@ exports.obtenerUltimoInformeInicialPendiente = async (req, res) => {
     res.json({
       fecha: ultimoInformeInicial.fecha_informe_inicial,
       turno: ultimoInformeInicial.turno_informe_inicial,
+      inicioTurno: turno.inicio_turno,
       finTurno: turno.fin_turno,
     });
   } catch (error) {

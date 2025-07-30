@@ -48,18 +48,30 @@ function HomeStateWindmill() {
             const { isInShift, crossesMidnight, currentTimeMs, startTimeMs } =
               compareTime(now, shift.inicio_turno, shift.fin_turno);
 
-            if (isInShift) {
-              const fechaTurno = new Date(now);
+            if (shift.inicio_turno > shift.fin_turno) {
+              if (isInShift) {
+                const fechaTurno = new Date(now);
 
-              if (crossesMidnight && currentTimeMs < startTimeMs) {
-                fechaTurno.setDate(fechaTurno.getDate() - 1);
-              } else fechaTurno.setDate(fechaTurno.getDate() - 1);
+                if (crossesMidnight && currentTimeMs < startTimeMs) {
+                  fechaTurno.setDate(fechaTurno.getDate() - 1);
+                } else fechaTurno.setDate(fechaTurno.getDate() - 1);
 
-              if (currentTimeMs > startTimeMs) {
-                fechaTurno.setDate(fechaTurno.getDate() + 1);
+                return { shift, fechaTurno };
               }
+            } else {
+              if (isInShift) {
+                const fechaTurno = new Date(now);
 
-              return { shift, fechaTurno };
+                if (crossesMidnight && currentTimeMs < startTimeMs) {
+                  fechaTurno.setDate(fechaTurno.getDate() - 1);
+                } else fechaTurno.setDate(fechaTurno.getDate() - 1);
+
+                if (currentTimeMs > startTimeMs) {
+                  fechaTurno.setDate(fechaTurno.getDate() + 1);
+                }
+
+                return { shift, fechaTurno };
+              }
             }
           }
 
@@ -131,16 +143,30 @@ function HomeStateWindmill() {
             )[0];
 
           const novelty = news
-            .filter((n) => n.molino_novedad === molino.nombre_molino)
-            .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
-            )[0];
+            .filter(
+              (novelty) => novelty.molino_novedad === molino.nombre_molino,
+            )
+            .sort((a, b) => {
+              const dateA = new Date(
+                `${a.fecha_auxiliar_novedad}T${a.hora_novedad}`,
+              );
+              const dateB = new Date(
+                `${b.fecha_auxiliar_novedad}T${b.hora_novedad}`,
+              );
+              return dateB - dateA;
+            })[0];
 
           const operatorChange = operatorsChange
             .filter((n) => n.molino_novedad === molino.nombre_molino)
-            .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
-            )[0];
+            .sort((a, b) => {
+              const dateA = new Date(
+                `${a.fecha_auxiliar_novedad}T${a.hora_novedad}`,
+              );
+              const dateB = new Date(
+                `${b.fecha_auxiliar_novedad}T${b.hora_novedad}`,
+              );
+              return dateB - dateA;
+            })[0];
 
           const recent =
             report &&
@@ -168,34 +194,18 @@ function HomeStateWindmill() {
           let paroActivo = null;
 
           if (novelty?.inicio_paro_novedad) {
-            const [inicioHour, inicioMinute] = novelty.inicio_paro_novedad
-              .split(":")
-              .map(Number);
-
             const now = new Date();
 
             const inicioParo = new Date(
-              now.getFullYear(),
-              now.getMonth(),
-              now.getDate(),
-              inicioHour,
-              inicioMinute,
+              `${novelty.fecha_auxiliar_novedad}T${novelty.inicio_paro_novedad}`,
             );
 
             if (inicioParo > now) {
               paroActivo = null;
             } else {
               if (novelty.fin_paro_novedad) {
-                const [finHour, finMinute] = novelty.fin_paro_novedad
-                  .split(":")
-                  .map(Number);
-
                 let finParo = new Date(
-                  now.getFullYear(),
-                  now.getMonth(),
-                  now.getDate(),
-                  finHour,
-                  finMinute,
+                  `${novelty.fecha_auxiliar_novedad}T${novelty.fin_paro_novedad}`,
                 );
 
                 if (finParo <= inicioParo) {

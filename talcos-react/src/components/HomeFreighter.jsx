@@ -51,18 +51,30 @@ function HomeFreighter() {
             const { isInShift, crossesMidnight, currentTimeMs, startTimeMs } =
               compareTime(now, shift.inicio_turno, shift.fin_turno);
 
-            if (isInShift) {
-              const fechaTurno = new Date(now);
+            if (shift.inicio_turno > shift.fin_turno) {
+              if (isInShift) {
+                const fechaTurno = new Date(now);
 
-              if (crossesMidnight && currentTimeMs < startTimeMs) {
-                fechaTurno.setDate(fechaTurno.getDate() - 1);
-              } else fechaTurno.setDate(fechaTurno.getDate() - 1);
+                if (crossesMidnight && currentTimeMs < startTimeMs) {
+                  fechaTurno.setDate(fechaTurno.getDate() - 1);
+                } else fechaTurno.setDate(fechaTurno.getDate() - 1);
 
-              if (currentTimeMs > startTimeMs) {
-                fechaTurno.setDate(fechaTurno.getDate() + 1);
+                return { shift, fechaTurno };
               }
+            } else {
+              if (isInShift) {
+                const fechaTurno = new Date(now);
 
-              return { shift, fechaTurno };
+                if (crossesMidnight && currentTimeMs < startTimeMs) {
+                  fechaTurno.setDate(fechaTurno.getDate() - 1);
+                } else fechaTurno.setDate(fechaTurno.getDate() - 1);
+
+                if (currentTimeMs > startTimeMs) {
+                  fechaTurno.setDate(fechaTurno.getDate() + 1);
+                }
+
+                return { shift, fechaTurno };
+              }
             }
           }
 
@@ -124,9 +136,15 @@ function HomeFreighter() {
             .filter(
               (novelty) => novelty.bob_cat_novedad === bobCat.nombre_bob_cat,
             )
-            .sort(
-              (a, b) => new Date(b.hora_novedad) - new Date(a.hora_novedad),
-            )[0];
+            .sort((a, b) => {
+              const dateA = new Date(
+                `${a.fecha_auxiliar_novedad}T${a.hora_novedad}`,
+              );
+              const dateB = new Date(
+                `${b.fecha_auxiliar_novedad}T${b.hora_novedad}`,
+              );
+              return dateB - dateA;
+            })[0];
 
           const recent =
             report &&

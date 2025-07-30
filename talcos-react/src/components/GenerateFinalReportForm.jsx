@@ -322,27 +322,21 @@ function GenerateFinalReportForm() {
     });
 
     if (informeInicialPendiente?.fecha && informeInicialPendiente?.finTurno) {
-      const [year, month, day] = informeInicialPendiente.fecha
-        .split("-")
-        .map(Number);
-
-      const [finHora, finMinuto] = informeInicialPendiente.finTurno
-        .split(":")
-        .map(Number);
-
-      const fechaFinTurno = new Date(year, month - 1, day, finHora, finMinuto);
-
-      const [inicioHora] = informeInicialPendiente.inicioTurno?.split(":") || [
-        0,
-      ];
-
-      if (parseInt(inicioHora) > finHora) {
-        fechaFinTurno.setDate(fechaFinTurno.getDate() + 1);
-      }
-
       const ahora = new Date();
 
-      if (ahora > fechaFinTurno) {
+      if (
+        ahora.getHours() > informeInicialPendiente.inicioTurno &&
+        ahora.getHours() < "0:00"
+      ) {
+        horaInformeFinal = ahora.getHours();
+      }
+      if (
+        ahora.getHours() < informeInicialPendiente.finTurno &&
+        ahora.getHours() > "0:00"
+      ) {
+        horaInformeFinal = ahora.getHours();
+      }
+      if (ahora.getHours() > informeInicialPendiente.finTurno) {
         horaInformeFinal = informeInicialPendiente.finTurno;
       }
     } else {
