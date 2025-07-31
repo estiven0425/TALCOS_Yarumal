@@ -321,37 +321,45 @@ function GenerateFinalReportForm() {
       hour12: false,
     });
 
-    if (informeInicialPendiente?.fecha && informeInicialPendiente?.finTurno) {
+    if (informeInicialPendiente?.inicioTurno !== undefined && informeInicialPendiente?.finTurno) {
       const ahora = new Date();
+      const horaActual = ahora.getHours();
+      const minutoActual = ahora.getMinutes();
 
-      if (
-        ahora.getHours() > informeInicialPendiente.inicioTurno &&
-        ahora.getHours() < "0:00"
-      ) {
-        horaInformeFinal = ahora.getHours();
+      const [inicioHora, inicioMinuto] = informeInicialPendiente.inicioTurno.toString().split(':').map(Number);
+      const [finHora, finMinuto] = informeInicialPendiente.finTurno.split(':').map(Number);
+
+      const aMinutosTotales = (hora, minuto) => hora * 60 + minuto;
+
+      const minutosActuales = aMinutosTotales(horaActual, minutoActual);
+      const minutosInicio = aMinutosTotales(inicioHora, inicioMinuto);
+      const minutosFinTurno = aMinutosTotales(finHora, finMinuto);
+
+      const esTurnoNocturno = minutosInicio > minutosFinTurno;
+
+      // noinspection JSUnusedAssignment
+      let dentroDelTurno = false;
+
+      if (esTurnoNocturno) {
+        dentroDelTurno = minutosActuales >= minutosInicio || minutosActuales <= minutosFinTurno;
+      } else {
+        dentroDelTurno = minutosActuales >= minutosInicio && minutosActuales <= minutosFinTurno;
       }
-      if (
-        ahora.getHours() < informeInicialPendiente.finTurno &&
-        ahora.getHours() > "0:00"
-      ) {
-        horaInformeFinal = ahora.getHours();
-      }
-      if (ahora.getHours() > informeInicialPendiente.finTurno) {
+
+      if (dentroDelTurno) {
+        horaInformeFinal = ahora.toLocaleTimeString("en-GB", { hour12: false });
+      } else {
         horaInformeFinal = informeInicialPendiente.finTurno;
       }
     } else {
       const ahora = new Date();
-
-      const [finHora, finMinuto] = finTurnoInformeInicial
-        .split(":")
-        .map(Number);
-
+      const [finHora, finMinuto] = finTurnoInformeInicial.split(':').map(Number);
       const horaActual = ahora.getHours();
       const minutoActual = ahora.getMinutes();
 
       if (
-        horaActual > finHora ||
-        (horaActual === finHora && minutoActual > finMinuto)
+          horaActual > finHora ||
+          (horaActual === finHora && minutoActual > finMinuto)
       ) {
         horaInformeFinal = finTurnoInformeInicial;
       }

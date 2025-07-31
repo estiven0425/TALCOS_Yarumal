@@ -330,8 +330,12 @@ function GenerateNoveltyWindmillPowerOnForm() {
 
     let date = new Date();
 
-    if (date.getHours() > "05:59:59" && date.getHours() < "23:59:59") {
+    if (date.getHours() >= 22  && date.getHours() < 0) {
       date.setDate(date.getDate() - 1);
+    }
+
+    if (date.getHours() >= 0  && date.getHours() < 6) {
+      date.setDate(date.getDate() + 1);
     }
 
     const novedad = [

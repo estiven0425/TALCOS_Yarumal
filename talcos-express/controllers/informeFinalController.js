@@ -83,7 +83,10 @@ exports.obtenerUltimoInformeInicialPendiente = async (req, res) => {
 
     // noinspection JSCheckFunctionSignatures
     const turno = await Turnos.findOne({
-      where: { nombre_turno: ultimoInformeInicial.turno_informe_inicial },
+      where: {
+        nombre_turno: ultimoInformeInicial.turno_informe_inicial,
+        actividad_turno: true,
+      },
     });
 
     if (!turno) {
