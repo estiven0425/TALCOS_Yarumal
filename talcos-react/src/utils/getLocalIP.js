@@ -8,8 +8,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 function getLocalIP() {
   const interfaces = networkInterfaces();
 
-  for (const name of Object.keys(interfaces)) {
-    for (const iface of interfaces[name]) {
+  for (const [name, ifaceList] of Object.entries(interfaces)) {
+    if (!name.toLowerCase().includes("wi-fi")) continue;
+
+    for (const iface of ifaceList) {
       if (iface.family === "IPv4" && !iface.internal) {
         return iface.address;
       }

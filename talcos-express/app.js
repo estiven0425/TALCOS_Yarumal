@@ -1,7 +1,14 @@
+const dotenv = require("dotenv");
 const express = require("express");
+const http = require("http");
 const path = require("path");
 const os = require("os");
+
+dotenv.config();
+
 const app = express();
+
+const PORT = process.env.PORT || 3000;
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -40,6 +47,7 @@ const despachosRoutes = require("./routes/despachosRoutes");
 const login = require("./utils/login");
 const pdfRoutes = require("./routes/pdfRoutes");
 const monitoreoRoutes = require("./routes/monitoreosRoutes");
+const { networkInterfaces } = require("os");
 
 app.use(cors);
 app.use(logger);
@@ -87,7 +95,36 @@ app.get("/verify", (req, res) => {
   res.render("verify", serverStatus);
 });
 
+app.use(express.static(path.join(__dirname, "dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
+
 app.use(notFoundHandler);
 app.use(globalErrorHandler);
+
+function getLocalIP() {
+  const interfaces = networkInterfaces();
+
+  for (const [name, ifaceList] of Object.entries(interfaces)) {
+    if (!name.toLowerCase().includes("wi-fi")) continue;
+
+    for (const iface of ifaceList) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+
+  return "127.0.0.1";
+}
+
+const HOST = getLocalIP();
+
+http.createServer(app).listen(PORT, HOST, () => {
+  // noinspection HttpUrlsUsage
+  console.log(`Servidor disponible en http://${HOST}:${PORT}`);
+});
 
 module.exports = app;

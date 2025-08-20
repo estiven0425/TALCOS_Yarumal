@@ -1,17 +1,14 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
 const Usuario = require("../models/Usuarios");
 const Perfiles = require("../models/Perfiles");
+require("dotenv").config();
 
 const router = express.Router();
 
-const generateSecretKey = () => {
-  return crypto.randomBytes(32).toString("hex");
-};
-
-let secretKey;
+const secretKey = process.env.JWT_SECRET;
+const jwtExpires = process.env.JWT_EXPIRES || "10h";
 
 router.post("/", async (req, res) => {
   try {
@@ -48,13 +45,13 @@ router.post("/", async (req, res) => {
       return res.status(403).json({ error: "Acceso denegado" });
     }
 
-    secretKey = generateSecretKey();
-
-    const token = jwt.sign({ id_usuario: usuario.id_usuario }, secretKey);
+    const token = jwt.sign({ id_usuario: usuario.id_usuario }, secretKey, {
+      expiresIn: jwtExpires,
+    });
 
     res.json({ token });
   } catch (error) {
-    res.status(500).json({ error: "Error de servidor" + error });
+    res.status(500).json({ error: "Error de servidor: " + error.message });
   }
 });
 
@@ -62,10 +59,8 @@ router.post("/get", async (req, res) => {
   try {
     const { token } = req.body;
 
-    if (!secretKey) {
-      return res
-        .status(401)
-        .json({ error: "No se ha generado la clave secreta" });
+    if (!token) {
+      return res.status(400).json({ error: "Token requerido" });
     }
 
     const decoding = jwt.verify(token, secretKey);
@@ -95,7 +90,7 @@ router.post("/get", async (req, res) => {
       res.status(404).json({ error: "Usuario no encontrado" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error de servidor" + error });
+    res.status(401).json({ error: "Token inválido o expirado" });
   }
 });
 
