@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./config/config.js",
-    "dev": "cross-env PM2_USE_WMIC=false pm2 start ecosystem.config.js"
+    "dev": "node ./config/config.js",
+    "start": "cross-env PM2_USE_WMIC=false pm2 start ecosystem.config.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
