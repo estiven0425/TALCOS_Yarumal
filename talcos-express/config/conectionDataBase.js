@@ -1,8 +1,14 @@
+require("dotenv").config();
 const { Sequelize } = require("sequelize");
-const sequelize = new Sequelize("talcos_yarumal", "TAYA", "TAYA-0000", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    host: process.env.DB_HOST,
+    dialect: "mysql",
+  },
+);
 
 const conectionDataBase = async () => {
   try {
