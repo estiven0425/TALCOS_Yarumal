@@ -23,6 +23,7 @@ function GenerateInitialReportForm() {
     useState([]);
   const [mecanicoInformeInicial, setMecanicoInformeInicial] = useState([]);
   const [operadorInformeInicial, setOperadorInformeInicial] = useState([]);
+  const [horaInformeInicial, setHoraInformeInicial] = useState("");
   const [molinoInformeInicial, setMolinoInformeInicial] = useState([]);
   const [referenciaInformeInicial, setReferenciaInformeInicial] = useState([]);
   const [bultoInformeInicial, setBultoInformeInicial] = useState([]);
@@ -381,6 +382,9 @@ function GenerateInitialReportForm() {
     if (!mecanicoInformeInicial.length) {
       errors.mecanicoInformeInicial = "El mecánico del informe es obligatorio.";
     }
+    if (!horaInformeInicial.length) {
+      errors.horaInformeInicial = "La hora del informe es obligatoria.";
+    }
 
     const molinoErrors = molino.map((molinoItem, index) => {
       if (!molinoEnabled[index]) return null;
@@ -438,9 +442,9 @@ function GenerateInitialReportForm() {
 
     const fechaInformeInicial = currentData;
 
-    const horaInformeInicial = new Date().toLocaleTimeString("en-GB", {
-      hour12: false,
-    });
+    // const horaInformeInicial = new Date().toLocaleTimeString("en-GB", {
+    //   hour12: false,
+    // });
 
     const persistentData = {
       titular_informe_inicial: titularInformeInicial,
@@ -718,6 +722,37 @@ function GenerateInitialReportForm() {
                             </motion.li>
                           ))}
                         </ul>
+                      </fieldset>
+                      <fieldset
+                        className={Style.generateInitialReportFormMainFourth}
+                      >
+                        <label htmlFor="horaInformeInicial">
+                          Hora de inicio
+                        </label>
+                        <input
+                          id="horaInformeInicial"
+                          name="horaInformeInicial"
+                          onChange={(e) =>
+                            setHoraInformeInicial(e.target.value)
+                          }
+                          placeholder="Ingresa una hora de inicio"
+                          type="time"
+                          value={horaInformeInicial}
+                        />
+                        {!validationError.horaInformeInicial ? (
+                          <></>
+                        ) : (
+                          <motion.span
+                            className={
+                              Style.generateInitialReportFormValidation
+                            }
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {validationError.horaInformeInicial}
+                          </motion.span>
+                        )}
                       </fieldset>
                       {molino.map((molinoItem, index) => (
                         <fieldset

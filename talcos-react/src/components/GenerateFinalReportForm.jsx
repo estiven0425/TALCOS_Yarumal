@@ -10,6 +10,7 @@ function GenerateFinalReportForm() {
   const [finalData, setFinalData] = useState([]);
   const [molino, setMolino] = useState([]);
   const [referencia, setReferencia] = useState([]);
+  const [horaInformeFinal, setHoraInformeFinal] = useState("");
   const [molinoInformeFinal, setMolinoInformeFinal] = useState({});
   const [observacionInformeFinal, setObservacionInformeFinal] = useState("");
   const [loading, setLoading] = useState(false);
@@ -271,6 +272,9 @@ function GenerateFinalReportForm() {
         errors[`${molino}-horometro`] =
           `El horómetro del ${molino} debe ser un número válido.`;
       }
+      if (!horaInformeFinal.length) {
+        errors.horaInformeFinal = "La hora del informe es obligatoria.";
+      }
 
       // noinspection JSCheckFunctionSignatures
       Object.entries(references).forEach(([reference, data]) => {
@@ -315,55 +319,69 @@ function GenerateFinalReportForm() {
     const fechaInformeFinal = determinateDate();
     const turnoInformeFinal = determinateShift();
 
-    const finTurnoInformeInicial = informeInicialPendiente?.finTurno;
-
-    let horaInformeFinal = new Date().toLocaleTimeString("en-GB", {
-      hour12: false,
-    });
-
-    if (informeInicialPendiente?.inicioTurno !== undefined && informeInicialPendiente?.finTurno) {
-      const ahora = new Date();
-      const horaActual = ahora.getHours();
-      const minutoActual = ahora.getMinutes();
-
-      const [inicioHora, inicioMinuto] = informeInicialPendiente.inicioTurno.toString().split(':').map(Number);
-      const [finHora, finMinuto] = informeInicialPendiente.finTurno.split(':').map(Number);
-
-      const aMinutosTotales = (hora, minuto) => hora * 60 + minuto;
-
-      const minutosActuales = aMinutosTotales(horaActual, minutoActual);
-      const minutosInicio = aMinutosTotales(inicioHora, inicioMinuto);
-      const minutosFinTurno = aMinutosTotales(finHora, finMinuto);
-
-      const esTurnoNocturno = minutosInicio > minutosFinTurno;
-
-      // noinspection JSUnusedAssignment
-      let dentroDelTurno = false;
-
-      if (esTurnoNocturno) {
-        dentroDelTurno = minutosActuales >= minutosInicio || minutosActuales <= minutosFinTurno;
-      } else {
-        dentroDelTurno = minutosActuales >= minutosInicio && minutosActuales <= minutosFinTurno;
-      }
-
-      if (dentroDelTurno) {
-        horaInformeFinal = ahora.toLocaleTimeString("en-GB", { hour12: false });
-      } else {
-        horaInformeFinal = informeInicialPendiente.finTurno;
-      }
-    } else {
-      const ahora = new Date();
-      const [finHora, finMinuto] = finTurnoInformeInicial.split(':').map(Number);
-      const horaActual = ahora.getHours();
-      const minutoActual = ahora.getMinutes();
-
-      if (
-          horaActual > finHora ||
-          (horaActual === finHora && minutoActual > finMinuto)
-      ) {
-        horaInformeFinal = finTurnoInformeInicial;
-      }
-    }
+    // const finTurnoInformeInicial = informeInicialPendiente?.finTurno;
+    //
+    // let horaInformeFinal = new Date().toLocaleTimeString("en-GB", {
+    //   hour12: false,
+    // });
+    //
+    // if (
+    //   informeInicialPendiente?.inicioTurno !== undefined &&
+    //   informeInicialPendiente?.finTurno
+    // ) {
+    //   const ahora = new Date();
+    //   const horaActual = ahora.getHours();
+    //   const minutoActual = ahora.getMinutes();
+    //
+    //   const [inicioHora, inicioMinuto] = informeInicialPendiente.inicioTurno
+    //     .toString()
+    //     .split(":")
+    //     .map(Number);
+    //   const [finHora, finMinuto] = informeInicialPendiente.finTurno
+    //     .split(":")
+    //     .map(Number);
+    //
+    //   const aMinutosTotales = (hora, minuto) => hora * 60 + minuto;
+    //
+    //   const minutosActuales = aMinutosTotales(horaActual, minutoActual);
+    //   const minutosInicio = aMinutosTotales(inicioHora, inicioMinuto);
+    //   const minutosFinTurno = aMinutosTotales(finHora, finMinuto);
+    //
+    //   const esTurnoNocturno = minutosInicio > minutosFinTurno;
+    //
+    //   // noinspection JSUnusedAssignment
+    //   let dentroDelTurno = false;
+    //
+    //   if (esTurnoNocturno) {
+    //     dentroDelTurno =
+    //       minutosActuales >= minutosInicio ||
+    //       minutosActuales <= minutosFinTurno;
+    //   } else {
+    //     dentroDelTurno =
+    //       minutosActuales >= minutosInicio &&
+    //       minutosActuales <= minutosFinTurno;
+    //   }
+    //
+    //   if (dentroDelTurno) {
+    //     horaInformeFinal = ahora.toLocaleTimeString("en-GB", { hour12: false });
+    //   } else {
+    //     horaInformeFinal = informeInicialPendiente.finTurno;
+    //   }
+    // } else {
+    //   const ahora = new Date();
+    //   const [finHora, finMinuto] = finTurnoInformeInicial
+    //     .split(":")
+    //     .map(Number);
+    //   const horaActual = ahora.getHours();
+    //   const minutoActual = ahora.getMinutes();
+    //
+    //   if (
+    //     horaActual > finHora ||
+    //     (horaActual === finHora && minutoActual > finMinuto)
+    //   ) {
+    //     horaInformeFinal = finTurnoInformeInicial;
+    //   }
+    // }
 
     // noinspection JSMismatchedCollectionQueryUpdate
     const horometrosMolinos = [];
@@ -574,6 +592,33 @@ function GenerateFinalReportForm() {
                         )}
                       </tbody>
                     </table>
+                    <div
+                      className={Style.generateFinalReportFormMainAlternative}
+                    >
+                      <fieldset>
+                        <label htmlFor="horaInformeFinal">Hora de fin</label>
+                        <input
+                          id="horaInformeFinal"
+                          name="horaInformeFinal"
+                          type="time"
+                          placeholder="Ingresa una hora de fin"
+                          value={horaInformeFinal}
+                          onChange={(e) => setHoraInformeFinal(e.target.value)}
+                        />
+                        {!validationError.horaInformeFinal ? (
+                          <></>
+                        ) : (
+                          <motion.span
+                            className={Style.generateFinalReportFormValidation}
+                            initial={{ zoom: 0 }}
+                            animate={{ zoom: 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {validationError.horaInformeFinal}
+                          </motion.span>
+                        )}
+                      </fieldset>
+                    </div>
                     {molino.map((item, index) => {
                       const referencesCount = item.referenceHistory.length;
 
