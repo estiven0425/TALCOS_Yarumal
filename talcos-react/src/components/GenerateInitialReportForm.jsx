@@ -385,6 +385,13 @@ function GenerateInitialReportForm() {
     if (!horaInformeInicial.length) {
       errors.horaInformeInicial = "La hora del informe es obligatoria.";
     }
+    if (horaInformeInicial < currentShift.inicio_turno) {
+      errors.horaInformeInicial =
+        "La hora del informe debe ser mayor a la hora de inicio del turno.";
+    } else if (horaInformeInicial > currentShift.fin_turno) {
+      errors.horaInformeInicial =
+        "La hora del informe debe ser menor a la hora de fin del turno.";
+    }
 
     const molinoErrors = molino.map((molinoItem, index) => {
       if (!molinoEnabled[index]) return null;
