@@ -10,6 +10,7 @@ function GenerateNoveltyReferenceForm() {
   const [currentData, setCurrentData] = useState(null);
   const [finalData, setFinalData] = useState([]);
   const [molino, setMolino] = useState([]);
+  const [horaNovedad, setHoraNovedad] = useState("");
   const [molinoNovedad, setMolinoNovedad] = useState("");
   const [referenciaNovedad, setReferenciaNovedad] = useState("");
   const [bultoNovedad, setBultoNovedad] = useState("");
@@ -416,6 +417,9 @@ function GenerateNoveltyReferenceForm() {
   const validation = () => {
     const errors = {};
 
+    if (!horaNovedad.trim()) {
+      errors.horaNovedad = "La hora es obligatorio.";
+    }
     if (!molinoNovedad.trim()) {
       errors.molinoNovedad = "El molino es obligatorio.";
     }
@@ -479,9 +483,9 @@ function GenerateNoveltyReferenceForm() {
     setServerError(null);
     setLoading(true);
 
-    const horaNovedad = new Date().toLocaleTimeString("en-GB", {
-      hour12: false,
-    });
+    // const horaNovedad = new Date().toLocaleTimeString("en-GB", {
+    //   hour12: false,
+    // });
     const fechaNovedad = determinateDate(currentData);
     const shiftNovelty = determinateShift(currentData);
 
@@ -493,9 +497,9 @@ function GenerateNoveltyReferenceForm() {
 
     let date = new Date();
 
-    console.log(date.getHours())
+    console.log(date.getHours());
 
-    if (date.getHours() >= 22  && date.getHours() <= 23) {
+    if (date.getHours() >= 22 && date.getHours() <= 23) {
       date.setDate(date.getDate() - 1);
     }
 
@@ -609,6 +613,29 @@ function GenerateNoveltyReferenceForm() {
                       transition={{ duration: 0.5 }}
                     >
                       {validationError.molinoNovedad}
+                    </motion.span>
+                  )}
+                </fieldset>
+                <fieldset>
+                  <label htmlFor="horaNovedad">Hora</label>
+                  <input
+                    id="horaNovedad"
+                    name="horaNovedad"
+                    type="time"
+                    value={horaNovedad}
+                    onChange={(e) => setHoraNovedad(e.target.value)}
+                    placeholder="Ingresa una hora"
+                  />
+                  {!validationError.horaNovedad ? (
+                    <></>
+                  ) : (
+                    <motion.span
+                      className={Style.generateNoveltyReferenceFormValidation}
+                      initial={{ zoom: 0 }}
+                      animate={{ zoom: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {validationError.horaNovedad}
                     </motion.span>
                   )}
                 </fieldset>
