@@ -761,9 +761,15 @@ function ReportListDetail() {
                         }
                       }
 
-                      const kilosTotales =
-                        apagado?.cantidad_informe_final * 1000 || 0;
+                      const totalCantidadFinalMolino = endReport
+                        .filter((r) => r.molino_informe_final === molino)
+                        .reduce(
+                          (acc, cur) =>
+                            acc + (parseFloat(cur.cantidad_informe_final) || 0),
+                          0,
+                        );
 
+                      const kilosTotales = totalCantidadFinalMolino * 1000;
                       const horasTrabajadasDecimal = minutosTrabajados / 60;
 
                       const kilosPorHora =
