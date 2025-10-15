@@ -191,7 +191,7 @@ CREATE TABLE `informe_final` (
 	`molino_informe_final` VARCHAR(250) NOT NULL,
 	`referencia_informe_final` VARCHAR(250) NOT NULL,
 	`bulto_informe_final` VARCHAR(250) NOT NULL,
-	`cantidad_informe_final` DECIMAL(5,2) NOT NULL,
+	`cantidad_informe_final` DECIMAL(6,3) NOT NULL,
 	`horometro_informe_final` BIGINT(100) NOT NULL,
 	`observacion_informe_final` VARCHAR(1000) NULL DEFAULT('No se registró'),
 	`actividad_informe_final` BIT NOT NULL DEFAULT(1),
