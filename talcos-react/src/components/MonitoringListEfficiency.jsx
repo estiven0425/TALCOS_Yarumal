@@ -254,7 +254,21 @@ function MonitoringListEfficiency({ inicio, fin }) {
             })),
           ];
 
-          puntosInicio.forEach((inicial) => {
+          // Filtra los puntos de inicio para dejar solo uno por turno y fecha
+          const puntosInicioUnicos = [];
+
+          puntosInicio.forEach((punto) => {
+            const yaExiste = puntosInicioUnicos.find(
+              (p) =>
+                p.fecha_informe_inicial === punto.fecha_informe_inicial &&
+                p.turno_informe_inicial === punto.turno_informe_inicial,
+            );
+
+            if (!yaExiste) puntosInicioUnicos.push(punto);
+          });
+
+          // Empareja solo esos puntos únicos
+          puntosInicioUnicos.forEach((inicial) => {
             const finalMatch = grupo.finales.find(
               (final) =>
                 final.fecha_informe_final === inicial.fecha_informe_inicial &&
@@ -272,11 +286,9 @@ function MonitoringListEfficiency({ inicio, fin }) {
             );
 
             if (fin < inicio) fin.setDate(fin.getDate() + 1);
-
             if (isNaN(inicio.getTime()) || isNaN(fin.getTime())) return;
 
             const duracion = (fin - inicio) / (1000 * 60 * 60);
-
             totalHoras += duracion;
 
             const turnoAsociado = turno.find(
