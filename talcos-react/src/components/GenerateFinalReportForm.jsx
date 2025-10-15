@@ -40,7 +40,8 @@ function GenerateFinalReportForm() {
       };
 
       item.referenceHistory.forEach((history) => {
-        initialMolinoData[item.name][history.reference] = {
+        const key = `${history.reference}_${history.bulk}`;
+        initialMolinoData[item.name][key] = {
           cantidad_informe_final: "",
         };
       });
@@ -180,7 +181,10 @@ function GenerateFinalReportForm() {
                 ),
               }));
 
-            const referenceHistory = [
+            // Agrupamos por referencia y bulto
+            const groupedReferenceHistory = [];
+
+            const allReferenceRecords = [
               {
                 reference:
                   initialRecord.referencia_informe_inicial ||
@@ -205,6 +209,27 @@ function GenerateFinalReportForm() {
               },
               ...referenceChanges.sort((a, b) => a.timestamp - b.timestamp),
             ];
+
+            // Agrupar por referencia + bulto
+            allReferenceRecords.forEach((record) => {
+              const existingGroup = groupedReferenceHistory.find(
+                (g) =>
+                  g.reference === record.reference && g.bulk === record.bulk,
+              );
+
+              if (!existingGroup) {
+                groupedReferenceHistory.push({
+                  reference: record.reference,
+                  bulk: record.bulk,
+                  capacity: record.capacity,
+                  timestamps: [record.timestamp],
+                });
+              } else {
+                existingGroup.timestamps.push(record.timestamp);
+              }
+            });
+
+            const referenceHistory = groupedReferenceHistory;
 
             return {
               id: molino.id_molino,
@@ -447,35 +472,33 @@ function GenerateFinalReportForm() {
     Object.entries(molinoInformeFinal).forEach(([molinoName, references]) => {
       const horometro = references.horometro_informe_final;
 
-      // noinspection JSCheckFunctionSignatures
-      Object.entries(references).forEach(([reference, data]) => {
+      Object.entries(references).forEach(([key, data]) => {
         if (
-          reference !== "horometro_informe_final" &&
+          key !== "horometro_informe_final" &&
           data.cantidad_informe_final &&
           data.cantidad_informe_final.trim() !== ""
         ) {
+          const [referenceName, bulkName] = key.split("_");
+
           const matchingWindmill = molino.find(
             (item) => item.name === molinoName,
           );
 
           const cantidadProducido =
             (matchingWindmill?.referenceHistory.find(
-              (hist) => hist.reference === reference,
+              (hist) =>
+                hist.reference === referenceName && hist.bulk === bulkName,
             )?.capacity *
               parseInt(data.cantidad_informe_final)) /
             1000;
-
-          const nombreBulto = matchingWindmill?.referenceHistory.find(
-            (hist) => hist.reference === reference,
-          )?.bulk;
 
           informeFinalArray.push({
             fecha_informe_final: fechaInformeFinal,
             hora_informe_final: horaManualInformeFinal,
             turno_informe_final: turnoInformeFinal,
             molino_informe_final: molinoName,
-            referencia_informe_final: reference,
-            bulto_informe_final: nombreBulto,
+            referencia_informe_final: referenceName,
+            bulto_informe_final: bulkName,
             cantidad_informe_final: cantidadProducido,
             horometro_informe_final: horometro,
             observacion_informe_final: observacionInformeFinal,
@@ -641,17 +664,17 @@ function GenerateFinalReportForm() {
                                 Cantidad ({history.reference})
                               </label>
                               <input
-                                id={`cantidad_informe_final-${item.name}-${history.reference}`}
+                                id={`cantidad_informe_final-${item.name}-${history.reference}-${history.bulk}`}
                                 type="text"
                                 value={
                                   molinoInformeFinal[item.name]?.[
-                                    history.reference
+                                    `${history.reference}_${history.bulk}`
                                   ]?.cantidad_informe_final || ""
                                 }
                                 onChange={(e) =>
                                   handleChange(
                                     item.name,
-                                    history.reference,
+                                    `${history.reference}_${history.bulk}`,
                                     "cantidad_informe_final",
                                     e.target.value,
                                   )
