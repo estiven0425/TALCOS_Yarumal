@@ -1,6 +1,7 @@
-const express = require("express");
-const router = express.Router();
 const controlCalidadController = require("../controllers/controlCalidadController");
+const express = require("express");
+
+const router = express.Router();
 
 router.get("/", controlCalidadController.leerControlCalidad);
 router.post("/", controlCalidadController.crearControlCalidad);

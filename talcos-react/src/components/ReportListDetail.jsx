@@ -1,9 +1,11 @@
-﻿import { motion } from "framer-motion";
-import { addDays, differenceInMinutes, parse } from "date-fns";
+﻿import { addDays, differenceInMinutes, parse } from "date-fns";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import ReportActionDetail from "./ReportActionDetail";
+
 import axios from "axios";
+import ReportActionDetail from "./ReportActionDetail";
+
 import Style from "./styles/report-list-detail.module.css";
 
 function ReportListDetail() {

@@ -1,7 +1,9 @@
 ﻿import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+
 import MonitoringViewTableList from "./MonitoringViewTableList";
+
 import Style from "./styles/monitoring-view-table-action.module.css";
 
 function MonitoringViewTableAction() {

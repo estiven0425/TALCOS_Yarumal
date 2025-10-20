@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const turnoController = require("../controllers/turnoController");
+
+const router = express.Router();
 
 router.get("/", turnoController.leerTurno);
 router.post("/", turnoController.crearTurno);

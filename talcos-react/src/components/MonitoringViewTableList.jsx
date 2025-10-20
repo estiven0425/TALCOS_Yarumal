@@ -1,9 +1,11 @@
 ﻿import { motion } from "framer-motion";
+
 import MonitoringViewTableListCommercialBudget from "./MonitoringViewTableListCommercialBudget";
 import MonitoringViewTableListDispatche from "./MonitoringViewTableListDispatche";
 import MonitoringViewTableListEfficiency from "./MonitoringViewTableListEfficiency";
 import MonitoringViewTableListProduced from "./MonitoringViewTableListProduced";
 import PropTypes from "prop-types";
+
 import Style from "./styles/monitoring-view-table-List.module.css";
 
 MonitoringViewTableList.propTypes = {

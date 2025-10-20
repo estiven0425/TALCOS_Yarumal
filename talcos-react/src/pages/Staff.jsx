@@ -1,5 +1,6 @@
-﻿import StaffListProfile from "../components/StaffListProfile";
-import ProtectedRoute from "../utils/ProtectedRoute";
+﻿import ProtectedRoute from "../utils/ProtectedRoute";
+import StaffListProfile from "../components/StaffListProfile";
+
 import Style from "./styles/staff.module.css";
 
 function Staff() {

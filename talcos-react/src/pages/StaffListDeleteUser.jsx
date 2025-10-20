@@ -1,5 +1,6 @@
-﻿import StaffListDeleteUserTable from "../components/StaffListDeleteUserTable";
-import ProtectedRoute from "../utils/ProtectedRoute";
+﻿import ProtectedRoute from "../utils/ProtectedRoute";
+import StaffListDeleteUserTable from "../components/StaffListDeleteUserTable";
+
 import Style from "./styles/staff-list-delete-user.module.css";
 
 function StaffListDeleteUser() {

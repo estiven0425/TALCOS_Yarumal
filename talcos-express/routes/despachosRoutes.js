@@ -1,6 +1,7 @@
-const express = require("express");
-const router = express.Router();
 const despachosController = require("../controllers/despachosController");
+const express = require("express");
+
+const router = express.Router();
 
 router.get("/", despachosController.leerDespachos);
 router.get("/filtrados", despachosController.leerDespachosFiltrados);

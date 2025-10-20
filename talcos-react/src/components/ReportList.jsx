@@ -2,8 +2,10 @@
 import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+
 import axios from "axios";
 import ReportAction from "./ReportAction";
+
 import Style from "./styles/report-List.module.css";
 
 function ReportList() {

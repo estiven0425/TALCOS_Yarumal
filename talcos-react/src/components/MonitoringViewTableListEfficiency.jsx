@@ -1,14 +1,16 @@
 ﻿import {
-  endOfWeek,
   eachWeekOfInterval,
+  endOfWeek,
   format,
   getWeek,
   parseISO,
 } from "date-fns";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+
 import axios from "axios";
 import PropTypes from "prop-types";
+
 import Style from "./styles/monitoring-view-table-list-efficiency.module.css";
 
 MonitoringViewTableListEfficiency.propTypes = {

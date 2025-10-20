@@ -1,7 +1,9 @@
 ﻿import { motion } from "framer-motion";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import axios from "axios";
+
 import Style from "./styles/generate-novelty-strike-stop-form.module.css";
 
 function GenerateNoveltyStrikeStopForm() {

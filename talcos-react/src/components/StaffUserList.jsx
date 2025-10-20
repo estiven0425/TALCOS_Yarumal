@@ -1,7 +1,9 @@
 ﻿import { motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import axios from "axios";
+
 import Style from "./styles/staff-user-list.module.css";
 
 function StaffUserList() {

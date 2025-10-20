@@ -1,8 +1,10 @@
 ﻿import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
 import { registrarTabla } from "../utils/tablaStore";
+import { useEffect, useRef, useState } from "react";
+
 import axios from "axios";
 import PropTypes from "prop-types";
+
 import Style from "./styles/monitoring-list-hours.module.css";
 
 MonitoringListHours.propTypes = {

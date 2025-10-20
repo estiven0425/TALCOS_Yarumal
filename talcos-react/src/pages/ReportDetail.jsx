@@ -1,5 +1,6 @@
-﻿import ReportListDetail from "../components/ReportListDetail";
-import ProtectedRoute from "../utils/ProtectedRoute";
+﻿import ProtectedRoute from "../utils/ProtectedRoute";
+import ReportListDetail from "../components/ReportListDetail";
+
 import Style from "./styles/report.module.css";
 
 function InventoryRawMaterialRegisterDetail() {

@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const mensajeController = require("../controllers/mensajeController");
+
+const router = express.Router();
 
 router.get("/", mensajeController.leerMensaje);
 router.get("/notificacionmensaje", mensajeController.notificacionMensaje);

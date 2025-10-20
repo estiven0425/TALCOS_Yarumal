@@ -1,5 +1,6 @@
 import InventoryDeleteAggregateConfirmation from "../components/InventoryDeleteAggregateConfirmation";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory-delete.module.css";
 
 function InventoryAggregate() {

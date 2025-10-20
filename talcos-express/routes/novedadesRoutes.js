@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const novedadController = require("../controllers/novedadController");
+
+const router = express.Router();
 
 router.get("/", novedadController.leerNovedad);
 router.get("/turnonovedad", novedadController.turnoNovedad);

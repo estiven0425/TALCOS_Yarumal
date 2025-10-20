@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+
 import Style from "./styles/inventory-raw-material-button.module.css";
 
 function InventoryRawMaterialButton() {

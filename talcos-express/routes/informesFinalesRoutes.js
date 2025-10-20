@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const informeFinalController = require("../controllers/informeFinalController");
+
+const router = express.Router();
 
 router.get("/", informeFinalController.leerInformeFinal);
 router.get("/turnoinformefinal", informeFinalController.turnoInformeFinal);

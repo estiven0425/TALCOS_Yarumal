@@ -1,6 +1,7 @@
 import InventoryList from "../components/InventoryList";
 import InventoryRejectedMaterialButton from "../components/InventoryRejectedMaterialButton";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory-general.module.css";
 
 function InventoryRejectedMaterial() {

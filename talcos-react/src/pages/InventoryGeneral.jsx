@@ -1,5 +1,6 @@
 ﻿import InventoryListProfile from "../components/InventoryListProfile";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory.module.css";
 
 function InventoryGeneral() {

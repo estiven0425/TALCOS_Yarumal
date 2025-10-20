@@ -3,8 +3,10 @@ import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import axios from "axios";
 import NavBar from "./NavBar";
+
 import Style from "./styles/header.module.css";
 
 function Header() {

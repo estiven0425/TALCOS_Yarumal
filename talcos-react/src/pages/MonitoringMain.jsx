@@ -1,5 +1,6 @@
 ﻿import MonitoringAction from "../components/MonitoringAction";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/monitoring.module.css";
 
 function MonitoringMain() {

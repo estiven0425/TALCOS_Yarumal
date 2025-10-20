@@ -1,6 +1,7 @@
 ﻿import FastInventoryRawMaterial from "../components/FastInventoryRawMaterial";
 import FastInventoryReference from "../components/FastInventoryReference";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/fast-inventory.module.css";
 
 function FastInventory() {

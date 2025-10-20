@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const monitoreoController = require("../controllers/monitoreoController");
+
+const router = express.Router();
 
 router.get("/", monitoreoController.leerInforme);
 

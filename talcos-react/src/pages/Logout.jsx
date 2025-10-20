@@ -1,5 +1,6 @@
 ﻿import LogoutOff from "../components/LogoutOff";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/logout.module.css";
 
 function Logout() {

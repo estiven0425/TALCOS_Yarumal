@@ -1,5 +1,6 @@
 import InventoryListEditTableInventoryAp from "../components/InventoryListEditTableInventoryAp";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory-list.module.css";
 
 function InventoryListEditInventoryAp() {

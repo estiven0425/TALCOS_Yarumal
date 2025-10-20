@@ -1,5 +1,6 @@
 ﻿import InventoryListEditTable from "../components/InventoryListEditTable";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory-list.module.css";
 
 function InventoryListEditWindmill() {

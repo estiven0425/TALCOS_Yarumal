@@ -1,6 +1,7 @@
 ﻿import NotificationMessageReceived from "../components/NotificationMessageReceived";
 import NotificationMessageSend from "../components/NotificationMessageSend";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/notification.module.css";
 
 function Notification() {

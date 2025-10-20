@@ -1,5 +1,6 @@
 ﻿import InventoryAggregateList from "../components/InventoryAggregateList";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory-aggregate.module.css";
 
 function InventoryAggregate() {

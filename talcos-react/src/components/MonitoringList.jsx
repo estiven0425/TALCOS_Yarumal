@@ -1,9 +1,11 @@
 ﻿import { motion } from "framer-motion";
+
 import MonitoringListEfficiency from "./MonitoringListEfficiency";
 import MonitoringListHours from "./MonitoringListHours";
 import MonitoringListProduced from "./MonitoringListProduced";
 import MonitoringListStrike from "./MonitoringListStrike";
 import PropTypes from "prop-types";
+
 import Style from "./styles/monitoring-List.module.css";
 
 MonitoringList.propTypes = {

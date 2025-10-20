@@ -1,7 +1,9 @@
 ﻿import { motion } from "framer-motion";
-import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import axios from "axios";
+
 import Style from "./styles/staff-delete-user-confirmation.module.css";
 
 function StaffDeleteUserConfirmation() {

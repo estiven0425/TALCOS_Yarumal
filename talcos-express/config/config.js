@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
+const { conectionDataBase } = require("./conectionDataBase");
+
 const app = require("../app");
 const http = require("http");
 const normalizePort = require("./normalizePort");
 const onError = require("./onError");
 const onListening = require("./onListening");
-const { conectionDataBase } = require("./conectionDataBase");
 
 conectionDataBase()
   .then(() => console.log("Conexión exitosa a la base de datos"))

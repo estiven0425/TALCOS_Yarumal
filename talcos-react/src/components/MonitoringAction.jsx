@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import { obtenerTodasLasTablas } from "../utils/tablaStore";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+
 import axios from "axios";
 import MonitoringList from "./MonitoringList";
+
 import Style from "./styles/monitoring-action.module.css";
 
 function MonitoringAction() {

@@ -1,6 +1,7 @@
-const express = require("express");
-const router = express.Router();
 const despachoComercialController = require("../controllers/despachoComercialController");
+const express = require("express");
+
+const router = express.Router();
 
 router.get("/", despachoComercialController.leerDespachoComercial);
 router.get(

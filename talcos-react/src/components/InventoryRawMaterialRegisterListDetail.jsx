@@ -1,7 +1,9 @@
 ﻿import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+
 import InventoryRawMaterialRegisterActionDetail from "./InventoryRawMaterialRegisterActionDetail";
+
 import Style from "./styles/inventory-raw-material-register-list-detail.module.css";
 
 function InventoryRawMaterialRegisterListDetail() {

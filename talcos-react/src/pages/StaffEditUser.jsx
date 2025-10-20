@@ -1,5 +1,6 @@
-﻿import StaffEditUserForm from "../components/StaffEditUserForm";
-import ProtectedRoute from "../utils/ProtectedRoute";
+﻿import ProtectedRoute from "../utils/ProtectedRoute";
+import StaffEditUserForm from "../components/StaffEditUserForm";
+
 import Style from "./styles/staff-edit-user.module.css";
 
 function StaffEditUser() {

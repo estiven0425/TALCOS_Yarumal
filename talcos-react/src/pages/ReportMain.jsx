@@ -1,5 +1,6 @@
-﻿import ReportList from "../components/ReportList";
-import ProtectedRoute from "../utils/ProtectedRoute";
+﻿import ProtectedRoute from "../utils/ProtectedRoute";
+import ReportList from "../components/ReportList";
+
 import Style from "./styles/report.module.css";
 
 function ReportMain() {

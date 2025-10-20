@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const perfilController = require("../controllers/perfilController");
+
+const router = express.Router();
 
 router.get("/", perfilController.leerPerfil);
 router.get("/personalperfil", perfilController.personalPerfil);

@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const inventarioApController = require("../controllers/inventarioApController");
+
+const router = express.Router();
 
 router.get("/", inventarioApController.leerInventarioAp);
 router.post("/", inventarioApController.crearInventarioAp);

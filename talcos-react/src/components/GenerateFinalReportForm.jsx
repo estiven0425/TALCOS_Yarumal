@@ -1,7 +1,11 @@
-﻿import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+﻿// noinspection JSUnusedAssignment
+
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
+
 import Style from "./styles/generate-final-report-form.module.css";
 
 function GenerateFinalReportForm() {
@@ -388,8 +392,10 @@ function GenerateFinalReportForm() {
       }
 
       if (dentroDelTurno) {
+        // noinspection JSUnusedAssignment
         horaInformeFinal = ahora.toLocaleTimeString("en-GB", { hour12: false });
       } else {
+        // noinspection JSUnusedAssignment
         horaInformeFinal = informeInicialPendiente.finTurno;
       }
     } else {
@@ -404,6 +410,7 @@ function GenerateFinalReportForm() {
         horaActual > finHora ||
         (horaActual === finHora && minutoActual > finMinuto)
       ) {
+        // eslint-disable-next-line no-unused-vars
         horaInformeFinal = finTurnoInformeInicial;
       }
     }
@@ -472,6 +479,7 @@ function GenerateFinalReportForm() {
     Object.entries(molinoInformeFinal).forEach(([molinoName, references]) => {
       const horometro = references.horometro_informe_final;
 
+      // noinspection JSCheckFunctionSignatures
       Object.entries(references).forEach(([key, data]) => {
         if (
           key !== "horometro_informe_final" &&

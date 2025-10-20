@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const molinoController = require("../controllers/molinoController");
+
+const router = express.Router();
 
 router.get("/", molinoController.leerMolino);
 router.post("/", molinoController.crearMolino);

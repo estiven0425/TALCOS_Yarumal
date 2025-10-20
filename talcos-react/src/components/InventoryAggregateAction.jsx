@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+
 import PropTypes from "prop-types";
+
 import Style from "./styles/inventory-aggregate-action.module.css";
 
 InventoryAggregateAction.propTypes = {

@@ -1,6 +1,10 @@
-﻿import { motion } from "framer-motion";
+﻿// noinspection JSUnusedGlobalSymbols
+
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+
 import axios from "axios";
+
 import Style from "./styles/fast-inventory-list.module.css";
 
 function FastInventoryRawMaterial() {

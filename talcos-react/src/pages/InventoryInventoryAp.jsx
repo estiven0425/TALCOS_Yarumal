@@ -1,6 +1,7 @@
 import InventoryButton from "../components/InventoryButton";
 import InventoryListInventoryAp from "../components/InventoryListInventoryAp";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory-general.module.css";
 
 function InventoryInventoryAp() {

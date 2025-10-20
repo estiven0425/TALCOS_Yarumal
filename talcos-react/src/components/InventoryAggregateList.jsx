@@ -2,8 +2,10 @@
 import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+
 import axios from "axios";
 import InventoryAggregateAction from "./InventoryAggregateAction";
+
 import Style from "./styles/inventory-aggregate-List.module.css";
 
 function InventoryAggregateList() {

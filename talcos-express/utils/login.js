@@ -1,8 +1,9 @@
-const express = require("express");
 const bcrypt = require("bcrypt");
+const express = require("express");
 const jwt = require("jsonwebtoken");
-const Usuario = require("../models/Usuarios");
 const Perfiles = require("../models/Perfiles");
+const Usuario = require("../models/Usuarios");
+
 require("dotenv").config();
 
 const router = express.Router();
@@ -90,7 +91,7 @@ router.post("/get", async (req, res) => {
       res.status(404).json({ error: "Usuario no encontrado" });
     }
   } catch (error) {
-    res.status(401).json({ error: "Token inválido o expirado" });
+    res.status(401).json({ error: "Token inválido o expirado" + error });
   }
 });
 
