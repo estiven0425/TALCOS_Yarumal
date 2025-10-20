@@ -1,4 +1,5 @@
 const { sequelize } = require("../config/conectionDataBase");
+
 const { DataTypes } = require("sequelize");
 
 const Despachos = sequelize.define(

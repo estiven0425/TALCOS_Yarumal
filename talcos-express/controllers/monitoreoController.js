@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+
 const ControlCalidad = require("../models/ControlCalidad");
 const InformeInicial = require("../models/InformeInicial");
 const InformeFinal = require("../models/InformeFinal");

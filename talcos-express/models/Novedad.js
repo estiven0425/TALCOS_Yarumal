@@ -1,5 +1,7 @@
 const { sequelize } = require("../config/conectionDataBase");
+
 const { DataTypes } = require("sequelize");
+
 const Usuarios = require("./Usuarios");
 
 const Novedad = sequelize.define(

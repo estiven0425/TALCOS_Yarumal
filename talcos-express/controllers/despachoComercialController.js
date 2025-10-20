@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+
 const DespachoComercial = require("../models/DespachoComercial");
 
 exports.leerDespachoComercial = async (req, res) => {

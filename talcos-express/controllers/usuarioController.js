@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+
 const bcrypt = require("bcrypt");
 const Usuarios = require("../models/Usuarios");
 const Perfiles = require("../models/Perfiles");

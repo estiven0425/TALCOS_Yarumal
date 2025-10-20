@@ -1,4 +1,5 @@
 const { sequelize } = require("../config/conectionDataBase");
+
 const { DataTypes } = require("sequelize");
 
 const PresupuestoComercial = sequelize.define(

@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const { QueryTypes } = require("sequelize");
 const { sequelize } = require("../config/conectionDataBase");
+
 const Perfiles = require("../models/Perfiles");
 
 exports.leerPerfil = async (req, res) => {
