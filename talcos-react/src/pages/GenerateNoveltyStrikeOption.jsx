@@ -1,6 +1,7 @@
 ﻿import GenerateNoveltyStrikeOptionButton from "../components/GenerateNoveltyStrikeOptionButton";
 import GenerateNoveltyStrikeOptionList from "../components/GenerateNoveltyStrikeOptionList";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/generate-novelty-option.module.css";
 
 function GenerateNoveltyStrikeOption() {

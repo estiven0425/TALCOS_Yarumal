@@ -1,8 +1,8 @@
+const { es } = require("date-fns/locale");
+const { format } = require("date-fns");
 const fs = require("fs");
 const path = require("path");
 const puppeteer = require("puppeteer");
-const { format } = require("date-fns");
-const { es } = require("date-fns/locale");
 
 const generarPDF = async (req, res) => {
   try {

@@ -1,5 +1,6 @@
 ﻿import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+
 import Style from "./styles/error-main.module.css";
 
 function ErrorMain() {

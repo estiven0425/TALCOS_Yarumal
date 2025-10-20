@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const informeInicialController = require("../controllers/informeInicialController");
+
+const router = express.Router();
 
 router.get("/", informeInicialController.leerInformeInicial);
 router.get(

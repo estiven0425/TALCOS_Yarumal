@@ -1,5 +1,6 @@
 ﻿import InventoryDeleteConfirmation from "../components/InventoryDeleteConfirmation";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory-delete.module.css";
 
 function InventoryDeleteWindmillAp() {

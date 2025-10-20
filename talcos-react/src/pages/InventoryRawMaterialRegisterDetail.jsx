@@ -1,5 +1,6 @@
 ﻿import InventoryRawMaterialRegisterListDetail from "../components/InventoryRawMaterialRegisterListDetail";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory-raw-material-register.module.css";
 
 function InventoryRawMaterialRegisterDetail() {

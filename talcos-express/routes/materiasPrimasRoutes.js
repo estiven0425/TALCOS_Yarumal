@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const materiaPrimaController = require("../controllers/materiaPrimaController");
+
+const router = express.Router();
 
 router.get("/", materiaPrimaController.leerMateriaPrima);
 router.post("/", materiaPrimaController.crearMateriaPrima);

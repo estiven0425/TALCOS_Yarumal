@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const registroController = require("../controllers/registroController");
+
+const router = express.Router();
 
 router.get("/", registroController.leerRegistro);
 router.post("/", registroController.crearRegistro);

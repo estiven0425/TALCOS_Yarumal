@@ -1,6 +1,7 @@
 ﻿import GenerateReportList from "../components/GenerateReportList";
 import GenerateReportShift from "../components/GenerateReportShift";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/generate-report-menu.module.css";
 
 function GenerateReportMenu() {

@@ -1,7 +1,9 @@
 ﻿import { motion } from "framer-motion";
-import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import axios from "axios";
+
 import Style from "./styles/generate-final-report-form.module.css";
 
 function GenerateFinishReportForm() {
@@ -371,7 +373,8 @@ function GenerateFinishReportForm() {
     Object.entries(molinoInformeFinal).forEach(([molinoName, references]) => {
       const horometro = references.horometro_informe_final;
 
-      Object.entries(references).forEach(([key, data]) => {
+      // noinspection JSCheckFunctionSignatures
+        Object.entries(references).forEach(([key, data]) => {
         if (
           key !== "horometro_informe_final" &&
           data.cantidad_informe_final &&

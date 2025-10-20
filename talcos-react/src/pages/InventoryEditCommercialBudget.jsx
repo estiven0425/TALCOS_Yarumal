@@ -1,5 +1,6 @@
 import InventoryEditForm from "../components/InventoryEditForm";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory-edit.module.css";
 
 function InventoryEditCommercialBudget() {

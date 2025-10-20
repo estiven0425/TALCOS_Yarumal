@@ -1,7 +1,9 @@
 ﻿import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
+
 import Style from "./styles/generate-novelty-windmill-power-on-form.module.css";
 
 function GenerateNoveltyWindmillPowerOnForm() {

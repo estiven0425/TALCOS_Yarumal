@@ -1,6 +1,7 @@
-const express = require("express");
-const router = express.Router();
 const bobCatController = require("../controllers/bobCatController");
+const express = require("express");
+
+const router = express.Router();
 
 router.get("/", bobCatController.leerBobCat);
 router.post("/", bobCatController.crearBobCat);

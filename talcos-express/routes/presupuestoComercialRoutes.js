@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const presupuestoComercialController = require("../controllers/presupuestoComercialController");
+
+const router = express.Router();
 
 router.get("/", presupuestoComercialController.leerPresupuestoComercial);
 router.post("/", presupuestoComercialController.crearPresupuestoComercial);

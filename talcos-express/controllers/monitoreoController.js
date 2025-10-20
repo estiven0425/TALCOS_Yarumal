@@ -1,8 +1,8 @@
-const InformeInicial = require("../models/InformeInicial");
-const Novedad = require("../models/Novedad");
-const ControlCalidad = require("../models/ControlCalidad");
-const InformeFinal = require("../models/InformeFinal");
 const { Op } = require("sequelize");
+const ControlCalidad = require("../models/ControlCalidad");
+const InformeInicial = require("../models/InformeInicial");
+const InformeFinal = require("../models/InformeFinal");
+const Novedad = require("../models/Novedad");
 
 exports.leerInforme = async (req, res) => {
   try {

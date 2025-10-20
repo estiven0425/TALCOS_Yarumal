@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
+
 import Style from "./styles/inventory-create-aggregate-form.module.css";
 
 function InventoryCreateAggregate() {

@@ -1,16 +1,18 @@
-﻿import { es } from "date-fns/locale";
-import {
+﻿import {
   addDays,
   differenceInMinutes,
   format,
   parse,
   parseISO,
 } from "date-fns";
+import { es } from "date-fns/locale";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import PropTypes from "prop-types";
+
 import Style from "./styles/report-action-detail.module.css";
 
 ReportActionDetail.propTypes = {

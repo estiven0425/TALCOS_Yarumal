@@ -1,7 +1,7 @@
 // noinspection JSUnusedLocalSymbols
 
-const cron = require("node-cron");
 const { exec } = require("child_process");
+const cron = require("node-cron");
 
 cron.schedule("0 6 */3 * *", () => {
   // eslint-disable-next-line

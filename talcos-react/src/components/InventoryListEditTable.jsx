@@ -1,10 +1,12 @@
 ﻿import { es } from "date-fns/locale";
 import { format, isValid, parseISO } from "date-fns";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import PropTypes from "prop-types";
+
 import Style from "./styles/inventory-list-table.module.css";
 
 InventoryListEditTable.propTypes = {

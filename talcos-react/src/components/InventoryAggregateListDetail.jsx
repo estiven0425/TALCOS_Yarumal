@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+
 import InventoryAggregateActionDetail from "./InventoryAggregateActionDetail";
+
 import Style from "./styles/inventory-aggregate-list-detail.module.css";
 
 function InventoryAggregateListDetail() {

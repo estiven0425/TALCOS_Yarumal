@@ -5,6 +5,7 @@ import HomeShift from "../components/HomeShift";
 import HomeStateShift from "../components/HomeStateShift";
 import HomeStateWindmill from "../components/HomeStateWindmill";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/home.module.css";
 
 function Home() {

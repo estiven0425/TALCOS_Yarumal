@@ -1,5 +1,6 @@
 ﻿import InventoryCreateForm from "../components/InventoryCreateForm";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/inventory-create.module.css";
 
 function InventoryCreateShift() {

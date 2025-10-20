@@ -1,9 +1,11 @@
 ﻿import { es } from "date-fns/locale";
 import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
+
 import Style from "./styles/generate-initial-report-form.module.css";
 
 function GenerateInitialReportForm() {

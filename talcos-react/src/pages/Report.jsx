@@ -1,4 +1,5 @@
 ﻿import { Outlet } from "react-router-dom";
+
 import ProtectedRoute from "../utils/ProtectedRoute";
 
 function Report() {

@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const referenciaController = require("../controllers/referenciaController");
+
+const router = express.Router();
 
 router.get("/", referenciaController.leerReferencia);
 router.post("/", referenciaController.crearReferencia);

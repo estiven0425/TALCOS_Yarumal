@@ -1,5 +1,6 @@
 ﻿import StaffDeleteUserConfirmation from "../components/StaffDeleteUserConfirmation";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/staff-delete-user.module.css";
 
 function StaffDeleteUser() {

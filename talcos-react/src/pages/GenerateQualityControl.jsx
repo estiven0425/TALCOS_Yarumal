@@ -1,5 +1,6 @@
 import GenerateQualityControlForm from "../components/GenerateQualityControlForm";
 import ProtectedRoute from "../utils/ProtectedRoute";
+
 import Style from "./styles/generate-quality-control.module.css";
 
 function GenerateQualityControl() {

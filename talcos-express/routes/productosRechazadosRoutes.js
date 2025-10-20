@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const productoRechazadoController = require("../controllers/productoRechazadoController");
+
+const router = express.Router();
 
 router.get("/", productoRechazadoController.leerProductoRechazado);
 router.post("/", productoRechazadoController.crearProductoRechazado);

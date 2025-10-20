@@ -1,7 +1,9 @@
 ﻿import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
+
 import Style from "./styles/generate-novelty-strike-start-form.module.css";
 
 function GenerateNoveltyStrikeStartForm() {

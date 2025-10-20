@@ -1,6 +1,6 @@
+const MateriasPrimas = require("../models/MateriasPrimas");
 const Registros = require("../models/Registros");
 const Usuarios = require("../models/Usuarios");
-const MateriasPrimas = require("../models/MateriasPrimas");
 
 exports.leerRegistro = async (req, res) => {
   try {
