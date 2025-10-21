@@ -901,6 +901,89 @@ function ReportListDetail() {
                                   horaInicio,
                                 );
 
+                                const parosEnRango = (paros || []).filter(
+                                  (paro) => {
+                                    const inicioParoStr =
+                                      paro?.inicio_paro_novedad;
+                                    const finParoStr =
+                                      paro?.fin_paro_novedad ||
+                                      shift?.fin_turno;
+
+                                    if (!inicioParoStr || !finParoStr)
+                                      return false;
+
+                                    let inicioParo = parse(
+                                      inicioParoStr.slice(0, 5),
+                                      "HH:mm",
+                                      new Date(),
+                                    );
+                                    let finParo = parse(
+                                      finParoStr.slice(0, 5),
+                                      "HH:mm",
+                                      new Date(),
+                                    );
+
+                                    if (finParo < inicioParo)
+                                      finParo = addDays(finParo, 1);
+
+                                    return (
+                                      (inicioParo >= horaInicio &&
+                                        inicioParo < horaFin) ||
+                                      (finParo > horaInicio &&
+                                        finParo <= horaFin) ||
+                                      (inicioParo <= horaInicio &&
+                                        finParo >= horaFin)
+                                    );
+                                  },
+                                );
+
+                                let minutosParoReferencia = 0;
+
+                                parosEnRango.forEach((paro) => {
+                                  const inicioParoStr =
+                                    paro?.inicio_paro_novedad;
+                                  const finParoStr =
+                                    paro?.fin_paro_novedad || shift?.fin_turno;
+
+                                  if (!inicioParoStr || !finParoStr) return;
+
+                                  let inicioParo = parse(
+                                    inicioParoStr.slice(0, 5),
+                                    "HH:mm",
+                                    new Date(),
+                                  );
+                                  let finParo = parse(
+                                    finParoStr.slice(0, 5),
+                                    "HH:mm",
+                                    new Date(),
+                                  );
+
+                                  if (finParo < inicioParo)
+                                    finParo = addDays(finParo, 1);
+
+                                  const inicioEfectivo =
+                                    inicioParo < horaInicio
+                                      ? horaInicio
+                                      : inicioParo;
+                                  const finEfectivo =
+                                    finParo > horaFin ? horaFin : finParo;
+
+                                  const duracionParo = Math.max(
+                                    differenceInMinutes(
+                                      finEfectivo,
+                                      inicioEfectivo,
+                                    ),
+                                    0,
+                                  );
+
+                                  minutosParoReferencia += duracionParo;
+                                });
+
+                                const minutosTrabajadosEfectivos = Math.max(
+                                  minutosReferencia - minutosParoReferencia,
+                                  0,
+                                );
+
                                 const kilosRef =
                                   endReport
                                     .filter(
@@ -918,7 +1001,8 @@ function ReportListDetail() {
                                       0,
                                     ) * 1000;
 
-                                const horasRef = minutosReferencia / 60;
+                                const horasRef =
+                                  minutosTrabajadosEfectivos / 60;
 
                                 const rendimiento =
                                   horasRef > 0
@@ -937,7 +1021,6 @@ function ReportListDetail() {
                               ) : null;
                             })()}
                           </td>
-
                           <td>{eficiencia} %</td>
                         </tr>
                       );
