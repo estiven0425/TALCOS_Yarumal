@@ -98,7 +98,9 @@
   position: relative;
 }
 
-.monitoringViewTableActionMainForm fieldset input::-webkit-calendar-picker-indicator {
+.monitoringViewTableActionMainForm
+  fieldset
+  input::-webkit-calendar-picker-indicator {
   cursor: pointer;
   height: 100%;
   left: 0;
@@ -108,6 +110,7 @@
 }
 
 .monitoringViewTableActionMainValidation {
+  color: #fffb00;
   text-align: center;
   transition: all 0.5s ease-in-out;
   width: 100%;

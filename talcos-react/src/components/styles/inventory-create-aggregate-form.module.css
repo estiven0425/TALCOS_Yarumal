@@ -144,16 +144,23 @@
   width: 100%;
 }
 
-.inventoryCreateAggregateRegisterApMainSecondarySectioninput fieldset label img {
+.inventoryCreateAggregateRegisterApMainSecondarySectioninput
+  fieldset
+  label
+  img {
   height: 1.5rem;
   width: 1.5rem;
 }
 
-.inventoryCreateAggregateRegisterApMainSecondarySectioninput fieldset label:hover {
+.inventoryCreateAggregateRegisterApMainSecondarySectioninput
+  fieldset
+  label:hover {
   background-color: #0048b6;
 }
 
-.inventoryCreateAggregateRegisterApMainSecondarySectioninput fieldset label:focus {
+.inventoryCreateAggregateRegisterApMainSecondarySectioninput
+  fieldset
+  label:focus {
   background-color: #0048b6;
 }
 
@@ -211,8 +218,13 @@
   width: 20%;
 }
 
-.inventoryCreateAggregateRegisterApMainSecondarySectionTable table thead tr th:nth-child(even),
-.inventoryCreateAggregateRegisterApMainSecondarySectionTable td:nth-child(even) {
+.inventoryCreateAggregateRegisterApMainSecondarySectionTable
+  table
+  thead
+  tr
+  th:nth-child(even),
+.inventoryCreateAggregateRegisterApMainSecondarySectionTable
+  td:nth-child(even) {
   background-color: #0037ae;
 }
 
@@ -299,11 +311,13 @@
 }
 
 .inventoryCreateAggregateRegisterApValidation {
+  color: #fffb00;
   text-align: left;
   transition: all 0.5s ease-in-out;
 }
 
 .inventoryCreateAggregateRegisterApValidationServer {
+  color: #fffb00;
   text-align: center;
   transition: all 0.5s ease-in-out;
 }

@@ -158,6 +158,7 @@
 }
 
 .generateQualityControlFormValidation {
+  color: #fffb00;
   text-align: left;
   transition: all 0.5s ease-in-out;
 }
@@ -217,6 +218,7 @@
 }
 
 .generateQualityControlFormValidationServer {
+  color: #fffb00;
   text-align: center;
   transition: all 0.5s ease-in-out;
 }

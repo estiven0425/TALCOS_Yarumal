@@ -108,11 +108,14 @@
   transition: all 0.5s ease-in-out;
 }
 
-.inventoryEditReasignedRejectedMaterialFormMain fieldset select::-webkit-scrollbar {
+.inventoryEditReasignedRejectedMaterialFormMain
+  fieldset
+  select::-webkit-scrollbar {
   width: 10px;
 }
 
 .inventoryEditReasignedRejectedMaterialFormValidation {
+  color: #fffb00;
   text-align: left;
   transition: all 0.5s ease-in-out;
 }
@@ -147,16 +150,22 @@
   outline: #0095dc 1px solid;
 }
 
-.inventoryEditReasignedRejectedMaterialFormMain fieldset select::-webkit-scrollbar {
+.inventoryEditReasignedRejectedMaterialFormMain
+  fieldset
+  select::-webkit-scrollbar {
   width: 10px;
 }
 
-.inventoryEditReasignedRejectedMaterialFormMain fieldset select::-webkit-scrollbar-track {
+.inventoryEditReasignedRejectedMaterialFormMain
+  fieldset
+  select::-webkit-scrollbar-track {
   background: #0037ae;
   border-radius: 10px;
 }
 
-.inventoryEditReasignedRejectedMaterialFormMain fieldset select::-webkit-scrollbar-thumb {
+.inventoryEditReasignedRejectedMaterialFormMain
+  fieldset
+  select::-webkit-scrollbar-thumb {
   background: #017fd3;
   border-radius: 10px;
 }
@@ -170,6 +179,7 @@
 }
 
 .inventoryEditReasignedRejectedMaterialFormValidationServer {
+  color: #fffb00;
   text-align: center;
   transition: all 0.5s ease-in-out;
 }

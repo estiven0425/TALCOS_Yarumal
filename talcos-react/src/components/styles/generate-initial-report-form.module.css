@@ -358,11 +358,13 @@
 }
 
 .generateInitialReportFormValidation {
+  color: #fffb00;
   text-align: left;
   transition: all 0.5s ease-in-out;
 }
 
 .generateInitialReportFormValidationServer {
+  color: #fffb00;
   text-align: center;
   transition: all 0.5s ease-in-out;
 }
