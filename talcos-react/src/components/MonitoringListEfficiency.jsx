@@ -256,7 +256,6 @@ function MonitoringListEfficiency({ inicio, fin }) {
             })),
           ];
 
-          // Filtra los puntos de inicio para dejar solo uno por turno y fecha
           const puntosInicioUnicos = [];
 
           puntosInicio.forEach((punto) => {
@@ -269,7 +268,6 @@ function MonitoringListEfficiency({ inicio, fin }) {
             if (!yaExiste) puntosInicioUnicos.push(punto);
           });
 
-          // Empareja solo esos puntos únicos
           puntosInicioUnicos.forEach((inicial) => {
             const finalMatch = grupo.finales.find(
               (final) =>

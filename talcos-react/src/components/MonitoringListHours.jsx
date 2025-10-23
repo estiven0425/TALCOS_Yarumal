@@ -133,6 +133,7 @@ function MonitoringListHours({ inicio, fin }) {
           turno_informe_inicial: encendido.turno_novedad,
           hora_informe_inicial: encendido.hora_novedad,
           molino_informe_inicial: encendido.molino_novedad,
+          horometro_informe_inicial: encendido.horometro_fin_paro_novedad,
           __esDesdeNovedad: true,
         });
       });
@@ -304,6 +305,24 @@ function MonitoringListHours({ inicio, fin }) {
         ).toFixed(2);
 
         grupo.totalHorasEsperadas = horasEsperadasAcumuladas.toFixed(2);
+
+        grupo.totalHorasHorometro = 0;
+
+        const inicialMatch = grupo.iniciales[0];
+        const finalMatch = grupo.finales[0];
+
+        if (inicialMatch && finalMatch) {
+          const horometroInicio =
+            parseFloat(inicialMatch.horometro_informe_inicial) || 0;
+          const horometroFinal =
+            parseFloat(finalMatch.horometro_informe_final) || 0;
+
+          if (horometroFinal > horometroInicio) {
+            grupo.totalHorasHorometro = (
+              horometroFinal - horometroInicio
+            ).toFixed(2);
+          }
+        }
       }
 
       setGruposPorMolino(gruposPorMolino);
@@ -346,7 +365,12 @@ function MonitoringListHours({ inicio, fin }) {
               <tr>
                 <th>Molino</th>
                 <th>Horas trabajadas</th>
-                <th>Horas de trabajo esperadas</th>
+                <th>
+                  Horas producidas
+                  <br />
+                  (Horómetro)
+                </th>
+                <th>Horas de trabajo posibles</th>
                 <th>Horas no trabajadas</th>
               </tr>
             </thead>
@@ -365,6 +389,11 @@ function MonitoringListHours({ inicio, fin }) {
                           ),
                         )
                       : "00:00"}
+                  </td>
+                  <td>
+                    {gruposPorMolino[molinoData.nombre_molino]
+                      ? `${gruposPorMolino[molinoData.nombre_molino].totalHorasHorometro || "0.00"} Hrs`
+                      : "0.00 Hrs"}
                   </td>
                   <td>
                     {gruposPorMolino[molinoData.nombre_molino]

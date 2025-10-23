@@ -615,8 +615,15 @@ function ReportListDetail() {
                   <tr>
                     <th>Molino</th>
                     <th>Horas trabajadas</th>
+                    <th>
+                      Horas producidas
+                      <br />
+                      (Horómetro)
+                    </th>
                     <th>Horas de paro</th>
-                    <th>Kilos por hora</th>
+                    <th>
+                      Rendimiento <br /> (Kg/Hr)
+                    </th>
                     <th>Eficiencia</th>
                   </tr>
                 </thead>
@@ -808,10 +815,33 @@ function ReportListDetail() {
                             ).toFixed(2)
                           : "0";
 
+                      const horasProduccionHorometro = (() => {
+                        const horometroInicio =
+                          parseFloat(inicio?.horometro_informe_inicial) ||
+                          parseFloat(
+                            encendido?.horometro_inicio_paro_novedad,
+                          ) ||
+                          0;
+
+                        const horometroFinal =
+                          parseFloat(apagado?.horometro_informe_final) || 0;
+
+                        if (
+                          horometroInicio &&
+                          horometroFinal &&
+                          horometroFinal > horometroInicio
+                        ) {
+                          return (horometroFinal - horometroInicio).toFixed(2);
+                        }
+
+                        return "0";
+                      })();
+
                       return (
                         <tr key={index}>
                           <td>{molino}</td>
                           <td>{horasTrabajadasFormatted} Hrs</td>
+                          <td>{horasProduccionHorometro} Hrs</td>
                           <td>{horasParoFormatted} Hrs</td>
                           <td>
                             General: {kilosPorHora} Kg/Hr
