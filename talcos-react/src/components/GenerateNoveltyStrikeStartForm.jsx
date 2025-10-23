@@ -12,9 +12,6 @@ function GenerateNoveltyStrikeStartForm() {
   const [molinoNovedad, setMolinoNovedad] = useState("");
   const [inicioParoNovedad, setInicioParoNovedad] = useState("");
   const [finParoNovedad, setFinParoNovedad] = useState("");
-  const [horometroInicioParoNovedad, setHorometroInicioParoNovedad] =
-    useState("");
-  const [horometroFinParoNovedad, setHorometroFinParoNovedad] = useState("");
   const [motivoParoNovedad, setMotivoParoNovedad] = useState("");
   const [observacionNovedad, setObservacionNovedad] = useState("");
   const [loading, setLoading] = useState(false);
@@ -441,33 +438,6 @@ function GenerateNoveltyStrikeStartForm() {
     if (finParoNovedad.trim() && !isTimeWithinShift(finParoNovedad)) {
       errors.finParoNovedad = "La hora de fin debe estar dentro del turno.";
     }
-    if (!horometroInicioParoNovedad.trim()) {
-      errors.horometroInicioParoNovedad =
-        "El horómetro de inicio de paro es obligatorio.";
-    }
-    // noinspection JSCheckFunctionSignatures
-    if (horometroInicioParoNovedad && isNaN(horometroInicioParoNovedad)) {
-      errors.horometroInicioParoNovedad =
-        "El horómetro de inicio debe ser un número.";
-    }
-    // noinspection JSCheckFunctionSignatures
-    if (horometroFinParoNovedad && isNaN(horometroFinParoNovedad)) {
-      errors.horometroFinParoNovedad =
-        "El horómetro de fin debe ser un número.";
-    }
-    if (
-      (finParoNovedad.trim() && !horometroFinParoNovedad.trim()) ||
-      (!finParoNovedad.trim() && horometroFinParoNovedad.trim())
-    ) {
-      if (!finParoNovedad.trim()) {
-        errors.finParoNovedad =
-          "Si se ingresa el horómetro de fin, la hora de fin también es obligatoria.";
-      }
-      if (!horometroFinParoNovedad.trim()) {
-        errors.horometroFinParoNovedad =
-          "Si se ingresa la hora de fin, el horómetro de fin también es obligatorio.";
-      }
-    }
     if (!motivoParoNovedad.trim()) {
       errors.motivoParoNovedad = "El motivo del paro es obligatorio.";
     }
@@ -548,13 +518,9 @@ function GenerateNoveltyStrikeStartForm() {
       ? `${finParoNovedad}:00`
       : null;
 
-    const horometroFinParo = horometroFinParoNovedad.trim()
-      ? parseFloat(horometroFinParoNovedad)
-      : null;
-
     let date = new Date();
 
-    if (date.getHours() >= 22  && date.getHours() <= 23) {
+    if (date.getHours() >= 22 && date.getHours() <= 23) {
       date.setDate(date.getDate() - 1);
     }
 
@@ -570,8 +536,8 @@ function GenerateNoveltyStrikeStartForm() {
         bulto_novedad: bulkNovelty,
         inicio_paro_novedad: inicioParoConSegundos,
         fin_paro_novedad: finParoConSegundos,
-        horometro_inicio_paro_novedad: horometroInicioParoNovedad,
-        horometro_fin_paro_novedad: horometroFinParo,
+        horometro_inicio_paro_novedad: 0,
+        horometro_fin_paro_novedad: 0,
         motivo_paro_novedad: motivoParoNovedad,
         operador_novedad: operatorNovelty,
         observacion_novedad: observacionNovedad,
@@ -720,58 +686,6 @@ function GenerateNoveltyStrikeStartForm() {
                       transition={{ duration: 0.5 }}
                     >
                       {validationError.finParoNovedad}
-                    </motion.span>
-                  )}
-                </fieldset>
-                <fieldset>
-                  <label htmlFor="horometroInicioParoNovedad">
-                    Horómetro inicio de Paro
-                  </label>
-                  <input
-                    id="horometroInicioParoNovedad"
-                    name="horometroInicioParoNovedad"
-                    type="text"
-                    value={horometroInicioParoNovedad}
-                    onChange={(e) =>
-                      setHorometroInicioParoNovedad(e.target.value)
-                    }
-                    placeholder="Ingrese el horómetro de inicio de paro"
-                  />
-                  {!validationError.horometroInicioParoNovedad ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={Style.generateNoveltyStrikeStartFormValidation}
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError.horometroInicioParoNovedad}
-                    </motion.span>
-                  )}
-                </fieldset>
-                <fieldset>
-                  <label htmlFor="horometroFinParoNovedad">
-                    Horómetro fin de paro
-                  </label>
-                  <input
-                    id="horometroFinParoNovedad"
-                    name="horometroFinParoNovedad"
-                    type="text"
-                    value={horometroFinParoNovedad}
-                    onChange={(e) => setHorometroFinParoNovedad(e.target.value)}
-                    placeholder="Ingrese el horómetro de fin de paro"
-                  />
-                  {!validationError.horometroFinParoNovedad ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={Style.generateNoveltyStrikeStartFormValidation}
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError.horometroFinParoNovedad}
                     </motion.span>
                   )}
                 </fieldset>

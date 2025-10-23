@@ -172,8 +172,6 @@ function GenerateNoveltyStrikeStopList() {
                     <th>Operador de molino</th>
                     <th>Inicio de paro</th>
                     <th>Fin de paro</th>
-                    <th>Horómetro de inicio de paro</th>
-                    <th>Horómetro de fin de paro</th>
                     <th>Motivo paro</th>
                   </tr>
                 </thead>
@@ -197,12 +195,6 @@ function GenerateNoveltyStrikeStopList() {
                       <td>
                         {novedad.fin_paro_novedad !== null
                           ? novedad.fin_paro_novedad
-                          : "No registrado"}
-                      </td>
-                      <td>{novedad.horometro_inicio_paro_novedad}</td>
-                      <td>
-                        {novedad.horometro_fin_paro_novedad !== null
-                          ? novedad.horometro_fin_paro_novedad
                           : "No registrado"}
                       </td>
                       <td>{novedad.motivo_paro_novedad}</td>

@@ -192,8 +192,6 @@ function ReportListDetail() {
                           <th>Molino</th>
                           <th>Hora de inicio</th>
                           <th>Hora de finalización</th>
-                          <th>Horómetro inicial</th>
-                          <th>Horómetro final</th>
                           <th>Tipo de paro</th>
                         </tr>
                       </thead>
@@ -205,12 +203,6 @@ function ReportListDetail() {
                             {item.fin_paro_novedad
                               ? formatTime(item.fin_paro_novedad)
                               : formatTime(shift?.fin_turno)}
-                          </td>
-                          <td>{item.horometro_inicio_paro_novedad} Hrs</td>
-                          <td>
-                            {item.horometro_fin_paro_novedad
-                              ? item.horometro_fin_paro_novedad + " Hrs"
-                              : "No definido"}
                           </td>
                           <td>{item.motivo_paro_novedad}</td>
                         </tr>

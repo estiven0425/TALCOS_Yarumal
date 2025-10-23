@@ -12,7 +12,6 @@ function GenerateNoveltyStrikeStopForm() {
   const [finalData, setFinalData] = useState([]);
   const [idNovedad, setIdNovedad] = useState("");
   const [finParoNovedad, setFinParoNovedad] = useState("");
-  const [horometroFinParoNovedad, setHorometroFinParoNovedad] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingAlternative, setLoadingAlternative] = useState(true);
   const [SendStatus, setSendStatus] = useState(false);
@@ -192,11 +191,6 @@ function GenerateNoveltyStrikeStopForm() {
         }
       }
     }
-    if (!horometroFinParoNovedad) {
-      errors.horometroFinParoNovedad = "El horómetro de fin es obligatorio.";
-    } else if (!/^[0-9]+$/.test(horometroFinParoNovedad)) {
-      errors.horometroFinParoNovedad = "El horómetro debe ser solo números.";
-    }
 
     setValidationError(errors);
     setLoading(false);
@@ -219,7 +213,7 @@ function GenerateNoveltyStrikeStopForm() {
       await axios.put(`http://${localIP}:3000/novedades/finparonovedad`, {
         id_novedad: idNovedad,
         fin_paro_novedad: finParoNovedad,
-        horometro_fin_paro_novedad: horometroFinParoNovedad,
+        horometro_fin_paro_novedad: 0,
       });
 
       setSendStatus(true);
@@ -306,33 +300,6 @@ function GenerateNoveltyStrikeStopForm() {
                       transition={{ duration: 0.5 }}
                     >
                       {validationError.finParoNovedad}
-                    </motion.span>
-                  )}
-                </fieldset>
-                <fieldset
-                  className={Style.generateNoveltyStrikeStopFormMainEspecial}
-                >
-                  <label htmlFor="horometroFinParoNovedad">
-                    Horómetro fin de paro
-                  </label>
-                  <input
-                    id="horometroFinParoNovedad"
-                    name="horometroFinParoNovedad"
-                    type="text"
-                    value={horometroFinParoNovedad}
-                    onChange={(e) => setHorometroFinParoNovedad(e.target.value)}
-                    placeholder="Ingrese el horómetro de fin de paro"
-                  />
-                  {!validationError.horometroFinParoNovedad ? (
-                    <></>
-                  ) : (
-                    <motion.span
-                      className={Style.generateNoveltyStrikeStopFormValidation}
-                      initial={{ zoom: 0 }}
-                      animate={{ zoom: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {validationError.horometroFinParoNovedad}
                     </motion.span>
                   )}
                 </fieldset>

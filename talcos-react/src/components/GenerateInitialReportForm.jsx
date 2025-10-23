@@ -452,10 +452,6 @@ function GenerateInitialReportForm() {
     // noinspection UnnecessaryLocalVariableJS
     const fechaInformeInicial = currentData;
 
-    // const horaInformeInicial = new Date().toLocaleTimeString("en-GB", {
-    //   hour12: false,
-    // });
-
     const persistentData = {
       titular_informe_inicial: titularInformeInicial,
       fecha_informe_inicial: fechaInformeInicial,
