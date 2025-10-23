@@ -256,64 +256,61 @@ function MonitoringListEfficiency({ inicio, fin }) {
             })),
           ];
 
-// Filtra los puntos de inicio para dejar solo uno por turno y fecha
-            const puntosInicioUnicos = [];
+          const puntosInicioUnicos = [];
 
-            puntosInicio.forEach((punto) => {
-                const yaExiste = puntosInicioUnicos.find(
-                    (p) =>
-                        p.fecha_informe_inicial === punto.fecha_informe_inicial &&
-                        p.turno_informe_inicial === punto.turno_informe_inicial
-                );
+          puntosInicio.forEach((punto) => {
+            const yaExiste = puntosInicioUnicos.find(
+              (p) =>
+                p.fecha_informe_inicial === punto.fecha_informe_inicial &&
+                p.turno_informe_inicial === punto.turno_informe_inicial,
+            );
 
-                if (!yaExiste) puntosInicioUnicos.push(punto);
+            if (!yaExiste) puntosInicioUnicos.push(punto);
+          });
+
+          puntosInicioUnicos.forEach((inicial) => {
+            const finalMatch = grupo.finales.find(
+              (final) =>
+                final.fecha_informe_final === inicial.fecha_informe_inicial &&
+                final.turno_informe_final === inicial.turno_informe_inicial,
+            );
+
+            if (!finalMatch) return;
+
+            const inicio = new Date(
+              `${inicial.fecha_informe_inicial}T${inicial.hora_informe_inicial}`,
+            );
+
+            const fin = new Date(
+              `${finalMatch.fecha_informe_final}T${finalMatch.hora_informe_final}`,
+            );
+
+            if (fin < inicio) fin.setDate(fin.getDate() + 1);
+            if (isNaN(inicio.getTime()) || isNaN(fin.getTime())) return;
+
+            const duracion = (fin - inicio) / (1000 * 60 * 60);
+            totalHoras += duracion;
+
+            const turnoAsociado = turno.find(
+              (t) => t.nombre_turno === inicial.turno_informe_inicial,
+            );
+
+            if (turnoAsociado) {
+              horasEsperadas += calculateTurnoDuration(
+                turnoAsociado.inicio_turno,
+                turnoAsociado.fin_turno,
+              );
+            }
+
+            grupo.emparejamientos.push({
+              fecha: inicial.fecha_informe_inicial,
+              turno: inicial.turno_informe_inicial,
+              horaInicio: inicial.hora_informe_inicial,
+              horaFin: finalMatch.hora_informe_final,
+              duracion: duracion.toFixed(2),
+              tipo: inicial.tipo,
             });
-
-// Empareja solo esos puntos únicos
-            puntosInicioUnicos.forEach((inicial) => {
-                const finalMatch = grupo.finales.find(
-                    (final) =>
-                        final.fecha_informe_final === inicial.fecha_informe_inicial &&
-                        final.turno_informe_final === inicial.turno_informe_inicial
-                );
-
-                if (!finalMatch) return;
-
-                const inicio = new Date(
-                    `${inicial.fecha_informe_inicial}T${inicial.hora_informe_inicial}`
-                );
-
-                const fin = new Date(
-                    `${finalMatch.fecha_informe_final}T${finalMatch.hora_informe_final}`
-                );
-
-                if (fin < inicio) fin.setDate(fin.getDate() + 1);
-                if (isNaN(inicio.getTime()) || isNaN(fin.getTime())) return;
-
-                const duracion = (fin - inicio) / (1000 * 60 * 60);
-                totalHoras += duracion;
-
-                const turnoAsociado = turno.find(
-                    (t) => t.nombre_turno === inicial.turno_informe_inicial
-                );
-
-                if (turnoAsociado) {
-                    horasEsperadas += calculateTurnoDuration(
-                        turnoAsociado.inicio_turno,
-                        turnoAsociado.fin_turno
-                    );
-                }
-
-                grupo.emparejamientos.push({
-                    fecha: inicial.fecha_informe_inicial,
-                    turno: inicial.turno_informe_inicial,
-                    horaInicio: inicial.hora_informe_inicial,
-                    horaFin: finalMatch.hora_informe_final,
-                    duracion: duracion.toFixed(2),
-                    tipo: inicial.tipo,
-                });
-            });
-
+          });
 
           grupo.paros.forEach((paro) => {
             const inicioParo = new Date(
