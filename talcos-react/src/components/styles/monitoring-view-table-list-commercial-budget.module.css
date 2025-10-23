@@ -11,8 +11,7 @@
 }
 
 .monitoringViewTableListCommercialBudgetTable {
-  border-collapse: separate;
-  border-spacing: 10px;
+  border-collapse: collapse;
   width: 100%;
 }
 
@@ -40,8 +39,10 @@
 .monitoringViewTableListCommercialBudgetTableFooter tr {
   width: 100%;
 }
+
 .monitoringViewTableListCommercialBudgetTableHead tr th {
   font-size: 1rem;
+  padding: 10px;
   text-align: center;
   vertical-align: baseline;
 }
@@ -49,9 +50,18 @@
 .monitoringViewTableListCommercialBudgetTableBody tr td,
 .monitoringViewTableListCommercialBudgetTableFooter tr td {
   font-size: 1rem;
+  padding: 10px;
   text-align: center;
   vertical-align: baseline;
   min-width: 100px;
+}
+
+.monitoringViewTableListCommercialBudgetTableHead tr th:first-child,
+.monitoringViewTableListCommercialBudgetTableBody tr td:first-child,
+.monitoringViewTableListCommercialBudgetTableFooter tr td:first-child {
+  backdrop-filter: blur(10px);
+  position: sticky;
+  left: -10px;
 }
 
 .loader {

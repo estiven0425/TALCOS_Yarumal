@@ -11,8 +11,7 @@
 }
 
 .monitoringViewTableListProducedTable {
-  border-collapse: separate;
-  border-spacing: 10px;
+  border-collapse: collapse;
   width: 100%;
 }
 
@@ -40,8 +39,10 @@
 .monitoringViewTableListProducedTableFooter tr {
   width: 100%;
 }
+
 .monitoringViewTableListProducedTableHead tr th {
   font-size: 1rem;
+  padding: 10px;
   text-align: center;
   vertical-align: baseline;
 }
@@ -49,9 +50,18 @@
 .monitoringViewTableListProducedTableBody tr td,
 .monitoringViewTableListProducedTableFooter tr td {
   font-size: 1rem;
+  padding: 10px;
   text-align: center;
   vertical-align: baseline;
   min-width: 100px;
+}
+
+.monitoringViewTableListProducedTableHead tr th:first-child,
+.monitoringViewTableListProducedTableBody tr td:first-child,
+.monitoringViewTableListProducedTableFooter tr td:first-child {
+  backdrop-filter: blur(10px);
+  position: sticky;
+  left: -10px;
 }
 
 .loader {
