@@ -74,11 +74,11 @@ const RegistrosAp = sequelize.define(
       allowNull: false,
     },
     horometro_inicio_registro_ap: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(8, 2),
       allowNull: false,
     },
     horometro_fin_registro_ap: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(8, 2),
       allowNull: false,
     },
     carguero_registro_ap: {

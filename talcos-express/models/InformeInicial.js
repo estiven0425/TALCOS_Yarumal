@@ -50,7 +50,7 @@ const InformeInicial = sequelize.define(
       allowNull: true,
     },
     horometro_informe_inicial: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(8, 2),
       allowNull: true,
     },
     operador_informe_inicial: {

@@ -16,7 +16,7 @@ const Molinos = sequelize.define(
       allowNull: false,
     },
     horometro_molino: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(8, 2),
       allowNull: false,
     },
     actividad_molino: {
