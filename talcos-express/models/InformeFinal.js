@@ -40,7 +40,7 @@ const InformeFinal = sequelize.define(
       allowNull: false,
     },
     horometro_informe_final: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(8,2),
       allowNull: false,
     },
     observacion_informe_final: {

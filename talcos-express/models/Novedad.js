@@ -82,11 +82,11 @@ const Novedad = sequelize.define(
       allowNull: true,
     },
     horometro_inicio_paro_novedad: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(8,2),
       allowNull: true,
     },
     horometro_fin_paro_novedad: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.DECIMAL(8,2),
       allowNull: true,
     },
     motivo_paro_novedad: {
