@@ -46,6 +46,7 @@ const despachoComercialRoutes = require("./routes/despachoComercialRoutes");
 const despachosRoutes = require("./routes/despachosRoutes");
 const login = require("./utils/login");
 const pdfRoutes = require("./routes/pdfRoutes");
+const parosRoutes = require("./routes/parosRoutes");
 const monitoreoRoutes = require("./routes/monitoreosRoutes");
 const { networkInterfaces } = require("os");
 
@@ -78,6 +79,7 @@ app.use("/despachos_comerciales", despachoComercialRoutes);
 app.use("/despachos", despachosRoutes);
 app.use("/login", login);
 app.use("/pdf", pdfRoutes);
+app.use("/paros", parosRoutes);
 app.use("/monitoreo", monitoreoRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
