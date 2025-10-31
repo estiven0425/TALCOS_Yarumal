@@ -9,6 +9,7 @@ function GenerateNoveltyStrikeStartForm() {
   const [currentData, setCurrentData] = useState(null);
   const [finalData, setFinalData] = useState([]);
   const [molino, setMolino] = useState([]);
+  const [tipoParo, setTipoParo] = useState([]);
   const [molinoNovedad, setMolinoNovedad] = useState("");
   const [inicioParoNovedad, setInicioParoNovedad] = useState("");
   const [finParoNovedad, setFinParoNovedad] = useState("");
@@ -42,6 +43,12 @@ function GenerateNoveltyStrikeStartForm() {
         // noinspection HttpUrlsUsage
         const responseShifts = await axios.get(`http://${localIP}:3000/turnos`);
         const shifts = responseShifts.data;
+
+        // noinspection HttpUrlsUsage
+        const responseStrike = await axios.get(`http://${localIP}:3000/paros`);
+        const strike = responseStrike.data;
+
+        setTipoParo(strike);
 
         const currentTime = new Date();
 
@@ -702,20 +709,14 @@ function GenerateNoveltyStrikeStartForm() {
                     <option value="" disabled>
                       Seleccione un motivo
                     </option>
-                    <option value="Sostenimiento general">
-                      Sostenimiento general
-                    </option>
-                    <option value="Mecánico">Mecánico</option>
-                    <option value="Eléctrico">Eléctrico</option>
-                    <option value="Corte de energía">Corte de energía</option>
-                    <option value="Materia prima">Materia prima</option>
-                    <option value="Empaque">Empaque</option>
-                    <option value="Guijos">Guijos</option>
-                    <option value="Personal">Personal</option>
-                    <option value="Programado">Programado</option>
-                    <option value="Bodega">Bodega</option>
-                    <option value="Apagado">Apagado</option>
-                    <option value="Otro">Otro</option>
+                    {tipoParo.map((tipoParo) => (
+                      <option
+                        key={tipoParo.id_paro}
+                        value={tipoParo.nombre_paro}
+                      >
+                        {tipoParo.nombre_paro}
+                      </option>
+                    ))}
                   </select>
                   {!validationError.motivoParoNovedad ? (
                     <></>

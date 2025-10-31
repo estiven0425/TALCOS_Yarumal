@@ -94,6 +94,15 @@ CREATE TABLE `bob_cats` (
 	CONSTRAINT PRIMARY KEY(`id_bob_cat`)
 );
 
+CREATE TABLE `paros` (
+    `id_paro` BIGINT(100) NOT NULL AUTO_INCREMENT,
+    `nombre_paro` VARCHAR(250) NOT NULL,
+    `actividad_paro` BIT NOT NULL DEFAULT(1),
+    `actualizacion_paro` TIMESTAMP NOT NULL,
+
+    CONSTRAINT PRIMARY KEY(`id_paro`)
+);
+
 CREATE TABLE `usuarios` (
 	`id_usuario` BIGINT(100) NOT NULL AUTO_INCREMENT,
 	`nombre_usuario` VARCHAR(250) NOT NULL,

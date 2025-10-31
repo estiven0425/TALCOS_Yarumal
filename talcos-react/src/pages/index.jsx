@@ -26,6 +26,7 @@ export { default as InventoryCreateCommercialBudget } from "./InventoryCreateCom
 export { default as InventoryCreateCommercialDispatche } from "./InventoryCreateCommercialDispatche";
 export { default as InventoryCreateDispatche } from "./InventoryCreateDispatche";
 export { default as InventoryCreateInventoryAp } from "./InventoryCreateInventoryAp";
+export { default as InventoryCreateParo } from "./InventoryCreateParo";
 export { default as InventoryCreateProfile } from "./InventoryCreateProfile";
 export { default as InventoryCreateRawMaterial } from "./InventoryCreateRawMaterial";
 export { default as InventoryCreateRawMaterialRegister } from "./InventoryCreateRawMaterialRegister";
@@ -41,6 +42,7 @@ export { default as InventoryDeleteCommercialBudget } from "./InventoryDeleteCom
 export { default as InventoryDeleteCommercialDispatche } from "./InventoryDeleteCommercialDispatche";
 export { default as InventoryDeleteDispatche } from "./InventoryDeleteDispatche";
 export { default as InventoryDeleteInventoryAp } from "./InventoryDeleteInventoryAp";
+export { default as InventoryDeleteParo } from "./InventoryDeleteParo";
 export { default as InventoryDeleteProfile } from "./InventoryDeleteProfile";
 export { default as InventoryDeleteRawMaterial } from "./InventoryDeleteRawMaterial";
 export { default as InventoryDeleteRawMaterialRegister } from "./InventoryDeleteRawMaterialRegister";
@@ -55,6 +57,7 @@ export { default as InventoryEditCommercialBudget } from "./InventoryEditCommerc
 export { default as InventoryEditCommercialDispatche } from "./InventoryEditCommercialDispatche";
 export { default as InventoryEditDispatche } from "./InventoryEditDispatche";
 export { default as InventoryEditInventoryAp } from "./InventoryEditInventoryAp";
+export { default as InventoryEditParo } from "./InventoryEditParo";
 export { default as InventoryEditProfile } from "./InventoryEditProfile";
 export { default as InventoryEditRawMaterial } from "./InventoryEditRawMaterial";
 export { default as InventoryEditReference } from "./InventoryEditReference";
@@ -69,6 +72,7 @@ export { default as InventoryListDeleteCommercialBudget } from "./InventoryListD
 export { default as InventoryListDeleteCommercialDispatche } from "./InventoryListDeleteCommercialDispatche";
 export { default as InventoryListDeleteDispatche } from "./InventoryListDeleteDispatche";
 export { default as InventoryListDeleteInventoryAp } from "./InventoryListDeleteInventoryAp";
+export { default as InventoryListDeleteParo } from "./InventoryListDeleteParo";
 export { default as InventoryListDeleteProfile } from "./InventoryListDeleteProfile";
 export { default as InventoryListDeleteRawMaterial } from "./InventoryListDeleteRawMaterial";
 export { default as InventoryListDeleteReference } from "./InventoryListDeleteReference";
@@ -82,6 +86,7 @@ export { default as InventoryListEditCommercialBudget } from "./InventoryListEdi
 export { default as InventoryListEditCommercialDispatche } from "./InventoryListEditCommercialDispatche";
 export { default as InventoryListEditDispatche } from "./InventoryListEditDispatche";
 export { default as InventoryListEditInventoryAp } from "./InventoryListEditInventoryAp";
+export { default as InventoryListEditParo } from "./InventoryListEditParo";
 export { default as InventoryListEditProfile } from "./InventoryListEditProfile";
 export { default as InventoryListEditRawMaterial } from "./InventoryListEditRawMaterial";
 export { default as InventoryListEditReference } from "./InventoryListEditReference";
@@ -98,6 +103,7 @@ export { default as InventoryCommercialBudget } from "./InventoryCommercialBudge
 export { default as InventoryCommercialDispatche } from "./InventoryCommercialDispatche";
 export { default as InventoryDispatche } from "./InventoryDispatche";
 export { default as InventoryInventoryAp } from "./InventoryInventoryAp";
+export { default as InventoryParo } from "./InventoryParo";
 export { default as InventoryProfile } from "./InventoryProfile";
 export { default as InventoryRawMaterial } from "./InventoryRawMaterial";
 export { default as InventoryRawMaterialRegister } from "./InventoryRawMaterialRegister";

@@ -140,6 +140,14 @@ function InventoryListProfile() {
           <h2>Inventario AP</h2>
           <img alt="Icono" src="/inventory_ap.svg"></img>
         </button>
+        <button
+          className={Style.inventoryListProfileMainButton}
+          onClick={() => redirect("inventory/inventoryparo")}
+          type="button"
+        >
+          <h2>Tipos de paro</h2>
+          <img alt="Icono" src="/paro.svg"></img>
+        </button>
       </motion.main>
     </>
   );

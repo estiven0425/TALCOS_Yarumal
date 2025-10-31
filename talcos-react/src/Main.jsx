@@ -29,6 +29,7 @@ import {
   InventoryCreateCommercialDispatche,
   InventoryCreateDispatche,
   InventoryCreateInventoryAp,
+  InventoryCreateParo,
   InventoryCreateProfile,
   InventoryCreateRawMaterial,
   InventoryCreateRawMaterialRegister,
@@ -44,6 +45,7 @@ import {
   InventoryDeleteCommercialDispatche,
   InventoryDeleteDispatche,
   InventoryDeleteInventoryAp,
+  InventoryDeleteParo,
   InventoryDeleteProfile,
   InventoryDeleteRawMaterial,
   InventoryDeleteRawMaterialRegister,
@@ -58,6 +60,7 @@ import {
   InventoryEditCommercialDispatche,
   InventoryEditDispatche,
   InventoryEditInventoryAp,
+  InventoryEditParo,
   InventoryEditProfile,
   InventoryEditRawMaterial,
   InventoryEditReasignedRejectedMaterial,
@@ -72,6 +75,7 @@ import {
   InventoryListDeleteCommercialDispatche,
   InventoryListDeleteDispatche,
   InventoryListDeleteInventoryAp,
+  InventoryListDeleteParo,
   InventoryListDeleteProfile,
   InventoryListDeleteRawMaterial,
   InventoryListDeleteReference,
@@ -85,6 +89,7 @@ import {
   InventoryListEditCommercialDispatche,
   InventoryListEditDispatche,
   InventoryListEditInventoryAp,
+  InventoryListEditParo,
   InventoryListEditProfile,
   InventoryListEditRawMaterial,
   InventoryListEditReference,
@@ -101,6 +106,7 @@ import {
   InventoryCommercialDispatche,
   InventoryDispatche,
   InventoryInventoryAp,
+  InventoryParo,
   InventoryProfile,
   InventoryRawMaterial,
   InventoryRawMaterialRegister,
@@ -476,6 +482,15 @@ createRoot(document.getElementById("root")).render(
               path="deleteinventoryap"
               element={<InventoryDeleteInventoryAp />}
             />
+            <Route path="inventoryparo" element={<InventoryParo />} />
+            <Route path="createparo" element={<InventoryCreateParo />} />
+            <Route path="listeditparo" element={<InventoryListEditParo />} />
+            <Route path="editparo" element={<InventoryEditParo />} />
+            <Route
+              path="listdeleteparo"
+              element={<InventoryListDeleteParo />}
+            />
+            <Route path="deleteparo" element={<InventoryDeleteParo />} />
           </Route>
           <Route path="fastinventory" element={<FastInventory />} />
           <Route path="notification" element={<Notification />} />
