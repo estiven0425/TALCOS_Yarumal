@@ -176,6 +176,12 @@ const ProtectedRoute = ({ children }) => {
             "/inventory/editinventoryap",
             "/inventory/listdeleteinventoryap",
             "/inventory/deleteinventoryap",
+            "/inventory/inventoryparo",
+            "/inventory/createparo",
+            "/inventory/listeditparo",
+            "/inventory/editparo",
+            "/inventory/listdeleteparo",
+            "/inventory/deleteparo",
           ],
           4: [
             "/staff",
@@ -280,6 +286,12 @@ const ProtectedRoute = ({ children }) => {
             "/inventory/editinventoryap",
             "/inventory/listdeleteinventoryap",
             "/inventory/deleteinventoryap",
+            "/inventory/inventoryparo",
+            "/inventory/createparo",
+            "/inventory/listeditparo",
+            "/inventory/editparo",
+            "/inventory/listdeleteparo",
+            "/inventory/deleteparo",
           ],
         };
 

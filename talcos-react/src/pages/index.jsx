@@ -32,6 +32,7 @@ export { default as InventoryCreateRawMaterialRegister } from "./InventoryCreate
 export { default as InventoryCreateReference } from "./InventoryCreateReference";
 export { default as InventoryCreateRejectedMaterial } from "./InventoryCreateRejectedMaterial";
 export { default as InventoryCreateShift } from "./InventoryCreateShift";
+export { default as InventoryCreateTypeStrike } from "./InventoryCreateTypeStrike";
 export { default as InventoryCreateWindmill } from "./InventoryCreateWindmill";
 export { default as InventoryCreateWindmillAp } from "./InventoryCreateWindmillAp";
 export { default as InventoryDeleteAggregate } from "./InventoryDeleteAggregate";
@@ -47,6 +48,7 @@ export { default as InventoryDeleteRawMaterialRegister } from "./InventoryDelete
 export { default as InventoryDeleteReference } from "./InventoryDeleteReference";
 export { default as InventoryDeleteRejectedMaterial } from "./InventoryDeleteRejectedMaterial";
 export { default as InventoryDeleteShift } from "./InventoryDeleteShift";
+export { default as InventoryDeleteTypeStrike } from "./InventoryDeleteTypeStrike";
 export { default as InventoryDeleteWindmill } from "./InventoryDeleteWindmill";
 export { default as InventoryDeleteWindmillAp } from "./InventoryDeleteWindmillAp";
 export { default as InventoryEditBobCat } from "./InventoryEditBobCat";
@@ -61,6 +63,7 @@ export { default as InventoryEditReference } from "./InventoryEditReference";
 export { default as InventoryEditRejectedMaterial } from "./InventoryEditRejectedMaterial";
 export { default as InventoryEditReasignedRejectedMaterial } from "./InventoryEditReasignedRejectedMaterial";
 export { default as InventoryEditShift } from "./InventoryEditShift";
+export { default as InventoryEditTypeStrike } from "./InventoryEditTypeStrike";
 export { default as InventoryEditWindmill } from "./InventoryEditWindmill";
 export { default as InventoryEditWindmillAp } from "./InventoryEditWindmillAp";
 export { default as InventoryListDeleteBobCat } from "./InventoryListDeleteBobCat";
@@ -74,6 +77,7 @@ export { default as InventoryListDeleteRawMaterial } from "./InventoryListDelete
 export { default as InventoryListDeleteReference } from "./InventoryListDeleteReference";
 export { default as InventoryListDeleteRejectedMaterial } from "./InventoryListDeleteRejectedMaterial";
 export { default as InventoryListDeleteShift } from "./InventoryListDeleteShift";
+export { default as InventoryListDeleteTypeStrike } from "./InventoryListDeleteTypeStrike";
 export { default as InventoryListDeleteWindmill } from "./InventoryListDeleteWindmill";
 export { default as InventoryListDeleteWindmillAp } from "./InventoryListDeleteWindmillAp";
 export { default as InventoryListEditBobCat } from "./InventoryListEditBobCat";
@@ -87,6 +91,7 @@ export { default as InventoryListEditRawMaterial } from "./InventoryListEditRawM
 export { default as InventoryListEditReference } from "./InventoryListEditReference";
 export { default as InventoryListEditRejectedMaterial } from "./InventoryListEditRejectedMaterial";
 export { default as InventoryListEditShift } from "./InventoryListEditShift";
+export { default as InventoryListEditTypeStrike } from "./InventoryListEditTypeStrike";
 export { default as InventoryListEditWindmill } from "./InventoryListEditWindmill";
 export { default as InventoryListEditWindmillAp } from "./InventoryListEditWindmillAp";
 export { default as InventoryListReasignedRejectedMaterial } from "./InventoryListReasignedRejectedMaterial";
@@ -105,6 +110,7 @@ export { default as InventoryRawMaterialRegisterDetail } from "./InventoryRawMat
 export { default as InventoryReference } from "./InventoryReference";
 export { default as InventoryRejectedMaterial } from "./InventoryRejectedMaterial";
 export { default as InventoryShift } from "./InventoryShift";
+export { default as InventoryTypeStrike } from "./InventoryTypeStrike";
 export { default as InventoryWindmill } from "./InventoryWindmill";
 export { default as InventoryWindmillAp } from "./InventoryWindmillAp";
 export { default as Login } from "./Login";

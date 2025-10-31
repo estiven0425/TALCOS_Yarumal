@@ -35,6 +35,7 @@ import {
   InventoryCreateReference,
   InventoryCreateRejectedMaterial,
   InventoryCreateShift,
+  InventoryCreateTypeStrike,
   InventoryCreateWindmill,
   InventoryCreateWindmillAp,
   InventoryDeleteAggregate,
@@ -50,6 +51,7 @@ import {
   InventoryDeleteReference,
   InventoryDeleteRejectedMaterial,
   InventoryDeleteShift,
+  InventoryDeleteTypeStrike,
   InventoryDeleteWindmill,
   InventoryDeleteWindmillAp,
   InventoryEditBobCat,
@@ -64,6 +66,7 @@ import {
   InventoryEditReference,
   InventoryEditRejectedMaterial,
   InventoryEditShift,
+  InventoryEditTypeStrike,
   InventoryEditWindmill,
   InventoryEditWindmillAp,
   InventoryListDeleteBobCat,
@@ -77,6 +80,7 @@ import {
   InventoryListDeleteReference,
   InventoryListDeleteRejectedMaterial,
   InventoryListDeleteShift,
+  InventoryListDeleteTypeStrike,
   InventoryListDeleteWindmill,
   InventoryListDeleteWindmillAp,
   InventoryListEditBobCat,
@@ -90,6 +94,7 @@ import {
   InventoryListEditReference,
   InventoryListEditRejectedMaterial,
   InventoryListEditShift,
+  InventoryListEditTypeStrike,
   InventoryListEditWindmill,
   InventoryListEditWindmillAp,
   InventoryListReasignedRejectedMaterial,
@@ -108,6 +113,7 @@ import {
   InventoryReference,
   InventoryRejectedMaterial,
   InventoryShift,
+  InventoryTypeStrike,
   InventoryWindmill,
   InventoryWindmillAp,
   Login,
@@ -475,6 +481,27 @@ createRoot(document.getElementById("root")).render(
             <Route
               path="deleteinventoryap"
               element={<InventoryDeleteInventoryAp />}
+            />
+            <Route path="inventoryparo" element={<InventoryTypeStrike />} />
+            <Route
+              path="createinventoryparo"
+              element={<InventoryCreateTypeStrike />}
+            />
+            <Route
+              path="listeditinventoryparo"
+              element={<InventoryListEditTypeStrike />}
+            />
+            <Route
+              path="editinventoryparo"
+              element={<InventoryEditTypeStrike />}
+            />
+            <Route
+              path="listdeleteinventoryparo"
+              element={<InventoryListDeleteTypeStrike />}
+            />
+            <Route
+              path="deleteinventoryparo"
+              element={<InventoryDeleteTypeStrike />}
             />
           </Route>
           <Route path="fastinventory" element={<FastInventory />} />
